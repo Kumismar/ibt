@@ -18,7 +18,7 @@ public:
     {
     }
 
-    TokenType GetType() const;
+    const TokenType& GetType() const;
 
     bool operator==(Token& t)
     {
