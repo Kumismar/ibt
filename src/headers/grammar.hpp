@@ -10,5 +10,5 @@ public:
     {
     }
 
-    virtual std::list<StackItem> Expand() = 0;
+    virtual std::list<StackItem> Expand(unsigned ruleNumber) = 0;
 };

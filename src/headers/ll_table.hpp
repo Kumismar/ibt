@@ -42,5 +42,5 @@ private:
     };
 
 public:
-    const RowAccessor& operator[](Nonterminal& nonTerminal) const;
+    const RowAccessor operator[](Nonterminal& nonTerminal) const;
 };
