@@ -12,7 +12,7 @@
 class Grammar6 : public Grammar
 {
 private:
-    const std::vector<std::list<StackItem>>& rightSideRules = {
+    const std::vector<std::list<StackItem>> rightSideRules = {
         { Token(tInt) },
         { Token(tFloat) },
         { Token(tString) },
@@ -24,5 +24,5 @@ public:
     {
     }
 
-    std::list<StackItem> Expand() override;
+    std::list<StackItem> Expand(unsigned ruleNumber) override;
 };

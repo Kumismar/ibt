@@ -10,7 +10,7 @@
 class Grammar2 : public Grammar
 {
 private:
-    const std::vector<std::list<StackItem>>& rightSideRules = {
+    const std::vector<std::list<StackItem>> rightSideRules = {
         { Token(tIf), Token(tLPar), Nonterminal(nExpression), Token(tRPar), Nonterminal(nCodeBlock), Nonterminal(nIf2) },
         { Token(tWhile), Token(tLPar), Nonterminal(nExpression), Token(tRPar), Nonterminal(nCodeBlock) },
         { Token(tFor), Token(tLPar), Nonterminal(nExpression), Token(tSemi), Nonterminal(nExpression), Token(tSemi), Nonterminal(nExpression), Token(tRPar), Nonterminal(nCodeBlock) },
@@ -30,5 +30,5 @@ public:
     {
     }
 
-    std::list<StackItem> Expand() override;
+    std::list<StackItem> Expand(unsigned ruleNumber) override;
 };

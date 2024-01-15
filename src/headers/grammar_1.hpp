@@ -12,7 +12,7 @@
 class Grammar1 : public Grammar
 {
 private:
-    const std::vector<std::list<StackItem>>& rightSideRules = {
+    const std::vector<std::list<StackItem>> rightSideRules = {
         { Nonterminal(nStatement), Nonterminal(nStatementList) },
         { Nonterminal(nFunctionDef), Nonterminal(nStatementList) },
         { Nonterminal(nStatement), Nonterminal(nStatementList) },
@@ -25,5 +25,5 @@ public:
     {
     }
 
-    std::list<StackItem> Expand() override;
+    std::list<StackItem> Expand(unsigned ruleNumber) override;
 };
