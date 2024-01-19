@@ -1,5 +1,5 @@
-#include "headers/grammar_2.hpp"
-#include "headers/stack_item.hpp"
+#include "grammar_2.hpp"
+#include "stack_item.hpp"
 #include <list>
 
 std::list<StackItem> Grammar2::Expand(unsigned ruleNumber)

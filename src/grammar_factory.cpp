@@ -1,13 +1,13 @@
-#include "headers/grammar_factory.hpp"
-#include "headers/grammar_1.hpp"
-#include "headers/grammar_2.hpp"
-#include "headers/grammar_3.hpp"
-#include "headers/grammar_4.hpp"
-#include "headers/grammar_5.hpp"
-#include "headers/grammar_6.hpp"
+#include "grammar_factory.hpp"
+#include "grammar_1.hpp"
+#include "grammar_2.hpp"
+#include "grammar_3.hpp"
+#include "grammar_4.hpp"
+#include "grammar_5.hpp"
+#include "grammar_6.hpp"
 
 
-Grammar* GrammarFactory::CreateGrammar(unsigned grammarNumber) const
+Grammar* GrammarFactory::CreateGrammar(unsigned grammarNumber)
 {
     switch (grammarNumber) {
         case 1: {

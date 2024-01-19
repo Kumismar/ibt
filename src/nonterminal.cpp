@@ -1,5 +1,5 @@
-#include "headers/nonterminal.hpp"
-#include "headers/nonterminal_type.hpp"
+#include "nonterminal.hpp"
+#include "nonterminal_type.hpp"
 
 const NonterminalType& Nonterminal::GetType() const
 {

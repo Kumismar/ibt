@@ -1,11 +1,11 @@
-#include "headers/ll_table.hpp"
-#include "headers/nonterminal.hpp"
-#include "headers/nonterminal_type.hpp"
-#include "headers/token.hpp"
+#include "ll_table.hpp"
+#include "nonterminal.hpp"
+#include "nonterminal_type.hpp"
+#include "token.hpp"
 
-const TableIndex& RowAccessor::operator[](Token& token) const
+const TableIndex RowAccessor::operator[](Token& token) const
 {
-    return this->row[(unsigned)(token.GetType())];
+    return this->row[(unsigned)(token.GetTokenType())];
 }
 
 const RowAccessor LLTable::operator[](Nonterminal& nonterminal) const
