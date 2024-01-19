@@ -1,10 +1,6 @@
 #pragma once
 
-typedef enum
-{
-    Token_t,
-    Nonterminal_t
-} ItemType;
+#include "item_type.hpp"
 
 class StackItem
 {
