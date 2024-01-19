@@ -5,5 +5,5 @@
 class GrammarFactory
 {
 public:
-    Grammar* CreateGrammar(unsigned grammarNumber) const;
+    static Grammar* CreateGrammar(unsigned grammarNumber);
 };
