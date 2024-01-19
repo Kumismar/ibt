@@ -2,15 +2,18 @@
 
 #include "nonterminal.hpp"
 #include "token.hpp"
+#include <list>
 #include <stack>
 
 class PushdownAutomaton
 {
 private:
-    std::stack<Nonterminal> pushdown;
+    std::stack<StackItem> pushdown;
+    StackItem stackTop;
     Token inputToken;
-    Token stackTop;
+    bool success = false;
+    bool fail = false;
 
 public:
-    void Parse();
+    void Parse(std::list<Token>& inputTape);
 };

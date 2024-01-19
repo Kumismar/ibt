@@ -1,7 +1,7 @@
-#include "headers/token.hpp"
-#include "headers/token_type.hpp"
+#include "token.hpp"
+#include "token_type.hpp"
 
-const TokenType& Token::GetType() const
+TokenType Token::GetTokenType() const
 {
     return this->type;
 }

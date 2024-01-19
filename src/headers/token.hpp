@@ -6,7 +6,7 @@
 class Token : public StackItem
 {
 private:
-    const TokenType type;
+    TokenType type;
 
 public:
     Token(TokenType t)
@@ -18,7 +18,7 @@ public:
     {
     }
 
-    const TokenType& GetType() const;
+    TokenType GetTokenType() const;
 
     bool operator==(Token& t)
     {

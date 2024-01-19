@@ -16,13 +16,13 @@ public:
     {
     }
 
-    const TableIndex& operator[](Token& t) const;
+    const TableIndex operator[](Token& t) const;
 };
 
 class LLTable
 {
 private:
-    const std::vector<std::vector<TableIndex>>& table = {
+    const std::vector<std::vector<TableIndex>> table = {
         //                       if       while     for      return      ;       elseif     else       (         )          {        }      function   fName       :      variable     +         -         *         /         .         !         &&        ||        ==        !=     constant     ,        int      float     string     bool
         /*    program    */ { { 1, 1 }, { 1, 1 }, { 1, 1 }, { 1, 1 }, { 1, 1 }, { 0, 0 }, { 0, 0 }, { 1, 1 }, { 0, 0 }, { 1, 1 }, { 0, 0 }, { 1, 2 }, { 1, 1 }, { 0, 0 }, { 1, 1 }, { 1, 1 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 1, 1 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 1, 1 }, { 0, 0 }, { 1, 1 }, { 1, 1 }, { 1, 1 }, { 1, 1 } },
         /* statementList */ { { 1, 3 }, { 1, 3 }, { 1, 3 }, { 1, 3 }, { 1, 3 }, { 0, 0 }, { 0, 0 }, { 1, 3 }, { 0, 0 }, { 1, 3 }, { 0, 0 }, { 1, 4 }, { 1, 3 }, { 0, 0 }, { 1, 3 }, { 1, 3 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 1, 3 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 1, 3 }, { 0, 0 }, { 1, 3 }, { 1, 3 }, { 1, 3 }, { 1, 3 } },
