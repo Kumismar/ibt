@@ -16,7 +16,7 @@ public:
     {
     }
 
-    const TableIndex operator[](Token& t) const;
+    TableIndex operator[](const Token& t) const;
 };
 
 class LLTable
@@ -42,5 +42,5 @@ private:
     };
 
 public:
-    const RowAccessor operator[](Nonterminal& nonTerminal) const;
+    RowAccessor operator[](const Nonterminal& nonTerminal) const;
 };

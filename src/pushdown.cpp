@@ -41,6 +41,7 @@ void PushdownAutomaton::Parse(std::list<Token>& inputTape)
             case Nonterminal_t: {
                 Nonterminal& stackNT = dynamic_cast<Nonterminal&>(this->stackTop);
                 TableIndex gramRule = llTable[stackNT][this->inputToken];
+
                 if (gramRule != TableIndex({ 0, 0 })) { // Rule exists
                     Grammar* grammar = GrammarFactory::CreateGrammar(gramRule.grammarNumber); // Might return nullptr (shouldnt)
 

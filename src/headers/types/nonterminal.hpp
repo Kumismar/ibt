@@ -18,5 +18,5 @@ public:
     {
     }
 
-    const NonterminalType& GetType() const;
+    NonterminalType GetType() const;
 };
