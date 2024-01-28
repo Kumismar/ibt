@@ -1,5 +1,5 @@
 all:
-	[ -d build/ ] || mkdir build/ && cd build/ && cmake .. && make -j8 -s
+	@[ -d build/ ] || mkdir build/ && cd build/ && cmake .. && make -j8 -s
 
 run:
 	@[ -f build/src/Parser ] || echo "executable not build yet; 'make' first"
