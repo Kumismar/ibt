@@ -1,20 +1,20 @@
 set(project_dir ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
-file(GLOB sources 
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
-)
-
 add_executable(Parser 
-    ${sources}
-    ${headers}
+    main.cpp
 )
 
 target_include_directories(Parser PRIVATE 
-    ${CMAKE_CURRENT_SOURCE_DIR}/headers
-    ${CMAKE_CURRENT_SOURCE_DIR}/headers/grammars
-    ${CMAKE_CURRENT_SOURCE_DIR}/headers/types
-    ${CMAKE_CURRENT_SOURCE_DIR}/headers/tables
+    ${CMAKE_CURRENT_SOURCE_DIR}/grammars
+    ${CMAKE_CURRENT_SOURCE_DIR}/types
+    ${CMAKE_CURRENT_SOURCE_DIR}/tables
+    ${CMAKE_CURRENT_SOURCE_DIR}/pushdowns
 )
+
+add_subdirectory(grammars)
+add_subdirectory(pushdowns)
+add_subdirectory(tables)
+add_subdirectory(types)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${project_dir}/build)
 

@@ -2,10 +2,8 @@
 
 #include "grammar.hpp"
 #include "nonterminal.hpp"
-#include "nonterminal_type.hpp"
 #include "stack_item.hpp"
 #include "token.hpp"
-#include "token_type.hpp"
 #include <list>
 #include <vector>
 

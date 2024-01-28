@@ -2,25 +2,23 @@
 
 #include "grammar.hpp"
 #include "nonterminal.hpp"
-#include "nonterminal_type.hpp"
 #include "stack_item.hpp"
 #include "token.hpp"
-#include "token_type.hpp"
 #include <list>
 #include <vector>
 
-class Grammar5 : public Grammar
+class Grammar6 : public Grammar
 {
 private:
     const std::vector<std::list<StackItem>> rightSideRules = {
-        { Token(tLCurl), Nonterminal(nStatements), Token(tRCurl) },
-        { Nonterminal(nStatement) },
-        { Nonterminal(nStatement), Nonterminal(nStatements) },
-        { Token(tEps) },
+        { Token(tInt) },
+        { Token(tFloat) },
+        { Token(tString) },
+        { Token(tBool) }
     };
 
 public:
-    ~Grammar5()
+    ~Grammar6()
     {
     }
 

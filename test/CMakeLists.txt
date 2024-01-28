@@ -25,7 +25,6 @@ add_executable(ParserTest
 )
 
 target_link_libraries(ParserTest
-    ${obj_src_dir}/bruh.cpp.o
     GTest::gtest_main
 )
 

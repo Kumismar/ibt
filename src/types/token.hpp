@@ -1,7 +1,6 @@
 #pragma once
 
 #include "stack_item.hpp"
-#include "token_type.hpp"
 
 typedef enum tokenType
 {

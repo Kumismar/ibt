@@ -1,6 +1,5 @@
 #pragma once
 
-#include "nonterminal_type.hpp"
 #include "stack_item.hpp"
 
 typedef enum nonterminalType

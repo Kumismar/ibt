@@ -40,14 +40,14 @@ void PushdownAutomaton::Parse(std::list<Token>& inputTape)
             // Case N:
             case Nonterminal_t: {
                 Nonterminal& stackNT = dynamic_cast<Nonterminal&>(this->stackTop);
-                TableIndex gramRule = llTable[stackNT][this->inputToken];
+                TableIndex tableItem = llTable[stackNT][this->inputToken];
 
-                if (gramRule != TableIndex({ 0, 0 })) { // Rule exists
-                    Grammar* grammar = GrammarFactory::CreateGrammar(gramRule.grammarNumber); // Might return nullptr (shouldnt)
+                if (tableItem != TableIndex({ 0, 0 })) { // Rule exists
+                    Grammar* grammar = GrammarFactory::CreateGrammar(tableItem.grammarNumber); // Might return nullptr (shouldnt)
 
                     // TODO: if its expression, then it has to transfer control to expression parsing
                     this->pushdown.pop();
-                    std::list<StackItem> tmp = grammar->Expand(gramRule.ruleNumber); // Might return empty list or epsilon only (shouldnt)
+                    std::list<StackItem> tmp = grammar->Expand(tableItem.ruleNumber); // Might return empty list or epsilon only (shouldnt)
                     for (StackItem& item: tmp) {
                         this->pushdown.push(item);
                     }

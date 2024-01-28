@@ -1,6 +1,5 @@
 #include "ll_table.hpp"
 #include "nonterminal.hpp"
-#include "nonterminal_type.hpp"
 #include "token.hpp"
 
 TableIndex RowAccessor::operator[](const Token& token) const
