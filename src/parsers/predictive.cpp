@@ -2,6 +2,7 @@
 #include "grammar_factory.hpp"
 #include "ll_table.hpp"
 #include "precedence.hpp"
+#include <iostream>
 
 void PredictiveParser::Parse(std::list<Token>& inputTape)
 {

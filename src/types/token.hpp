@@ -43,7 +43,7 @@ typedef enum tokenType
     tEnd
 } TokenType;
 
-class Token : public StackItem
+class Token : public StackItem, public Expression
 {
 private:
     TokenType type;

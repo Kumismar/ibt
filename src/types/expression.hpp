@@ -4,7 +4,7 @@ typedef enum
 {
     ExpNonterminal_t,
     ExpToken_t,
-    ExpPrecedence_t
+    ExpPrecSymbol_t
 } ExpressionType;
 
 class Expression
