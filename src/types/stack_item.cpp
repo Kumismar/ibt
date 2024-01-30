@@ -1,6 +1,6 @@
 #include "stack_item.hpp"
 
-ItemType StackItem::GetType()
+ItemType StackItem::GetItemType() const
 {
-    return this->type;
+    return this->itemType;
 }

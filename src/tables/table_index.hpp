@@ -1,11 +1,11 @@
 #pragma once
 
-typedef struct tableIndex {
+typedef struct llTableIndex {
     unsigned grammarNumber;
     unsigned ruleNumber;
 
-    bool operator!=(const struct tableIndex& other) const
+    bool operator!=(const struct llTableIndex& other) const
     {
         return ((this->grammarNumber == other.grammarNumber) && (this->ruleNumber == other.ruleNumber));
     }
-} TableIndex;
+} LLTableIndex;

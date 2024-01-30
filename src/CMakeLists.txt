@@ -8,11 +8,11 @@ target_include_directories(Parser PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/grammars
     ${CMAKE_CURRENT_SOURCE_DIR}/types
     ${CMAKE_CURRENT_SOURCE_DIR}/tables
-    ${CMAKE_CURRENT_SOURCE_DIR}/pushdowns
+    ${CMAKE_CURRENT_SOURCE_DIR}/parsers
 )
 
 add_subdirectory(grammars)
-add_subdirectory(pushdowns)
+add_subdirectory(parsers)
 add_subdirectory(tables)
 add_subdirectory(types)
 

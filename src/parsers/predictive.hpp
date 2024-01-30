@@ -5,7 +5,7 @@
 #include <list>
 #include <stack>
 
-class PushdownAutomaton
+class PredictiveParser
 {
 private:
     std::stack<StackItem> pushdown;

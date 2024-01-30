@@ -1,8 +1,9 @@
-#include "pushdown.hpp"
+#include "predictive.hpp"
 #include "grammar_factory.hpp"
 #include "ll_table.hpp"
+#include "precedence.hpp"
 
-void PushdownAutomaton::Parse(std::list<Token>& inputTape)
+void PredictiveParser::Parse(std::list<Token>& inputTape)
 {
     LLTable llTable;
 
@@ -10,7 +11,7 @@ void PushdownAutomaton::Parse(std::list<Token>& inputTape)
         this->stackTop = this->pushdown.top();
         this->inputToken = inputTape.front();
 
-        switch (this->stackTop.GetType()) {
+        switch (this->stackTop.GetItemType()) {
             case Token_t: {
                 Token& stackToken = dynamic_cast<Token&>(this->stackTop);
 
@@ -26,7 +27,7 @@ void PushdownAutomaton::Parse(std::list<Token>& inputTape)
                     }
                 }
 
-                // Case T
+                // Case T:
                 if (stackToken.GetTokenType() == inputToken.GetTokenType()) {
                     this->pushdown.pop();
                     inputTape.erase(inputTape.begin());
@@ -40,18 +41,25 @@ void PushdownAutomaton::Parse(std::list<Token>& inputTape)
             // Case N:
             case Nonterminal_t: {
                 Nonterminal& stackNT = dynamic_cast<Nonterminal&>(this->stackTop);
-                TableIndex tableItem = llTable[stackNT][this->inputToken];
+                LLTableIndex tableItem = llTable[stackNT][this->inputToken];
 
-                if (tableItem != TableIndex({ 0, 0 })) { // Rule exists
+                if (tableItem != LLTableIndex({ 0, 0 })) { // Rule exists
+                    // Expression => give control to precedence parser and pop expression nonterminal
+                    if (stackNT.GetNonterminalType() == nExpression) {
+                        PrecedenceParser* p = new PrecedenceParser();
+                        p->Parse(inputTape);
+                        this->pushdown.pop();
+                        break;
+                    }
+
                     Grammar* grammar = GrammarFactory::CreateGrammar(tableItem.grammarNumber); // Might return nullptr (shouldnt)
-
-                    // TODO: if its expression, then it has to transfer control to expression parsing
                     this->pushdown.pop();
                     std::list<StackItem> tmp = grammar->Expand(tableItem.ruleNumber); // Might return empty list or epsilon only (shouldnt)
                     for (StackItem& item: tmp) {
                         this->pushdown.push(item);
                     }
                     // print(rule)
+                    delete grammar;
                 }
                 else {
                     this->fail = true;
@@ -61,5 +69,12 @@ void PushdownAutomaton::Parse(std::list<Token>& inputTape)
             default: {
             }
         }
+    }
+
+    if (this->fail) {
+        std::cerr << "parsing failed" << std::endl;
+    }
+    else if (this->success) {
+        std::cout << "parsing success" << std::endl;
     }
 }

@@ -9,12 +9,12 @@ typedef enum
 class StackItem
 {
 private:
-    ItemType type;
+    ItemType itemType;
 
 public:
     virtual ~StackItem()
     {
     }
 
-    ItemType GetType();
+    ItemType GetItemType() const;
 };

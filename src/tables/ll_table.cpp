@@ -2,12 +2,12 @@
 #include "nonterminal.hpp"
 #include "token.hpp"
 
-TableIndex RowAccessor::operator[](const Token& token) const
+LLTableIndex LLRowAccessor::operator[](const Token& t) const
 {
-    return this->row[static_cast<unsigned>(token.GetTokenType())];
+    return this->row[static_cast<unsigned>(t.GetTokenType())];
 }
 
-RowAccessor LLTable::operator[](const Nonterminal& nonTerminal) const
+LLRowAccessor LLTable::operator[](const Nonterminal& nt) const
 {
-    return RowAccessor(this->table[static_cast<unsigned>(nonTerminal.GetType())]);
+    return LLRowAccessor(this->table[static_cast<unsigned>(nt.GetNonterminalType())]);
 }

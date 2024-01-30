@@ -1,6 +1,6 @@
 #include "nonterminal.hpp"
 
-NonterminalType Nonterminal::GetType() const
+NonterminalType Nonterminal::GetNonterminalType() const
 {
-    return this->type;
+    return this->ntType;
 }

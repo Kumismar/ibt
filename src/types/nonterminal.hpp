@@ -1,5 +1,6 @@
 #pragma once
 
+#include "expression.hpp"
 #include "stack_item.hpp"
 
 typedef enum nonterminalType
@@ -21,20 +22,20 @@ typedef enum nonterminalType
     nType,
 } NonterminalType;
 
-class Nonterminal : public StackItem
+class Nonterminal : public StackItem, public Expression
 {
 private:
-    const NonterminalType type;
+    const NonterminalType ntType;
 
 public:
     Nonterminal(NonterminalType t)
-        : type(t)
+        : ntType(t)
     {
     }
 
-    ~Nonterminal()
+    ~Nonterminal() override
     {
     }
 
-    NonterminalType GetType() const;
+    NonterminalType GetNonterminalType() const;
 };
