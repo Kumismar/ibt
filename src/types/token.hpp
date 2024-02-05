@@ -1,5 +1,6 @@
 #pragma once
 
+#include "expression.hpp"
 #include "stack_item.hpp"
 
 typedef enum tokenType

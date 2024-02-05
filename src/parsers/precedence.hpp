@@ -9,13 +9,15 @@ class PrecedenceParser
 {
 private:
     std::stack<Expression> expStack;
-    Expression& top;
-    Expression& second;
-    Expression& third;
+    Expression top;
+    Expression second;
+    Expression third;
     bool success = false;
     bool fail = false;
 
     Expression& getSecondFromStack();
+    Token& findFirstTokenInStack();
+    std::list<Expression>& findFirstRule();
 
 public:
     void Parse(std::list<Token>& inputTape);

@@ -2,9 +2,9 @@
 
 typedef enum
 {
-    ExpNonterminal_t,
-    ExpToken_t,
-    ExpPrecSymbol_t
+    ExpNonterminal,
+    ExpToken,
+    ExpPrecSymbol
 } ExpressionType;
 
 class Expression

@@ -20,7 +20,7 @@ public:
 class PrecedenceTable
 {
 private:
-    const std::vector<std::vector<char>> precTable = {
+    static std::vector<std::vector<char>> precTable = {
         // +    -    *    /    .   &&   ||   ==   !=    >    <   >=   <=    (    )    !  un -   $    i
         { '>', '>', '<', '<', '<', '>', '>', '>', '>', '>', '>', '>', '>', '<', '>', '<', '<', '>', '<' }, // +
         { '>', '>', '<', '<', '<', '>', '>', '>', '>', '>', '>', '>', '>', '<', '>', '<', '<', '>', '<' }, // -
@@ -43,6 +43,8 @@ private:
         { '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', 'x', '>', 'x', 'x', '>', 'x' }, // i
     };
 
+
 public:
-    PrecRowAccessor operator[](const Token& t);
+    PrecRowAccessor operator[](const Token& t) const;
+    static unsigned MapTokenToIndex(const Token& t);
 };

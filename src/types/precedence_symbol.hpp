@@ -23,4 +23,6 @@ public:
     }
 
     PrecedenceType GetPrecedenceType() const;
+
+    bool operator==(const PrecedenceType type) const;
 };

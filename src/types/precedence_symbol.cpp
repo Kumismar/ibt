@@ -26,3 +26,8 @@ PrecedenceType PrecedenceSymbol::GetPrecedenceType() const
 {
     return this->precType;
 }
+
+bool PrecedenceSymbol::operator==(const PrecedenceType type) const
+{
+    return this->precType == type;
+}
