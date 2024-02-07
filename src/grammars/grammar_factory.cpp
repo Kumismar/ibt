@@ -29,7 +29,6 @@ Grammar* GrammarFactory::CreateGrammar(unsigned grammarNumber)
             return new Grammar6();
         }
         default:
-            // throw new InvalidGrammarException();
             return nullptr;
     }
 }

@@ -29,3 +29,29 @@ std::list<StackItem> Grammar4::Expand(unsigned ruleNumber)
 {
     return std::list<StackItem>{};
 }
+
+bool Grammar4::IsRule(std::list<Expression>& stackRule)
+{
+    // TODO: odchyt prediktivni analyzy (functioncall)
+    // check all the possible rules for given sequence of tokens/nonterminals
+    for (const auto& rule: Grammar4::rightSideRules) {
+        if (rule.size() != stackRule.size()) {
+            continue;
+        }
+        bool ruleMatch = true;
+        // compare elements of grammar rule and the given sequence
+        for (auto ruleMember = rule.cbegin(), stackRuleMember = stackRule.cbegin();
+             ruleMember != rule.cend() && stackRuleMember != stackRule.cend();
+             ruleMember++, stackRuleMember++) {
+            // if one pair is not equal, continue with next rule
+            if (*ruleMember != *stackRuleMember) {
+                ruleMatch = false;
+                break;
+            }
+        }
+        if (ruleMatch) {
+            return true;
+        }
+    }
+    return false;
+}
