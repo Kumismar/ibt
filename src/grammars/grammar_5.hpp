@@ -10,15 +10,10 @@
 class Grammar5 : public Grammar
 {
 private:
-    const std::vector<std::list<StackItem>> rightSideRules = {
-        { Token(tLCurl), Nonterminal(nStatements), Token(tRCurl) },
-        { Nonterminal(nStatement) },
-        { Nonterminal(nStatement), Nonterminal(nStatements) },
-        { Token(tEps) },
-    };
+    static const std::vector<std::list<StackItem>> rightSideRules;
 
 public:
-    ~Grammar5()
+    ~Grammar5() override
     {
     }
 

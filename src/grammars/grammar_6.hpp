@@ -10,15 +10,10 @@
 class Grammar6 : public Grammar
 {
 private:
-    const std::vector<std::list<StackItem>> rightSideRules = {
-        { Token(tInt) },
-        { Token(tFloat) },
-        { Token(tString) },
-        { Token(tBool) }
-    };
+    static const std::vector<std::list<StackItem>> rightSideRules;
 
 public:
-    ~Grammar6()
+    ~Grammar6() override
     {
     }
 

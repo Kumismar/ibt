@@ -10,16 +10,10 @@
 class Grammar1 : public Grammar
 {
 private:
-    const std::vector<std::list<StackItem>> rightSideRules = {
-        { Nonterminal(nStatement), Nonterminal(nStatementList) },
-        { Nonterminal(nFunctionDef), Nonterminal(nStatementList) },
-        { Nonterminal(nStatement), Nonterminal(nStatementList) },
-        { Nonterminal(nFunctionDef), Nonterminal(nStatementList) },
-        { Token(tEps) }
-    };
+    static const std::vector<std::list<StackItem>> rightSideRules;
 
 public:
-    ~Grammar1()
+    ~Grammar1() override
     {
     }
 
