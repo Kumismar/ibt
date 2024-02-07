@@ -10,6 +10,7 @@ typedef enum nonterminalType
     nStatement,
     nIf2,
     nReturnExp,
+    nFunctionCall,
     nFunctionDef,
     nParams,
     nParams2,
@@ -19,6 +20,7 @@ typedef enum nonterminalType
     nArgs2,
     nCodeBlock,
     nStatements,
+    nVoluntaryType,
     nType,
 } NonterminalType;
 
@@ -36,6 +38,8 @@ public:
     ~Nonterminal() override
     {
     }
+
+    bool operator==(const Nonterminal& other) const;
 
     NonterminalType GetNonterminalType() const;
 };

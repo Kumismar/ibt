@@ -17,5 +17,8 @@ public:
     {
     }
 
+    bool operator==(const Expression& other) const;
+    bool operator!=(const Expression& other) const;
+
     ExpressionType GetExpressionType() const;
 };

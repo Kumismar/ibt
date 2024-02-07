@@ -20,7 +20,8 @@ typedef enum tokenType
     tFuncName,
     tColon,
     tVariable,
-    tPLus,
+    tAssign,
+    tPlus,
     tMinus,
     tMul,
     tDiv,
@@ -55,14 +56,11 @@ public:
     {
     }
 
-    ~Token()
+    ~Token() override
     {
     }
+
+    bool operator==(const Token& other) const;
 
     TokenType GetTokenType() const;
-
-    bool operator==(Token& t)
-    {
-        return (this->type == t.type);
-    }
 };
