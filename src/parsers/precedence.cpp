@@ -1,4 +1,7 @@
 #include "precedence.hpp"
+#include "empty_stack.hpp"
+#include "grammar_4.hpp"
+#include "invalid_symbol.hpp"
 #include "precedence_symbol.hpp"
 #include "precedence_table.hpp"
 
@@ -27,50 +30,75 @@ void PrecedenceParser::Parse(std::list<Token>& inputTape)
                 break;
             }
             case '>': {
-                std::list<Expression>& tmpRule = this->findFirstRule();
+                try {
+                    std::list<Expression> tmpRule;
+                    this->findFirstRule(tmpRule);
+                    Grammar4 grammar;
+                    if (grammar.IsRule(tmpRule)) {
+                        // TODO: dodelat algoritmus, print(rule)
+                        // stack.pop(<y)
+                        // stack.push(A)
+                    }
+                    else {
+                        // TODO: chyba;
+                    }
+                }
+                // TODO: exception handling
+                catch (InvalidSymbolException const& e) {
+                }
+                catch (EmptyStackException const& e) {
+                }
             }
         }
 
     } while (!this->success && !this->fail);
 }
 
-std::list<Expression>& PrecedenceParser::findFirstRule()
+void PrecedenceParser::findFirstRule(std::list<Expression>& emptyRule)
 {
-    std::list<Expression> toReturn;
-    Expression tmpTop = this->expStack.top();
-    // push to list until stack.top is precedence symbol '<'
+    Expression& tmpTop = this->expStack.top();
+    // push to list until stack.top is precedence symbol '<' or '$'
     while (true) {
+        // if its precendence symbol '<' then just return
         if (tmpTop.GetExpressionType() == ExpPrecSymbol) {
             PrecedenceSymbol& tmpSymbol = dynamic_cast<PrecedenceSymbol&>(tmpTop);
             if (tmpSymbol == Push) {
                 break;
             }
-            // else error
+            else {
+                throw InvalidSymbolException("");
+            }
         }
         else {
-            toReturn.push_front(tmpTop);
+            // if its token '$' then end of stack has been reached and just return
+            if (tmpTop.GetExpressionType() == ExpToken) {
+                Token& tmpToken = dynamic_cast<Token&>(tmpTop);
+                if (tmpToken.GetTokenType() == tEnd) {
+                    break;
+                }
+            }
+            // else its part of rule, push it to the list (will be checked outside of this method)
+            emptyRule.push_front(tmpTop);
             this->expStack.pop();
         }
-    }
-    return toReturn;
-}
 
-Expression& PrecedenceParser::getSecondFromStack()
-{
-    Expression& tmp = expStack.top();
-    expStack.pop();
-    Expression& second = expStack.top();
-    expStack.push(tmp);
-    return second;
+        if (this->expStack.empty()) {
+            throw EmptyStackException("");
+        }
+
+        tmpTop = this->expStack.top();
+    }
 }
 
 Token& PrecedenceParser::findFirstTokenInStack()
 {
+    // TODO: kontrola prazdnyho zasobniku
     std::stack<Expression> tmpStack;
-    Expression tmpExp;
-    while ((tmpExp = this->expStack.top()).GetExpressionType() != ExpToken) {
+    Expression& tmpExp = this->expStack.top();
+    while (tmpExp.GetExpressionType() != ExpToken) {
         tmpStack.push(tmpExp);
         this->expStack.pop();
+        tmpExp = this->expStack.top();
     }
     while (!tmpStack.empty()) {
         Expression tmpExp2 = tmpStack.top();

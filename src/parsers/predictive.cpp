@@ -44,22 +44,21 @@ void PredictiveParser::Parse(std::list<Token>& inputTape)
                 Nonterminal& stackNT = dynamic_cast<Nonterminal&>(this->stackTop);
                 LLTableIndex tableItem = llTable[stackNT][this->inputToken];
 
-                if (tableItem != LLTableIndex({ 0, 0 })) { // Rule exists
-                    // Expression => give control to precedence parser and pop expression nonterminal
-                    if (stackNT.GetNonterminalType() == nExpression) {
-                        PrecedenceParser* p = new PrecedenceParser();
-                        p->Parse(inputTape);
-                        this->pushdown.pop();
-                        break;
-                    }
-
-                    Grammar* grammar = GrammarFactory::CreateGrammar(tableItem.grammarNumber); // Might return nullptr (shouldnt)
+                // Expression => give control to precedence parser and pop expression nonterminal
+                if (stackNT.GetNonterminalType() == nExpression) {
+                    PrecedenceParser p;
+                    p.Parse(inputTape);
                     this->pushdown.pop();
-                    std::list<StackItem> tmp = grammar->Expand(tableItem.ruleNumber); // Might return empty list or epsilon only (shouldnt)
+                    break;
+                }
+                else if (tableItem != LLTableIndex({ 0, 0 })) { // Rule exist
+                    Grammar* grammar = GrammarFactory::CreateGrammar(tableItem.grammarNumber); // TODO: Might return nullptr (shouldnt)
+                    this->pushdown.pop();
+                    std::list<StackItem> tmp = grammar->Expand(tableItem.ruleNumber); // TODO: Might return empty list or epsilon only (shouldnt)
                     for (StackItem& item: tmp) {
                         this->pushdown.push(item);
                     }
-                    // print(rule)
+                    // TODO: print(rule)
                     delete grammar;
                 }
                 else {

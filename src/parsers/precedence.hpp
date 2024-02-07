@@ -15,9 +15,8 @@ private:
     bool success = false;
     bool fail = false;
 
-    Expression& getSecondFromStack();
     Token& findFirstTokenInStack();
-    std::list<Expression>& findFirstRule();
+    void findFirstRule(std::list<Expression>& emptyRule);
 
 public:
     void Parse(std::list<Token>& inputTape);
