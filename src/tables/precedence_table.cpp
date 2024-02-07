@@ -1,7 +1,9 @@
 #include "precedence_table.hpp"
 
-char PrecRowAccessor::operator[](const Token& t){
-    unsigned colIndex =
+char PrecRowAccessor::operator[](const Token& t)
+{
+    unsigned colIndex = PrecedenceTable::MapTokenToIndex(t);
+    return this->precTableRow[colIndex];
 }
 
 PrecRowAccessor PrecedenceTable::operator[](const Token& t) const
@@ -10,7 +12,7 @@ PrecRowAccessor PrecedenceTable::operator[](const Token& t) const
     return PrecRowAccessor(this->precTable[rowIndex]);
 }
 
-static unsigned PrecedenceTable::MapTokenToIndex(const Token& t)
+unsigned PrecedenceTable::MapTokenToIndex(const Token& t)
 {
     switch (t.GetTokenType()) {
         case tPlus:
@@ -45,12 +47,13 @@ static unsigned PrecedenceTable::MapTokenToIndex(const Token& t)
             return 13;
         case tExcl:
             return 14;
-        case tUnMinus:
-            return 15;
+        // TODO: doplnit unarni minus
+        // case tUnMinus:
+        //     return 15;
         case tEnd:
             return 16;
-        case tId:
-            return 17;
+        // case tId:
+        //     return 17;
         default:
             return 100;
     }

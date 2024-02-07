@@ -1,17 +1,20 @@
 #pragma once
 
 #include "token.hpp"
+#include <cstring>
 #include <vector>
+
+#define ROWSIZE 19
 
 class PrecRowAccessor
 {
 private:
-    const std::vector<char>& precTableRow;
+    char precTableRow[ROWSIZE];
 
 public:
-    PrecRowAccessor(const std::vector<char>& r)
-        : precTableRow(r)
+    PrecRowAccessor(const char r[])
     {
+        std::strncpy(this->precTableRow, r, ROWSIZE);
     }
 
     char operator[](const Token& t);
@@ -20,7 +23,7 @@ public:
 class PrecedenceTable
 {
 private:
-    static std::vector<std::vector<char>> precTable = {
+    static constexpr char precTable[ROWSIZE][ROWSIZE] = {
         // +    -    *    /    .   &&   ||   ==   !=    >    <   >=   <=    (    )    !  un -   $    i
         { '>', '>', '<', '<', '<', '>', '>', '>', '>', '>', '>', '>', '>', '<', '>', '<', '<', '>', '<' }, // +
         { '>', '>', '<', '<', '<', '>', '>', '>', '>', '>', '>', '>', '>', '<', '>', '<', '<', '>', '<' }, // -
