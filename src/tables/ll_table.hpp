@@ -22,6 +22,7 @@ public:
 class LLTable
 {
 private:
+    //TODO: dodelat polozky pro expression-FuncName (obecne pro predavani precedencky prediktivce)
     const std::vector<std::vector<LLTableIndex>> table = {
         //                       if       while     for      return      ;       elseif     else       (         )          {        }      function   fName       :      variable     +         -         *         /         .         !         &&        ||        ==        !=         >         <        >=        <=      constant     ,        int      float     string     bool
         /*    program    */ { { 1, 1 }, { 1, 1 }, { 1, 1 }, { 1, 1 }, { 1, 1 }, { 0, 0 }, { 0, 0 }, { 1, 1 }, { 0, 0 }, { 1, 1 }, { 0, 0 }, { 1, 2 }, { 1, 1 }, { 0, 0 }, { 1, 1 }, { 1, 1 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 1, 1 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 1, 1 }, { 0, 0 }, { 1, 1 }, { 1, 1 }, { 1, 1 }, { 1, 1 } },

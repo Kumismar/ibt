@@ -2,10 +2,10 @@
 
 #include "exception_base.hpp"
 
-class EmptyStackException : public ExceptionBase
+class InternalErrorException : ExceptionBase
 {
 public:
-    EmptyStackException(const std::string message)
+    InternalErrorException(const std::string& message)
         : ExceptionBase(message)
     {
     }

@@ -4,6 +4,7 @@
 #include "invalid_symbol.hpp"
 #include "precedence_symbol.hpp"
 #include "precedence_table.hpp"
+#include "predictive.hpp"
 
 void PrecedenceParser::Parse(std::list<Token>& inputTape)
 {
@@ -13,6 +14,11 @@ void PrecedenceParser::Parse(std::list<Token>& inputTape)
         this->top = expStack.top();
         Token& inputToken = inputTape.front();
         inputTape.pop_front();
+        if (inputToken == Token(tFuncName)) {
+            //TODO: mrknout se na chyby a poradne dodelat chybovy stavy + mazani z listu
+            PredictiveParser p;
+            p.Parse(inputTape);
+        }
 
         Token& firstToken = this->findFirstTokenInStack();
         switch (table[firstToken][inputToken]) {
@@ -44,9 +50,7 @@ void PrecedenceParser::Parse(std::list<Token>& inputTape)
                     }
                 }
                 // TODO: exception handling
-                catch (InvalidSymbolException const& e) {
-                }
-                catch (EmptyStackException const& e) {
+                catch (SyntaxErrorException const& e) {
                 }
             }
         }

@@ -10,7 +10,7 @@ class PredictiveParser
 private:
     std::stack<StackItem> pushdown;
     StackItem stackTop;
-    Token inputToken;
+    Token inputToken = Token(tEnd);
     bool success = false;
     bool fail = false;
 

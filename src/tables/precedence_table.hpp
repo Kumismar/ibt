@@ -23,6 +23,7 @@ public:
 class PrecedenceTable
 {
 private:
+    // TODO: udelat const misto constexpr a inicializovat v .cpp
     static constexpr char precTable[ROWSIZE][ROWSIZE] = {
         // +    -    *    /    .   &&   ||   ==   !=    >    <   >=   <=    (    )    !  un -   $    i
         { '>', '>', '<', '<', '<', '>', '>', '>', '>', '>', '>', '>', '>', '<', '>', '<', '<', '>', '<' }, // +

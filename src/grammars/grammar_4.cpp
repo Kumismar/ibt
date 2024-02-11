@@ -32,7 +32,6 @@ std::list<StackItem> Grammar4::Expand(unsigned ruleNumber)
 
 bool Grammar4::IsRule(std::list<Expression>& stackRule)
 {
-    // TODO: odchyt prediktivni analyzy (functioncall)
     // check all the possible rules for given sequence of tokens/nonterminals
     for (const auto& rule: Grammar4::rightSideRules) {
         if (rule.size() != stackRule.size()) {

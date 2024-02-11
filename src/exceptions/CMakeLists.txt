@@ -3,6 +3,6 @@ target_sources(${PROJECT_NAME} PRIVATE
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    PUBLIC_HEADER "invalid_symbol.hpp"
-    PUBLIC_HEADER "empty_stack.hpp"
+    PUBLIC_HEADER "internal_error.hpp"
+    PUBLIC_HEADER "syntax_error.hpp"
 )
