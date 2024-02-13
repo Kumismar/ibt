@@ -30,10 +30,7 @@ private:
     const NonterminalType ntType;
 
 public:
-    Nonterminal(NonterminalType t)
-        : ntType(t)
-    {
-    }
+    Nonterminal(NonterminalType t);
 
     ~Nonterminal() override
     {

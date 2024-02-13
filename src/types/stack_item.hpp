@@ -8,7 +8,7 @@ typedef enum
 
 class StackItem
 {
-private:
+protected:
     ItemType itemType;
 
 public:

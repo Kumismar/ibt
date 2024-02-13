@@ -51,10 +51,7 @@ private:
     TokenType type;
 
 public:
-    Token(TokenType t)
-        : type(t)
-    {
-    }
+    Token(TokenType t);
 
     ~Token() override
     {
