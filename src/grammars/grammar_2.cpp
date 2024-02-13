@@ -1,31 +1,40 @@
 #include "grammar_2.hpp"
+#include "grammar.hpp"
 #include "stack_item.hpp"
 #include <list>
 
-const std::vector<std::list<StackItem>> Grammar2::rightSideRules = {
-    { Token(tIf), Token(tLPar), Nonterminal(nExpression), Token(tRPar), Nonterminal(nCodeBlock), Nonterminal(nIf2) },
-    { Token(tWhile), Token(tLPar), Nonterminal(nExpression), Token(tRPar), Nonterminal(nCodeBlock) },
-    { Token(tFor), Token(tLPar), Nonterminal(nExpression), Token(tSemi), Nonterminal(nExpression), Token(tSemi), Nonterminal(nExpression), Token(tRPar), Nonterminal(nCodeBlock) },
-    { Nonterminal(nVoluntaryType), Nonterminal(nExpression), Token(tAssign), Nonterminal(nExpression) },
-    { Nonterminal(nExpression), Token(tSemi) },
-    { Token(tReturn), Nonterminal(nReturnExp) },
-    { Nonterminal(nCodeBlock) },
-    { Token(tSemi) },
-    { Token(tElseif), Token(tLPar), Nonterminal(nExpression), Token(tRPar), Nonterminal(nCodeBlock), Nonterminal(nIf2) },
-    { Token(tElse), Nonterminal(nCodeBlock) },
-    { Token(tEps) },
-    { Token(tFuncName), Token(tLPar), Nonterminal(nArgs), Token(tRPar) },
-    { Nonterminal(nExpression) },
-    { Token(tEps) },
-    { Nonterminal(nExpression), Nonterminal(nArgs2) },
-    { Token(tEps) },
-    { Token(tComma), Nonterminal(nArgs2), Nonterminal(nArgs) },
-
+const std::vector<std::list<StackItem*>> Grammar2::rightSideRules = {
+    { new Token(tIf), new Token(tLPar), new Nonterminal(nExpression), new Token(tRPar), new Nonterminal(nCodeBlock), new Nonterminal(nIf2) },
+    { new Token(tWhile), new Token(tLPar), new Nonterminal(nExpression), new Token(tRPar), new Nonterminal(nCodeBlock) },
+    { new Token(tFor), new Token(tLPar), new Nonterminal(nExpression), new Token(tSemi), new Nonterminal(nExpression), new Token(tSemi), new Nonterminal(nExpression), new Token(tRPar), new Nonterminal(nCodeBlock) },
+    { new Nonterminal(nVoluntaryType), new Nonterminal(nExpression), new Token(tAssign), new Nonterminal(nExpression) },
+    { new Nonterminal(nExpression), new Token(tSemi) },
+    { new Token(tReturn), new Nonterminal(nReturnExp) },
+    { new Nonterminal(nCodeBlock) },
+    { new Token(tSemi) },
+    { new Token(tElseif), new Token(tLPar), new Nonterminal(nExpression), new Token(tRPar), new Nonterminal(nCodeBlock), new Nonterminal(nIf2) },
+    { new Token(tElse), new Nonterminal(nCodeBlock) },
+    { new Token(tEps) },
+    { new Token(tFuncName), new Token(tLPar), new Nonterminal(nArgs), new Token(tRPar) },
+    { new Nonterminal(nExpression) },
+    { new Token(tEps) },
+    { new Nonterminal(nExpression), new Nonterminal(nArgs2) },
+    { new Token(tEps) },
+    { new Token(tComma), new Nonterminal(nArgs2), new Nonterminal(nArgs) },
 };
 
-std::list<StackItem> Grammar2::Expand(unsigned ruleNumber)
+std::list<StackItem*> Grammar2::Expand(unsigned ruleNumber)
 {
-    std::list<StackItem> toReturn = Grammar2::rightSideRules[ruleNumber];
+    std::list<StackItem*> toReturn = Grammar2::rightSideRules[ruleNumber - 1];
     toReturn.reverse();
     return toReturn;
+}
+
+void Grammar2::Cleanup()
+{
+    for (const std::list<StackItem*>& rule: rightSideRules) {
+        for (StackItem* member: rule) {
+            delete member;
+        }
+    }
 }
