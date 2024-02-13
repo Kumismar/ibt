@@ -1,23 +1,28 @@
 #pragma once
 
 #include "expression.hpp"
+#include "parser.hpp"
 #include "token.hpp"
 #include <list>
 #include <stack>
 
-class PrecedenceParser
+class PrecedenceParser : public Parser
 {
 private:
-    std::stack<Expression> expStack;
-    Expression top;
-    Expression second;
-    Expression third;
-    bool success = false;
-    bool fail = false;
+    std::stack<Expression*>& pushdown;
 
-    Token& findFirstTokenInStack();
-    void findFirstRule(std::list<Expression>& emptyRule);
+    Token* findFirstTokenInStack();
+    void findFirstRule(std::list<Expression*>& emptyRule);
+    bool parseIsSuccessful(Token& inputToken);
 
 public:
-    void Parse(std::list<Token>& inputTape);
+    ~PrecedenceParser() override
+    {
+    }
+
+    PrecedenceParser(std::stack<Expression*>& stack)
+        : pushdown(stack)
+    {
+    }
+    void Parse(std::list<Token>& inputTape) override;
 };

@@ -1,19 +1,33 @@
 #pragma once
 
-#include "nonterminal.hpp"
+#include "ll_table.hpp"
+#include "parser.hpp"
+#include "stack_item.hpp"
 #include "token.hpp"
 #include <list>
 #include <stack>
 
-class PredictiveParser
+class PredictiveParser : public Parser
 {
 private:
-    std::stack<StackItem> pushdown;
-    StackItem stackTop;
+    std::stack<StackItem*>& pushdown;
+    StackItem* stackTop = nullptr;
     Token inputToken = Token(tEnd);
-    bool success = false;
-    bool fail = false;
+
+    LLTable table;
+
+    bool returnedEpsilon(std::list<StackItem*>& expandedRule);
 
 public:
-    void Parse(std::list<Token>& inputTape);
+    ~PredictiveParser() override
+    {
+    }
+
+    PredictiveParser(std::stack<StackItem*>& stack)
+        : pushdown(stack)
+    {
+    }
+
+    void InitSyntaxAnalysis();
+    void Parse(std::list<Token>& inputTape) override;
 };

@@ -1,114 +1,135 @@
 #include "precedence.hpp"
-#include "empty_stack.hpp"
+#include "change_parser.hpp"
+#include "expression.hpp"
 #include "grammar_4.hpp"
-#include "invalid_symbol.hpp"
+#include "internal_error.hpp"
+#include "nonterminal.hpp"
 #include "precedence_symbol.hpp"
 #include "precedence_table.hpp"
-#include "predictive.hpp"
+#include "syntax_error.hpp"
+#include "token.hpp"
 
 void PrecedenceParser::Parse(std::list<Token>& inputTape)
 {
     PrecedenceTable table;
-    this->expStack.push(Token(tEnd));
+    this->pushdown.push(new Token(tEnd));
     do {
-        this->top = expStack.top();
         Token& inputToken = inputTape.front();
+        if (inputToken.GetTokenType() == tFuncName) {
+            throw ChangeParser();
+        }
         inputTape.pop_front();
-        if (inputToken == Token(tFuncName)) {
-            //TODO: mrknout se na chyby a poradne dodelat chybovy stavy + mazani z listu
-            PredictiveParser p;
-            p.Parse(inputTape);
+
+        if (this->parseIsSuccessful(inputToken)) {
+            this->success = true;
         }
 
-        Token& firstToken = this->findFirstTokenInStack();
-        switch (table[firstToken][inputToken]) {
+        Token* firstToken = this->findFirstTokenInStack();
+        switch (table[*firstToken][inputToken]) {
             case '=': {
-                expStack.push(inputToken);
+                pushdown.push(new Token(inputToken.GetTokenType()));
                 inputToken = inputTape.front();
                 inputTape.pop_front();
                 break;
             }
             case '<': {
-                expStack.push(PrecedenceSymbol('<'));
-                expStack.push(inputToken);
+                pushdown.push(new PrecedenceSymbol('<'));
+                pushdown.push(&inputToken);
                 inputToken = inputTape.front();
                 inputTape.pop_front();
                 break;
             }
             case '>': {
-                try {
-                    std::list<Expression> tmpRule;
-                    this->findFirstRule(tmpRule);
-                    Grammar4 grammar;
-                    if (grammar.IsRule(tmpRule)) {
-                        // TODO: dodelat algoritmus, print(rule)
-                        // stack.pop(<y)
-                        // stack.push(A)
+                std::list<Expression*> tmpRule;
+                this->findFirstRule(tmpRule);
+                Grammar4 grammar;
+                if (grammar.IsRule(tmpRule)) {
+                    // TODO: print(rule)
+                    for (unsigned i = 0; i < tmpRule.size() + 1 /* Pop rule and '<'*/; i++) {
+                        this->pushdown.pop();
                     }
-                    else {
-                        // TODO: chyba;
-                    }
+                    this->pushdown.push(new Nonterminal(nExpression));
+                    break;
                 }
-                // TODO: exception handling
-                catch (SyntaxErrorException const& e) {
+                else {
+                    throw SyntaxErrorException("Sequence of tokens is not a rule.\n");
                 }
             }
+            default: {
+                throw InternalErrorException("Something else than '<', '=', '>' in precedence table.\n");
+            }
         }
-
-    } while (!this->success && !this->fail);
+    } while (!this->success);
 }
 
-void PrecedenceParser::findFirstRule(std::list<Expression>& emptyRule)
+void PrecedenceParser::findFirstRule(std::list<Expression*>& emptyRule)
 {
-    Expression& tmpTop = this->expStack.top();
+    Expression* tmpTop = this->pushdown.top();
     // push to list until stack.top is precedence symbol '<' or '$'
     while (true) {
         // if its precendence symbol '<' then just return
-        if (tmpTop.GetExpressionType() == ExpPrecSymbol) {
-            PrecedenceSymbol& tmpSymbol = dynamic_cast<PrecedenceSymbol&>(tmpTop);
-            if (tmpSymbol == Push) {
+        if (tmpTop->GetExpressionType() == ExpPrecSymbol) {
+            PrecedenceSymbol* tmpSymbol = dynamic_cast<PrecedenceSymbol*>(tmpTop);
+            if (*tmpSymbol == Push) {
                 break;
             }
             else {
-                throw InvalidSymbolException("");
+                throw InternalErrorException("Different precedence symbol than '<' on the stack.\n");
             }
         }
         else {
             // if its token '$' then end of stack has been reached and just return
-            if (tmpTop.GetExpressionType() == ExpToken) {
-                Token& tmpToken = dynamic_cast<Token&>(tmpTop);
-                if (tmpToken.GetTokenType() == tEnd) {
+            if (tmpTop->GetExpressionType() == ExpToken) {
+                Token* tmpToken = dynamic_cast<Token*>(tmpTop);
+                if (tmpToken->GetTokenType() == tEnd) {
                     break;
                 }
+                // else its part of rule, push it to the list (will be checked outside of this method)
+                emptyRule.push_front(new Token(tmpToken->GetTokenType()));
             }
-            // else its part of rule, push it to the list (will be checked outside of this method)
-            emptyRule.push_front(tmpTop);
-            this->expStack.pop();
+            else {
+                // implies for nonterminals as well
+                Nonterminal* tmpNT = dynamic_cast<Nonterminal*>(tmpTop);
+                emptyRule.push_front(new Nonterminal(tmpNT->GetNonterminalType()));
+            }
+
+            this->pushdown.pop();
         }
 
-        if (this->expStack.empty()) {
-            throw EmptyStackException("");
+        if (this->pushdown.empty()) {
+            throw InternalErrorException("ExpStack empty when finding first rule");
         }
 
-        tmpTop = this->expStack.top();
+        tmpTop = this->pushdown.top();
     }
 }
 
-Token& PrecedenceParser::findFirstTokenInStack()
+Token* PrecedenceParser::findFirstTokenInStack()
 {
     // TODO: kontrola prazdnyho zasobniku
-    std::stack<Expression> tmpStack;
-    Expression& tmpExp = this->expStack.top();
-    while (tmpExp.GetExpressionType() != ExpToken) {
+    std::stack<Expression*> tmpStack;
+    Expression* tmpExp = this->pushdown.top();
+    while (tmpExp->GetExpressionType() != ExpToken) {
         tmpStack.push(tmpExp);
-        this->expStack.pop();
-        tmpExp = this->expStack.top();
+        this->pushdown.pop();
+        tmpExp = this->pushdown.top();
     }
     while (!tmpStack.empty()) {
-        Expression tmpExp2 = tmpStack.top();
+        Expression* tmpExp2 = tmpStack.top();
         tmpStack.pop();
-        this->expStack.push(tmpExp2);
+        this->pushdown.push(tmpExp2);
     }
 
-    return dynamic_cast<Token&>(tmpExp);
+    return dynamic_cast<Token*>(tmpExp);
+}
+
+
+bool PrecedenceParser::parseIsSuccessful(Token& inputToken)
+{
+    Expression* top = this->pushdown.top();
+    this->pushdown.pop();
+    Expression* second = this->pushdown.top();
+    this->pushdown.push(top);
+
+    return (inputToken == Token(tEnd) && *top == Token(tEnd) && *second == Nonterminal(nExpression));
 }
