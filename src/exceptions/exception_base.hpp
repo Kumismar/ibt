@@ -8,7 +8,7 @@ private:
     std::string message;
 
 public:
-    ExceptionBase(const std::string m)
+    ExceptionBase(const std::string& m)
         : message(m)
     {
     }
