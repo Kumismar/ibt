@@ -5,6 +5,7 @@
 #include "grammar_4.hpp"
 #include "grammar_5.hpp"
 #include "grammar_6.hpp"
+#include "internal_error.hpp"
 
 
 Grammar* GrammarFactory::CreateGrammar(unsigned grammarNumber)
@@ -29,6 +30,6 @@ Grammar* GrammarFactory::CreateGrammar(unsigned grammarNumber)
             return new Grammar6();
         }
         default:
-            return nullptr;
+            throw InternalErrorException("Invalid grammar number: " + std::to_string(grammarNumber) + "\n");
     }
 }
