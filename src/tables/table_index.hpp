@@ -6,6 +6,6 @@ typedef struct llTableIndex {
 
     bool operator!=(const struct llTableIndex& other) const
     {
-        return ((this->grammarNumber == other.grammarNumber) && (this->ruleNumber == other.ruleNumber));
+        return ((this->grammarNumber != other.grammarNumber) || (this->ruleNumber != other.ruleNumber));
     }
 } LLTableIndex;
