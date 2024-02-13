@@ -2,7 +2,7 @@
 
 #include "exception_base.hpp"
 
-class InternalErrorException : ExceptionBase
+class InternalErrorException : public ExceptionBase
 {
 public:
     InternalErrorException(const std::string& message)
