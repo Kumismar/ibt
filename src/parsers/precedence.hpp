@@ -14,6 +14,7 @@ private:
     Token* findFirstTokenInStack();
     void findFirstRule(std::list<Expression*>& emptyRule);
     bool parseIsSuccessful(Token& inputToken);
+    void insertExpressionEnd(std::list<Token>& inputTape) const;
 
 public:
     ~PrecedenceParser() override

@@ -21,10 +21,15 @@ const std::vector<std::list<Expression*>> Grammar4::rightSideRules = {
     { new Nonterminal(nExpression), new Token(tLEq), new Nonterminal(nExpression) },
     { new Token(tExcl), new Nonterminal(nExpression) },
     { new Token(tMinus), new Nonterminal(nExpression) },
+    { new Nonterminal(nVoluntaryType), new Nonterminal(nExpression), new Token(tAssign), new Nonterminal(nExpression) },
     { new Token(tVariable) },
     { new Token(tConst) },
+    { new Token(tFuncName), new Token(tLPar), new Nonterminal(nArgs), new Token(tRPar) },
     { new Token(tLPar), new Nonterminal(nExpression), new Token(tRPar) },
-    { new Nonterminal(nFunctionCall) }
+    { new Nonterminal(nExpression), new Nonterminal(nArgs2) },
+    { new Token(tEps) },
+    { new Token(tComma), new Nonterminal(nArgs2), new Nonterminal(nArgs) },
+    { new Token(tEps) }
 };
 
 std::list<StackItem*> Grammar4::Expand(unsigned ruleNumber)

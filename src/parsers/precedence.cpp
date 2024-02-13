@@ -8,12 +8,15 @@
 #include "precedence_table.hpp"
 #include "syntax_error.hpp"
 #include "token.hpp"
+#include <list>
 
 void PrecedenceParser::Parse(std::list<Token>& inputTape)
 {
     PrecedenceTable table;
     this->pushdown.push(new Token(tEnd));
-    do {
+    this->insertExpressionEnd(inputTape);
+
+    while (!this->success) {
         Token& inputToken = inputTape.front();
         if (inputToken.GetTokenType() == tFuncName) {
             throw ChangeParser();
@@ -59,7 +62,7 @@ void PrecedenceParser::Parse(std::list<Token>& inputTape)
                 throw InternalErrorException("Something else than '<', '=', '>' in precedence table.\n");
             }
         }
-    } while (!this->success);
+    }
 }
 
 void PrecedenceParser::findFirstRule(std::list<Expression*>& emptyRule)
@@ -126,10 +129,18 @@ Token* PrecedenceParser::findFirstTokenInStack()
 
 bool PrecedenceParser::parseIsSuccessful(Token& inputToken)
 {
+    if (this->pushdown.size() != 2) {
+        return false;
+    }
     Expression* top = this->pushdown.top();
     this->pushdown.pop();
     Expression* second = this->pushdown.top();
     this->pushdown.push(top);
 
     return (inputToken == Token(tEnd) && *top == Token(tEnd) && *second == Nonterminal(nExpression));
+}
+
+void PrecedenceParser::insertExpressionEnd(std::list<Token>& inputTape) const
+{
+    inputTape.push_back(Token(tEnd));
 }
