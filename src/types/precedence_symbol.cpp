@@ -1,4 +1,5 @@
 #include "precedence_symbol.hpp"
+#include "internal_error.hpp"
 
 PrecedenceSymbol::PrecedenceSymbol(char prec)
 {
@@ -16,8 +17,7 @@ PrecedenceSymbol::PrecedenceSymbol(char prec)
             break;
         }
         default: {
-            this->precType = Invalid;
-            break;
+            throw InternalErrorException("Invalid precedence symbol\n");
         }
     }
 }
@@ -27,7 +27,11 @@ PrecedenceType PrecedenceSymbol::GetPrecedenceType() const
     return this->precType;
 }
 
-bool PrecedenceSymbol::operator==(const PrecedenceType type) const
+bool PrecedenceSymbol::operator==(const PrecedenceType& type) const
 {
     return this->precType == type;
+}
+bool PrecedenceSymbol::operator==(const PrecedenceSymbol& other) const
+{
+    return this->precType == other.GetPrecedenceType();
 }

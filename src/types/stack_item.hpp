@@ -2,8 +2,9 @@
 
 typedef enum
 {
+    Nonterminal_t,
     Token_t,
-    Nonterminal_t
+    PrecSymbol_t
 } ItemType;
 
 class StackItem
@@ -15,6 +16,9 @@ public:
     virtual ~StackItem()
     {
     }
+
+    bool operator==(const StackItem& other) const;
+    bool operator!=(const StackItem& other) const;
 
     ItemType GetItemType() const;
 };

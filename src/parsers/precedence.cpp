@@ -1,11 +1,11 @@
 #include "precedence.hpp"
 #include "change_parser.hpp"
-#include "expression.hpp"
 #include "grammar_4.hpp"
 #include "internal_error.hpp"
 #include "nonterminal.hpp"
 #include "precedence_symbol.hpp"
 #include "precedence_table.hpp"
+#include "stack_item.hpp"
 #include "syntax_error.hpp"
 #include "token.hpp"
 #include <list>
@@ -43,7 +43,7 @@ void PrecedenceParser::Parse(std::list<Token>& inputTape)
                 break;
             }
             case '>': {
-                std::list<Expression*> tmpRule;
+                std::list<StackItem*> tmpRule;
                 this->findFirstRule(tmpRule);
                 Grammar4 grammar;
                 if (grammar.IsRule(tmpRule)) {
@@ -65,13 +65,13 @@ void PrecedenceParser::Parse(std::list<Token>& inputTape)
     }
 }
 
-void PrecedenceParser::findFirstRule(std::list<Expression*>& emptyRule)
+void PrecedenceParser::findFirstRule(std::list<StackItem*>& emptyRule)
 {
-    Expression* tmpTop = this->pushdown.top();
+    StackItem* tmpTop = this->pushdown.top();
     // push to list until stack.top is precedence symbol '<' or '$'
     while (true) {
         // if its precendence symbol '<' then just return
-        if (tmpTop->GetExpressionType() == ExpPrecSymbol) {
+        if (tmpTop->GetItemType() == PrecSymbol_t) {
             PrecedenceSymbol* tmpSymbol = dynamic_cast<PrecedenceSymbol*>(tmpTop);
             if (*tmpSymbol == Push) {
                 break;
@@ -82,7 +82,7 @@ void PrecedenceParser::findFirstRule(std::list<Expression*>& emptyRule)
         }
         else {
             // if its token '$' then end of stack has been reached and just return
-            if (tmpTop->GetExpressionType() == ExpToken) {
+            if (tmpTop->GetItemType() == Token_t) {
                 Token* tmpToken = dynamic_cast<Token*>(tmpTop);
                 if (tmpToken->GetTokenType() == tEnd) {
                     break;
@@ -110,15 +110,15 @@ void PrecedenceParser::findFirstRule(std::list<Expression*>& emptyRule)
 Token* PrecedenceParser::findFirstTokenInStack()
 {
     // TODO: kontrola prazdnyho zasobniku
-    std::stack<Expression*> tmpStack;
-    Expression* tmpExp = this->pushdown.top();
-    while (tmpExp->GetExpressionType() != ExpToken) {
+    std::stack<StackItem*> tmpStack;
+    StackItem* tmpExp = this->pushdown.top();
+    while (tmpExp->GetItemType() != Token_t) {
         tmpStack.push(tmpExp);
         this->pushdown.pop();
         tmpExp = this->pushdown.top();
     }
     while (!tmpStack.empty()) {
-        Expression* tmpExp2 = tmpStack.top();
+        StackItem* tmpExp2 = tmpStack.top();
         tmpStack.pop();
         this->pushdown.push(tmpExp2);
     }
@@ -133,9 +133,9 @@ bool PrecedenceParser::parseIsSuccessful(Token& inputToken)
     if (this->pushdown.size() != 2) {
         return false;
     }
-    Expression* top = this->pushdown.top();
+    StackItem* top = this->pushdown.top();
     this->pushdown.pop();
-    Expression* second = this->pushdown.top();
+    StackItem* second = this->pushdown.top();
     this->pushdown.push(top);
 
     return (inputToken == Token(tEnd) && *top == Token(tEnd) && *second == Nonterminal(nExpression));

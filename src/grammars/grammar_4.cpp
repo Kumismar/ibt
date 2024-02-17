@@ -1,11 +1,10 @@
 #include "grammar_4.hpp"
-#include "expression.hpp"
 #include "nonterminal.hpp"
 #include "token.hpp"
 #include <list>
 #include <pthread.h>
 
-const std::vector<std::list<Expression*>> Grammar4::rightSideRules = {
+const std::vector<std::list<StackItem*>> Grammar4::rightSideRules = {
     { new Nonterminal(nExpression), new Token(tPlus), new Nonterminal(nExpression) },
     { new Nonterminal(nExpression), new Token(tMinus), new Nonterminal(nExpression) },
     { new Nonterminal(nExpression), new Token(tMul), new Nonterminal(nExpression) },
@@ -34,10 +33,12 @@ const std::vector<std::list<Expression*>> Grammar4::rightSideRules = {
 
 std::list<StackItem*> Grammar4::Expand(unsigned ruleNumber)
 {
-    return std::list<StackItem*>{};
+    std::list<StackItem*> toReturn = Grammar4::rightSideRules[ruleNumber - 1];
+    toReturn.reverse();
+    return toReturn;
 }
 
-bool Grammar4::IsRule(std::list<Expression*>& stackRule)
+bool Grammar4::IsRule(std::list<StackItem*>& stackRule)
 {
     // check all the possible rules for given sequence of tokens/nonterminals
     for (const auto& rule: Grammar4::rightSideRules) {
@@ -47,7 +48,7 @@ bool Grammar4::IsRule(std::list<Expression*>& stackRule)
         bool ruleMatch = true;
         // compare elements of grammar rule and the given sequence
         auto stackRuleMember = stackRule.cbegin();
-        for (const Expression* ruleMember: rule) {
+        for (const StackItem* ruleMember: rule) {
             // if one pair is not equal, continue with next rule
             if (*ruleMember != **stackRuleMember) {
                 ruleMatch = false;
@@ -64,8 +65,8 @@ bool Grammar4::IsRule(std::list<Expression*>& stackRule)
 
 void Grammar4::Cleanup()
 {
-    for (const std::list<Expression*>& rule: rightSideRules) {
-        for (Expression* member: rule) {
+    for (const std::list<StackItem*>& rule: rightSideRules) {
+        for (StackItem* member: rule) {
             delete member;
         }
     }

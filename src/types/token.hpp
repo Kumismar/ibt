@@ -1,6 +1,5 @@
 #pragma once
 
-#include "expression.hpp"
 #include "stack_item.hpp"
 
 typedef enum tokenType
@@ -45,7 +44,7 @@ typedef enum tokenType
     tEnd
 } TokenType;
 
-class Token : public StackItem, public Expression
+class Token : public StackItem
 {
 private:
     TokenType type;

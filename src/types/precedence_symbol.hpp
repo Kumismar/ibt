@@ -1,16 +1,15 @@
 #pragma once
 
-#include "expression.hpp"
+#include "stack_item.hpp"
 
 typedef enum
 {
     Push, // <
     Reduce, // >
     Equal, // =
-    Invalid
 } PrecedenceType;
 
-class PrecedenceSymbol : public Expression
+class PrecedenceSymbol : public StackItem
 {
 private:
     PrecedenceType precType;
@@ -24,5 +23,6 @@ public:
 
     PrecedenceType GetPrecedenceType() const;
 
-    bool operator==(const PrecedenceType type) const;
+    bool operator==(const PrecedenceType& type) const;
+    bool operator==(const PrecedenceSymbol& other) const;
 };

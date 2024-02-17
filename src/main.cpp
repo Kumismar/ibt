@@ -36,7 +36,7 @@ int main(int argc, char** argv)
     processArguments(argc, argv);
 
     std::stack<StackItem*> predictiveStack;
-    std::stack<Expression*> precedenceStack;
+    std::stack<StackItem*> precedenceStack;
     std::list<Token> inputTape = {
         // Token(tIf), Token(tLPar), Token(tVariable), Token(tRPar), Token(tLCurl), Token(tRCurl)
         Token(tVariable)

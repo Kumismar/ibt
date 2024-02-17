@@ -1,9 +1,11 @@
 #include "grammar_3.hpp"
+#include "nonterminal.hpp"
 #include "stack_item.hpp"
+#include "token.hpp"
 #include <list>
 
 const std::vector<std::list<StackItem*>> Grammar3::rightSideRules = {
-    { new Token(tFunction), new Token(tFuncName), new Token(tLPar), new Nonterminal(nParams), new Token(tRPar), new Token(tColon), new Nonterminal(nFuncType), new Nonterminal(nCodeBlock) },
+    { new Token(tFunction), new Token(tFuncName), new Token(tLPar), new Nonterminal(nParams), new Token(tRPar), new Token(tColon), new Nonterminal(nFuncType), new Token(tLCurl), new Nonterminal(nStatements), new Token(tRCurl) },
     { new Nonterminal(nType), new Token(tVariable), new Nonterminal(nParams2) },
     { new Token(tComma), new Nonterminal(nType), new Token(tVariable), new Nonterminal(nParams2) },
     { new Token(tEps) },

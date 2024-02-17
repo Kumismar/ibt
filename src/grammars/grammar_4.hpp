@@ -1,6 +1,5 @@
 #pragma once
 
-#include "expression.hpp"
 #include "grammar.hpp"
 #include "stack_item.hpp"
 #include <list>
@@ -9,7 +8,7 @@
 class Grammar4 : public Grammar
 {
 private:
-    static const std::vector<std::list<Expression*>> rightSideRules;
+    static const std::vector<std::list<StackItem*>> rightSideRules;
 
 public:
     ~Grammar4() override
@@ -17,6 +16,6 @@ public:
     }
 
     std::list<StackItem*> Expand(unsigned ruleNumber) override;
-    bool IsRule(std::list<Expression*>& stack);
+    bool IsRule(std::list<StackItem*>& stack);
     static void Cleanup();
 };
