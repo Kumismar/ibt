@@ -129,6 +129,7 @@ Token* PrecedenceParser::findFirstTokenInStack()
 
 bool PrecedenceParser::parseIsSuccessful(Token& inputToken)
 {
+    // Only $E left on stack
     if (this->pushdown.size() != 2) {
         return false;
     }

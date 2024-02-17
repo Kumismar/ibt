@@ -22,7 +22,6 @@ public:
 class LLTable
 {
 private:
-    //TODO: dodelat polozky pro expression-FuncName (obecne pro predavani precedencky prediktivce)
     static const std::vector<std::vector<LLTableIndex>> table;
 
 public:
