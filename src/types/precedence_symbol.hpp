@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stack_item.hpp"
+#include <string>
 
 typedef enum
 {
@@ -22,6 +23,7 @@ public:
     }
 
     PrecedenceType GetPrecedenceType() const;
+    std::string GetTypeString() const override;
 
     bool operator==(const PrecedenceType& type) const;
     bool operator==(const PrecedenceSymbol& other) const;

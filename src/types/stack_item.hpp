@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 typedef enum
 {
     Nonterminal_t,
@@ -21,4 +22,5 @@ public:
     bool operator!=(const StackItem& other) const;
 
     ItemType GetItemType() const;
+    virtual std::string GetTypeString() const = 0;
 };

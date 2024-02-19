@@ -38,4 +38,5 @@ public:
     bool operator==(const Nonterminal& other) const;
 
     NonterminalType GetNonterminalType() const;
+    std::string GetTypeString() const override;
 };

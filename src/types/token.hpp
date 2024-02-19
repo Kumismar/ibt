@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stack_item.hpp"
+#include <string>
 
 typedef enum tokenType
 {
@@ -61,4 +62,5 @@ public:
     bool operator==(const Token& other) const;
 
     TokenType GetTokenType() const;
+    std::string GetTypeString() const override;
 };
