@@ -3,7 +3,7 @@
 #include "token.hpp"
 
 const std::vector<std::vector<char>> PrecedenceTable::precTable = {
-    // +    -    *    /    .   &&   ||   ==   !=    >    <   >=   <=    (    )    !  un -   $    i
+    // +    -    *    /    .   &&   ||   ==   !=    >    <   >=   <=    (    )    !   $    i
     { '>', '>', '<', '<', '<', '>', '>', '>', '>', '>', '>', '>', '>', '<', '>', '<', '>', '<' }, // +
     { '>', '>', '<', '<', '<', '>', '>', '>', '>', '>', '>', '>', '>', '<', '>', '<', '>', '<' }, // -
     { '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '<', '>', '<', '>', '<' }, // *
@@ -68,15 +68,15 @@ unsigned PrecedenceTable::MapTokenToIndex(const Token& t)
         case tLPar:
             return 13;
         case tRPar:
-            return 13;
-        case tExcl:
             return 14;
-        case tEnd:
+        case tExcl:
             return 15;
+        case tExpEnd:
+            return 16;
         // funcName will be changed for tConst on stack
         case tConst:
         case tVariable:
-            return 16;
+            return 17;
         default:
             throw InternalErrorException("PrecedenceTable::MapTokenToIndex invalid token type");
     }

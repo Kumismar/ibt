@@ -41,7 +41,9 @@ typedef enum tokenType
     tString,
     tBool,
     tEps,
-    tEnd
+    // Two auxiliary tokens used as stop
+    tEnd,
+    tExpEnd
 } TokenType;
 
 class Token : public StackItem
