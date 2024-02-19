@@ -38,8 +38,6 @@ std::string Nonterminal::GetTypeString() const
             return "<params>";
         case nParams2:
             return "<params2>";
-        case nFuncType:
-            return "<funcType>";
         case nExpression:
             return "<expression>";
         case nArgs:

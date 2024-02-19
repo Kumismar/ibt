@@ -1,18 +1,22 @@
 #include "grammar_2.hpp"
+#include "nonterminal.hpp"
 #include "stack_item.hpp"
+#include "token.hpp"
 #include <list>
 
 const std::vector<std::list<StackItem*>> Grammar2::rightSideRules = {
     { new Token(tIf), new Token(tLPar), new Nonterminal(nExpression), new Token(tRPar), new Nonterminal(nCodeBlock), new Nonterminal(nIf2) },
     { new Token(tWhile), new Token(tLPar), new Nonterminal(nExpression), new Token(tRPar), new Nonterminal(nCodeBlock) },
-    { new Token(tFor), new Token(tLPar), new Nonterminal(nExpression), new Token(tSemi), new Nonterminal(nExpression), new Token(tSemi), new Nonterminal(nExpression), new Token(tRPar), new Nonterminal(nCodeBlock) },
-    { new Nonterminal(nExpression), new Token(tSemi) },
-    { new Token(tReturn), new Nonterminal(nReturnExp) },
+    { new Token(tFor), new Token(tLPar), new Nonterminal(nDeclOrExpr), new Token(tSemi), new Nonterminal(nExpression), new Token(tSemi), new Nonterminal(nExpression), new Token(tRPar), new Nonterminal(nCodeBlock) },
+    { new Nonterminal(nDeclOrExpr), new Token(tSemi) },
     { new Nonterminal(nCodeBlock) },
+    { new Token(tReturn), new Nonterminal(nReturnExp), new Token(tSemi) },
     { new Token(tSemi) },
     { new Token(tElseif), new Token(tLPar), new Nonterminal(nExpression), new Token(tRPar), new Nonterminal(nCodeBlock), new Nonterminal(nIf2) },
     { new Token(tElse), new Nonterminal(nCodeBlock) },
     { new Token(tEps) },
+    { new Nonterminal(nType), new Token(tVariable), new Token(tAssign), new Nonterminal(nExpression) },
+    { new Nonterminal(nExpression) },
     { new Nonterminal(nExpression) },
     { new Token(tEps) },
 };

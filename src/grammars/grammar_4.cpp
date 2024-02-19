@@ -18,16 +18,16 @@ const std::vector<std::list<StackItem*>> Grammar4::rightSideRules = {
     { new Nonterminal(nExpression), new Token(tLess), new Nonterminal(nExpression) },
     { new Nonterminal(nExpression), new Token(tGEq), new Nonterminal(nExpression) },
     { new Nonterminal(nExpression), new Token(tLEq), new Nonterminal(nExpression) },
+    { new Nonterminal(nExpression), new Token(tAssign), new Nonterminal(nExpression) },
     { new Token(tExcl), new Nonterminal(nExpression) },
     { new Token(tMinus), new Nonterminal(nExpression) },
-    { new Nonterminal(nVoluntaryType), new Nonterminal(nExpression), new Token(tAssign), new Nonterminal(nExpression) },
     { new Token(tVariable) },
     { new Token(tConst) },
     { new Token(tFuncName), new Token(tLPar), new Nonterminal(nArgs), new Token(tRPar) },
     { new Token(tLPar), new Nonterminal(nExpression), new Token(tRPar) },
     { new Nonterminal(nExpression), new Nonterminal(nArgs2) },
     { new Token(tEps) },
-    { new Token(tComma), new Nonterminal(nArgs2), new Nonterminal(nArgs) },
+    { new Token(tComma), new Nonterminal(nExpression), new Nonterminal(nArgs2) },
     { new Token(tEps) }
 };
 
