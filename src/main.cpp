@@ -6,6 +6,7 @@
 #include "grammar_5.hpp"
 #include "grammar_6.hpp"
 #include "internal_error.hpp"
+#include "logger.hpp"
 #include "parser.hpp"
 #include "precedence.hpp"
 #include "predictive.hpp"
@@ -13,7 +14,6 @@
 #include "token.hpp"
 #include <iostream>
 #include <list>
-#include <pthread.h>
 #include <stack>
 
 void Cleanup()
@@ -24,6 +24,7 @@ void Cleanup()
     Grammar4::Cleanup();
     Grammar5::Cleanup();
     Grammar6::Cleanup();
+    Logger::Cleanup();
 }
 
 void processArguments(int argc, char** argv)
@@ -37,7 +38,7 @@ int main(int argc, char** argv)
     std::stack<StackItem*> stackos;
     std::list<Token> inputTape = {
         // Token(tIf), Token(tLPar), Token(tVariable), Token(tRPar), Token(tLCurl), Token(tRCurl)
-        Token(tVariable), Token(tAssign), Token(tVariable), Token(tSemi)
+        Token(tVariable), Token(tPlus), Token(tVariable), Token(tSemi)
     };
 
     PrecedenceParser exprParser(stackos);
