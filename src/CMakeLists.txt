@@ -10,6 +10,8 @@ target_include_directories(Parser PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/tables
     ${CMAKE_CURRENT_SOURCE_DIR}/parsers
     ${CMAKE_CURRENT_SOURCE_DIR}/exceptions
+    ${CMAKE_CURRENT_SOURCE_DIR}/exceptions
+    ${CMAKE_CURRENT_SOURCE_DIR}/logger
 )
 
 add_subdirectory(grammars)
@@ -17,6 +19,7 @@ add_subdirectory(parsers)
 add_subdirectory(tables)
 add_subdirectory(types)
 add_subdirectory(exceptions)
+add_subdirectory(logger)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${project_dir}/build)
 
