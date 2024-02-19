@@ -10,7 +10,12 @@ Logger::Logger()
 {
     namespace fs = std::filesystem;
     fs::path filePath = "../../output.log";
-    this->file.open(filePath, std::ios::app | std::ios::out);
+
+    // Clear current file contents
+    this->file.open(filePath, std::ios::trunc);
+    this->file.close();
+
+    this->file.open(filePath, std::ios::app);
     if (!this->file.is_open()) {
         throw InternalErrorException("Couldn't open file for logging\n");
     }
@@ -31,7 +36,7 @@ void Logger::Cleanup()
 Logger* Logger::GetInstance()
 {
     if (Logger::instance == nullptr) {
-        return new Logger();
+        Logger::instance = new Logger();
     }
     return Logger::instance;
 }
@@ -52,8 +57,8 @@ void Logger::AddRightSide(std::list<StackItem*>& rightSide)
 void Logger::PrintRule()
 {
     this->file << this->leftSideRule->GetTypeString() << " -> ";
-    for (StackItem* item: this->rightSideRule) {
-        this->file << item->GetTypeString() << " ";
+    for (auto it = this->rightSideRule.crbegin(); it != this->rightSideRule.crend(); it++) {
+        this->file << (*it)->GetTypeString() << " ";
     }
     this->file << std::endl;
     this->leftSideRule = nullptr;
