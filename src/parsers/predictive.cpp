@@ -33,6 +33,9 @@ void PredictiveParser::Parse(std::list<Token>& inputTape)
         switch (this->stackTop->GetItemType()) {
             case Token_t: {
                 Token* stackToken = dynamic_cast<Token*>(this->stackTop);
+                if (stackToken == nullptr) {
+                    throw InternalErrorException("Dynamic cast to Token* failed\n");
+                }
 
                 // Case $:
                 if (stackToken->GetTokenType() == tEnd) {
@@ -41,7 +44,7 @@ void PredictiveParser::Parse(std::list<Token>& inputTape)
                         break;
                     }
                     else {
-                        throw SyntaxErrorException("");
+                        throw SyntaxErrorException("Unexpected token (expected End)\n");
                     }
                 }
 
@@ -60,7 +63,7 @@ void PredictiveParser::Parse(std::list<Token>& inputTape)
             case Nonterminal_t: {
                 Nonterminal* stackNT = dynamic_cast<Nonterminal*>(this->stackTop);
                 if (stackNT == nullptr) {
-                    throw InternalErrorException("Dynamic cast to nonterminal failed\n");
+                    throw InternalErrorException("Dynamic cast to Nonterminal* failed\n");
                 }
 
                 // Expression => give control to precedence parser
@@ -73,7 +76,6 @@ void PredictiveParser::Parse(std::list<Token>& inputTape)
                 if (tableItem != LLTableIndex({ 0, 0 })) {
                     Grammar* grammar = GrammarFactory::CreateGrammar(tableItem.grammarNumber);
                     this->pushdown.pop();
-                    delete this->stackTop;
                     std::list<StackItem*> expandedRule = grammar->Expand(tableItem.ruleNumber);
 
                     if (this->returnedEpsilon(expandedRule)) {
