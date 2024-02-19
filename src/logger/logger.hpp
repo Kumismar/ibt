@@ -13,11 +13,12 @@ private:
     Nonterminal* leftSideRule;
     std::list<StackItem*> rightSideRule;
     Logger();
+    ~Logger();
 
 public:
     static Logger* GetInstance();
     void AddLeftSide(StackItem* leftSide);
     void AddRightSide(std::list<StackItem*>& rightSide);
     void PrintRule();
-    void Cleanup();
+    static void Cleanup();
 };

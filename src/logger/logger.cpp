@@ -16,9 +16,13 @@ Logger::Logger()
     }
 }
 
-void Logger::Cleanup()
+Logger::~Logger()
 {
     this->file.close();
+}
+
+void Logger::Cleanup()
+{
     if (Logger::instance != nullptr) {
         delete Logger::instance;
     }
