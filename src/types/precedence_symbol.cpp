@@ -1,5 +1,6 @@
 #include "precedence_symbol.hpp"
 #include "internal_error.hpp"
+#include "stack_item.hpp"
 
 PrecedenceSymbol::PrecedenceSymbol(char prec)
 {
@@ -20,6 +21,7 @@ PrecedenceSymbol::PrecedenceSymbol(char prec)
             throw InternalErrorException("Invalid precedence symbol\n");
         }
     }
+    this->itemType = PrecSymbol_t;
 }
 
 PrecedenceType PrecedenceSymbol::GetPrecedenceType() const
