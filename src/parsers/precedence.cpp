@@ -9,6 +9,7 @@
 #include "syntax_error.hpp"
 #include "token.hpp"
 #include <list>
+#include <typeinfo>
 
 void PrecedenceParser::Parse(std::list<Token>& inputTape)
 {
@@ -102,6 +103,9 @@ void PrecedenceParser::findFirstRule(std::list<StackItem*>& emptyRule)
             else {
                 // implies for nonterminals as well
                 Nonterminal* tmpNT = dynamic_cast<Nonterminal*>(tmpTop);
+                if (tmpNT == nullptr) {
+                    throw InternalErrorException(typeid(*tmpTop).name());
+                }
                 emptyRule.push_front(new Nonterminal(tmpNT->GetNonterminalType()));
             }
 
