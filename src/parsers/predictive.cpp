@@ -2,6 +2,7 @@
 #include "change_parser.hpp"
 #include "grammar_factory.hpp"
 #include "internal_error.hpp"
+#include "logger.hpp"
 #include "stack_item.hpp"
 #include "syntax_error.hpp"
 #include "token.hpp"
@@ -23,6 +24,7 @@ void PredictiveParser::InitSyntaxAnalysis()
 
 void PredictiveParser::Parse(std::list<Token>& inputTape)
 {
+    Logger* logger;
     while (!this->success) {
         this->stackTop = this->pushdown.top();
         if (inputTape.empty()) {
@@ -74,19 +76,21 @@ void PredictiveParser::Parse(std::list<Token>& inputTape)
                 LLTableIndex tableItem = this->table[*stackNT][this->inputToken];
                 // Rule exists -> pop old nonterminal, expand it and push new string to the stack
                 if (tableItem != LLTableIndex({ 0, 0 })) {
+                    logger = Logger::GetInstance();
+                    logger->AddLeftSide(this->stackTop);
                     Grammar* grammar = GrammarFactory::CreateGrammar(tableItem.grammarNumber);
+
                     this->pushdown.pop();
                     std::list<StackItem*> expandedRule = grammar->Expand(tableItem.ruleNumber);
-
                     if (this->returnedEpsilon(expandedRule)) {
                         throw InternalErrorException("Rule expansion returned epsilon\n");
                     }
-
                     for (StackItem* item: expandedRule) {
                         this->pushdown.push(item);
                     }
 
-                    // TODO: print(rule)
+                    logger->AddRightSide(expandedRule);
+                    logger->PrintRule();
                     delete grammar;
                 }
                 else {

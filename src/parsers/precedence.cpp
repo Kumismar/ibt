@@ -2,6 +2,7 @@
 #include "change_parser.hpp"
 #include "grammar_4.hpp"
 #include "internal_error.hpp"
+#include "logger.hpp"
 #include "nonterminal.hpp"
 #include "precedence_symbol.hpp"
 #include "precedence_table.hpp"
@@ -14,6 +15,7 @@
 void PrecedenceParser::Parse(std::list<Token>& inputTape)
 {
     PrecedenceTable table;
+    Logger* logger;
     this->insertExpressionEnd(inputTape);
     this->analysisPushdown.push(new Token(tExpEnd));
 
@@ -48,12 +50,18 @@ void PrecedenceParser::Parse(std::list<Token>& inputTape)
                 this->findFirstRule(tmpRule);
                 Grammar4 grammar;
                 if (grammar.IsRule(tmpRule)) {
-                    // TODO: print(rule)
+                    logger = Logger::GetInstance();
+                    logger->AddRightSide(tmpRule);
+
                     for (unsigned i = 0; i < tmpRule.size() + 1 /* Pop rule and '<' */; i++) {
                         delete this->analysisPushdown.top();
                         this->analysisPushdown.pop();
                     }
-                    this->analysisPushdown.push(new Nonterminal(nExpression));
+                    Nonterminal* toPush = new Nonterminal(nExpression);
+                    this->analysisPushdown.push(toPush);
+
+                    logger->AddLeftSide(toPush);
+                    logger->PrintRule();
                     break; // switch
                 }
                 else {
