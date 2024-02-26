@@ -15,6 +15,7 @@ private:
     void findFirstRule(std::list<StackItem*>& emptyRule);
     bool parseIsSuccessful(Token& inputToken);
     void insertExpressionEnd(std::list<Token>& inputTape) const;
+    void pushPrecedence();
     void clearStack();
 
 public:

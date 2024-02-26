@@ -25,10 +25,8 @@ void PrecedenceParser::Parse(std::list<Token>& inputTape)
             this->clearStack();
             throw ChangeParser();
         }
-        inputTape.pop_front();
 
         if (this->parseIsSuccessful(inputToken)) {
-            // TODO: pop ExpEnd token a nechat tam jen neterminal E
             break; // while
         }
 
@@ -40,9 +38,10 @@ void PrecedenceParser::Parse(std::list<Token>& inputTape)
                 break; // switch
             }
             case '<': {
-                analysisPushdown.push(new PrecedenceSymbol('<'));
+                this->pushPrecedence();
                 analysisPushdown.push(new Token(inputToken.GetTokenType()));
                 inputToken = inputTape.front();
+                inputTape.pop_front();
                 break; // switch
             }
             case '>': {
@@ -71,7 +70,7 @@ void PrecedenceParser::Parse(std::list<Token>& inputTape)
             }
             case 'x': {
                 this->clearStack();
-                throw SyntaxErrorException("Invalid \n");
+                throw SyntaxErrorException("Invalid token.\n");
             }
             default: {
                 this->clearStack();
@@ -79,12 +78,14 @@ void PrecedenceParser::Parse(std::list<Token>& inputTape)
             }
         }
     }
+    inputTape.pop_front();
     this->clearStack();
     this->pushdown.pop();
 }
 
 void PrecedenceParser::findFirstRule(std::list<StackItem*>& emptyRule)
 {
+    std::stack<StackItem*> tmpStack;
     StackItem* tmpTop = this->analysisPushdown.top();
     // push to list until stack.top is precedence symbol '<' or '$'
     while (true) {
@@ -102,7 +103,7 @@ void PrecedenceParser::findFirstRule(std::list<StackItem*>& emptyRule)
             // if its token '$' then end of stack has been reached and just return
             if (tmpTop->GetItemType() == Token_t) {
                 Token* tmpToken = dynamic_cast<Token*>(tmpTop);
-                if (tmpToken->GetTokenType() == tExpEnd) {
+                if (*tmpToken == Token(tExpEnd)) {
                     break;
                 }
                 // else its part of rule, push it to the list (will be checked outside of this method)
@@ -117,6 +118,7 @@ void PrecedenceParser::findFirstRule(std::list<StackItem*>& emptyRule)
                 emptyRule.push_front(new Nonterminal(tmpNT->GetNonterminalType()));
             }
 
+            tmpStack.push(this->analysisPushdown.top());
             this->analysisPushdown.pop();
         }
 
@@ -125,6 +127,11 @@ void PrecedenceParser::findFirstRule(std::list<StackItem*>& emptyRule)
         }
 
         tmpTop = this->analysisPushdown.top();
+    }
+
+    while (!tmpStack.empty()) {
+        this->analysisPushdown.push(tmpStack.top());
+        tmpStack.pop();
     }
 }
 
@@ -158,12 +165,34 @@ bool PrecedenceParser::parseIsSuccessful(Token& inputToken)
     StackItem* second = this->analysisPushdown.top();
     this->analysisPushdown.push(top);
 
-    return (inputToken == Token(tExpEnd) && *top == Token(tExpEnd) && *second == Nonterminal(nExpression));
+    return (inputToken == Token(tExpEnd) && *second == Token(tExpEnd) && *top == Nonterminal(nExpression));
 }
 
 void PrecedenceParser::insertExpressionEnd(std::list<Token>& inputTape) const
 {
-    inputTape.push_back(Token(tExpEnd));
+    int counter = 0;
+    // find first non-expression token occurence and insert tExpEnd before it
+    for (auto it = inputTape.begin(); it != inputTape.end(); it++) {
+        // if token is comma or semicolon, insert tExpEnd before it
+
+        if (*it == Token(tSemi) || *it == Token(tComma)) {
+            inputTape.insert(it, Token(tExpEnd));
+            return;
+        }
+
+        // insert tExpEnd before the first right parenthesis that is not matched with left parenthesis
+        if (*it == Token(tLPar)) {
+            counter++;
+        }
+        else if (*it == Token(tRPar)) {
+            counter--;
+        }
+
+        if (counter < 0) {
+            inputTape.insert(it, Token(tExpEnd));
+            return;
+        }
+    }
 }
 
 void PrecedenceParser::clearStack()
@@ -172,4 +201,18 @@ void PrecedenceParser::clearStack()
         delete this->analysisPushdown.top();
         this->analysisPushdown.pop();
     }
+}
+
+
+void PrecedenceParser::pushPrecedence()
+{
+    // Check if there is nonterminal on top of the stack, push to first or second position
+    if (this->analysisPushdown.top()->GetItemType() != Nonterminal_t) {
+        this->analysisPushdown.push(new PrecedenceSymbol(Push));
+        return;
+    }
+    StackItem* tmp = this->analysisPushdown.top();
+    this->analysisPushdown.pop();
+    this->analysisPushdown.push(new PrecedenceSymbol(Push));
+    this->analysisPushdown.push(tmp);
 }
