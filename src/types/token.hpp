@@ -41,10 +41,10 @@ typedef enum tokenType
     tBool,
     tLCurl,
     tRCurl,
-    tEps,
     // Two auxiliary tokens used as stop
     tEnd,
-    tExpEnd
+    tExpEnd,
+    tEps
 } TokenType;
 
 class Token : public StackItem

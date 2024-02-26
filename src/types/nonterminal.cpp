@@ -27,11 +27,9 @@ std::string Nonterminal::GetTypeString() const
         case nStatement:
             return "<statement>";
         case nIf2:
-            return "<if>";
+            return "<if2>";
         case nReturnExp:
             return "<returnExp>";
-        case nFunctionCall:
-            return "<functionCall>";
         case nFunctionDef:
             return "<functionDef>";
         case nParams:

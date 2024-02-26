@@ -2,25 +2,9 @@
 #include "internal_error.hpp"
 #include "stack_item.hpp"
 
-PrecedenceSymbol::PrecedenceSymbol(char prec)
+PrecedenceSymbol::PrecedenceSymbol(PrecedenceType type)
 {
-    switch (prec) {
-        case '<': {
-            this->precType = Push;
-            break;
-        }
-        case '>': {
-            this->precType = Reduce;
-            break;
-        }
-        case '=': {
-            this->precType = Equal;
-            break;
-        }
-        default: {
-            throw InternalErrorException("Invalid precedence symbol\n");
-        }
-    }
+    this->precType = type;
     this->itemType = PrecSymbol_t;
 }
 

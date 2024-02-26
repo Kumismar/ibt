@@ -10,7 +10,6 @@ typedef enum nonterminalType
     nIf2,
     nDeclOrExpr,
     nReturnExp,
-    nFunctionCall,
     nFunctionDef,
     nParams,
     nParams2,

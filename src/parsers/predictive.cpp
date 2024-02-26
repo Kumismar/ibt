@@ -1,4 +1,5 @@
 #include "predictive.hpp"
+#include "analysis_success.hpp"
 #include "change_parser.hpp"
 #include "grammar_factory.hpp"
 #include "internal_error.hpp"
@@ -25,10 +26,10 @@ void PredictiveParser::InitSyntaxAnalysis()
 void PredictiveParser::Parse(std::list<Token>& inputTape)
 {
     Logger* logger;
-    while (!this->success) {
+    while (true) {
         this->stackTop = this->pushdown.top();
         if (inputTape.empty()) {
-            throw SyntaxErrorException("Missing token.\n");
+            throw SyntaxErrorException("Missing token(s).\n");
         }
         this->inputToken = inputTape.front();
 
@@ -42,8 +43,13 @@ void PredictiveParser::Parse(std::list<Token>& inputTape)
                 // Case $:
                 if (stackToken->GetTokenType() == tEnd) {
                     if (this->inputToken.GetTokenType() == tEnd) {
-                        this->success = true;
-                        break;
+                        inputTape.pop_front();
+                        if (inputTape.empty()) {
+                            throw SyntaxAnalysisSuccess();
+                        }
+                        else {
+                            throw InternalErrorException("Popped tEnd from input tape but there is still something left\n");
+                        }
                     }
                     else {
                         throw SyntaxErrorException("Unexpected token (expected End)\n");
@@ -51,15 +57,14 @@ void PredictiveParser::Parse(std::list<Token>& inputTape)
                 }
 
                 // Case T:
-                if (stackToken->GetTokenType() == inputToken.GetTokenType()) {
+                if (*stackToken == inputToken) {
                     this->pushdown.pop();
-                    delete this->stackTop;
                     inputTape.pop_front();
+                    break;
                 }
                 else {
                     throw SyntaxErrorException("Unexpected token.\n");
                 }
-                break;
             }
             // Case N:
             case Nonterminal_t: {
@@ -82,11 +87,12 @@ void PredictiveParser::Parse(std::list<Token>& inputTape)
 
                     this->pushdown.pop();
                     std::list<StackItem*> expandedRule = grammar->Expand(tableItem.ruleNumber);
-                    if (this->returnedEpsilon(expandedRule)) {
-                        throw InternalErrorException("Rule expansion returned epsilon\n");
-                    }
-                    for (StackItem* item: expandedRule) {
-                        this->pushdown.push(item);
+
+                    // if right side is not epsilon, it will be pushed
+                    if (!this->returnedEpsilon(expandedRule)) {
+                        for (StackItem* item: expandedRule) {
+                            this->pushdown.push(item);
+                        }
                     }
 
                     logger->AddRightSide(expandedRule);

@@ -8,6 +8,7 @@ typedef enum
     Push, // <
     Reduce, // >
     Equal, // =
+    Invalid // x
 } PrecedenceType;
 
 class PrecedenceSymbol : public StackItem
@@ -16,7 +17,7 @@ private:
     PrecedenceType precType;
 
 public:
-    PrecedenceSymbol(char prec);
+    PrecedenceSymbol(PrecedenceType type);
 
     ~PrecedenceSymbol() override
     {
