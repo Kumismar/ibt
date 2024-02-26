@@ -6,4 +6,5 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     PUBLIC_HEADER "internal_error.hpp"
     PUBLIC_HEADER "syntax_error.hpp"
     PUBLIC_HEADER "change_parser.hpp"
+    PUBLIC_HEADER "analysis_success.hpp"
 )
