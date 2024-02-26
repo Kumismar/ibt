@@ -1,3 +1,4 @@
+#include "analysis_success.hpp"
 #include "change_parser.hpp"
 #include "grammar_1.hpp"
 #include "grammar_2.hpp"
@@ -37,8 +38,8 @@ int main(int argc, char** argv)
 
     std::stack<StackItem*> stackos;
     std::list<Token> inputTape = {
-        // Token(tIf), Token(tLPar), Token(tVariable), Token(tRPar), Token(tLCurl), Token(tRCurl)
-        Token(tVariable), Token(tPlus), Token(tVariable), Token(tSemi)
+        // Token(tIf), Token(tLPar), Token(tVariable), Token(tPlus), Token(tVariable), Token(tRPar), Token(tLCurl), Token(tRCurl), Token(tEnd)
+        Token(tVariable), Token(tAssign), Token(tVariable), Token(tMinus), Token(tVariable), Token(tSemi), Token(tEnd)
     };
 
     PrecedenceParser exprParser(stackos);
@@ -51,14 +52,15 @@ int main(int argc, char** argv)
 
     while (true) {
         try {
-            //TODO: Kdyz precedencka skonci, tak se to dostane k vyhozeni vyjimky
             currentParser->Parse(inputTape);
-            if (inputTape.empty()) {
-                std::cout << "Parsing successful" << std::endl;
-                break;
+
+            // Switch back to predictive after successful precedence parsing
+            if (currentParser->GetParserType() == Precedence) {
+                currentParser = static_cast<Parser*>(&predParser);
+                currentParser->SetParserType(Predictive);
+                continue;
             }
             else {
-                throw SyntaxErrorException("Tokens left in input tape");
             }
         }
         catch (ChangeParser const& e) {
@@ -71,6 +73,11 @@ int main(int argc, char** argv)
                 currentParser->SetParserType(Predictive);
             }
             continue;
+        }
+        catch (SyntaxAnalysisSuccess const& e) {
+            std::cout << "Parsing successful." << std::endl;
+            retCode = 0;
+            break;
         }
         catch (SyntaxErrorException const& e) {
             std::cerr << "Syntax error: " << e.what() << std::endl;
