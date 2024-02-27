@@ -35,6 +35,7 @@ void PrecedenceParser::Parse(std::list<Token>& inputTape)
             case '=': {
                 analysisPushdown.push(new Token(inputToken.GetTokenType()));
                 inputToken = inputTape.front();
+                inputTape.pop_front();
                 break; // switch
             }
             case '<': {
@@ -175,7 +176,7 @@ void PrecedenceParser::insertExpressionEnd(std::list<Token>& inputTape) const
     for (auto it = inputTape.begin(); it != inputTape.end(); it++) {
         // if token is comma or semicolon, insert tExpEnd before it
 
-        if (*it == Token(tSemi) || *it == Token(tComma)) {
+        if (*it == Token(tSemi) || *it == Token(tComma) || *it == Token(tEnd)) {
             inputTape.insert(it, Token(tExpEnd));
             return;
         }

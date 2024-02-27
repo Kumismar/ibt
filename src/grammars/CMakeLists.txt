@@ -1,4 +1,4 @@
-target_sources(${PROJECT_NAME} PRIVATE
+target_sources(ParserLibrary PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/grammar_1.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/grammar_2.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/grammar_3.cpp"
@@ -8,7 +8,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/grammar_factory.cpp"
 )
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
+set_target_properties(ParserLibrary PROPERTIES
     PUBLIC_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/grammar.hpp"
     PUBLIC_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/grammar_1.hpp"
     PUBLIC_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/grammar_2.hpp"

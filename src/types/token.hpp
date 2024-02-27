@@ -20,6 +20,7 @@ typedef enum tokenType
     tComma,
     tColon,
     tPlus,
+    tUnMinus,
     tMinus,
     tMul,
     tDiv,

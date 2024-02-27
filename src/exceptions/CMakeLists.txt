@@ -1,8 +1,8 @@
-target_sources(${PROJECT_NAME} PRIVATE
+target_sources(ParserLibrary PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/exception_base.cpp"
 )
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
+set_target_properties(ParserLibrary PROPERTIES
     PUBLIC_HEADER "internal_error.hpp"
     PUBLIC_HEADER "syntax_error.hpp"
     PUBLIC_HEADER "change_parser.hpp"
