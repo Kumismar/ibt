@@ -56,7 +56,7 @@ TEST_F(PrecedenceParserTest, SimpleUnaryOperators)
     this->inputTape = { Token(tExcl), Token(tVariable), Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser.Parse(this->inputTape));
 
-    this->inputTape = { Token(tMinus), Token(tVariable), Token(tExpEnd) };
+    this->inputTape = { Token(tUnMinus), Token(tVariable), Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser.Parse(this->inputTape));
 }
 
@@ -151,14 +151,14 @@ TEST_F(PrecedenceParserTest, ParenthesesAndUnary)
     // (a + (-b))
     this->inputTape = {
         Token(tLPar), Token(tVariable),
-        Token(tPlus), Token(tMinus), Token(tVariable),
+        Token(tPlus), Token(tUnMinus), Token(tVariable),
         Token(tRPar), Token(tExpEnd)
     };
     EXPECT_NO_THROW(this->parser.Parse(this->inputTape));
 
     // (-(-a))
     this->inputTape = {
-        Token(tMinus), Token(tMinus), Token(tVariable),
+        Token(tUnMinus), Token(tUnMinus), Token(tVariable),
         Token(tExpEnd)
     };
     EXPECT_NO_THROW(this->parser.Parse(this->inputTape));

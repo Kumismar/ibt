@@ -81,6 +81,8 @@ unsigned PrecedenceTable::MapTokenToIndex(const Token& t)
         case tConst:
         case tVariable:
             return 18;
+        case tUnMinus:
+            return 19;
         default:
             throw InternalErrorException("PrecedenceTable::MapTokenToIndex invalid token type");
     }

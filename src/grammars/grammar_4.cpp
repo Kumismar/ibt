@@ -20,7 +20,7 @@ const std::vector<std::list<StackItem*>> Grammar4::rightSideRules = {
     { new Nonterminal(nExpression), new Token(tLEq), new Nonterminal(nExpression) },
     { new Nonterminal(nExpression), new Token(tAssign), new Nonterminal(nExpression) },
     { new Token(tExcl), new Nonterminal(nExpression) },
-    { new Token(tMinus), new Nonterminal(nExpression) },
+    { new Token(tUnMinus), new Nonterminal(nExpression) },
     { new Token(tVariable) },
     { new Token(tConst) },
     { new Token(tFuncName), new Token(tLPar), new Nonterminal(nArgs), new Token(tRPar) },

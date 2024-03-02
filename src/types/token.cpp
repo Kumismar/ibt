@@ -51,6 +51,8 @@ std::string Token::GetTypeString() const
             return ":";
         case tPlus:
             return "+";
+        case tUnMinus:
+            return "un-";
         case tMinus:
             return "-";
         case tMul:
