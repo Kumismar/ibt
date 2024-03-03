@@ -34,6 +34,7 @@ public:
     {
     }
 
+    bool operator==(const NonterminalType& other) const;
     bool operator==(const Nonterminal& other) const;
 
     NonterminalType GetNonterminalType() const;

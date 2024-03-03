@@ -104,7 +104,7 @@ void PrecedenceParser::findFirstRule(std::list<StackItem*>& emptyRule)
             // if its token '$' then end of stack has been reached and just return
             if (tmpTop->GetItemType() == Token_t) {
                 Token* tmpToken = dynamic_cast<Token*>(tmpTop);
-                if (*tmpToken == Token(tExpEnd)) {
+                if (*tmpToken == tExpEnd) {
                     break;
                 }
                 // else its part of rule, push it to the list (will be checked outside of this method)
@@ -166,7 +166,7 @@ bool PrecedenceParser::parseIsSuccessful(Token& inputToken)
     StackItem* second = this->analysisPushdown.top();
     this->analysisPushdown.push(top);
 
-    return (inputToken == Token(tExpEnd) && *second == Token(tExpEnd) && *top == Nonterminal(nExpression));
+    return (inputToken == tExpEnd && *second == Token(tExpEnd) && *top == Nonterminal(nExpression));
 }
 
 void PrecedenceParser::insertExpressionEnd(std::list<Token>& inputTape) const
@@ -176,16 +176,16 @@ void PrecedenceParser::insertExpressionEnd(std::list<Token>& inputTape) const
     for (auto it = inputTape.begin(); it != inputTape.end(); it++) {
         // if token is comma or semicolon, insert tExpEnd before it
 
-        if (*it == Token(tSemi) || *it == Token(tComma) || *it == Token(tEnd)) {
+        if (*it == tSemi || *it == tComma || *it == tEnd) {
             inputTape.insert(it, Token(tExpEnd));
             return;
         }
 
         // insert tExpEnd before the first right parenthesis that is not matched with left parenthesis
-        if (*it == Token(tLPar)) {
+        if (*it == tLPar) {
             counter++;
         }
-        else if (*it == Token(tRPar)) {
+        else if (*it == tRPar) {
             counter--;
         }
 

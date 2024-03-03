@@ -9,13 +9,9 @@ Logger* Logger::instance = nullptr;
 Logger::Logger()
 {
     namespace fs = std::filesystem;
-    fs::path filePath = "../../output.log";
+    fs::path filePath = fs::path(__FILE__).parent_path().parent_path().parent_path() / "output.log";
 
-    // Clear current file contents
-    this->file.open(filePath, std::ios::trunc);
-    this->file.close();
-
-    this->file.open(filePath, std::ios::app);
+    this->file.open(filePath, std::ios::out | std::ios::trunc);
     if (!this->file.is_open()) {
         throw InternalErrorException("Couldn't open file for logging\n");
     }

@@ -1,10 +1,16 @@
 #include "nonterminal.hpp"
+#include "internal_error.hpp"
 #include "stack_item.hpp"
 
 Nonterminal::Nonterminal(NonterminalType t)
     : ntType(t)
 {
     this->itemType = Nonterminal_t;
+}
+
+bool Nonterminal::operator==(const NonterminalType& other) const
+{
+    return (this->ntType == other);
 }
 
 bool Nonterminal::operator==(const Nonterminal& other) const
@@ -28,6 +34,8 @@ std::string Nonterminal::GetTypeString() const
             return "<statement>";
         case nIf2:
             return "<if2>";
+        case nDeclOrExpr:
+            return "<declOrExpr>";
         case nReturnExp:
             return "<returnExp>";
         case nFunctionDef:
@@ -51,6 +59,6 @@ std::string Nonterminal::GetTypeString() const
         case nType:
             return "<type>";
         default:
-            return "unknown";
+            throw InternalErrorException("Unknown nonterminal type\n");
     }
 }

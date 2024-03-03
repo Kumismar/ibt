@@ -38,8 +38,8 @@ int main(int argc, char** argv)
 
     std::stack<StackItem*> stackos;
     std::list<Token> inputTape = {
-        // Token(tIf), Token(tLPar), Token(tVariable), Token(tPlus), Token(tVariable), Token(tRPar), Token(tLCurl), Token(tRCurl), Token(tEnd)
-        Token(tVariable), Token(tAssign), Token(tVariable), Token(tMinus), Token(tVariable), Token(tSemi), Token(tEnd)
+        // f(a, b, c, f(d));
+        Token(tFuncName), Token(tLPar), Token(tVariable), Token(tComma), Token(tVariable), Token(tComma), Token(tVariable), Token(tComma), Token(tFuncName), Token(tLPar), Token(tVariable), Token(tRPar), Token(tRPar), Token(tSemi), Token(tEnd)
     };
 
     PrecedenceParser exprParser(stackos);
@@ -87,6 +87,16 @@ int main(int argc, char** argv)
         catch (InternalErrorException const& e) {
             std::cerr << "Internal error: " << e.what() << std::endl;
             retCode = 2;
+            break;
+        }
+        catch (std::exception const& e) {
+            std::cerr << "Unknown error: " << e.what() << std::endl;
+            retCode = 3;
+            break;
+        }
+        catch (...) {
+            std::cerr << "Unknown error." << std::endl;
+            retCode = 4;
             break;
         }
     }

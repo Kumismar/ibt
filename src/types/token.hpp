@@ -61,6 +61,9 @@ public:
     }
 
     bool operator==(const Token& other) const;
+    bool operator!=(const Token& other) const;
+    bool operator==(const TokenType& other) const;
+    bool operator!=(const TokenType& other) const;
 
     TokenType GetTokenType() const;
     std::string GetTypeString() const override;

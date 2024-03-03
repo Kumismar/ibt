@@ -10,7 +10,22 @@ Token::Token(TokenType t)
 
 bool Token::operator==(const Token& other) const
 {
-    return (this->type == other.GetTokenType());
+    return this->type == other.GetTokenType();
+}
+
+bool Token::operator!=(const Token& other) const
+{
+    return !(*this == other);
+}
+
+bool Token::operator==(const TokenType& other) const
+{
+    return (this->type == other);
+}
+
+bool Token::operator!=(const TokenType& other) const
+{
+    return !(*this == other);
 }
 
 TokenType Token::GetTokenType() const
@@ -105,3 +120,4 @@ std::string Token::GetTypeString() const
             throw InternalErrorException("Unknown token type in Token::GetTypeString()\n");
     }
 }
+

@@ -12,7 +12,7 @@ bool PredictiveParser::returnedEpsilon(std::list<StackItem*>& expandedRule)
 {
     if (expandedRule.size() == 1 && expandedRule.front()->GetItemType() == Token_t) {
         Token* t = dynamic_cast<Token*>(expandedRule.front());
-        return *t == Token(tEps);
+        return *t == tEps;
     }
     return false;
 }
@@ -43,7 +43,10 @@ void PredictiveParser::Parse(std::list<Token>& inputTape)
                 // Case $:
                 if (stackToken->GetTokenType() == tEnd) {
                     if (this->inputToken.GetTokenType() == tEnd) {
+                        // tEnd was pushed as new Token, its not a pointer to something in grammars or tables
+                        delete stackToken;
                         inputTape.pop_front();
+
                         if (inputTape.empty()) {
                             throw SyntaxAnalysisSuccess();
                         }
@@ -74,7 +77,7 @@ void PredictiveParser::Parse(std::list<Token>& inputTape)
                 }
 
                 // Expression => give control to precedence parser
-                if (stackNT->GetNonterminalType() == nExpression) {
+                if (stackNT->GetNonterminalType() == nExpression && inputToken != tFuncName) {
                     throw ChangeParser();
                 }
 
@@ -86,6 +89,7 @@ void PredictiveParser::Parse(std::list<Token>& inputTape)
                     Grammar* grammar = GrammarFactory::CreateGrammar(tableItem.grammarNumber);
 
                     this->pushdown.pop();
+
                     std::list<StackItem*> expandedRule = grammar->Expand(tableItem.ruleNumber);
 
                     // if right side is not epsilon, it will be pushed
@@ -97,6 +101,11 @@ void PredictiveParser::Parse(std::list<Token>& inputTape)
 
                     logger->AddRightSide(expandedRule);
                     logger->PrintRule();
+
+                    if (*stackNT == nProgram) {
+                        // Program was pushed as new Nonterminal, its not a pointer to something in grammars or tables
+                        delete stackNT;
+                    }
                     delete grammar;
                 }
                 else {
