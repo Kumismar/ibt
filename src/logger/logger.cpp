@@ -60,3 +60,8 @@ void Logger::PrintRule()
     this->leftSideRule = nullptr;
     this->rightSideRule.clear();
 }
+
+void Logger::PrintToken(Token& token)
+{
+    this->file << token.GetTypeString() << std::endl;
+}

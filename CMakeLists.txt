@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(Parser LANGUAGES CXX)
+project(Parser LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 20)
 

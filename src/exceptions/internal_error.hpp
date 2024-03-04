@@ -5,7 +5,7 @@
 class InternalErrorException : public ExceptionBase
 {
 public:
-    InternalErrorException(const std::string& message)
+    InternalErrorException(const std::string message)
         : ExceptionBase(message)
     {
     }

@@ -48,17 +48,40 @@ typedef enum tokenType
     tEps
 } TokenType;
 
+typedef enum
+{
+    Int,
+    Float,
+    String,
+    Bool
+} DataType;
+
+typedef union
+{
+    int intVal;
+    float floatVal;
+    std::string* stringVal;
+    bool boolVal;
+} Value;
+
+typedef struct data {
+    DataType type;
+    Value value;
+} TokenData;
+
 class Token : public StackItem
 {
 private:
     TokenType type;
+    TokenData data;
 
 public:
-    Token(TokenType t);
-
-    ~Token() override
+    Token()
     {
     }
+
+    Token(TokenType type);
+    ~Token() override;
 
     bool operator==(const Token& other) const;
     bool operator!=(const Token& other) const;
@@ -66,5 +89,7 @@ public:
     bool operator!=(const TokenType& other) const;
 
     TokenType GetTokenType() const;
+    void SetTokenType(TokenType type);
+    void SetData(std::string data);
     std::string GetTypeString() const override;
 };

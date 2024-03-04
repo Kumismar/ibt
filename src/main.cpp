@@ -40,11 +40,12 @@ int main(int argc, char** argv)
 
     std::stack<StackItem*> stackos;
     LexicalAnalyzer lex("input.txt");
-    InputTape* inputTape = lex.Tokenize();
-    if (inputTape == nullptr) {
-        Cleanup();
-        return 2;
+    lex.Tokenize();
+    Logger* logger = Logger::GetInstance();
+    for (auto& token: inputTape) {
+        logger->PrintToken(token);
     }
+    return 0;
 
     PrecedenceParser exprParser(stackos);
     PredictiveParser predParser(stackos);
@@ -56,7 +57,7 @@ int main(int argc, char** argv)
 
     while (true) {
         try {
-            currentParser->Parse(*inputTape);
+            currentParser->Parse(inputTape);
 
             // Switch back to predictive after successful precedence parsing
             if (currentParser->GetParserType() == Precedence) {
@@ -105,7 +106,6 @@ int main(int argc, char** argv)
         }
     }
 
-    delete inputTape;
     Cleanup();
     return retCode;
 }

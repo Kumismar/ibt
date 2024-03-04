@@ -2,6 +2,7 @@
 
 #include "nonterminal.hpp"
 #include "stack_item.hpp"
+#include "token.hpp"
 #include <fstream>
 #include <list>
 
@@ -20,5 +21,6 @@ public:
     void AddLeftSide(StackItem* leftSide);
     void AddRightSide(std::list<StackItem*>& rightSide);
     void PrintRule();
+    void PrintToken(Token& token);
     static void Cleanup();
 };

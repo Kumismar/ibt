@@ -1,17 +1,24 @@
 #include "aux.hpp"
-#include <iostream>
-#include <istream>
+#include "token.hpp"
+#include <FlexLexer.h>
+#include <cstdio>
 #include <string>
 
-class LexicalAnalyzer
+class LexicalAnalyzer : public yyFlexLexer
 {
 private:
-    std::istream* input = nullptr;
+    FILE* input;
     std::string lexeme;
 
 public:
-    LexicalAnalyzer(std::string filename);
+    LexicalAnalyzer()
+    {
+    }
+
+    LexicalAnalyzer(const char* filename);
     ~LexicalAnalyzer();
 
-    InputTape* Tokenize();
+    void Tokenize();
 };
+
+extern InputTape inputTape;

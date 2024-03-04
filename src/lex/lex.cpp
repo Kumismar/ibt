@@ -1,30 +1,23 @@
 #include "lex.hpp"
 #include "internal_error.hpp"
-#include <fstream>
+#include <cstdio>
 
-LexicalAnalyzer::LexicalAnalyzer(std::string filename)
+InputTape inputTape;
+
+LexicalAnalyzer::LexicalAnalyzer(const char* filename)
 {
-    if (!filename.empty()) {
-        std::ifstream* tmp = new std::ifstream(filename);
-        if (!tmp->is_open()) {
-            delete tmp;
-            throw InternalErrorException("File not found (Lex ifstream not open)\n");
-        }
-        this->input = tmp;
-    }
-    else {
-        this->input = &std::cin;
+    this->input = fopen(filename, "r");
+    if (this->input == nullptr) {
+        throw InternalErrorException("Failed to open file\n");
     }
 }
 
 LexicalAnalyzer::~LexicalAnalyzer()
 {
-    if (this->input != nullptr && this->input != &std::cin) {
-        delete this->input;
-    }
+    fclose(this->input);
 }
 
-InputTape* LexicalAnalyzer::Tokenize()
+void LexicalAnalyzer::Tokenize()
 {
-    return nullptr;
+    yylex();
 }

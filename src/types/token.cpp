@@ -8,6 +8,13 @@ Token::Token(TokenType t)
     this->itemType = Token_t;
 }
 
+Token::~Token()
+{
+    if (this->data.type == String) {
+        delete this->data.value.stringVal;
+    }
+}
+
 bool Token::operator==(const Token& other) const
 {
     return this->type == other.GetTokenType();
@@ -31,6 +38,17 @@ bool Token::operator!=(const TokenType& other) const
 TokenType Token::GetTokenType() const
 {
     return this->type;
+}
+
+void Token::SetTokenType(TokenType t)
+{
+    this->type = t;
+}
+
+void Token::SetData(std::string data)
+{
+    this->data.type = String;
+    this->data.value.stringVal = new std::string(data);
 }
 
 std::string Token::GetTypeString() const
@@ -120,4 +138,3 @@ std::string Token::GetTypeString() const
             throw InternalErrorException("Unknown token type in Token::GetTypeString()\n");
     }
 }
-
