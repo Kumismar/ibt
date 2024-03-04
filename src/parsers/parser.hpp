@@ -1,5 +1,6 @@
 #pragma once
 
+#include "aux.hpp"
 #include "token.hpp"
 #include <list>
 
@@ -14,15 +15,12 @@ class Parser
 private:
     ParserType parserType;
 
-protected:
-    bool success = false;
-
 public:
     virtual ~Parser()
     {
     }
 
-    virtual void Parse(std::list<Token>& inputTape) = 0;
+    virtual void Parse(InputTape& inputTape) = 0;
 
     ParserType GetParserType();
     void SetParserType(ParserType type);

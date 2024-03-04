@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <stack>
 
+#include "aux.hpp"
 #include "change_parser.hpp"
 #include "nonterminal.hpp"
 #include "precedence.hpp"
@@ -11,7 +12,7 @@ class PrecedenceParserTest : public ::testing::Test
 protected:
     std::stack<StackItem*> stack;
     PrecedenceParser parser = PrecedenceParser(this->stack);
-    std::list<Token> inputTape;
+    InputTape inputTape;
 };
 
 TEST_F(PrecedenceParserTest, SingleVariable)

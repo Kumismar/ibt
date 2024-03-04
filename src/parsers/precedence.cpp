@@ -1,4 +1,5 @@
 #include "precedence.hpp"
+#include "aux.hpp"
 #include "change_parser.hpp"
 #include "grammar_4.hpp"
 #include "internal_error.hpp"
@@ -12,14 +13,14 @@
 #include <list>
 #include <typeinfo>
 
-void PrecedenceParser::Parse(std::list<Token>& inputTape)
+void PrecedenceParser::Parse(InputTape& inputTape)
 {
     PrecedenceTable table;
     Logger* logger;
     this->insertExpressionEnd(inputTape);
     this->analysisPushdown.push(new Token(tExpEnd));
 
-    while (!this->success) {
+    while (true) {
         Token& inputToken = inputTape.front();
         if (inputToken.GetTokenType() == tFuncName) {
             this->clearStack();

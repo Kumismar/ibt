@@ -10,7 +10,9 @@ target_link_libraries(Parser
     ParserLibrary
 )
 
-target_include_directories(ParserLibrary PRIVATE 
+target_include_directories(ParserLibrary PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/lex
     ${CMAKE_CURRENT_SOURCE_DIR}/grammars
     ${CMAKE_CURRENT_SOURCE_DIR}/types
     ${CMAKE_CURRENT_SOURCE_DIR}/tables
@@ -20,7 +22,9 @@ target_include_directories(ParserLibrary PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/logger
 )
 
-target_include_directories(Parser PRIVATE 
+target_include_directories(Parser PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/lex
     ${CMAKE_CURRENT_SOURCE_DIR}/grammars
     ${CMAKE_CURRENT_SOURCE_DIR}/types
     ${CMAKE_CURRENT_SOURCE_DIR}/tables
@@ -38,6 +42,10 @@ add_subdirectory(exceptions)
 add_subdirectory(logger)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${project_dir}/build)
+
+set_target_properties(ParserLibrary PROPERTIES
+    PUBLIC_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/aux.hpp"
+)
 
 target_compile_options(ParserLibrary PRIVATE
     -Wall

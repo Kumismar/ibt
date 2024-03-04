@@ -1,4 +1,5 @@
 #include "analysis_success.hpp"
+#include "aux.hpp"
 #include "change_parser.hpp"
 #include "grammar_1.hpp"
 #include "grammar_2.hpp"
@@ -7,6 +8,7 @@
 #include "grammar_5.hpp"
 #include "grammar_6.hpp"
 #include "internal_error.hpp"
+#include "lex.hpp"
 #include "logger.hpp"
 #include "parser.hpp"
 #include "precedence.hpp"
@@ -37,10 +39,12 @@ int main(int argc, char** argv)
     processArguments(argc, argv);
 
     std::stack<StackItem*> stackos;
-    std::list<Token> inputTape = {
-        // f(a, b, c, f(d));
-        Token(tFuncName), Token(tLPar), Token(tVariable), Token(tComma), Token(tVariable), Token(tComma), Token(tVariable), Token(tComma), Token(tFuncName), Token(tLPar), Token(tVariable), Token(tRPar), Token(tRPar), Token(tSemi), Token(tEnd)
-    };
+    LexicalAnalyzer lex("input.txt");
+    InputTape* inputTape = lex.Tokenize();
+    if (inputTape == nullptr) {
+        Cleanup();
+        return 2;
+    }
 
     PrecedenceParser exprParser(stackos);
     PredictiveParser predParser(stackos);
@@ -52,7 +56,7 @@ int main(int argc, char** argv)
 
     while (true) {
         try {
-            currentParser->Parse(inputTape);
+            currentParser->Parse(*inputTape);
 
             // Switch back to predictive after successful precedence parsing
             if (currentParser->GetParserType() == Precedence) {
@@ -101,6 +105,7 @@ int main(int argc, char** argv)
         }
     }
 
+    delete inputTape;
     Cleanup();
     return retCode;
 }

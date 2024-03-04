@@ -17,6 +17,7 @@ add_executable(ParserTest
 )
 
 target_include_directories(ParserTest PRIVATE 
+    ${project_dir}/src/lex
     ${project_dir}/src/grammars
     ${project_dir}/src/parsers
     ${project_dir}/src/logger
