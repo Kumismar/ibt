@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stack_item.hpp"
+#include <list>
 #include <string>
 
 typedef enum tokenType
@@ -53,7 +54,8 @@ typedef enum
     Int,
     Float,
     String,
-    Bool
+    Bool,
+    None
 } DataType;
 
 typedef union
@@ -90,6 +92,11 @@ public:
 
     TokenType GetTokenType() const;
     void SetTokenType(TokenType type);
-    void SetData(std::string data);
+    void SetData(DataType dtype, std::string data);
     std::string GetTypeString() const override;
+    std::string GetDataString() const;
 };
+
+typedef std::list<Token> InputTape;
+
+extern InputTape inputTape;

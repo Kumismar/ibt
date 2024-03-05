@@ -1,4 +1,5 @@
 all:
+	@ cd src/lex && flex -o lex.yy.cc lex.l
 	@[ -d build/ ] || mkdir build/ && cd build/ && cmake .. && make -j8 -s
 
 run:

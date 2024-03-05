@@ -1,5 +1,4 @@
 #include "precedence.hpp"
-#include "aux.hpp"
 #include "change_parser.hpp"
 #include "grammar_4.hpp"
 #include "internal_error.hpp"

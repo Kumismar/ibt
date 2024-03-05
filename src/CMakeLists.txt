@@ -11,7 +11,6 @@ target_link_libraries(Parser
 )
 
 target_include_directories(ParserLibrary PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/lex
     ${CMAKE_CURRENT_SOURCE_DIR}/grammars
     ${CMAKE_CURRENT_SOURCE_DIR}/types
@@ -23,7 +22,6 @@ target_include_directories(ParserLibrary PUBLIC
 )
 
 target_include_directories(Parser PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/lex
     ${CMAKE_CURRENT_SOURCE_DIR}/grammars
     ${CMAKE_CURRENT_SOURCE_DIR}/types

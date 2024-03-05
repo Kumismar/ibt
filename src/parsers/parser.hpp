@@ -1,6 +1,5 @@
 #pragma once
 
-#include "aux.hpp"
 #include "token.hpp"
 #include <list>
 

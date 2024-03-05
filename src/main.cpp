@@ -8,13 +8,15 @@
 #include "grammar_5.hpp"
 #include "grammar_6.hpp"
 #include "internal_error.hpp"
-#include "lex.hpp"
+#include "lex.yy.h"
 #include "logger.hpp"
 #include "parser.hpp"
 #include "precedence.hpp"
 #include "predictive.hpp"
 #include "syntax_error.hpp"
 #include "token.hpp"
+#include <cstdio>
+#include <filesystem>
 #include <iostream>
 #include <list>
 #include <stack>
@@ -30,6 +32,21 @@ void Cleanup()
     Logger::Cleanup();
 }
 
+void lex()
+{
+    namespace fs = std::filesystem;
+    fs::path file(__FILE__);
+    fs::path toOpen = file.parent_path().parent_path() / "input.koubp";
+
+    if ((yyin = fopen(toOpen.c_str(), "r")) == nullptr) {
+        throw InternalErrorException("Failed to open input file.\n");
+    }
+    yylex();
+    fclose(yyin);
+    // Logger* logger = Logger::GetInstance();
+    // logger->PrintTokens();
+}
+
 void processArguments(int argc, char** argv)
 {
 }
@@ -39,13 +56,14 @@ int main(int argc, char** argv)
     processArguments(argc, argv);
 
     std::stack<StackItem*> stackos;
-    LexicalAnalyzer lex("input.txt");
-    lex.Tokenize();
-    Logger* logger = Logger::GetInstance();
-    for (auto& token: inputTape) {
-        logger->PrintToken(token);
+    try {
+        lex();
     }
-    return 0;
+    catch (InternalErrorException const& e) {
+        std::cerr << "Internal error: " << e.what() << std::endl;
+        Cleanup();
+        return 2;
+    }
 
     PrecedenceParser exprParser(stackos);
     PredictiveParser predParser(stackos);

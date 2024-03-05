@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 #include <stack>
 
-#include "aux.hpp"
 #include "change_parser.hpp"
 #include "nonterminal.hpp"
 #include "precedence.hpp"

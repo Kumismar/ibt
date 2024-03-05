@@ -21,6 +21,6 @@ public:
     void AddLeftSide(StackItem* leftSide);
     void AddRightSide(std::list<StackItem*>& rightSide);
     void PrintRule();
-    void PrintToken(Token& token);
+    void PrintTokens();
     static void Cleanup();
 };

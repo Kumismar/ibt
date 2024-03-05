@@ -1,6 +1,9 @@
 #include "token.hpp"
 #include "internal_error.hpp"
+#include <iostream>
 #include <string>
+
+InputTape inputTape;
 
 Token::Token(TokenType t)
     : type(t)
@@ -45,10 +48,25 @@ void Token::SetTokenType(TokenType t)
     this->type = t;
 }
 
-void Token::SetData(std::string data)
+void Token::SetData(DataType dtype, std::string data)
 {
-    this->data.type = String;
-    this->data.value.stringVal = new std::string(data);
+    this->data.type = dtype;
+    switch (dtype) {
+        case Int:
+            this->data.value.intVal = std::stoi(data);
+            break;
+        case Float:
+            this->data.value.floatVal = std::stof(data);
+            break;
+        case String:
+            this->data.value.stringVal = new std::string(data);
+            break;
+        case Bool:
+            this->data.value.boolVal = (data == "true");
+            break;
+        case None:
+            break;
+    }
 }
 
 std::string Token::GetTypeString() const
@@ -136,5 +154,23 @@ std::string Token::GetTypeString() const
             return "end of expression";
         default:
             throw InternalErrorException("Unknown token type in Token::GetTypeString()\n");
+    }
+}
+
+std::string Token::GetDataString() const
+{
+    switch (this->data.type) {
+        case Int:
+            return std::to_string(this->data.value.intVal);
+        case Float:
+            return std::to_string(this->data.value.floatVal);
+        case String:
+            return *this->data.value.stringVal;
+        case Bool:
+            return this->data.value.boolVal ? "true" : "false";
+        case None:
+            return "none";
+        default:
+            throw InternalErrorException("Unknown data type in Token::GetDataString()\n");
     }
 }

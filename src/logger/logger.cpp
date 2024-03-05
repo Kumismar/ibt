@@ -1,8 +1,10 @@
 #include "logger.hpp"
 #include "internal_error.hpp"
 #include "stack_item.hpp"
+#include "token.hpp"
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 
 Logger* Logger::instance = nullptr;
 
@@ -61,7 +63,17 @@ void Logger::PrintRule()
     this->rightSideRule.clear();
 }
 
-void Logger::PrintToken(Token& token)
+void Logger::PrintTokens()
 {
-    this->file << token.GetTypeString() << std::endl;
+    size_t maxTypeLength = 0;
+    for (const auto& token: inputTape) {
+        maxTypeLength = std::max(maxTypeLength, token.GetTypeString().size());
+    }
+
+    // Print tokens with fixed-width columns
+    for (const auto& token: inputTape) {
+        std::cout << "type: " << std::setw(maxTypeLength) << token.GetTypeString()
+                  << "\tdata: " << token.GetDataString() << "\n";
+    }
+    std::cout << std::endl;
 }
