@@ -20,27 +20,27 @@ void PrecedenceParser::Parse(InputTape& inputTape)
     this->analysisPushdown.push(new Token(tExpEnd));
 
     while (true) {
-        Token& inputToken = inputTape.front();
-        if (inputToken.GetTokenType() == tFuncName) {
+        Token* inputToken = inputTape.front();
+        if (inputToken->GetTokenType() == tFuncName) {
             this->clearStack();
             throw ChangeParser();
         }
 
-        if (this->parseIsSuccessful(inputToken)) {
+        if (this->parseIsSuccessful(*inputToken)) {
             break; // while
         }
 
         Token* firstToken = this->findFirstTokenInStack();
-        switch (table[*firstToken][inputToken]) {
+        switch (table[*firstToken][*inputToken]) {
             case '=': {
-                analysisPushdown.push(new Token(inputToken.GetTokenType()));
+                analysisPushdown.push(new Token(inputToken->GetTokenType()));
                 inputToken = inputTape.front();
                 inputTape.pop_front();
                 break; // switch
             }
             case '<': {
                 this->pushPrecedence();
-                analysisPushdown.push(new Token(inputToken.GetTokenType()));
+                analysisPushdown.push(new Token(inputToken->GetTokenType()));
                 inputToken = inputTape.front();
                 inputTape.pop_front();
                 break; // switch
@@ -169,28 +169,28 @@ bool PrecedenceParser::parseIsSuccessful(Token& inputToken)
     return (inputToken == tExpEnd && *second == Token(tExpEnd) && *top == Nonterminal(nExpression));
 }
 
-void PrecedenceParser::insertExpressionEnd(std::list<Token>& inputTape) const
+void PrecedenceParser::insertExpressionEnd(InputTape& inputTape) const
 {
     int counter = 0;
     // find first non-expression token occurence and insert tExpEnd before it
     for (auto it = inputTape.begin(); it != inputTape.end(); it++) {
         // if token is comma or semicolon, insert tExpEnd before it
 
-        if (*it == tSemi || *it == tComma || *it == tEnd) {
-            inputTape.insert(it, Token(tExpEnd));
+        if (**it == tSemi || **it == tComma || **it == tEnd) {
+            inputTape.insert(it, new Token(tExpEnd));
             return;
         }
 
         // insert tExpEnd before the first right parenthesis that is not matched with left parenthesis
-        if (*it == tLPar) {
+        if (**it == tLPar) {
             counter++;
         }
-        else if (*it == tRPar) {
+        else if (**it == tRPar) {
             counter--;
         }
 
         if (counter < 0) {
-            inputTape.insert(it, Token(tExpEnd));
+            inputTape.insert(it, new Token(tExpEnd));
             return;
         }
     }

@@ -1,5 +1,4 @@
 #include "analysis_success.hpp"
-#include "aux.hpp"
 #include "change_parser.hpp"
 #include "grammar_1.hpp"
 #include "grammar_2.hpp"

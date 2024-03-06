@@ -7,10 +7,10 @@
 %{
 TokenType previous_token = tEps;
 void add_token(TokenType ttype, DataType dtype) {
-    Token token;
-    token.SetTokenType(ttype);
-    token.SetData(dtype);
-    printf("Token: %s\n", token.GetDataString().c_str());
+    Token* token = new Token();
+    token->SetTokenType(ttype);
+    token->SetData(dtype);
+    printf("Token: %15s\tdata: %s\n", token->GetDataString().c_str(), token->GetTypeString().c_str());
     inputTape.push_back(token);
     previous_token = ttype;
 }

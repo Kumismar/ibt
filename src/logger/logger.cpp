@@ -67,13 +67,13 @@ void Logger::PrintTokens()
 {
     size_t maxTypeLength = 0;
     for (const auto& token: inputTape) {
-        maxTypeLength = std::max(maxTypeLength, token.GetTypeString().size());
+        maxTypeLength = std::max(maxTypeLength, token->GetTypeString().size());
     }
 
     // Print tokens with fixed-width columns
     for (const auto& token: inputTape) {
-        std::cout << "type: " << std::setw(maxTypeLength) << token.GetTypeString()
-                  << "\tdata: " << token.GetDataString().c_str() << "\n";
+        std::cout << "type: " << std::setw(maxTypeLength) << token->GetTypeString()
+                  << "\tdata: " << token->GetDataString().c_str() << "\n";
     }
     std::cout << std::endl;
 }

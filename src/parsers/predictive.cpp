@@ -23,7 +23,7 @@ void PredictiveParser::InitSyntaxAnalysis()
     this->pushdown.push(new Nonterminal(nProgram));
 }
 
-void PredictiveParser::Parse(std::list<Token>& inputTape)
+void PredictiveParser::Parse(InputTape& inputTape)
 {
     Logger* logger;
     while (true) {
@@ -42,7 +42,7 @@ void PredictiveParser::Parse(std::list<Token>& inputTape)
 
                 // Case $:
                 if (stackToken->GetTokenType() == tEnd) {
-                    if (this->inputToken.GetTokenType() == tEnd) {
+                    if (this->inputToken->GetTokenType() == tEnd) {
                         // tEnd was pushed as new Token, its not a pointer to something in grammars or tables
                         delete stackToken;
                         inputTape.pop_front();
@@ -60,7 +60,7 @@ void PredictiveParser::Parse(std::list<Token>& inputTape)
                 }
 
                 // Case T:
-                if (*stackToken == inputToken) {
+                if (*stackToken == *inputToken) {
                     this->pushdown.pop();
                     inputTape.pop_front();
                     break;
@@ -77,11 +77,11 @@ void PredictiveParser::Parse(std::list<Token>& inputTape)
                 }
 
                 // Expression => give control to precedence parser
-                if (stackNT->GetNonterminalType() == nExpression && inputToken != tFuncName) {
+                if (stackNT->GetNonterminalType() == nExpression && *inputToken != tFuncName) {
                     throw ChangeParser();
                 }
 
-                LLTableIndex tableItem = this->table[*stackNT][this->inputToken];
+                LLTableIndex tableItem = this->table[*stackNT][*this->inputToken];
                 // Rule exists -> pop old nonterminal, expand it and push new string to the stack
                 if (tableItem != LLTableIndex({ 0, 0 })) {
                     logger = Logger::GetInstance();

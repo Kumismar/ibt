@@ -97,6 +97,6 @@ public:
     std::string GetDataString() const;
 };
 
-typedef std::list<Token> InputTape;
+typedef std::list<Token*> InputTape;
 
 extern InputTape inputTape;

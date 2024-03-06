@@ -12,7 +12,7 @@ class PredictiveParser : public Parser
 private:
     std::stack<StackItem*>& pushdown;
     StackItem* stackTop = nullptr;
-    Token inputToken = Token(tEnd);
+    Token* inputToken = new Token(tEnd);
 
     LLTable table;
 
@@ -29,5 +29,5 @@ public:
     }
 
     void InitSyntaxAnalysis();
-    void Parse(std::list<Token>& inputTape) override;
+    void Parse(InputTape& inputTape) override;
 };
