@@ -36,15 +36,15 @@ void lex()
 {
     namespace fs = std::filesystem;
     fs::path file(__FILE__);
-    fs::path toOpen = file.parent_path().parent_path() / "input.koubp";
+    fs::path toOpen = file.parent_path().parent_path() / "idk.koubp";
 
     if ((yyin = fopen(toOpen.c_str(), "r")) == nullptr) {
         throw InternalErrorException("Failed to open input file.\n");
     }
     yylex();
     fclose(yyin);
-    // Logger* logger = Logger::GetInstance();
-    // logger->PrintTokens();
+    Logger* logger = Logger::GetInstance();
+    logger->PrintTokens();
 }
 
 void processArguments(int argc, char** argv)

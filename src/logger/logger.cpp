@@ -73,7 +73,7 @@ void Logger::PrintTokens()
     // Print tokens with fixed-width columns
     for (const auto& token: inputTape) {
         std::cout << "type: " << std::setw(maxTypeLength) << token.GetTypeString()
-                  << "\tdata: " << token.GetDataString() << "\n";
+                  << "\tdata: " << token.GetDataString().c_str() << "\n";
     }
     std::cout << std::endl;
 }

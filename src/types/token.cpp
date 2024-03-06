@@ -1,5 +1,7 @@
 #include "token.hpp"
 #include "internal_error.hpp"
+#include "lex.yy.h"
+#include <cstring>
 #include <iostream>
 #include <string>
 
@@ -14,7 +16,7 @@ Token::Token(TokenType t)
 Token::~Token()
 {
     if (this->data.type == String) {
-        delete this->data.value.stringVal;
+        free(this->data.value.stringVal);
     }
 }
 
@@ -48,21 +50,23 @@ void Token::SetTokenType(TokenType t)
     this->type = t;
 }
 
-void Token::SetData(DataType dtype, std::string data)
+void Token::SetData(DataType dtype)
 {
+    char* tmp = strndup(yytext, yyleng);
+
     this->data.type = dtype;
     switch (dtype) {
         case Int:
-            this->data.value.intVal = std::stoi(data);
+            this->data.value.intVal = std::stoi(tmp);
             break;
         case Float:
-            this->data.value.floatVal = std::stof(data);
+            this->data.value.floatVal = std::stof(tmp);
             break;
         case String:
-            this->data.value.stringVal = new std::string(data);
+            this->data.value.stringVal = tmp;
             break;
         case Bool:
-            this->data.value.boolVal = (data == "true");
+            this->data.value.boolVal = (std::string(tmp) == "true");
             break;
         case None:
             break;
@@ -165,7 +169,7 @@ std::string Token::GetDataString() const
         case Float:
             return std::to_string(this->data.value.floatVal);
         case String:
-            return *this->data.value.stringVal;
+            return this->data.value.stringVal;
         case Bool:
             return this->data.value.boolVal ? "true" : "false";
         case None:

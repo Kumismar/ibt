@@ -62,7 +62,7 @@ typedef union
 {
     int intVal;
     float floatVal;
-    std::string* stringVal;
+    char* stringVal;
     bool boolVal;
 } Value;
 
@@ -92,7 +92,7 @@ public:
 
     TokenType GetTokenType() const;
     void SetTokenType(TokenType type);
-    void SetData(DataType dtype, std::string data);
+    void SetData(DataType dtype);
     std::string GetTypeString() const override;
     std::string GetDataString() const;
 };

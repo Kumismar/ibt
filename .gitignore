@@ -35,7 +35,6 @@
 build/
 cmake-build-debug/
 .idea/
-.vscode/
 .cache/
 
 # Logging files
