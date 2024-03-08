@@ -2,8 +2,14 @@
 #include "internal_error.hpp"
 #include "stack_item.hpp"
 
-Nonterminal::Nonterminal(NonterminalType t)
+Nonterminal::Nonterminal(const NonterminalType t)
     : ntType(t)
+{
+    this->itemType = Nonterminal_t;
+}
+
+Nonterminal::Nonterminal(const Nonterminal& old)
+    : ntType(old.GetNonterminalType())
 {
     this->itemType = Nonterminal_t;
 }
@@ -61,4 +67,9 @@ std::string Nonterminal::GetTypeString() const
         default:
             throw InternalErrorException("Unknown nonterminal type\n");
     }
+}
+
+StackItem* Nonterminal::Clone() const
+{
+    return new Nonterminal(*this);
 }

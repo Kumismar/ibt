@@ -1,5 +1,7 @@
 #include "logger.hpp"
 #include "internal_error.hpp"
+#include "nonterminal.hpp"
+#include "precedence_symbol.hpp"
 #include "stack_item.hpp"
 #include "token.hpp"
 #include <filesystem>
@@ -41,15 +43,14 @@ Logger* Logger::GetInstance()
 
 void Logger::AddLeftSide(StackItem* leftSide)
 {
-    this->leftSideRule = dynamic_cast<Nonterminal*>(leftSide);
-    if (this->leftSideRule == nullptr) {
-        throw InternalErrorException("Left side of the rule has to be a Nonterminal\n");
-    }
+    this->leftSideRule = leftSide->Clone();
 }
 
 void Logger::AddRightSide(std::list<StackItem*>& rightSide)
 {
-    this->rightSideRule = rightSide;
+    for (const StackItem* item: rightSide) {
+        this->rightSideRule.push_back(item->Clone());
+    }
 }
 
 void Logger::PrintRule()
@@ -59,8 +60,7 @@ void Logger::PrintRule()
         this->file << (*it)->GetTypeString() << " ";
     }
     this->file << std::endl;
-    this->leftSideRule = nullptr;
-    this->rightSideRule.clear();
+    this->clearRule();
 }
 
 void Logger::PrintTokens()
@@ -76,4 +76,14 @@ void Logger::PrintTokens()
                   << "\tdata: " << token->GetDataString().c_str() << "\n";
     }
     std::cout << std::endl;
+}
+
+void Logger::clearRule()
+{
+    delete this->leftSideRule;
+    this->leftSideRule = nullptr;
+    for (const StackItem* item: this->rightSideRule) {
+        delete item;
+    }
+    this->rightSideRule.clear();
 }

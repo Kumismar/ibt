@@ -1,22 +1,34 @@
 #include "token.hpp"
 #include "internal_error.hpp"
 #include "lex.yy.h"
-#include <cstring>
-#include <iostream>
 #include <string>
 
 InputTape inputTape;
 
-Token::Token(TokenType t)
+Token::Token(const TokenType t)
     : type(t)
 {
     this->itemType = Token_t;
+    this->data.type = None;
+}
+
+Token::Token(const Token& other)
+    : type(other.GetTokenType())
+{
+    this->itemType = Token_t;
+    if (other.data.type == String) {
+        this->data.type = String;
+        this->data.value.stringVal = new std::string(*other.data.value.stringVal);
+    }
+    else {
+        this->data = other.data;
+    }
 }
 
 Token::~Token()
 {
-    if (this->data.type == String) {
-        free(this->data.value.stringVal);
+    if (this->data.type == String && this->data.value.stringVal != nullptr) {
+        delete this->data.value.stringVal;
     }
 }
 
@@ -52,7 +64,7 @@ void Token::SetTokenType(TokenType t)
 
 void Token::SetData(DataType dtype)
 {
-    char* tmp = strndup(yytext, yyleng);
+    std::string tmp = yytext;
 
     this->data.type = dtype;
     switch (dtype) {
@@ -63,10 +75,10 @@ void Token::SetData(DataType dtype)
             this->data.value.floatVal = std::stof(tmp);
             break;
         case String:
-            this->data.value.stringVal = tmp;
+            this->data.value.stringVal = new std::string(tmp);
             break;
         case Bool:
-            this->data.value.boolVal = (std::string(tmp) == "true");
+            this->data.value.boolVal = (tmp == "true");
             break;
         case None:
             break;
@@ -169,7 +181,7 @@ std::string Token::GetDataString() const
         case Float:
             return std::to_string(this->data.value.floatVal);
         case String:
-            return this->data.value.stringVal;
+            return *this->data.value.stringVal;
         case Bool:
             return this->data.value.boolVal ? "true" : "false";
         case None:
@@ -177,4 +189,9 @@ std::string Token::GetDataString() const
         default:
             throw InternalErrorException("Unknown data type in Token::GetDataString()\n");
     }
+}
+
+StackItem* Token::Clone() const
+{
+    return new Token(*this);
 }

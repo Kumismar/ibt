@@ -10,24 +10,24 @@
 class PredictiveParser : public Parser
 {
 private:
-    std::stack<StackItem*>& pushdown;
+    std::list<StackItem*>& pushdown;
     StackItem* stackTop = nullptr;
-    Token* inputToken = new Token(tEnd);
-
+    Token* inputToken = nullptr;
     LLTable table;
 
     bool returnedEpsilon(std::list<StackItem*>& expandedRule);
 
 public:
-    ~PredictiveParser() override
+    ~PredictiveParser()
     {
     }
 
-    PredictiveParser(std::stack<StackItem*>& stack)
+    PredictiveParser(std::list<StackItem*>& stack)
         : pushdown(stack)
     {
     }
 
     void InitSyntaxAnalysis();
     void Parse(InputTape& inputTape) override;
+    void ClearStack();
 };

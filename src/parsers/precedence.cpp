@@ -17,31 +17,37 @@ void PrecedenceParser::Parse(InputTape& inputTape)
     PrecedenceTable table;
     Logger* logger;
     this->insertExpressionEnd(inputTape);
-    this->analysisPushdown.push(new Token(tExpEnd));
+    this->analysisPushdown.push_front(new Token(tExpEnd));
 
     while (true) {
         Token* inputToken = inputTape.front();
+        if (inputToken == nullptr) {
+            this->clearStack();
+            throw InternalErrorException("Nullptr in inputTape.\n");
+        }
+
         if (inputToken->GetTokenType() == tFuncName) {
             this->clearStack();
             throw ChangeParser();
         }
 
         if (this->parseIsSuccessful(*inputToken)) {
+            this->clearStack();
+            delete inputToken;
             break; // while
         }
 
         Token* firstToken = this->findFirstTokenInStack();
         switch (table[*firstToken][*inputToken]) {
             case '=': {
-                analysisPushdown.push(new Token(inputToken->GetTokenType()));
-                inputToken = inputTape.front();
-                inputTape.pop_front();
+                this->analysisPushdown.push_front(new Token(*inputToken));
+                delete inputToken;
                 break; // switch
             }
             case '<': {
                 this->pushPrecedence();
-                analysisPushdown.push(new Token(inputToken->GetTokenType()));
-                inputToken = inputTape.front();
+                this->analysisPushdown.push_front(new Token(*inputToken));
+                delete inputToken;
                 inputTape.pop_front();
                 break; // switch
             }
@@ -54,45 +60,57 @@ void PrecedenceParser::Parse(InputTape& inputTape)
                     logger->AddRightSide(tmpRule);
 
                     for (unsigned i = 0; i < tmpRule.size() + 1 /* Pop rule and '<' */; i++) {
-                        delete this->analysisPushdown.top();
-                        this->analysisPushdown.pop();
+                        delete this->analysisPushdown.front();
+                        this->analysisPushdown.pop_front();
                     }
                     Nonterminal* toPush = new Nonterminal(nExpression);
-                    this->analysisPushdown.push(toPush);
+                    this->analysisPushdown.push_front(toPush);
 
                     logger->AddLeftSide(toPush);
                     logger->PrintRule();
+                    for (StackItem* item: tmpRule) {
+                        delete item;
+                    }
                     break; // switch
                 }
                 else {
                     this->clearStack();
+                    delete inputToken;
+                    for (StackItem* item: tmpRule) {
+                        delete item;
+                    }
                     throw SyntaxErrorException("Sequence of tokens is not a rule.\n");
                 }
             }
             case 'x': {
                 this->clearStack();
+                delete inputToken;
                 throw SyntaxErrorException("Invalid token.\n");
             }
             default: {
                 this->clearStack();
+                delete inputToken;
                 throw InternalErrorException("Something else than '<', '=', '>', 'x' in precedence table.\n");
             }
         }
     }
     inputTape.pop_front();
     this->clearStack();
-    this->pushdown.pop();
+    delete this->pushdown.front();
+    this->pushdown.pop_front();
 }
 
 void PrecedenceParser::findFirstRule(std::list<StackItem*>& emptyRule)
 {
-    std::stack<StackItem*> tmpStack;
-    StackItem* tmpTop = this->analysisPushdown.top();
     // push to list until stack.top is precedence symbol '<' or '$'
-    while (true) {
+    for (auto it = this->analysisPushdown.begin(); it != this->analysisPushdown.end(); it++) {
         // if its precendence symbol '<' then just return
-        if (tmpTop->GetItemType() == PrecSymbol_t) {
-            PrecedenceSymbol* tmpSymbol = dynamic_cast<PrecedenceSymbol*>(tmpTop);
+        if ((*it)->GetItemType() == PrecSymbol_t) {
+            PrecedenceSymbol* tmpSymbol = dynamic_cast<PrecedenceSymbol*>(*it);
+            if (tmpSymbol == nullptr) {
+                throw InternalErrorException("PrecedenceParser::findFirstRule: Dynamic cast failed - real type:" + std::string(typeid(*it).name()));
+            }
+
             if (*tmpSymbol == Push) {
                 break;
             }
@@ -102,56 +120,50 @@ void PrecedenceParser::findFirstRule(std::list<StackItem*>& emptyRule)
         }
         else {
             // if its token '$' then end of stack has been reached and just return
-            if (tmpTop->GetItemType() == Token_t) {
-                Token* tmpToken = dynamic_cast<Token*>(tmpTop);
+            if ((*it)->GetItemType() == Token_t) {
+                Token* tmpToken = dynamic_cast<Token*>(*it);
+                if (tmpToken == nullptr) {
+                    throw InternalErrorException("PrecedenceParser::findFirstRule: Dynamic cast failed - real type:" + std::string(typeid(*it).name()));
+                }
+
                 if (*tmpToken == tExpEnd) {
                     break;
                 }
                 // else its part of rule, push it to the list (will be checked outside of this method)
-                emptyRule.push_front(new Token(tmpToken->GetTokenType()));
+                emptyRule.push_front(new Token(*tmpToken));
             }
             else {
                 // implies for nonterminals as well
-                Nonterminal* tmpNT = dynamic_cast<Nonterminal*>(tmpTop);
+                Nonterminal* tmpNT = dynamic_cast<Nonterminal*>(*it);
                 if (tmpNT == nullptr) {
-                    throw InternalErrorException(typeid(*tmpTop).name());
+                    throw InternalErrorException("PrecedenceParser::findFirstRule: Dynamic cast failed - real type:" + std::string(typeid(*it).name()));
                 }
-                emptyRule.push_front(new Nonterminal(tmpNT->GetNonterminalType()));
+                emptyRule.push_front(new Nonterminal(*tmpNT));
             }
-
-            tmpStack.push(this->analysisPushdown.top());
-            this->analysisPushdown.pop();
         }
 
         if (this->analysisPushdown.empty()) {
             throw InternalErrorException("ExpStack empty when finding first rule");
         }
-
-        tmpTop = this->analysisPushdown.top();
-    }
-
-    while (!tmpStack.empty()) {
-        this->analysisPushdown.push(tmpStack.top());
-        tmpStack.pop();
     }
 }
 
 Token* PrecedenceParser::findFirstTokenInStack()
 {
-    std::stack<StackItem*> tmpStack;
-    StackItem* tmpExp = this->analysisPushdown.top();
-    while (tmpExp->GetItemType() != Token_t) {
-        tmpStack.push(tmpExp);
-        this->analysisPushdown.pop();
-        tmpExp = this->analysisPushdown.top();
-    }
-    while (!tmpStack.empty()) {
-        StackItem* tmpExp2 = tmpStack.top();
-        tmpStack.pop();
-        this->analysisPushdown.push(tmpExp2);
+    StackItem* tmpExp = nullptr;
+    for (auto it = this->analysisPushdown.begin(); it != this->analysisPushdown.end(); it++) {
+        if ((*it)->GetItemType() == Token_t) {
+            tmpExp = *it;
+            break;
+        }
     }
 
-    return dynamic_cast<Token*>(tmpExp);
+    Token* toReturn = dynamic_cast<Token*>(tmpExp);
+    if (toReturn == nullptr) {
+        throw InternalErrorException("First token in stack is not token.\n");
+    }
+
+    return toReturn;
 }
 
 
@@ -161,10 +173,10 @@ bool PrecedenceParser::parseIsSuccessful(Token& inputToken)
     if (this->analysisPushdown.size() != 2) {
         return false;
     }
-    StackItem* top = this->analysisPushdown.top();
-    this->analysisPushdown.pop();
-    StackItem* second = this->analysisPushdown.top();
-    this->analysisPushdown.push(top);
+    StackItem* top = this->analysisPushdown.front();
+    this->analysisPushdown.pop_front();
+    StackItem* second = this->analysisPushdown.front();
+    this->analysisPushdown.push_front(top);
 
     return (inputToken == tExpEnd && *second == Token(tExpEnd) && *top == Nonterminal(nExpression));
 }
@@ -199,8 +211,8 @@ void PrecedenceParser::insertExpressionEnd(InputTape& inputTape) const
 void PrecedenceParser::clearStack()
 {
     while (!this->analysisPushdown.empty()) {
-        delete this->analysisPushdown.top();
-        this->analysisPushdown.pop();
+        delete this->analysisPushdown.front();
+        this->analysisPushdown.pop_front();
     }
 }
 
@@ -208,12 +220,12 @@ void PrecedenceParser::clearStack()
 void PrecedenceParser::pushPrecedence()
 {
     // Check if there is nonterminal on top of the stack, push to first or second position
-    if (this->analysisPushdown.top()->GetItemType() != Nonterminal_t) {
-        this->analysisPushdown.push(new PrecedenceSymbol(Push));
+    if (this->analysisPushdown.front()->GetItemType() != Nonterminal_t) {
+        this->analysisPushdown.push_front(new PrecedenceSymbol(Push));
         return;
     }
-    StackItem* tmp = this->analysisPushdown.top();
-    this->analysisPushdown.pop();
-    this->analysisPushdown.push(new PrecedenceSymbol(Push));
-    this->analysisPushdown.push(tmp);
+    StackItem* tmp = this->analysisPushdown.front();
+    this->analysisPushdown.pop_front();
+    this->analysisPushdown.push_front(new PrecedenceSymbol(Push));
+    this->analysisPushdown.push_front(tmp);
 }

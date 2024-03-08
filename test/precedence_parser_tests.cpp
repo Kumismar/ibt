@@ -9,14 +9,14 @@
 class PrecedenceParserTest : public ::testing::Test
 {
 protected:
-    std::stack<StackItem*> stack;
+    std::list<StackItem*> stack;
     PrecedenceParser parser = PrecedenceParser(this->stack);
     InputTape inputTape;
 };
 
 TEST_F(PrecedenceParserTest, SingleVariable)
 {
-    this->stack.push(new Nonterminal(nExpression));
+    this->stack.push_front(new Nonterminal(nExpression));
     this->inputTape = { new Token(tVariable), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser.Parse(this->inputTape));
     EXPECT_TRUE(this->stack.empty());
@@ -24,7 +24,7 @@ TEST_F(PrecedenceParserTest, SingleVariable)
 
 TEST_F(PrecedenceParserTest, SimpleAssign)
 {
-    this->stack.push(new Nonterminal(nExpression));
+    this->stack.push_front(new Nonterminal(nExpression));
     this->inputTape = { new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser.Parse(this->inputTape));
     EXPECT_TRUE(this->stack.empty());

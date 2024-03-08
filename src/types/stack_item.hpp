@@ -24,4 +24,5 @@ public:
 
     ItemType GetItemType() const;
     virtual std::string GetTypeString() const = 0;
+    virtual StackItem* Clone() const = 0;
 };

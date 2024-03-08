@@ -28,7 +28,8 @@ private:
     const NonterminalType ntType;
 
 public:
-    Nonterminal(NonterminalType t);
+    Nonterminal(const NonterminalType t);
+    Nonterminal(const Nonterminal& old);
 
     ~Nonterminal() override
     {
@@ -39,4 +40,5 @@ public:
 
     NonterminalType GetNonterminalType() const;
     std::string GetTypeString() const override;
+    StackItem* Clone() const override;
 };

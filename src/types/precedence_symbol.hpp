@@ -17,7 +17,8 @@ private:
     PrecedenceType precType;
 
 public:
-    PrecedenceSymbol(PrecedenceType type);
+    PrecedenceSymbol(const PrecedenceType type);
+    PrecedenceSymbol(const PrecedenceSymbol& old);
 
     ~PrecedenceSymbol() override
     {
@@ -25,6 +26,7 @@ public:
 
     PrecedenceType GetPrecedenceType() const;
     std::string GetTypeString() const override;
+    StackItem* Clone() const override;
 
     bool operator==(const PrecedenceType& type) const;
     bool operator==(const PrecedenceSymbol& other) const;

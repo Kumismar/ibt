@@ -19,15 +19,15 @@ bool PredictiveParser::returnedEpsilon(std::list<StackItem*>& expandedRule)
 
 void PredictiveParser::InitSyntaxAnalysis()
 {
-    this->pushdown.push(new Token(tEnd));
-    this->pushdown.push(new Nonterminal(nProgram));
+    this->pushdown.push_front(new Token(tEnd));
+    this->pushdown.push_front(new Nonterminal(nProgram));
 }
 
 void PredictiveParser::Parse(InputTape& inputTape)
 {
     Logger* logger;
     while (true) {
-        this->stackTop = this->pushdown.top();
+        this->stackTop = this->pushdown.front();
         if (inputTape.empty()) {
             throw SyntaxErrorException("Missing token(s).\n");
         }
@@ -43,9 +43,11 @@ void PredictiveParser::Parse(InputTape& inputTape)
                 // Case $:
                 if (stackToken->GetTokenType() == tEnd) {
                     if (this->inputToken->GetTokenType() == tEnd) {
-                        // tEnd was pushed as new Token, its not a pointer to something in grammars or tables
+                        // tEnd was pushed as new Token, should be deleted
                         delete stackToken;
+                        delete inputToken;
                         inputTape.pop_front();
+                        this->pushdown.pop_front();
 
                         if (inputTape.empty()) {
                             throw SyntaxAnalysisSuccess();
@@ -61,7 +63,9 @@ void PredictiveParser::Parse(InputTape& inputTape)
 
                 // Case T:
                 if (*stackToken == *inputToken) {
-                    this->pushdown.pop();
+                    delete inputToken;
+                    delete this->pushdown.front();
+                    this->pushdown.pop_front();
                     inputTape.pop_front();
                     break;
                 }
@@ -88,24 +92,20 @@ void PredictiveParser::Parse(InputTape& inputTape)
                     logger->AddLeftSide(this->stackTop);
                     Grammar* grammar = GrammarFactory::CreateGrammar(tableItem.grammarNumber);
 
-                    this->pushdown.pop();
+                    delete this->pushdown.front();
+                    this->pushdown.pop_front();
 
                     std::list<StackItem*> expandedRule = grammar->Expand(tableItem.ruleNumber);
+                    logger->AddRightSide(expandedRule);
 
                     // if right side is not epsilon, it will be pushed
                     if (!this->returnedEpsilon(expandedRule)) {
                         for (StackItem* item: expandedRule) {
-                            this->pushdown.push(item);
+                            this->pushdown.push_front(item->Clone());
                         }
                     }
 
-                    logger->AddRightSide(expandedRule);
                     logger->PrintRule();
-
-                    if (*stackNT == nProgram) {
-                        // Program was pushed as new Nonterminal, its not a pointer to something in grammars or tables
-                        delete stackNT;
-                    }
                     delete grammar;
                 }
                 else {
@@ -114,8 +114,18 @@ void PredictiveParser::Parse(InputTape& inputTape)
                 break;
             }
             default: {
-                throw InternalErrorException("Unexpected item type: " + std::to_string(static_cast<int>(this->stackTop->GetItemType())) + "\n");
+                throw InternalErrorException("Unexpected item type: " + std::string(typeid(*this->stackTop).name()) + "\n");
             }
         }
+    }
+}
+
+void PredictiveParser::ClearStack()
+{
+    if (!this->pushdown.empty()) {
+        for (const auto& item: this->pushdown) {
+            delete item;
+        }
+        this->pushdown.clear();
     }
 }

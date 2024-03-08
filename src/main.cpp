@@ -29,6 +29,13 @@ void Cleanup()
     Grammar5::Cleanup();
     Grammar6::Cleanup();
     Logger::Cleanup();
+
+    if (!inputTape.empty()) {
+        for (const auto& token: inputTape) {
+            delete token;
+        }
+        inputTape.clear();
+    }
 }
 
 void lex()
@@ -41,7 +48,8 @@ void lex()
         throw InternalErrorException("Failed to open input file.\n");
     }
     yylex();
-    fclose(yyin);
+    yylex_destroy();
+    inputTape.push_back(new Token(tEnd));
     Logger* logger = Logger::GetInstance();
     logger->PrintTokens();
 }
@@ -54,7 +62,7 @@ int main(int argc, char** argv)
 {
     processArguments(argc, argv);
 
-    std::stack<StackItem*> stackos;
+    std::list<StackItem*> stackos;
     try {
         lex();
     }
@@ -81,8 +89,6 @@ int main(int argc, char** argv)
                 currentParser = static_cast<Parser*>(&predParser);
                 currentParser->SetParserType(Predictive);
                 continue;
-            }
-            else {
             }
         }
         catch (ChangeParser const& e) {
@@ -123,6 +129,7 @@ int main(int argc, char** argv)
         }
     }
 
+    predParser.ClearStack();
     Cleanup();
     return retCode;
 }

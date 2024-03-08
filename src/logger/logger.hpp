@@ -11,10 +11,12 @@ class Logger
 private:
     static Logger* instance;
     std::ofstream file;
-    Nonterminal* leftSideRule;
+    StackItem* leftSideRule;
     std::list<StackItem*> rightSideRule;
     Logger();
     ~Logger();
+
+    void clearRule();
 
 public:
     static Logger* GetInstance();

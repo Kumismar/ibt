@@ -2,9 +2,15 @@
 #include "internal_error.hpp"
 #include "stack_item.hpp"
 
-PrecedenceSymbol::PrecedenceSymbol(PrecedenceType type)
+PrecedenceSymbol::PrecedenceSymbol(const PrecedenceType type)
 {
     this->precType = type;
+    this->itemType = PrecSymbol_t;
+}
+
+PrecedenceSymbol::PrecedenceSymbol(const PrecedenceSymbol& old)
+    : precType(old.GetPrecedenceType())
+{
     this->itemType = PrecSymbol_t;
 }
 
@@ -34,4 +40,9 @@ bool PrecedenceSymbol::operator==(const PrecedenceType& type) const
 bool PrecedenceSymbol::operator==(const PrecedenceSymbol& other) const
 {
     return this->precType == other.GetPrecedenceType();
+}
+
+StackItem* PrecedenceSymbol::Clone() const
+{
+    return new PrecedenceSymbol(*this);
 }

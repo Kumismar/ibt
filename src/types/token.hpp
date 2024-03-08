@@ -62,7 +62,7 @@ typedef union
 {
     int intVal;
     float floatVal;
-    char* stringVal;
+    std::string* stringVal = nullptr;
     bool boolVal;
 } Value;
 
@@ -82,7 +82,8 @@ public:
     {
     }
 
-    Token(TokenType type);
+    Token(const Token& old);
+    Token(const TokenType type);
     ~Token() override;
 
     bool operator==(const Token& other) const;
@@ -95,6 +96,7 @@ public:
     void SetData(DataType dtype);
     std::string GetTypeString() const override;
     std::string GetDataString() const;
+    StackItem* Clone() const override;
 };
 
 typedef std::list<Token*> InputTape;
