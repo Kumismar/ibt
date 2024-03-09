@@ -2,6 +2,7 @@
 
 %{
 #include "token.hpp"
+#include "lexical_error.hpp"
 %}
 
 %{
@@ -98,6 +99,10 @@ void add_token(TokenType ttype, DataType dtype) {
 }
 
 <LINE_COMMENT>. {
+}
+
+. {
+    throw LexicalErrorException(std::string("Unknown lexeme \"") + yytext + std::string("\""));
 }
 
 %%

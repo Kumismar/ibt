@@ -8,6 +8,7 @@
 #include "grammar_6.hpp"
 #include "internal_error.hpp"
 #include "lex.yy.h"
+#include "lexical_error.hpp"
 #include "logger.hpp"
 #include "parser.hpp"
 #include "precedence.hpp"
@@ -65,6 +66,11 @@ int main(int argc, char** argv)
     std::list<StackItem*> stackos;
     try {
         lex();
+    }
+    catch (LexicalErrorException const& e) {
+        std::cerr << "Lexical error: " << e.what() << std::endl;
+        Cleanup();
+        return 5;
     }
     catch (InternalErrorException const& e) {
         std::cerr << "Internal error: " << e.what() << std::endl;

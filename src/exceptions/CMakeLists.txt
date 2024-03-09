@@ -7,4 +7,5 @@ set_target_properties(ParserLibrary PROPERTIES
     PUBLIC_HEADER "syntax_error.hpp"
     PUBLIC_HEADER "change_parser.hpp"
     PUBLIC_HEADER "analysis_success.hpp"
+    PUBLIC_HEADER "lexical_error.hpp"
 )
