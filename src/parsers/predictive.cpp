@@ -25,7 +25,6 @@ void PredictiveParser::InitSyntaxAnalysis()
 
 void PredictiveParser::Parse(InputTape& inputTape)
 {
-    Logger* logger;
     while (true) {
         this->stackTop = this->pushdown.front();
         if (inputTape.empty()) {
@@ -45,7 +44,7 @@ void PredictiveParser::Parse(InputTape& inputTape)
                     if (this->inputToken->GetTokenType() == tEnd) {
                         // tEnd was pushed as new Token, should be deleted
                         delete stackToken;
-                        delete inputToken;
+                        delete this->inputToken;
                         inputTape.pop_front();
                         this->pushdown.pop_front();
 
@@ -62,8 +61,14 @@ void PredictiveParser::Parse(InputTape& inputTape)
                 }
 
                 // Case T:
-                if (*stackToken == *inputToken) {
-                    delete inputToken;
+                if (*this->inputToken == tExpEnd) {
+                    delete this->inputToken;
+                    inputTape.pop_front();
+                    throw ChangeParser();
+                }
+
+                if (*stackToken == *this->inputToken) {
+                    delete this->inputToken;
                     delete this->pushdown.front();
                     this->pushdown.pop_front();
                     inputTape.pop_front();
@@ -81,14 +86,14 @@ void PredictiveParser::Parse(InputTape& inputTape)
                 }
 
                 // Expression => give control to precedence parser
-                if (stackNT->GetNonterminalType() == nExpression && *inputToken != tFuncName) {
+                if (stackNT->GetNonterminalType() == nExpression && *this->inputToken != tFuncName) {
                     throw ChangeParser();
                 }
 
                 LLTableIndex tableItem = this->table[*stackNT][*this->inputToken];
                 // Rule exists -> pop old nonterminal, expand it and push new string to the stack
                 if (tableItem != LLTableIndex({ 0, 0 })) {
-                    logger = Logger::GetInstance();
+                    Logger* logger = Logger::GetInstance();
                     logger->AddLeftSide(this->stackTop);
                     Grammar* grammar = GrammarFactory::CreateGrammar(tableItem.grammarNumber);
 
