@@ -1,5 +1,6 @@
 #pragma once
 
+#include "stack_item.hpp"
 #include "token.hpp"
 #include <list>
 
@@ -24,3 +25,6 @@ public:
     ParserType GetParserType();
     void SetParserType(ParserType type);
 };
+
+typedef std::list<StackItem*> Rule;
+typedef std::list<StackItem*> AnalysisStack;

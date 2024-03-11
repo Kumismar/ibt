@@ -8,14 +8,14 @@
 class Grammar4 : public Grammar
 {
 private:
-    static const std::vector<std::list<StackItem*>> rightSideRules;
+    static const std::vector<Rule> rightSideRules;
 
 public:
     ~Grammar4() override
     {
     }
 
-    std::list<StackItem*> Expand(unsigned ruleNumber) override;
-    bool IsRule(std::list<StackItem*>& stack);
+    Rule Expand(unsigned ruleNumber) override;
+    bool IsRule(Rule& stack);
     static void Cleanup();
 };

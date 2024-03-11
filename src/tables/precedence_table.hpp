@@ -24,7 +24,6 @@ class PrecedenceTable
 private:
     static const std::vector<std::vector<char>> precTable;
 
-
 public:
     PrecRowAccessor operator[](const Token& t) const;
     static unsigned MapTokenToIndex(const Token& t);

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "grammar.hpp"
 #include "nonterminal.hpp"
 #include "stack_item.hpp"
 #include "token.hpp"
@@ -12,7 +13,7 @@ private:
     static Logger* instance;
     std::ofstream file;
     StackItem* leftSideRule;
-    std::list<StackItem*> rightSideRule;
+    Rule rightSideRule;
     Logger();
     ~Logger();
 
@@ -21,7 +22,7 @@ private:
 public:
     static Logger* GetInstance();
     void AddLeftSide(StackItem* leftSide);
-    void AddRightSide(std::list<StackItem*>& rightSide);
+    void AddRightSide(Rule& rightSide);
     void PrintRule();
     void PrintTokens();
     static void Cleanup();

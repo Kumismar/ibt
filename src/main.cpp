@@ -21,6 +21,7 @@
 #include <list>
 #include <stack>
 
+
 void Cleanup()
 {
     Grammar1::Cleanup();
@@ -63,7 +64,7 @@ int main(int argc, char** argv)
 {
     processArguments(argc, argv);
 
-    std::list<StackItem*> stackos;
+    AnalysisStack stackos;
     try {
         lex();
     }

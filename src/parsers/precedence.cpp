@@ -4,6 +4,7 @@
 #include "internal_error.hpp"
 #include "logger.hpp"
 #include "nonterminal.hpp"
+#include "parser.hpp"
 #include "precedence_symbol.hpp"
 #include "precedence_table.hpp"
 #include "stack_item.hpp"
@@ -52,7 +53,7 @@ void PrecedenceParser::Parse(InputTape& inputTape)
                 break; // switch
             }
             case '>': {
-                std::list<StackItem*> tmpRule;
+                Rule tmpRule;
                 this->findFirstRule(tmpRule);
                 Grammar4 grammar;
                 if (grammar.IsRule(tmpRule)) {
@@ -100,7 +101,7 @@ void PrecedenceParser::Parse(InputTape& inputTape)
     this->pushdown.pop_front();
 }
 
-void PrecedenceParser::findFirstRule(std::list<StackItem*>& emptyRule)
+void PrecedenceParser::findFirstRule(Rule& emptyRule)
 {
     // push to list until stack.top is precedence symbol '<' or '$'
     for (auto it = this->analysisPushdown.begin(); it != this->analysisPushdown.end(); it++) {

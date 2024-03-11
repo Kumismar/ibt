@@ -29,7 +29,8 @@ Grammar* GrammarFactory::CreateGrammar(unsigned grammarNumber)
         case 6: {
             return new Grammar6();
         }
-        default:
+        default: {
             throw InternalErrorException("Invalid grammar number: " + std::to_string(grammarNumber) + "\n");
+        }
     }
 }

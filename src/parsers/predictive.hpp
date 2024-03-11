@@ -10,19 +10,19 @@
 class PredictiveParser : public Parser
 {
 private:
-    std::list<StackItem*>& pushdown;
+    AnalysisStack& pushdown;
     StackItem* stackTop = nullptr;
     Token* inputToken = nullptr;
     LLTable table;
 
-    bool returnedEpsilon(std::list<StackItem*>& expandedRule);
+    bool returnedEpsilon(Rule& expandedRule);
 
 public:
     ~PredictiveParser()
     {
     }
 
-    PredictiveParser(std::list<StackItem*>& stack)
+    PredictiveParser(AnalysisStack& stack)
         : pushdown(stack)
     {
     }

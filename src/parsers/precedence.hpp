@@ -8,11 +8,11 @@
 class PrecedenceParser : public Parser
 {
 private:
-    std::list<StackItem*>& pushdown;
-    std::list<StackItem*> analysisPushdown;
+    AnalysisStack& pushdown;
+    AnalysisStack analysisPushdown;
 
     Token* findFirstTokenInStack();
-    void findFirstRule(std::list<StackItem*>& emptyRule);
+    void findFirstRule(Rule& emptyRule);
     bool parseIsSuccessful(Token& inputToken);
     void insertExpressionEnd(InputTape& inputTape) const;
     void pushPrecedence();
@@ -23,7 +23,7 @@ public:
     {
     }
 
-    PrecedenceParser(std::list<StackItem*>& stack)
+    PrecedenceParser(AnalysisStack& stack)
         : pushdown(stack)
     {
     }

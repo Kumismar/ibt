@@ -4,7 +4,7 @@
 #include "token.hpp"
 #include <list>
 
-const std::vector<std::list<StackItem*>> Grammar2::rightSideRules = {
+const std::vector<Rule> Grammar2::rightSideRules = {
     { new Token(tIf), new Token(tLPar), new Nonterminal(nExpression), new Token(tRPar), new Nonterminal(nCodeBlock), new Nonterminal(nIf2) },
     { new Token(tWhile), new Token(tLPar), new Nonterminal(nExpression), new Token(tRPar), new Nonterminal(nCodeBlock) },
     { new Token(tFor), new Token(tLPar), new Nonterminal(nDeclOrExpr), new Token(tSemi), new Nonterminal(nExpression), new Token(tSemi), new Nonterminal(nExpression), new Token(tRPar), new Nonterminal(nCodeBlock) },
@@ -21,16 +21,16 @@ const std::vector<std::list<StackItem*>> Grammar2::rightSideRules = {
     { new Token(tEps) },
 };
 
-std::list<StackItem*> Grammar2::Expand(unsigned ruleNumber)
+Rule Grammar2::Expand(unsigned ruleNumber)
 {
-    std::list<StackItem*> toReturn = Grammar2::rightSideRules[ruleNumber - 1];
+    Rule toReturn = Grammar2::rightSideRules[ruleNumber - 1];
     toReturn.reverse();
     return toReturn;
 }
 
 void Grammar2::Cleanup()
 {
-    for (const std::list<StackItem*>& rule: rightSideRules) {
+    for (const Rule& rule: rightSideRules) {
         for (StackItem* member: rule) {
             delete member;
         }

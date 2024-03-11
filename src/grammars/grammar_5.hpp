@@ -10,13 +10,13 @@
 class Grammar5 : public Grammar
 {
 private:
-    static const std::vector<std::list<StackItem*>> rightSideRules;
+    static const std::vector<Rule> rightSideRules;
 
 public:
     ~Grammar5() override
     {
     }
 
-    std::list<StackItem*> Expand(unsigned ruleNumber) override;
+    Rule Expand(unsigned ruleNumber) override;
     static void Cleanup();
 };

@@ -2,7 +2,7 @@
 #include "stack_item.hpp"
 #include <list>
 
-const std::vector<std::list<StackItem*>> Grammar1::rightSideRules = {
+const std::vector<Rule> Grammar1::rightSideRules = {
     { new Nonterminal(nStatement), new Nonterminal(nStatementList) },
     { new Nonterminal(nFunctionDef), new Nonterminal(nStatementList) },
     { new Nonterminal(nStatement), new Nonterminal(nStatementList) },
@@ -10,16 +10,16 @@ const std::vector<std::list<StackItem*>> Grammar1::rightSideRules = {
     { new Token(tEps) }
 };
 
-std::list<StackItem*> Grammar1::Expand(unsigned ruleNumber)
+Rule Grammar1::Expand(unsigned ruleNumber)
 {
-    std::list<StackItem*> toReturn = Grammar1::rightSideRules[ruleNumber - 1];
+    Rule toReturn = Grammar1::rightSideRules[ruleNumber - 1];
     toReturn.reverse();
     return toReturn;
 }
 
 void Grammar1::Cleanup()
 {
-    for (const std::list<StackItem*>& rule: rightSideRules) {
+    for (const Rule& rule: rightSideRules) {
         for (StackItem* member: rule) {
             delete member;
         }

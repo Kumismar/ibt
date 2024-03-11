@@ -2,7 +2,7 @@
 #include "stack_item.hpp"
 #include <list>
 
-const std::vector<std::list<StackItem*>> Grammar6::rightSideRules = {
+const std::vector<Rule> Grammar6::rightSideRules = {
     { new Nonterminal(nType) },
     { new Token(tEps) },
     { new Token(tInt) },
@@ -12,16 +12,16 @@ const std::vector<std::list<StackItem*>> Grammar6::rightSideRules = {
 };
 
 
-std::list<StackItem*> Grammar6::Expand(unsigned ruleNumber)
+Rule Grammar6::Expand(unsigned ruleNumber)
 {
-    std::list<StackItem*> toReturn = Grammar6::rightSideRules[ruleNumber - 1];
+    Rule toReturn = Grammar6::rightSideRules[ruleNumber - 1];
     toReturn.reverse();
     return toReturn;
 }
 
 void Grammar6::Cleanup()
 {
-    for (const std::list<StackItem*>& rule: rightSideRules) {
+    for (const Rule& rule: rightSideRules) {
         for (StackItem* member: rule) {
             delete member;
         }

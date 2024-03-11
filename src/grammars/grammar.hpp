@@ -3,6 +3,8 @@
 #include "stack_item.hpp"
 #include <list>
 
+typedef std::list<StackItem*> Rule;
+
 class Grammar
 {
 public:
@@ -10,5 +12,5 @@ public:
     {
     }
 
-    virtual std::list<StackItem*> Expand(unsigned ruleNumber) = 0;
+    virtual Rule Expand(unsigned ruleNumber) = 0;
 };

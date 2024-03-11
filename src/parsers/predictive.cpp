@@ -8,7 +8,7 @@
 #include "syntax_error.hpp"
 #include "token.hpp"
 
-bool PredictiveParser::returnedEpsilon(std::list<StackItem*>& expandedRule)
+bool PredictiveParser::returnedEpsilon(Rule& expandedRule)
 {
     if (expandedRule.size() == 1 && expandedRule.front()->GetItemType() == Token_t) {
         Token* t = dynamic_cast<Token*>(expandedRule.front());
@@ -100,7 +100,7 @@ void PredictiveParser::Parse(InputTape& inputTape)
                     delete this->pushdown.front();
                     this->pushdown.pop_front();
 
-                    std::list<StackItem*> expandedRule = grammar->Expand(tableItem.ruleNumber);
+                    Rule expandedRule = grammar->Expand(tableItem.ruleNumber);
                     logger->AddRightSide(expandedRule);
 
                     // if right side is not epsilon, it will be pushed

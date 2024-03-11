@@ -46,7 +46,7 @@ void Logger::AddLeftSide(StackItem* leftSide)
     this->leftSideRule = leftSide->Clone();
 }
 
-void Logger::AddRightSide(std::list<StackItem*>& rightSide)
+void Logger::AddRightSide(Rule& rightSide)
 {
     for (const StackItem* item: rightSide) {
         this->rightSideRule.push_back(item->Clone());
