@@ -76,7 +76,6 @@ void PrecedenceParser::Parse(InputTape& inputTape)
                 }
                 else {
                     this->clearStack();
-                    delete inputToken;
                     for (StackItem* item: tmpRule) {
                         delete item;
                     }
@@ -85,12 +84,10 @@ void PrecedenceParser::Parse(InputTape& inputTape)
             }
             case 'x': {
                 this->clearStack();
-                delete inputToken;
                 throw SyntaxErrorException("Invalid token.\n");
             }
             default: {
                 this->clearStack();
-                delete inputToken;
                 throw InternalErrorException("Something else than '<', '=', '>', 'x' in precedence table.\n");
             }
         }
