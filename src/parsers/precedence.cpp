@@ -35,6 +35,9 @@ void PrecedenceParser::Parse(InputTape& inputTape)
         if (this->parseIsSuccessful(*inputToken)) {
             this->clearStack();
             delete inputToken;
+            inputTape.pop_front();
+            delete this->pushdown.front();
+            this->pushdown.pop_front();
             break; // while
         }
 
@@ -92,10 +95,6 @@ void PrecedenceParser::Parse(InputTape& inputTape)
             }
         }
     }
-    inputTape.pop_front();
-    this->clearStack();
-    delete this->pushdown.front();
-    this->pushdown.pop_front();
 }
 
 void PrecedenceParser::findFirstRule(Rule& emptyRule)
