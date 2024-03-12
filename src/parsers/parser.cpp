@@ -1,5 +1,7 @@
 #include "parser.hpp"
 
+int Parser::functionCounter = 0;
+
 ParserType Parser::GetParserType()
 {
     return this->parserType;

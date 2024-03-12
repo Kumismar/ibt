@@ -18,8 +18,6 @@
 #include <cstdio>
 #include <filesystem>
 #include <iostream>
-#include <list>
-#include <stack>
 
 
 void Cleanup()
@@ -89,7 +87,7 @@ int main(int argc, char** argv)
 
     while (true) {
         try {
-            currentParser->Parse(inputTape);
+            currentParser->Parse();
 
             // Switch back to predictive after successful precedence parsing
             if (currentParser->GetParserType() == Precedence) {

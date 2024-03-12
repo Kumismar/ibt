@@ -13,77 +13,43 @@
 #include <list>
 #include <typeinfo>
 
-void PrecedenceParser::Parse(InputTape& inputTape)
+void PrecedenceParser::Parse()
 {
-    PrecedenceTable table;
-    Logger* logger;
-    this->insertExpressionEnd(inputTape);
-    this->analysisPushdown.push_front(new Token(tExpEnd));
+    this->initPrecedenceParsing();
 
     while (true) {
-        Token* inputToken = inputTape.front();
-        if (inputToken == nullptr) {
+        this->inputToken = inputTape.front();
+        if (this->inputToken == nullptr) {
             this->clearStack();
             throw InternalErrorException("Nullptr in inputTape.\n");
         }
 
-        if (inputToken->GetTokenType() == tFuncName) {
-            this->clearStack();
+        if (*this->inputToken == tFuncName) {
+            this->insertFunctionEnd();
+            this->saveFunctionContext();
+            this->functionCounter++;
             throw ChangeParser();
         }
 
-        if (this->parseIsSuccessful(*inputToken)) {
-            this->clearStack();
-            delete inputToken;
-            inputTape.pop_front();
-            delete this->pushdown.front();
-            this->pushdown.pop_front();
+        if (this->parseIsSuccessful()) {
+            this->cleanUpAfterParsing();
             break; // while
         }
 
         Token* firstToken = this->findFirstTokenInStack();
-        switch (table[*firstToken][*inputToken]) {
+        switch ((*this->table)[*firstToken][*this->inputToken]) {
             case '=': {
-                this->analysisPushdown.push_front(new Token(*inputToken));
-                delete inputToken;
+                this->analysisPushdown.push_front(new Token(*this->inputToken));
+                delete this->inputToken;
                 break; // switch
             }
             case '<': {
-                this->pushPrecedence();
-                this->analysisPushdown.push_front(new Token(*inputToken));
-                delete inputToken;
-                inputTape.pop_front();
+                this->push();
                 break; // switch
             }
             case '>': {
-                Rule tmpRule;
-                this->findFirstRule(tmpRule);
-                Grammar4 grammar;
-                if (grammar.IsRule(tmpRule)) {
-                    logger = Logger::GetInstance();
-                    logger->AddRightSide(tmpRule);
-
-                    for (unsigned i = 0; i < tmpRule.size() + 1 /* Pop rule and '<' */; i++) {
-                        delete this->analysisPushdown.front();
-                        this->analysisPushdown.pop_front();
-                    }
-                    Nonterminal* toPush = new Nonterminal(nExpression);
-                    this->analysisPushdown.push_front(toPush);
-
-                    logger->AddLeftSide(toPush);
-                    logger->PrintRule();
-                    for (StackItem* item: tmpRule) {
-                        delete item;
-                    }
-                    break; // switch
-                }
-                else {
-                    this->clearStack();
-                    for (StackItem* item: tmpRule) {
-                        delete item;
-                    }
-                    throw SyntaxErrorException("Sequence of tokens is not a rule.\n");
-                }
+                this->reduce();
+                break; // switch
             }
             case 'x': {
                 this->clearStack();
@@ -164,7 +130,7 @@ Token* PrecedenceParser::findFirstTokenInStack()
 }
 
 
-bool PrecedenceParser::parseIsSuccessful(Token& inputToken)
+bool PrecedenceParser::parseIsSuccessful()
 {
     // Only $E left on stack
     if (this->analysisPushdown.size() != 2) {
@@ -175,10 +141,10 @@ bool PrecedenceParser::parseIsSuccessful(Token& inputToken)
     StackItem* second = this->analysisPushdown.front();
     this->analysisPushdown.push_front(top);
 
-    return (inputToken == tExpEnd && *second == Token(tExpEnd) && *top == Nonterminal(nExpression));
+    return (*this->inputToken == tExpEnd && *second == Token(tExpEnd) && *top == Nonterminal(nExpression));
 }
 
-void PrecedenceParser::insertExpressionEnd(InputTape& inputTape) const
+void PrecedenceParser::insertExpressionEnd() const
 {
     int counter = 0;
     // find first non-expression token occurence and insert tExpEnd before it
@@ -213,7 +179,6 @@ void PrecedenceParser::clearStack()
     }
 }
 
-
 void PrecedenceParser::pushPrecedence()
 {
     // Check if there is nonterminal on top of the stack, push to first or second position
@@ -225,4 +190,108 @@ void PrecedenceParser::pushPrecedence()
     this->analysisPushdown.pop_front();
     this->analysisPushdown.push_front(new PrecedenceSymbol(Push));
     this->analysisPushdown.push_front(tmp);
+}
+
+void PrecedenceParser::insertFunctionEnd()
+{
+    // go through inputTape and insert tFuncEnd after the first right parenthesis matched with left parenthesis
+    int counter = 0;
+    for (auto it = inputTape.begin(); it != inputTape.end(); it++) {
+        if (**it == tLPar) {
+            counter++;
+        }
+        else if (**it == tRPar) {
+            counter--;
+        }
+
+        if (counter == 0 && **it == tRPar) {
+            inputTape.insert(++it, new Token(tFuncEnd));
+            return;
+        }
+    }
+}
+
+void PrecedenceParser::reduce()
+{
+    Rule tmpRule;
+    this->findFirstRule(tmpRule);
+    Grammar4 grammar;
+    if (grammar.IsRule(tmpRule)) {
+        this->logger = Logger::GetInstance();
+        this->logger->AddRightSide(tmpRule);
+
+        for (unsigned i = 0; i < tmpRule.size() + 1 /* Pop rule and '<' */; i++) {
+            delete this->analysisPushdown.front();
+            this->analysisPushdown.pop_front();
+        }
+        Nonterminal* toPush = new Nonterminal(nExpression);
+        this->analysisPushdown.push_front(toPush);
+
+        this->logger->AddLeftSide(toPush);
+        this->logger->PrintRule();
+        for (StackItem* item: tmpRule) {
+            delete item;
+        }
+        return;
+    }
+    else {
+        this->clearStack();
+        for (StackItem* item: tmpRule) {
+            delete item;
+        }
+        throw SyntaxErrorException("Sequence of tokens is not a rule.\n");
+    }
+}
+
+void PrecedenceParser::initPrecedenceParsing()
+{
+    this->inputToken = inputTape.front();
+    if (this->functionCounter <= 0 && *this->inputToken != tFuncEnd) {
+        this->insertExpressionEnd();
+        this->analysisPushdown.push_front(new Token(tExpEnd));
+    }
+    else if (*this->inputToken == tFuncEnd) {
+        delete this->inputToken;
+        inputTape.pop_front();
+        inputTape.push_front(new Token(tConst));
+        this->functionCounter--;
+    }
+}
+
+void PrecedenceParser::cleanUpAfterParsing()
+{
+    this->clearStack();
+    delete this->inputToken;
+    inputTape.pop_front();
+    delete this->pushdown.front();
+    this->pushdown.pop_front();
+}
+
+void PrecedenceParser::push()
+{
+    this->pushPrecedence();
+    this->analysisPushdown.push_front(new Token(*this->inputToken));
+    delete this->inputToken;
+    inputTape.pop_front();
+}
+
+void PrecedenceParser::saveFunctionContext()
+{
+    FunctionContext tmpContext;
+    int counter = 0;
+    for (auto it = inputTape.begin(); it != inputTape.end(); it++) {
+        if (**it == tFuncName) {
+            counter++;
+        }
+        else if (**it == tFuncEnd) {
+            counter--;
+        }
+
+        if (counter <= 0) {
+            break;
+        }
+
+        tmpContext.push_back(*it);
+    }
+    this->functionContexts.push(tmpContext);
 }

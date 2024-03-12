@@ -43,9 +43,10 @@ typedef enum tokenType
     tBool,
     tLCurl,
     tRCurl,
-    // Two auxiliary tokens used as stop
+    // Three auxiliary tokens used as stop
     tEnd,
     tExpEnd,
+    tFuncEnd,
     tEps
 } TokenType;
 
@@ -81,7 +82,6 @@ public:
     Token()
     {
     }
-
     Token(const Token& old);
     Token(const TokenType type);
     ~Token() override;

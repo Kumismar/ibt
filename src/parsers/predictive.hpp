@@ -4,8 +4,6 @@
 #include "parser.hpp"
 #include "stack_item.hpp"
 #include "token.hpp"
-#include <list>
-#include <stack>
 
 class PredictiveParser : public Parser
 {
@@ -13,21 +11,18 @@ private:
     AnalysisStack& pushdown;
     StackItem* stackTop = nullptr;
     Token* inputToken = nullptr;
-    LLTable table;
+    LLTable* table;
 
     bool returnedEpsilon(Rule& expandedRule);
+    void parseNonterminal();
+    void parseToken();
+    void parseEnd();
 
 public:
-    ~PredictiveParser()
-    {
-    }
-
-    PredictiveParser(AnalysisStack& stack)
-        : pushdown(stack)
-    {
-    }
+    ~PredictiveParser();
+    PredictiveParser(AnalysisStack& stack);
 
     void InitSyntaxAnalysis();
-    void Parse(InputTape& inputTape) override;
+    void Parse() override;
     void ClearStack();
 };

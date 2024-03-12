@@ -1,7 +1,6 @@
 #pragma once
 
 #include "stack_item.hpp"
-#include "token.hpp"
 #include <list>
 
 typedef enum
@@ -15,12 +14,15 @@ class Parser
 private:
     ParserType parserType;
 
+protected:
+    static int functionCounter;
+
 public:
     virtual ~Parser()
     {
     }
 
-    virtual void Parse(InputTape& inputTape) = 0;
+    virtual void Parse() = 0;
 
     ParserType GetParserType();
     void SetParserType(ParserType type);
