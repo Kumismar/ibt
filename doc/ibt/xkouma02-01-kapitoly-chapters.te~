@@ -174,7 +174,7 @@ Vstupním bodem programu není funkce \texttt{main()}, jak lze nalézt napříkl
 V~uživatelem definovaných funkcích může být větvení, iterace a~další běžné konstrukce.
 Veškeré proměnné jsou lokální, i~v~rámci hlavního těla programu.
 Soubory se zdrojovým kódem nelze slučovat a~vytvářet tak jediný modul, který by bylo možné zkompilovat.
-\todo{doplnit veci, ktere nejsou spolecne (nezabihat do detailu, vse bude specifikovano v~podnadpisech)}
+\todo{doplnit veci, ktere nejsou spolecne (nezabihat do detailu, vse bude specifikovano v podnadpisech)}
 
 \subsection*{Deklarace a definice funkcí}
 
@@ -198,7 +198,7 @@ Soubory se zdrojovým kódem nelze slučovat a~vytvářet tak jediný modul, kte
 \end{itemize}
 
 \section{Gramatický systém definujíci syntax jazyka Koubp}
-\todo{tady si nejsem uplne jisty - gramaticky system bych dal urcite do prilohy, ale rad bych zminil princip indexace + jak to vypada v~ll tabulce a implementacne vyreseny deadlock.}
+\todo{tady si nejsem uplne jisty - gramaticky system bych dal urcite do prilohy, ale rad bych zminil princip indexace + jak to vypada v ll tabulce a implementacne vyreseny deadlock.}
 \subsection*{Indexace neterminálů a význam pro implementaci} 
 
 \subsection*{Deadlock mezi neterminály statement a codeBlock}
@@ -206,46 +206,46 @@ Soubory se zdrojovým kódem nelze slučovat a~vytvářet tak jediný modul, kte
 \section{Návrh řešení syntaktického analyzátoru}
 Implementace syntaktické analýzy je silně objektově orientována, veškeré datové struktury jsou reprezentovány třídami.
 Třídy reprezentující neterminály a~terminály mají společnou nadtřídu, díky čemuž je možné je ukládat do jednoho zásobníku.
-Podobně je to i~s~jednotlivými analyzátory, a proto je možné implementovat předávání řízení pomocí výjimek bez nutnosti neustálého vzájemného volání při analýze volání funkcí.
+Podobně je to i~s jednotlivými analyzátory, a proto je možné implementovat předávání řízení pomocí výjimek bez nutnosti neustálého vzájemného volání při analýze volání funkcí.
 Jednu nadtřídu mají také gramatiky, jednotlivé instance jsou poté konstruovány pomocí tovární metody.
 
-\subsection*{Práce s~gramatikami}
+\subsection*{Práce s gramatikami}
 Gramatiky jsou rozděleny tak, aby každá z~nich tvořila ucelenou část jazyka Koubp.
 Mimo čtvrtou gramatiku jsou všechny využívány pouze pro prediktivní analýzu.
 Ačkoliv téma čtvrté gramatiky je analýza výrazů, je využívána jak precedenčním, tak prediktivním analyzátorem.
-Důvod je zvolený postup prediktivní analýzy volání funkcí\,--\,o~samotné výrazy bez volání funkcí, tedy pouze s~konstantami, proměnnými a podobně, se postará analýza precedenční.
+Důvod je zvolený postup prediktivní analýzy volání funkcí\,--\,o~samotné výrazy bez volání funkcí, tedy pouze s konstantami, proměnnými a podobně, se postará analýza precedenční.
 
 \begin{figure}[h]
-\caption{\todo{Tady bude obrázek znázorňující oba dva parsery a šest gramatik a který s~čím pracuje.}}
+\caption{\todo{Tady bude obrázek znázorňující oba dva parsery a šest gramatik a který s čím pracuje.}}
 \label{fig_schema_analyzy}    
 \end{figure}
 
 \subsection*{Předávání řízení prediktivní a precedenční analýzy}
-V~programu je implementován systém výjimek, pro potřeby této podkapitoly je třeba znát výjimku (třídu) \texttt{ChangeParser}.
+V programu je implementován systém výjimek, pro potřeby této podkapitoly je třeba znát výjimku (třídu) \texttt{ChangeParser}.
 Třída \texttt{Parser} deklaruje čistě virtuální metodu \texttt{Parse()}, která je přepsána oběma analyzátory.
 Kdykoliv se chytí výjimka \texttt{ChangeParser}, do ukazatele na třídu \texttt{Parser} se uloží adresa správného analyzátoru.
 
 \begin{figure}
-    \caption{\todo{tady bude vytazek z~kodu pro prepinani analyzatoru.}}
+    \caption{\todo{tady bude vytazek z kodu pro prepinani analyzatoru.}}
     \label{fig_schema_zmeny_parseru}
 \end{figure}
 
-V~programu je několik podnětů, které tuto výjimku vyvolají.
+V programu je několik podnětů, které tuto výjimku vyvolají.
 Jedním z~nich je neterminál \texttt{Expression} na vrcholu zásobníku pro prediktivní analýzu.
-V~tomto případě je zřejmé, že musí být předáno řízení precedenční analýze, aby mohla být provedena analýza výrazu.
+V tomto případě je zřejmé, že musí být předáno řízení precedenční analýze, aby mohla být provedena analýza výrazu.
 Pokud precedenční analýza narazí na token \texttt{tFuncName}, reprezentující počátek volání funkce, musí opět předat řízení zpět prediktivní analýze.
 
-\todo{presny popis zatim nemohu poskytnout, je to posledni vec, ktera mi chybi k~dokonceni SA. nicmene bude doplnen.}
+\todo{presny popis zatim nemohu poskytnout, je to posledni vec, ktera mi chybi k dokonceni SA. nicmene bude doplnen.}
 
 \begin{figure}[h]
-    \caption{\todo{Tady bude obrazek, kde bude napsany jednoduchy kod volani funkce, jeho reprezentace v~tokenech a navic vlozene pomocne tokeny, ktere parsery vyuzivaji.
-    Bude tam zobrazene, v~jakych mistech se provadi zmena analyz.}}
+    \caption{\todo{Tady bude obrazek, kde bude napsany jednoduchy kod volani funkce, jeho reprezentace v tokenech a navic vlozene pomocne tokeny, ktere parsery vyuzivaji.
+    Bude tam zobrazene, v jakych mistech se provadi zmena analyz.}}
 \end{figure}
 
 \section{Lexikální analýza a nástroj Flex}
-Pro usnadnění práce byl lexikální analyzátor automaticky vygenerován nástrojem \emph{Flex}\footnote{Manuál k~programu k~dispozici na \href{https://westes.github.io/flex/manual/}{https://westes.github.io/flex/manual/}.} ze souboru s~lexémy popsanými regulárními výrazy.
+Pro usnadnění práce byl lexikální analyzátor automaticky vygenerován nástrojem \emph{Flex}\footnote{Manuál k programu k dispozici na \href{https://westes.github.io/flex/manual/}{https://westes.github.io/flex/manual/}.} ze souboru s~lexémy popsanými regulárními výrazy.
 S~každým úspěšně analyzovaným lexémem následuje vložení tokenu do vstupní pásky pro syntaktickou analýzu.
-Znamená to tedy, že se nejdříve v~celém zdrojovém souboru ověří lexikální správnost, až poté správnost syntaktická. 
+Znamená to tedy, že se nejdříve v celém zdrojovém souboru ověří lexikální správnost, až poté správnost syntaktická. 
 Při konstrukci tokenu se inicializuje i~jeho datová část.
 
 \section{Abstraktní syntaktický strom}

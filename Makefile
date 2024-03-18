@@ -14,5 +14,8 @@ valgrind:
 	@[ -f build/src/Parser ] || echo "executable not built yet; 'make' first"
 	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=valgrind.log ./build/src/Parser
 
+thesis:
+	@cd doc/ibt && make
+
 clean:
 	@rm -rf build/
