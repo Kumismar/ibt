@@ -18,6 +18,7 @@
 #include <cstdio>
 #include <filesystem>
 #include <iostream>
+#include <typeinfo>
 
 
 void Cleanup()
@@ -81,7 +82,6 @@ int main(int argc, char** argv)
     PredictiveParser predParser(stackos);
     predParser.InitSyntaxAnalysis();
     Parser* currentParser = static_cast<Parser*>(&predParser);
-    currentParser->SetParserType(Predictive);
 
     int retCode = 0;
 
@@ -90,20 +90,17 @@ int main(int argc, char** argv)
             currentParser->Parse();
 
             // Switch back to predictive after successful precedence parsing
-            if (currentParser->GetParserType() == Precedence) {
+            if (typeid(*currentParser) == typeid(PrecedenceParser)) {
                 currentParser = static_cast<Parser*>(&predParser);
-                currentParser->SetParserType(Predictive);
                 continue;
             }
         }
         catch (ChangeParser const& e) {
-            if (currentParser->GetParserType() == Predictive) {
+            if (typeid(*currentParser) == typeid(PredictiveParser)) {
                 currentParser = static_cast<Parser*>(&exprParser);
-                currentParser->SetParserType(Precedence);
             }
             else {
                 currentParser = static_cast<Parser*>(&predParser);
-                currentParser->SetParserType(Predictive);
             }
             continue;
         }

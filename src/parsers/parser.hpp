@@ -11,9 +11,6 @@ typedef enum
 
 class Parser
 {
-private:
-    ParserType parserType;
-
 protected:
     static int functionCounter;
 
