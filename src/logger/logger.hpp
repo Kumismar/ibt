@@ -6,11 +6,8 @@
 #pragma once
 
 #include "grammar.hpp"
-#include "nonterminal.hpp"
 #include "stack_item.hpp"
-#include "token.hpp"
 #include <fstream>
-#include <list>
 
 class Logger
 {

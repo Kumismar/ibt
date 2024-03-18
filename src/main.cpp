@@ -44,6 +44,9 @@ void lex()
     namespace fs = std::filesystem;
     fs::path file(__FILE__);
     fs::path toOpen = file.parent_path().parent_path() / "idk.koubp";
+    if (fs::exists(toOpen)) {
+        throw InternalErrorException("Input file not found.\n");
+    }
 
     if ((yyin = fopen(toOpen.c_str(), "r")) == nullptr) {
         throw InternalErrorException("Failed to open input file.\n");
