@@ -59,7 +59,7 @@ typedef enum
     None
 } DataType;
 
-typedef union
+typedef union value
 {
     int intVal;
     float floatVal;
