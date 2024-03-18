@@ -1,7 +1,10 @@
+/**
+ * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
+ * @date 2024-03-18
+ */
+
 #include "logger.hpp"
 #include "internal_error.hpp"
-#include "nonterminal.hpp"
-#include "precedence_symbol.hpp"
 #include "stack_item.hpp"
 #include "token.hpp"
 #include <filesystem>

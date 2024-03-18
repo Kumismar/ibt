@@ -1,3 +1,8 @@
+/**
+ * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
+ * @date 2024-03-18
+ */
+
 #include "precedence_table.hpp"
 #include "internal_error.hpp"
 #include "token.hpp"

@@ -1,8 +1,12 @@
+/**
+ * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
+ * @date 2024-03-18
+ */
+
 #include "grammar_3.hpp"
 #include "nonterminal.hpp"
 #include "stack_item.hpp"
 #include "token.hpp"
-#include <list>
 
 const std::vector<Rule> Grammar3::rightSideRules = {
     { new Token(tFunction), new Token(tFuncName), new Token(tLPar), new Nonterminal(nParams), new Token(tRPar), new Token(tColon), new Nonterminal(nVoluntaryType), new Token(tLCurl), new Nonterminal(nStatements), new Token(tRCurl) },

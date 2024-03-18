@@ -1,3 +1,6 @@
+# Author: Ondřej Koumar
+# Date: 2024-03-18
+
 include(FetchContent)
 
 set(project_dir

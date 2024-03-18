@@ -1,3 +1,8 @@
+/**
+ * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
+ * @date 2024-03-18
+ */
+
 #include "precedence.hpp"
 #include "change_parser.hpp"
 #include "grammar_4.hpp"

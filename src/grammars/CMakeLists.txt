@@ -1,3 +1,6 @@
+# Author: Ondřej Koumar
+# Date: 2024-03-18
+
 target_sources(ParserLibrary PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/grammar_1.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/grammar_2.cpp"

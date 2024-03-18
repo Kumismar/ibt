@@ -1,3 +1,8 @@
+/**
+ * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
+ * @date 2024-03-18
+ */
+
 #include "predictive.hpp"
 #include "analysis_success.hpp"
 #include "change_parser.hpp"

@@ -1,6 +1,12 @@
+/**
+ * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
+ * @date 2024-03-18
+ */
+
 #include "grammar_6.hpp"
+#include "nonterminal.hpp"
 #include "stack_item.hpp"
-#include <list>
+#include "token.hpp"
 
 const std::vector<Rule> Grammar6::rightSideRules = {
     { new Nonterminal(nType) },

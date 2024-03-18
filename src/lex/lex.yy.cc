@@ -538,11 +538,15 @@ int yy_flex_debug = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
 #line 1 "lex.l"
-#line 4 "lex.l"
+#line 2 "lex.l"
+    /*
+    *  Author: Ondřej Koumar
+    *  Date: 2024-03-18
+    */
 #include "token.hpp"
 #include "lexical_error.hpp"
-#line 544 "lex.yy.cc"
-#line 9 "lex.l"
+#line 548 "lex.yy.cc"
+#line 14 "lex.l"
 TokenType previous_token = tEps;
 void add_token(TokenType ttype, DataType dtype) {
     Token* token = new Token();
@@ -551,9 +555,9 @@ void add_token(TokenType ttype, DataType dtype) {
     inputTape.push_back(token);
     previous_token = ttype;
 }
-#line 554 "lex.yy.cc"
+#line 558 "lex.yy.cc"
 
-#line 556 "lex.yy.cc"
+#line 560 "lex.yy.cc"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -772,10 +776,10 @@ YY_DECL
 		}
 
 	{
-#line 22 "lex.l"
+#line 27 "lex.l"
 
 
-#line 778 "lex.yy.cc"
+#line 782 "lex.yy.cc"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -835,192 +839,192 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 24 "lex.l"
+#line 29 "lex.l"
 ;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 25 "lex.l"
+#line 30 "lex.l"
 { add_token(tIf, String); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 26 "lex.l"
+#line 31 "lex.l"
 { add_token(tWhile, String); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 27 "lex.l"
+#line 32 "lex.l"
 { add_token(tFor, String); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 28 "lex.l"
+#line 33 "lex.l"
 { add_token(tReturn, String); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 29 "lex.l"
+#line 34 "lex.l"
 { add_token(tSemi, String); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 30 "lex.l"
+#line 35 "lex.l"
 { add_token(tElseif, String); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 31 "lex.l"
+#line 36 "lex.l"
 { add_token(tElse, String); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 32 "lex.l"
+#line 37 "lex.l"
 { add_token(tLPar, String); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 33 "lex.l"
+#line 38 "lex.l"
 { add_token(tRPar, String); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 34 "lex.l"
+#line 39 "lex.l"
 { add_token(tLCurl, String); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 35 "lex.l"
+#line 40 "lex.l"
 { add_token(tRCurl, String); }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 36 "lex.l"
+#line 41 "lex.l"
 { add_token(tPlus, String); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 37 "lex.l"
+#line 42 "lex.l"
 { add_token(tMul, String); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 38 "lex.l"
+#line 43 "lex.l"
 { add_token(tDiv, String); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 39 "lex.l"
+#line 44 "lex.l"
 { add_token(tEq, String); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 40 "lex.l"
+#line 45 "lex.l"
 { add_token(tNEq, String); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 41 "lex.l"
+#line 46 "lex.l"
 { add_token(tLess, String); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 42 "lex.l"
+#line 47 "lex.l"
 { add_token(tLEq, String); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 43 "lex.l"
+#line 48 "lex.l"
 { add_token(tGreater, String); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 44 "lex.l"
+#line 49 "lex.l"
 { add_token(tGEq, String); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 45 "lex.l"
+#line 50 "lex.l"
 { add_token(tAssign, String); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 46 "lex.l"
+#line 51 "lex.l"
 { add_token(tAnd, String); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 47 "lex.l"
+#line 52 "lex.l"
 { add_token(tOr, String); }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 48 "lex.l"
+#line 53 "lex.l"
 { add_token(tExcl, String); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 49 "lex.l"
+#line 54 "lex.l"
 { add_token(tComma, String); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 50 "lex.l"
+#line 55 "lex.l"
 { add_token(tColon, String); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 51 "lex.l"
+#line 56 "lex.l"
 { add_token(tConcat, String); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 52 "lex.l"
+#line 57 "lex.l"
 { add_token(tFunction, String); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 53 "lex.l"
+#line 58 "lex.l"
 { add_token(tConst, Int); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 54 "lex.l"
+#line 59 "lex.l"
 { add_token(tConst, Float); }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 55 "lex.l"
+#line 60 "lex.l"
 { add_token(tConst, Bool); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 56 "lex.l"
+#line 61 "lex.l"
 { add_token(tInt, String); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 57 "lex.l"
+#line 62 "lex.l"
 { add_token(tFloat, String); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 58 "lex.l"
+#line 63 "lex.l"
 { add_token(tBool, String); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 59 "lex.l"
+#line 64 "lex.l"
 { add_token(tString, String); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 60 "lex.l"
+#line 65 "lex.l"
 { add_token(tConst, String); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 61 "lex.l"
+#line 66 "lex.l"
 { 
   
 
@@ -1037,7 +1041,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 75 "lex.l"
+#line 80 "lex.l"
 { 
     if (previous_token == tVariable || previous_token == tConst || previous_token == tRPar)
         add_token(tMinus, String); 
@@ -1047,58 +1051,58 @@ YY_RULE_SETUP
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 82 "lex.l"
+#line 87 "lex.l"
 {
     BEGIN(LINE_COMMENT); 
 }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 86 "lex.l"
+#line 91 "lex.l"
 {
     BEGIN(COMMENT); 
 }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 90 "lex.l"
+#line 95 "lex.l"
 {
     BEGIN(INITIAL); 
 }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 94 "lex.l"
+#line 99 "lex.l"
 {
 }
 	YY_BREAK
 case 44:
 /* rule 44 can match eol */
 YY_RULE_SETUP
-#line 97 "lex.l"
+#line 102 "lex.l"
 {
     BEGIN(INITIAL); 
 }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 101 "lex.l"
+#line 106 "lex.l"
 {
 }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 104 "lex.l"
+#line 109 "lex.l"
 {
     throw LexicalErrorException(std::string("Unknown lexeme \"") + yytext + std::string("\""));
 }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 108 "lex.l"
+#line 113 "lex.l"
 ECHO;
 	YY_BREAK
-#line 1101 "lex.yy.cc"
+#line 1105 "lex.yy.cc"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENT):
 case YY_STATE_EOF(LINE_COMMENT):
@@ -2105,7 +2109,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 108 "lex.l"
+#line 113 "lex.l"
 
 
 int yywrap()

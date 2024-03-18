@@ -1,8 +1,12 @@
+/**
+ * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
+ * @date 2024-03-18
+ */
+
 #include "grammar_4.hpp"
 #include "nonterminal.hpp"
 #include "token.hpp"
 #include <list>
-#include <pthread.h>
 
 const std::vector<Rule> Grammar4::rightSideRules = {
     { new Nonterminal(nExpression), new Token(tPlus), new Nonterminal(nExpression) },

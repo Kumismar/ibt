@@ -1,8 +1,11 @@
+/**
+ * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
+ * @date 2024-03-18
+ */
+
 #pragma once
 
 #include "grammar.hpp"
-#include "stack_item.hpp"
-#include <list>
 #include <vector>
 
 class Grammar4 : public Grammar

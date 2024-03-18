@@ -1,8 +1,12 @@
+/**
+ * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
+ * @date 2024-03-18
+ */
+
 #include "grammar_2.hpp"
 #include "nonterminal.hpp"
 #include "stack_item.hpp"
 #include "token.hpp"
-#include <list>
 
 const std::vector<Rule> Grammar2::rightSideRules = {
     { new Token(tIf), new Token(tLPar), new Nonterminal(nExpression), new Token(tRPar), new Nonterminal(nCodeBlock), new Nonterminal(nIf2) },

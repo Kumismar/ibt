@@ -1,3 +1,8 @@
+    /*
+    *  Author: Ondřej Koumar
+    *  Date: 2024-03-18
+    */
+
 %option header-file="lex.yy.h" pointer
 
 %{

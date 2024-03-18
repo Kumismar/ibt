@@ -1,3 +1,6 @@
+# Author: Ondřej Koumar
+# Date: 2024-03-18
+
 set(project_dir ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
 add_library(ParserLibrary)

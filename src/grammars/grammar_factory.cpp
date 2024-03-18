@@ -1,3 +1,8 @@
+/**
+ * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
+ * @date 2024-03-18
+ */
+
 #include "grammar_factory.hpp"
 #include "grammar_1.hpp"
 #include "grammar_2.hpp"
