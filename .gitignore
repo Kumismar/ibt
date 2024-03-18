@@ -47,7 +47,9 @@ cmake-build-debug/
 *.aux
 *.bbl
 *.blg
-*.log
+*.lof
 *.out
 *.toc
 *.synctex.gz
+*.ptc
+*.pdf
