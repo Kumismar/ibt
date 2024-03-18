@@ -3,15 +3,13 @@
 #include "stack_item.hpp"
 
 PrecedenceSymbol::PrecedenceSymbol(const PrecedenceType type)
+    : precType(type)
 {
-    this->precType = type;
-    this->itemType = PrecSymbol_t;
 }
 
 PrecedenceSymbol::PrecedenceSymbol(const PrecedenceSymbol& old)
     : precType(old.GetPrecedenceType())
 {
-    this->itemType = PrecSymbol_t;
 }
 
 PrecedenceType PrecedenceSymbol::GetPrecedenceType() const

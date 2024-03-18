@@ -28,27 +28,22 @@ void PredictiveParser::Parse()
         }
         this->inputToken = inputTape.front();
 
-        switch (this->stackTop->GetItemType()) {
-            // Case T or $:
-            case Token_t: {
-                this->parseToken();
-                break;
-            }
-            // Case N:
-            case Nonterminal_t: {
-                this->parseNonterminal();
-                break;
-            }
-            default: {
-                throw InternalErrorException("Unexpected item type: " + std::string(typeid(*this->stackTop).name()) + "\n");
-            }
+        if (typeid(*this->stackTop) == typeid(Token)) {
+            this->parseToken();
+        }
+        else if (typeid(*this->stackTop) == typeid(Nonterminal)) {
+            this->parseNonterminal();
+        }
+        else {
+            throw InternalErrorException("Unexpected item type: " + std::string(typeid(*this->stackTop).name()) + "\n");
         }
     }
 }
 
 bool PredictiveParser::returnedEpsilon(Rule& expandedRule)
 {
-    if (expandedRule.size() == 1 && expandedRule.front()->GetItemType() == Token_t) {
+    StackItem* front = expandedRule.front();
+    if (expandedRule.size() == 1 && typeid(*front) == typeid(Token)) {
         Token* t = dynamic_cast<Token*>(expandedRule.front());
         return *t == tEps;
     }

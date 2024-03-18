@@ -68,10 +68,11 @@ void PrecedenceParser::findFirstRule(Rule& emptyRule)
     // push to list until stack.top is precedence symbol '<' or '$'
     for (auto it = this->analysisPushdown.begin(); it != this->analysisPushdown.end(); it++) {
         // if its precendence symbol '<' then just return
-        if ((*it)->GetItemType() == PrecSymbol_t) {
-            PrecedenceSymbol* tmpSymbol = dynamic_cast<PrecedenceSymbol*>(*it);
+        StackItem* tmpItem = *it;
+        if (typeid(*tmpItem) == typeid(PrecedenceSymbol)) {
+            PrecedenceSymbol* tmpSymbol = dynamic_cast<PrecedenceSymbol*>(tmpItem);
             if (tmpSymbol == nullptr) {
-                throw InternalErrorException("PrecedenceParser::findFirstRule: Dynamic cast failed - real type:" + std::string(typeid(*it).name()));
+                throw InternalErrorException("PrecedenceParser::findFirstRule: Dynamic cast failed - real type:" + std::string(typeid(*tmpItem).name()));
             }
 
             if (*tmpSymbol == Push) {
@@ -83,10 +84,10 @@ void PrecedenceParser::findFirstRule(Rule& emptyRule)
         }
         else {
             // if its token '$' then end of stack has been reached and just return
-            if ((*it)->GetItemType() == Token_t) {
-                Token* tmpToken = dynamic_cast<Token*>(*it);
+            if (typeid(*tmpItem) == typeid(Token)) {
+                Token* tmpToken = dynamic_cast<Token*>(tmpItem);
                 if (tmpToken == nullptr) {
-                    throw InternalErrorException("PrecedenceParser::findFirstRule: Dynamic cast failed - real type:" + std::string(typeid(*it).name()));
+                    throw InternalErrorException("PrecedenceParser::findFirstRule: Dynamic cast failed - real type:" + std::string(typeid(*tmpItem).name()));
                 }
 
                 if (*tmpToken == tExpEnd) {
@@ -95,11 +96,11 @@ void PrecedenceParser::findFirstRule(Rule& emptyRule)
                 // else its part of rule, push it to the list (will be checked outside of this method)
                 emptyRule.push_front(new Token(*tmpToken));
             }
-            else {
+            else { // typeid(*tmpItem) == typeid(Nonterminal)
                 // implies for nonterminals as well
-                Nonterminal* tmpNT = dynamic_cast<Nonterminal*>(*it);
+                Nonterminal* tmpNT = dynamic_cast<Nonterminal*>(tmpItem);
                 if (tmpNT == nullptr) {
-                    throw InternalErrorException("PrecedenceParser::findFirstRule: Dynamic cast failed - real type:" + std::string(typeid(*it).name()));
+                    throw InternalErrorException("PrecedenceParser::findFirstRule: Dynamic cast failed - real type:" + std::string(typeid(*tmpItem).name()));
                 }
                 emptyRule.push_front(new Nonterminal(*tmpNT));
             }
@@ -115,8 +116,9 @@ Token* PrecedenceParser::findFirstTokenInStack()
 {
     StackItem* tmpExp = nullptr;
     for (auto it = this->analysisPushdown.begin(); it != this->analysisPushdown.end(); it++) {
-        if ((*it)->GetItemType() == Token_t) {
-            tmpExp = *it;
+        StackItem* tmpItem = *it;
+        if (typeid(*tmpItem) == typeid(Token)) {
+            tmpExp = tmpItem;
             break;
         }
     }
@@ -148,24 +150,24 @@ void PrecedenceParser::insertExpressionEnd() const
 {
     int counter = 0;
     // find first non-expression token occurence and insert tExpEnd before it
-    for (auto it = inputTape.begin(); it != inputTape.end(); it++) {
+    for (auto token = inputTape.begin(); token != inputTape.end(); token++) {
         // if token is comma or semicolon, insert tExpEnd before it
 
-        if (**it == tSemi || **it == tComma || **it == tEnd) {
-            inputTape.insert(it, new Token(tExpEnd));
+        if (**token == tSemi || **token == tComma) {
+            inputTape.insert(token, new Token(tExpEnd));
             return;
         }
 
         // insert tExpEnd before the first right parenthesis that is not matched with left parenthesis
-        if (**it == tLPar) {
+        if (**token == tLPar) {
             counter++;
         }
-        else if (**it == tRPar) {
+        else if (**token == tRPar) {
             counter--;
         }
 
         if (counter < 0) {
-            inputTape.insert(it, new Token(tExpEnd));
+            inputTape.insert(token, new Token(tExpEnd));
             return;
         }
     }
@@ -182,30 +184,30 @@ void PrecedenceParser::clearStack()
 void PrecedenceParser::pushPrecedence()
 {
     // Check if there is nonterminal on top of the stack, push to first or second position
-    if (this->analysisPushdown.front()->GetItemType() != Nonterminal_t) {
+    StackItem* tmpStackTop = this->analysisPushdown.front();
+    if (typeid(*tmpStackTop) == typeid(Nonterminal)) {
         this->analysisPushdown.push_front(new PrecedenceSymbol(Push));
         return;
     }
-    StackItem* tmp = this->analysisPushdown.front();
     this->analysisPushdown.pop_front();
     this->analysisPushdown.push_front(new PrecedenceSymbol(Push));
-    this->analysisPushdown.push_front(tmp);
+    this->analysisPushdown.push_front(tmpStackTop);
 }
 
 void PrecedenceParser::insertFunctionEnd()
 {
     // go through inputTape and insert tFuncEnd after the first right parenthesis matched with left parenthesis
     int counter = 0;
-    for (auto it = inputTape.begin(); it != inputTape.end(); it++) {
-        if (**it == tLPar) {
+    for (auto token = inputTape.begin(); token != inputTape.end(); token++) {
+        if (**token == tLPar) {
             counter++;
         }
-        else if (**it == tRPar) {
+        else if (**token == tRPar) {
             counter--;
         }
 
-        if (counter == 0 && **it == tRPar) {
-            inputTape.insert(++it, new Token(tFuncEnd));
+        if (counter == 0 && **token == tRPar) {
+            inputTape.insert(++token, new Token(tFuncEnd));
             return;
         }
     }
@@ -279,11 +281,11 @@ void PrecedenceParser::saveFunctionContext()
 {
     FunctionContext tmpContext;
     int counter = 0;
-    for (auto it = inputTape.begin(); it != inputTape.end(); it++) {
-        if (**it == tFuncName) {
+    for (auto token = inputTape.begin(); token != inputTape.end(); token++) {
+        if (**token == tFuncName) {
             counter++;
         }
-        else if (**it == tFuncEnd) {
+        else if (**token == tFuncEnd) {
             counter--;
         }
 
@@ -291,7 +293,7 @@ void PrecedenceParser::saveFunctionContext()
             break;
         }
 
-        tmpContext.push_back(*it);
+        tmpContext.push_back(*token);
     }
     this->functionContexts.push(tmpContext);
 }

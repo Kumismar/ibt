@@ -8,14 +8,12 @@ InputTape inputTape;
 Token::Token(const TokenType t)
     : type(t)
 {
-    this->itemType = Token_t;
     this->data.type = None;
 }
 
 Token::Token(const Token& other)
     : type(other.GetTokenType())
 {
-    this->itemType = Token_t;
     if (other.data.type == String) {
         this->data.type = String;
         this->data.value.stringVal = new std::string(*other.data.value.stringVal);
