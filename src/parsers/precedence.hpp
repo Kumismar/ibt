@@ -37,15 +37,7 @@ private:
     void saveFunctionContext();
 
 public:
-    ~PrecedenceParser() override
-    {
-        delete this->table;
-    }
-
-    PrecedenceParser(AnalysisStack& stack)
-        : pushdown(stack)
-    {
-        this->table = new PrecedenceTable();
-    }
+    ~PrecedenceParser() override;
+    PrecedenceParser(AnalysisStack& stack);
     void Parse() override;
 };

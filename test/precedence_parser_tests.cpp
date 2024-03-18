@@ -2,13 +2,14 @@
 
 #include "change_parser.hpp"
 #include "nonterminal.hpp"
+#include "parser.hpp"
 #include "precedence.hpp"
 #include "token.hpp"
 
 class PrecedenceParserTest : public ::testing::Test
 {
 protected:
-    std::list<StackItem*> stack;
+    AnalysisStack stack;
     PrecedenceParser parser = PrecedenceParser(this->stack);
 };
 

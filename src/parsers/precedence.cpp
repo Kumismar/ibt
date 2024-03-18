@@ -18,6 +18,17 @@
 #include <list>
 #include <typeinfo>
 
+PrecedenceParser::PrecedenceParser(AnalysisStack& stack)
+    : pushdown(stack)
+{
+    this->table = new PrecedenceTable();
+}
+
+PrecedenceParser::~PrecedenceParser()
+{
+    delete this->table;
+}
+
 void PrecedenceParser::Parse()
 {
     this->initPrecedenceParsing();
@@ -72,14 +83,14 @@ void PrecedenceParser::findFirstRule(Rule& emptyRule)
 {
     // push to list until stack.top is precedence symbol '<' or '$'
     for (auto it = this->analysisPushdown.begin(); it != this->analysisPushdown.end(); it++) {
-        // if its precendence symbol '<' then just return
         StackItem* tmpItem = *it;
         if (typeid(*tmpItem) == typeid(PrecedenceSymbol)) {
             PrecedenceSymbol* tmpSymbol = dynamic_cast<PrecedenceSymbol*>(tmpItem);
             if (tmpSymbol == nullptr) {
-                throw InternalErrorException("PrecedenceParser::findFirstRule: Dynamic cast failed - real type:" + std::string(typeid(*tmpItem).name()));
+                throw InternalErrorException("PrecedenceParser::findFirstRule: Dynamic cast to PrecedenceSymbol* failed - real type:" + std::string(typeid(*tmpItem).name()));
             }
 
+            // if its precendence symbol '<' then just return
             if (*tmpSymbol == Push) {
                 break;
             }
@@ -87,29 +98,31 @@ void PrecedenceParser::findFirstRule(Rule& emptyRule)
                 throw InternalErrorException("Different precedence symbol than '<' on the stack.\n");
             }
         }
-        else {
-            // if its token '$' then end of stack has been reached and just return
-            if (typeid(*tmpItem) == typeid(Token)) {
-                Token* tmpToken = dynamic_cast<Token*>(tmpItem);
-                if (tmpToken == nullptr) {
-                    throw InternalErrorException("PrecedenceParser::findFirstRule: Dynamic cast failed - real type:" + std::string(typeid(*tmpItem).name()));
-                }
+        else if (typeid(*tmpItem) == typeid(Token)) {
+            Token* tmpToken = dynamic_cast<Token*>(tmpItem);
+            if (tmpToken == nullptr) {
+                throw InternalErrorException("PrecedenceParser::findFirstRule: Dynamic cast to Token* failed - real type:" + std::string(typeid(*tmpItem).name()));
+            }
 
-                if (*tmpToken == tExpEnd) {
-                    break;
-                }
-                // else its part of rule, push it to the list (will be checked outside of this method)
-                emptyRule.push_front(new Token(*tmpToken));
+            // if its token '$' then end of stack has been reached and just return
+            if (*tmpToken == tExpEnd) {
+                break;
             }
-            else { // typeid(*tmpItem) == typeid(Nonterminal)
-                // implies for nonterminals as well
-                Nonterminal* tmpNT = dynamic_cast<Nonterminal*>(tmpItem);
-                if (tmpNT == nullptr) {
-                    throw InternalErrorException("PrecedenceParser::findFirstRule: Dynamic cast failed - real type:" + std::string(typeid(*tmpItem).name()));
-                }
-                emptyRule.push_front(new Nonterminal(*tmpNT));
-            }
+            // else its part of rule, push it
+            emptyRule.push_front(new Token(*tmpToken));
         }
+        else if (typeid(*tmpItem) == typeid(Nonterminal)) {
+            // implies for nonterminals as well
+            Nonterminal* tmpNT = dynamic_cast<Nonterminal*>(tmpItem);
+            if (tmpNT == nullptr) {
+                throw InternalErrorException("PrecedenceParser::findFirstRule: Dynamic cast to Nonterminal* failed - real type:" + std::string(typeid(*tmpItem).name()));
+            }
+            emptyRule.push_front(new Nonterminal(*tmpNT));
+        }
+        else {
+            throw InternalErrorException("PrecedenceParser::findFirstRule: Unexpected type on stack: " + std::string(typeid(*tmpItem).name()) + ".\n");
+        }
+
 
         if (this->analysisPushdown.empty()) {
             throw InternalErrorException("ExpStack empty when finding first rule");
@@ -156,14 +169,13 @@ void PrecedenceParser::insertExpressionEnd() const
     int counter = 0;
     // find first non-expression token occurence and insert tExpEnd before it
     for (auto token = inputTape.begin(); token != inputTape.end(); token++) {
-        // if token is comma or semicolon, insert tExpEnd before it
-
         if (**token == tSemi || **token == tComma) {
             inputTape.insert(token, new Token(tExpEnd));
             return;
         }
 
         // insert tExpEnd before the first right parenthesis that is not matched with left parenthesis
+        // simulates end of condition
         if (**token == tLPar) {
             counter++;
         }
