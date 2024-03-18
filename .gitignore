@@ -42,3 +42,12 @@ cmake-build-debug/
 
 # koubp files
 *.koubp
+
+# latex files
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.synctex.gz
