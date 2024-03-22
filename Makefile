@@ -4,7 +4,7 @@ all:
 
 run:
 	@[ -f build/src/Parser ] || echo "executable not build yet; 'make' first"
-	@./build/src/Parser
+	@./build/src/Parser input.koubp
 
 runtest:
 	@[ -f build/test/ParserTest ] || echo "executable not built yet; 'make' first"

@@ -10,11 +10,13 @@
 Nonterminal::Nonterminal(const NonterminalType t)
     : ntType(t)
 {
+    this->symbType = Nonterminal_t;
 }
 
 Nonterminal::Nonterminal(const Nonterminal& old)
     : ntType(old.GetNonterminalType())
 {
+    this->symbType = Nonterminal_t;
 }
 
 bool Nonterminal::operator==(const NonterminalType& other) const

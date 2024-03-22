@@ -44,12 +44,17 @@ void Cleanup()
     }
 }
 
-void lex()
+void Lex(std::string& filename)
 {
     namespace fs = std::filesystem;
-    fs::path file(__FILE__);
-    fs::path toOpen = file.parent_path().parent_path() / "idk.koubp";
-    if (fs::exists(toOpen)) {
+    // fs::path file(__FILE__);
+    // fs::path toOpen = file.parent_path().parent_path() / "idk.koubp";
+    // if (!fs::exists(toOpen)) {
+    //     throw InternalErrorException("Input file not found.\n");
+    // }
+
+    fs::path toOpen(filename);
+    if (!fs::exists(toOpen)) {
         throw InternalErrorException("Input file not found.\n");
     }
 
@@ -63,17 +68,21 @@ void lex()
     logger->PrintTokens();
 }
 
-void processArguments(int argc, char** argv)
+std::string GetFileName(int argc, char** argv)
 {
+    if (argc != 2) {
+        throw InternalErrorException("Invalid number of arguments.\n");
+    }
+    return std::string(argv[1]);
 }
 
 int main(int argc, char** argv)
 {
-    processArguments(argc, argv);
-
     AnalysisStack stackos;
+    std::string filename = GetFileName(argc, argv);
+
     try {
-        lex();
+        Lex(filename);
     }
     catch (LexicalErrorException const& e) {
         std::cerr << "Lexical error: " << e.what() << std::endl;

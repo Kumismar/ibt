@@ -10,11 +10,13 @@
 PrecedenceSymbol::PrecedenceSymbol(const PrecedenceType type)
     : precType(type)
 {
+    this->symbType = PrecSymbol_t;
 }
 
 PrecedenceSymbol::PrecedenceSymbol(const PrecedenceSymbol& old)
     : precType(old.GetPrecedenceType())
 {
+    this->symbType = PrecSymbol_t;
 }
 
 PrecedenceType PrecedenceSymbol::GetPrecedenceType() const

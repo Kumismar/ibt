@@ -16,6 +16,9 @@ typedef enum
 
 class Parser
 {
+private:
+    ParserType parserType;
+
 protected:
     static int functionCounter;
 
@@ -27,7 +30,6 @@ public:
     virtual void Parse() = 0;
 
     ParserType GetParserType();
-    void SetParserType(ParserType type);
 };
 
 typedef std::list<StackItem*> Rule;

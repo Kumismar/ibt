@@ -6,6 +6,7 @@
 #include "token.hpp"
 #include "internal_error.hpp"
 #include "lex.yy.h"
+#include "stack_item.hpp"
 #include <string>
 
 InputTape inputTape;
@@ -14,7 +15,9 @@ Token::Token(const TokenType t)
     : type(t)
 {
     this->data.type = None;
+    this->symbType = Token_t;
 }
+
 
 Token::Token(const Token& other)
     : type(other.GetTokenType())
@@ -197,4 +200,15 @@ std::string Token::GetDataString() const
 StackItem* Token::Clone() const
 {
     return new Token(*this);
+}
+
+
+void Token::AddToken(TokenType ttype, DataType dtype)
+{
+    extern TokenType previousToken;
+    Token* token = new Token();
+    token->SetTokenType(ttype);
+    token->SetData(dtype);
+    inputTape.push_back(token);
+    previousToken = ttype;
 }

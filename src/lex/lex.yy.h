@@ -215,6 +215,7 @@ extern char *yytext;
 #define INITIAL 0
 #define COMMENT 1
 #define LINE_COMMENT 2
+#define STRING 3
 
 #endif
 
@@ -468,9 +469,9 @@ extern int yylex (void);
 #undef yyTABLES_NAME
 #endif
 
-#line 113 "lex.l"
+#line 104 "lex.l"
 
 
-#line 474 "lex.yy.h"
+#line 475 "lex.yy.h"
 #undef yyIN_HEADER
 #endif /* yyHEADER_H */

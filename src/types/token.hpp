@@ -102,6 +102,7 @@ public:
     std::string GetTypeString() const override;
     std::string GetDataString() const;
     StackItem* Clone() const override;
+    static void AddToken(TokenType ttype, DataType dtype);
 };
 
 typedef std::list<Token*> InputTape;

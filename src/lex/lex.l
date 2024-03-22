@@ -11,77 +11,70 @@
 %}
 
 %{
-TokenType previous_token = tEps;
-void add_token(TokenType ttype, DataType dtype) {
-    Token* token = new Token();
-    token->SetTokenType(ttype);
-    token->SetData(dtype);
-    inputTape.push_back(token);
-    previous_token = ttype;
-}
+    TokenType previousToken = tEps;
 %}
 
 %x COMMENT
 %x LINE_COMMENT
+%x STRING
 
 %%
 
 [ \n\t]         ;
-"if"            { add_token(tIf, String); }
-"while"         { add_token(tWhile, String); }
-"for"           { add_token(tFor, String); }
-"return"        { add_token(tReturn, String); }
-";"             { add_token(tSemi, String); }
-"elseif"        { add_token(tElseif, String); }
-"else"          { add_token(tElse, String); }
-"("             { add_token(tLPar, String); }
-")"             { add_token(tRPar, String); }
-"{"             { add_token(tLCurl, String); }
-"}"             { add_token(tRCurl, String); }
-"+"             { add_token(tPlus, String); }
-"*"             { add_token(tMul, String); }
-"/"             { add_token(tDiv, String); }
-"=="            { add_token(tEq, String); }
-"!="            { add_token(tNEq, String); }
-"<"             { add_token(tLess, String); }
-"<="            { add_token(tLEq, String); }
-">"             { add_token(tGreater, String); }
-">="            { add_token(tGEq, String); }
-"="             { add_token(tAssign, String); }
-"&&"            { add_token(tAnd, String); }
-"||"            { add_token(tOr, String); }
-"!"             { add_token(tExcl, String); }
-","             { add_token(tComma, String); }
-":"             { add_token(tColon, String); }
-"."             { add_token(tConcat, String); }
-"function"      { add_token(tFunction, String); }
-[0-9]+          { add_token(tConst, Int); }
-[0-9]+"."[0-9]+ { add_token(tConst, Float); }
-"true"|"false"  { add_token(tConst, Bool); }
-"int"           { add_token(tInt, String); }
-"float"         { add_token(tFloat, String); }
-"bool"          { add_token(tBool, String); }
-"string"        { add_token(tString, String); }
-"\"(?:\\[\\nt\"xX]|[^\x20-\xFF\\\"]|\\x[0-9a-fA-F]{2})*\"" { add_token(tConst, String); }
-[a-zA-Z_][a-zA-Z0-9_]* { 
-  
+"if"            { Token::AddToken(tIf, String); }
+"while"         { Token::AddToken(tWhile, String); }
+"for"           { Token::AddToken(tFor, String); }
+"return"        { Token::AddToken(tReturn, String); }
+";"             { Token::AddToken(tSemi, String); }
+"elseif"        { Token::AddToken(tElseif, String); }
+"else"          { Token::AddToken(tElse, String); }
+"("             { Token::AddToken(tLPar, String); }
+")"             { Token::AddToken(tRPar, String); }
+"{"             { Token::AddToken(tLCurl, String); }
+"}"             { Token::AddToken(tRCurl, String); }
+"+"             { Token::AddToken(tPlus, String); }
+"*"             { Token::AddToken(tMul, String); }
+"/"             { Token::AddToken(tDiv, String); }
+"=="            { Token::AddToken(tEq, String); }
+"!="            { Token::AddToken(tNEq, String); }
+"<"             { Token::AddToken(tLess, String); }
+"<="            { Token::AddToken(tLEq, String); }
+">"             { Token::AddToken(tGreater, String); }
+">="            { Token::AddToken(tGEq, String); }
+"="             { Token::AddToken(tAssign, String); }
+"&&"            { Token::AddToken(tAnd, String); }
+"||"            { Token::AddToken(tOr, String); }
+"!"             { Token::AddToken(tExcl, String); }
+","             { Token::AddToken(tComma, String); }
+":"             { Token::AddToken(tColon, String); }
+"."             { Token::AddToken(tConcat, String); }
+"function"      { Token::AddToken(tFunction, String); }
+[0-9]+          { Token::AddToken(tConst, Int); }
+[0-9]+"."[0-9]+ { Token::AddToken(tConst, Float); }
+"true"|"false"  { Token::AddToken(tConst, Bool); }
+"int"           { Token::AddToken(tInt, String); }
+"float"         { Token::AddToken(tFloat, String); }
+"bool"          { Token::AddToken(tBool, String); }
+"string"        { Token::AddToken(tString, String); }
+\"(\\.|[^\\"])*\" { Token::AddToken(tConst, String); }
 
+[a-zA-Z_][a-zA-Z0-9_]* { 
     int next_char = yyinput();
     while (next_char == ' ' || next_char == '\n' || next_char == '\t')
         next_char = yyinput();
 
     if (next_char == '(')
-        add_token(tFuncName, String); 
+        Token::AddToken(tFuncName, String); 
     else
-        add_token(tVariable, String); 
+        Token::AddToken(tVariable, String); 
     unput(next_char);
 }
 
-"-"               { 
-    if (previous_token == tVariable || previous_token == tConst || previous_token == tRPar)
-        add_token(tMinus, String); 
+"-" { 
+    if (previousToken == tVariable || previousToken == tConst || previousToken == tRPar)
+        Token::AddToken(tMinus, String); 
     else
-        add_token(tUnMinus, String);
+        Token::AddToken(tUnMinus, String);
 }
 
 "//" {
@@ -106,9 +99,7 @@ void add_token(TokenType ttype, DataType dtype) {
 <LINE_COMMENT>. {
 }
 
-. {
-    throw LexicalErrorException(std::string("Unknown lexeme \"") + yytext + std::string("\""));
-}
+. { throw LexicalErrorException("Unknown lexeme: " + std::string(yytext) + "\n"); }
 
 %%
 

@@ -33,14 +33,17 @@ void PredictiveParser::Parse()
         }
         this->inputToken = inputTape.front();
 
-        if (typeid(*this->stackTop) == typeid(Token)) {
-            this->parseToken();
-        }
-        else if (typeid(*this->stackTop) == typeid(Nonterminal)) {
-            this->parseNonterminal();
-        }
-        else {
-            throw InternalErrorException("Unexpected item type: " + std::string(typeid(*this->stackTop).name()) + "\n");
+        switch (this->stackTop->GetSymbolType()) {
+            case Nonterminal_t: {
+                this->parseNonterminal();
+                break;
+            }
+            case Token_t: {
+                this->parseToken();
+                break;
+            }
+            default:
+                throw InternalErrorException("Unexpected item type: " + std::string(typeid(*this->stackTop).name()) + "\n");
         }
     }
 }
@@ -48,7 +51,7 @@ void PredictiveParser::Parse()
 bool PredictiveParser::returnedEpsilon(Rule& expandedRule)
 {
     StackItem* front = expandedRule.front();
-    if (expandedRule.size() == 1 && typeid(*front) == typeid(Token)) {
+    if (expandedRule.size() == 1 && front->GetSymbolType() == Token_t) {
         Token* t = dynamic_cast<Token*>(expandedRule.front());
         return *t == tEps;
     }
