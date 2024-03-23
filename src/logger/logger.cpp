@@ -1,6 +1,8 @@
 /**
- * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
- * @date 2024-03-18
+ * @ Author: Ondřej Koumar
+ * @ Email: xkouma02@stud.fit.vutbr.cz
+ * @ Create Time: 2024-03-18 19:12
+ * @ Modified time: 2024-03-23 15:38
  */
 
 #include "logger.hpp"
@@ -20,7 +22,7 @@ Logger::Logger()
 
     this->file.open(filePath, std::ios::out | std::ios::trunc);
     if (!this->file.is_open()) {
-        throw InternalErrorException("Couldn't open file for logging\n");
+        throw InternalError("Couldn't open file for logging\n");
     }
 }
 
@@ -44,23 +46,23 @@ Logger* Logger::GetInstance()
     return Logger::instance;
 }
 
-void Logger::AddLeftSide(StackItem* leftSide)
+void Logger::AddLeftSide(Symbol* leftSide)
 {
     this->leftSideRule = leftSide->Clone();
 }
 
 void Logger::AddRightSide(Rule& rightSide)
 {
-    for (const StackItem* item: rightSide) {
-        this->rightSideRule.push_back(item->Clone());
+    for (const Symbol* item: rightSide) {
+        this->rightSideRule.push_front(item->Clone());
     }
 }
 
 void Logger::PrintRule()
 {
     this->file << this->leftSideRule->GetTypeString() << " -> ";
-    for (auto it = this->rightSideRule.crbegin(); it != this->rightSideRule.crend(); it++) {
-        this->file << (*it)->GetTypeString() << " ";
+    for (const Symbol* item: this->rightSideRule) {
+        this->file << item->GetTypeString() << " ";
     }
     this->file << std::endl;
     this->clearRule();
@@ -85,7 +87,7 @@ void Logger::clearRule()
 {
     delete this->leftSideRule;
     this->leftSideRule = nullptr;
-    for (const StackItem* item: this->rightSideRule) {
+    for (const Symbol* item: this->rightSideRule) {
         delete item;
     }
     this->rightSideRule.clear();

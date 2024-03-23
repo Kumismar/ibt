@@ -17,6 +17,7 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(ParserTest
     precedence_parser_tests.cpp
+    predictive_parser_tests.cpp
 )
 
 target_include_directories(ParserTest PRIVATE 

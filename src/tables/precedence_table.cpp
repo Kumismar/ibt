@@ -1,6 +1,7 @@
 /**
- * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
- * @date 2024-03-18
+ * @ Author: Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
+ * @ Create Time: 2024-03-18 19:12
+ * @ Modified time: 2024-03-23 17:22
  */
 
 #include "precedence_table.hpp"
@@ -22,7 +23,7 @@ const std::vector<std::vector<char>> PrecedenceTable::precTable = {
     { '<', '<', '<', '<', '<', '<', '<', '<', '<', '>', '>', '>', '>', '>', '<', '>', '<', '>', '<', '<' }, // <
     { '<', '<', '<', '<', '<', '<', '<', '<', '<', '>', '>', '>', '>', '>', '<', '>', '<', '>', '<', '<' }, // >=
     { '<', '<', '<', '<', '<', '<', '<', '<', '<', '>', '>', '>', '>', '>', '<', '>', '<', '>', '<', '<' }, // <=
-    { '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', 'x', '<', '<', '<', '>', '<', '<' }, // =
+    { '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', 'x', '<', '>', '<', '>', '<', '<' }, // =
     { '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '=', '<', 'x', '<', '>' }, // (
     { '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', 'x', '>', 'x', '>', 'x', '<' }, // )
     { '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '<', '>', '>', '>', '<', 'x' }, // !
@@ -84,11 +85,12 @@ unsigned PrecedenceTable::MapTokenToIndex(const Token& t)
             return 17;
         // funcName will be changed for tConst on stack
         case tConst:
+        case tFuncConst:
         case tVariable:
             return 18;
         case tUnMinus:
             return 19;
         default:
-            throw InternalErrorException("PrecedenceTable::MapTokenToIndex invalid token type");
+            throw InternalError("PrecedenceTable::MapTokenToIndex invalid token type");
     }
 }

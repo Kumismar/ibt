@@ -1,6 +1,8 @@
 /**
- * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
- * @date 2024-03-18
+ * @ Author: Ondřej Koumar
+ * @ Email: xkouma02@stud.fit.vutbr.cz
+ * @ Create Time: 2024-03-22 22:14
+ * @ Modified time: 2024-03-23 17:37
  */
 
 #include "nonterminal.hpp"
@@ -70,11 +72,11 @@ std::string Nonterminal::GetTypeString() const
         case nType:
             return "<type>";
         default:
-            throw InternalErrorException("Unknown nonterminal type\n");
+            throw InternalError("Unknown nonterminal type\n");
     }
 }
 
-StackItem* Nonterminal::Clone() const
+Symbol* Nonterminal::Clone() const
 {
     return new Nonterminal(*this);
 }

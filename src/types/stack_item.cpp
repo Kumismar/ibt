@@ -1,6 +1,8 @@
 /**
- * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
- * @date 2024-03-18
+ * @ Author: Ondřej Koumar
+ * @ Email: xkouma02@stud.fit.vutbr.cz
+ * @ Create Time: 2024-03-22 22:14
+ * @ Modified time: 2024-03-23 17:38
  */
 
 #include "stack_item.hpp"
@@ -11,7 +13,7 @@
 #include <string>
 #include <typeinfo>
 
-bool StackItem::operator==(const StackItem& other) const
+bool Symbol::operator==(const Symbol& other) const
 {
     if (this->symbType != other.GetSymbolType()) {
         return false;
@@ -33,16 +35,16 @@ bool StackItem::operator==(const StackItem& other) const
         return (*tmpThis == *tmpOther);
     }
     else {
-        throw InternalErrorException("Invalid StackItem type in StackItem::operator==(): \n" + std::string(typeid(*this).name()));
+        throw InternalError("Invalid Symbol type in Symbol::operator==(): \n" + std::string(typeid(*this).name()));
     }
 }
 
-bool StackItem::operator!=(const StackItem& other) const
+bool Symbol::operator!=(const Symbol& other) const
 {
     return !(*this == other);
 }
 
-SymbolType StackItem::GetSymbolType() const
+SymbolType Symbol::GetSymbolType() const
 {
     return this->symbType;
 }
