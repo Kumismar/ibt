@@ -6,41 +6,32 @@
 %\documentclass[../projekt.tex]{subfiles}
 %\begin{document}
 
-\chapter{Úvod}\label{1_uvod}
+\chapter{Abstrakt}\label{kap_abstrakt}
+
+\chapter{Úvod}\label{kap_uvod}
 
 
-\chapter{Abstrakt}\label{2_abstrakt}
-
-
-\chapter{Základy teorie formálních jazyků}\label{3_teorie}
+\chapter{Základy teorie formálních jazyků}\label{kap_teorie}
 
 \section{Abeceda, řetězec a jazyk}
 \section{Chomského hierarchie}
 \section{Bezkontextová gramatika}
-
+Následující definice převzaty z \cite{TIN-opora}.
 \begin{definition}\label{def_bkg}
     \emph{Bezkontextová gramatika} je čtveřice $G = (N, T, P, S)$, kde:
     \begin{itemize}
         \item $N$ je konečná množina neterminálních symbolů,
         \item $T$ je konečná množina terminálních symbolů,
         \item $P$ je konečná množina přepisovacích pravidel ve tvaru $A \rightarrow x$, $A \in N$ a $x \in (N \cup \Sigma)^*$,
+        \begin{itemize}[label=$\circ$]
+            \item formálně vyjádřeno, množina $P$ přepisovacích pravidel je podmnožinou kartézského součinu $P \subseteq (N \cup T)^* N (N \cup T)^* \times (N \cup T)^*$. 
+        \end{itemize}
         \item $S \in N$ je výchozí symbol gramatiky.
     \end{itemize}
 \end{definition}
-\dotaz{Patří derivační krok sem nebo až k~syntaktické analýze?}
 
-\section{Konečný automat}
-\begin{definition}\label{def_konecny_automat}
-    
-\end{definition}
-
-\section{\dotaz{Co dalšího doplnit?}}
-
-
-\chapter{Důležité pojmy syntaktické analýzy \dotaz{Které věci sem patří/nepatří a jaké budou podnadpisy?}}\label{5_teorie_sa}
-
-\section{Derivační krok}
-Myšlenka \emph{derivačního kroku} je aplikovat pravidlo z~množiny pravidel bezkontextové gramatiky, čímž se část původního řetězce přepíše na novou.
+\subsection*{Derivační krok}
+Myšlenka \emph{derivačního kroku} je aplikovat pravidlo z~množiny pravidel gramatiky, čímž se část původního řetězce přepíše na novou.
 \begin{definition}\label{def_derivacni_krok}
     Nechť $G = (N, T, P, S)$ je BKG, $u, v \in (N \cup T)^*$ a $p = A \rightarrow x \in P$. \\
     Potom $uAv$ přímo derivuje $uxv$ za použití $p$ v~$G$, zapsáno $uAv \Rightarrow uxv [p]$, zjednodušeně $uAv \Rightarrow uxv$.\\
@@ -48,17 +39,21 @@ Myšlenka \emph{derivačního kroku} je aplikovat pravidlo z~množiny pravidel b
 \end{definition}
 
 \subsection*{Sekvence derivačních kroků}
-\dotaz{Bude stačit definice z~prezentací nebo bude třeba jít do literatury a zmínit například uzávěry apod.?}
+\todo{Přepsat z TIN opory}
 
-\section{Množiny potřebné k~sestrojení LL tabulky}
-
-\section{LL tabulka}
+\section{Konečný automat}
+\begin{definition}\label{def_konecny_automat}
+    
+\end{definition}
 
 \section{Zásobníkový automat}\label{kap_zasobnikovy_automat}
 Zásobníkový automat je rozšíření konečného automatu, popsaného v~definici \ref{def_konecny_automat}, o~zásobník, matematicky přesněji o~zásobníkovou abecedu a~počáteční symbol na zásobníku.
-
 \begin{definition}\label{def_zasobnikovy_automat}
-    \emph{Zásobníkový automat} (ZA) je sedmice $M = (Q, \Sigma, \Gamma, R, s, S, F)$, kde:
+    \emph{Zásobníkový automat} (ZA) je sedmice 
+    \begin{center}
+        $M = (Q, \Sigma, \Gamma, R, s, S, F)$,
+    \end{center}
+    kde:
     \begin{itemize}
         \item $Q$ je konečná množina stavů,
         \item $\Sigma$ je vstupní abeceda,
@@ -74,12 +69,30 @@ Zásobníkový automat je rozšíření konečného automatu, popsaného v~defin
 Původní zásobníkový automat lze rozšírit o~další chování. Například o~možnost čtení více symbolů ze zásobníku než původního jednoho, tedy při přechodech mezi stavy měnit celé řetězce na vrcholu zásobníku.
 
 \begin{definition}
-    \emph{Rozšířený zásobníkový automat} (RZA) je sedmice $M = (Q, \Sigma, \Gamma, R, s, S, F)$, kde:
+    \emph{Rozšířený zásobníkový automat} (RZA) je sedmice
+    \begin{center}
+        $M = (Q, \Sigma, \Gamma, R, s, S, F)$,
+    \end{center}
+    kde:
     \begin{itemize}
-        \item $Q, \Sigma, \Gamma, s, S, F$ jsou definovány stejně jako u~ZA,
+        \item $Q, \Sigma, \Gamma, s, S, F$ jsou definovány stejně jako u~ZA (\ref{def_zasobnikovy_automat}),
         \item $R$ je konečná množina pravidel ve tvaru $vpa \rightarrow wq$, kde $v, w \in \Gamma^*$, $p, q \in Q$, $a \in \Sigma \cup \{\varepsilon\}$.
     \end{itemize}
 \end{definition}
+
+\chapter{Důležité pojmy syntaktické analýzy \dotaz{Které věci sem patří/nepatří a jaké budou podnadpisy?}}\label{5_teorie_sa}
+
+
+
+\dotaz{Bude stačit definice z~prezentací nebo bude třeba jít do literatury a zmínit například uzávěry apod.?}
+
+\section{Množiny potřebné k~sestrojení LL tabulky}
+
+\section{LL tabulka}
+
+
+
+
 
 \section{Prediktivní syntaktická analýza}
 
