@@ -1,6 +1,8 @@
 /**
- * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
- * @date 2024-03-18
+ * @ Author: Ondřej Koumar
+ * @ Email: xkouma02@stud.fit.vutbr.cz
+ * @ Create Time: 2024-03-22 22:14
+ * @ Modified time: 2024-03-23 17:38
  */
 
 #pragma once
@@ -14,21 +16,21 @@ typedef enum symbolType
     PrecSymbol_t
 } SymbolType;
 
-class StackItem
+class Symbol
 {
 protected:
     SymbolType symbType;
 
 public:
-    virtual ~StackItem()
+    virtual ~Symbol()
     {
     }
 
-    bool operator==(const StackItem& other) const;
-    bool operator!=(const StackItem& other) const;
+    bool operator==(const Symbol& other) const;
+    bool operator!=(const Symbol& other) const;
 
     SymbolType GetSymbolType() const;
 
     virtual std::string GetTypeString() const = 0;
-    virtual StackItem* Clone() const = 0;
+    virtual Symbol* Clone() const = 0;
 };

@@ -1,6 +1,8 @@
 /**
- * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
- * @date 2024-03-18
+ * @ Author: Ondřej Koumar
+ * @ Email: xkouma02@stud.fit.vutbr.cz
+ * @ Create Time: 2024-03-22 22:14
+ * @ Modified time: 2024-03-23 11:46
  */
 
 #pragma once
@@ -52,6 +54,7 @@ typedef enum tokenType
     tEnd,
     tExpEnd,
     tFuncEnd,
+    tFuncConst,
     tEps
 } TokenType;
 
@@ -77,16 +80,14 @@ typedef struct data {
     Value value;
 } TokenData;
 
-class Token : public StackItem
+class Token : public Symbol
 {
 private:
     TokenType type;
     TokenData data;
 
 public:
-    Token()
-    {
-    }
+    Token();
     Token(const Token& old);
     Token(const TokenType type);
     ~Token() override;
@@ -101,7 +102,7 @@ public:
     void SetData(DataType dtype);
     std::string GetTypeString() const override;
     std::string GetDataString() const;
-    StackItem* Clone() const override;
+    Symbol* Clone() const override;
     static void AddToken(TokenType ttype, DataType dtype);
 };
 

@@ -1,6 +1,8 @@
 /**
- * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
- * @date 2024-03-18
+ * @ Author: Ondřej Koumar
+ * @ Email: xkouma02@stud.fit.vutbr.cz
+ * @ Create Time: 2024-03-22 22:14
+ * @ Modified time: 2024-03-23 11:45
  */
 
 #include "token.hpp"
@@ -10,6 +12,12 @@
 #include <string>
 
 InputTape inputTape;
+
+Token::Token()
+{
+    this->data.type = None;
+    this->symbType = Token_t;
+}
 
 Token::Token(const TokenType t)
     : type(t)
@@ -22,6 +30,7 @@ Token::Token(const TokenType t)
 Token::Token(const Token& other)
     : type(other.GetTokenType())
 {
+    this->symbType = Token_t;
     if (other.data.type == String) {
         this->data.type = String;
         this->data.value.stringVal = new std::string(*other.data.value.stringVal);
@@ -171,11 +180,13 @@ std::string Token::GetTypeString() const
         case tEps:
             return "epsilon";
         case tEnd:
-            return "end of input";
+            return "EOF";
         case tExpEnd:
             return "end of expression";
+        case tFuncConst:
+            return "function constant";
         default:
-            throw InternalErrorException("Unknown token type in Token::GetTypeString()\n");
+            throw InternalError("Unknown token type in Token::GetTypeString()\n");
     }
 }
 
@@ -193,11 +204,11 @@ std::string Token::GetDataString() const
         case None:
             return "none";
         default:
-            throw InternalErrorException("Unknown data type in Token::GetDataString()\n");
+            throw InternalError("Unknown data type in Token::GetDataString()\n");
     }
 }
 
-StackItem* Token::Clone() const
+Symbol* Token::Clone() const
 {
     return new Token(*this);
 }

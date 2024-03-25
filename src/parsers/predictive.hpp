@@ -5,18 +5,26 @@
 
 #pragma once
 
+#include "grammar.hpp"
 #include "ll_table.hpp"
-#include "parser.hpp"
 #include "stack_item.hpp"
 #include "token.hpp"
 
-class PredictiveParser : public Parser
+typedef std::list<Symbol*> AnalysisStack;
+typedef std::list<Symbol*> Rule;
+
+class PrecedenceParser;
+
+class PredictiveParser
 {
 private:
     AnalysisStack& pushdown;
-    StackItem* stackTop = nullptr;
+    Symbol* stackTop = nullptr;
     Token* inputToken = nullptr;
-    LLTable* table;
+    PrecedenceParser* precedenceParser = nullptr;
+    LLTable* table = nullptr;
+    bool parsingFunction = false;
+    bool firstFuncName = false;
 
     bool returnedEpsilon(Rule& expandedRule);
     void parseNonterminal();
@@ -28,6 +36,6 @@ public:
     PredictiveParser(AnalysisStack& stack);
 
     void InitSyntaxAnalysis();
-    void Parse() override;
+    void Parse(bool parseFunction);
     void ClearStack();
 };

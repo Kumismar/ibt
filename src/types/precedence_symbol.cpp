@@ -1,6 +1,8 @@
 /**
- * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
- * @date 2024-03-18
+ * @ Author: Ondřej Koumar
+ * @ Email: xkouma02@stud.fit.vutbr.cz
+ * @ Create Time: 2024-03-22 22:14
+ * @ Modified time: 2024-03-23 19:09
  */
 
 #include "precedence_symbol.hpp"
@@ -34,7 +36,7 @@ std::string PrecedenceSymbol::GetTypeString() const
         case Equal:
             return "=";
         default:
-            throw InternalErrorException("Invalid PrecedenceSymbol type in PrecedenceSymbol::GetTypeString()\n");
+            throw InternalError("Invalid PrecedenceSymbol type in PrecedenceSymbol::GetTypeString()\n");
     }
 }
 
@@ -47,7 +49,7 @@ bool PrecedenceSymbol::operator==(const PrecedenceSymbol& other) const
     return this->precType == other.GetPrecedenceType();
 }
 
-StackItem* PrecedenceSymbol::Clone() const
+Symbol* PrecedenceSymbol::Clone() const
 {
     return new PrecedenceSymbol(*this);
 }

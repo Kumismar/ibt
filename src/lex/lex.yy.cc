@@ -1059,7 +1059,7 @@ YY_RULE_SETUP
 case 46:
 YY_RULE_SETUP
 #line 102 "lex.l"
-{ throw LexicalErrorException("Unknown lexeme: " + std::string(yytext) + "\n"); }
+{ throw LexicalError("Unknown lexeme: " + std::string(yytext) + "\n"); }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP

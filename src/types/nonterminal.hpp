@@ -1,6 +1,8 @@
 /**
- * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
- * @date 2024-03-18
+ * @ Author: Ondřej Koumar
+ * @ Email: xkouma02@stud.fit.vutbr.cz
+ * @ Create Time: 2024-03-18 19:12
+ * @ Modified time: 2024-03-23 17:37
  */
 
 #pragma once
@@ -27,7 +29,7 @@ typedef enum nonterminalType
     nType,
 } NonterminalType;
 
-class Nonterminal : public StackItem
+class Nonterminal : public Symbol
 {
 private:
     const NonterminalType ntType;
@@ -45,5 +47,5 @@ public:
 
     NonterminalType GetNonterminalType() const;
     std::string GetTypeString() const override;
-    StackItem* Clone() const override;
+    Symbol* Clone() const override;
 };

@@ -1,6 +1,8 @@
 /**
- * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
- * @date 2024-03-18
+ * @ Author: Ondřej Koumar
+ * @ Email: xkouma02@stud.fit.vutbr.cz
+ * @ Create Time: 2024-03-18 19:12
+ * @ Modified time: 2024-03-23 17:34
  */
 
 #include "grammar_4.hpp"
@@ -52,7 +54,7 @@ bool Grammar4::IsRule(Rule& stackRule)
         bool ruleMatch = true;
         // compare elements of grammar rule and the given sequence
         auto stackRuleMember = stackRule.cbegin();
-        for (const StackItem* ruleMember: rule) {
+        for (const Symbol* ruleMember: rule) {
             // if one pair is not equal, continue with next rule
             if (*ruleMember != **stackRuleMember) {
                 ruleMatch = false;
@@ -70,7 +72,7 @@ bool Grammar4::IsRule(Rule& stackRule)
 void Grammar4::Cleanup()
 {
     for (const Rule& rule: rightSideRules) {
-        for (StackItem* member: rule) {
+        for (Symbol* member: rule) {
             delete member;
         }
     }

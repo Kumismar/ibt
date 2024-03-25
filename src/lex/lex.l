@@ -99,7 +99,7 @@
 <LINE_COMMENT>. {
 }
 
-. { throw LexicalErrorException("Unknown lexeme: " + std::string(yytext) + "\n"); }
+. { throw LexicalError("Unknown lexeme: " + std::string(yytext) + "\n"); }
 
 %%
 

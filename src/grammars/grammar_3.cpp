@@ -1,6 +1,8 @@
 /**
- * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
- * @date 2024-03-18
+ * @ Author: Ondřej Koumar
+ * @ Email: xkouma02@stud.fit.vutbr.cz
+ * @ Create Time: 2024-03-18 19:12
+ * @ Modified time: 2024-03-23 17:33
  */
 
 #include "grammar_3.hpp"
@@ -26,7 +28,7 @@ Rule Grammar3::Expand(unsigned ruleNumber)
 void Grammar3::Cleanup()
 {
     for (const Rule& rule: rightSideRules) {
-        for (StackItem* member: rule) {
+        for (Symbol* member: rule) {
             delete member;
         }
     }

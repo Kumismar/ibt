@@ -1,16 +1,22 @@
 /**
- * @author Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
- * @date 2024-03-18
+ * @ Author: Ondřej Koumar
+ * @ Email: xkouma02@stud.fit.vutbr.cz
+ * @ Create Time: 2024-03-22 22:14
+ * @ Modified time: 2024-03-23 19:22
  */
 
 #include "predictive.hpp"
 #include "analysis_success.hpp"
-#include "change_parser.hpp"
+#include "function_parsed.hpp"
 #include "grammar_factory.hpp"
 #include "internal_error.hpp"
+#include "ll_table.hpp"
 #include "logger.hpp"
+#include "nonterminal.hpp"
+#include "precedence.hpp"
 #include "stack_item.hpp"
 #include "syntax_error.hpp"
+#include "table_index.hpp"
 #include "token.hpp"
 
 PredictiveParser::PredictiveParser(AnalysisStack& stack)
@@ -24,14 +30,26 @@ PredictiveParser::~PredictiveParser()
     delete table;
 }
 
-void PredictiveParser::Parse()
+void PredictiveParser::Parse(bool parseFunction)
 {
+    if (parseFunction) {
+        this->parsingFunction = true;
+        this->firstFuncName = true;
+    }
+
     while (true) {
         this->stackTop = this->pushdown.front();
         if (inputTape.empty()) {
-            throw SyntaxErrorException("Missing token(s).\n");
+            throw SyntaxError("Missing token(s).\n");
         }
         this->inputToken = inputTape.front();
+
+        if (*this->inputToken == tFuncEnd) {
+            delete this->inputToken;
+            inputTape.pop_front();
+            inputTape.push_front(new Token(tConst));
+            throw FunctionParsed();
+        }
 
         switch (this->stackTop->GetSymbolType()) {
             case Nonterminal_t: {
@@ -43,16 +61,19 @@ void PredictiveParser::Parse()
                 break;
             }
             default:
-                throw InternalErrorException("Unexpected item type: " + std::string(typeid(*this->stackTop).name()) + "\n");
+                throw InternalError("Unexpected item type: " + std::string(typeid(*this->stackTop).name()) + "\n");
         }
     }
 }
 
 bool PredictiveParser::returnedEpsilon(Rule& expandedRule)
 {
-    StackItem* front = expandedRule.front();
+    Symbol* front = expandedRule.front();
     if (expandedRule.size() == 1 && front->GetSymbolType() == Token_t) {
-        Token* t = dynamic_cast<Token*>(expandedRule.front());
+        Token* t = dynamic_cast<Token*>(front);
+        if (t == nullptr) {
+            throw InternalError("Dynamic cast to Token* failed, real type: " + std::string(typeid(front).name()) + "\n");
+        }
         return *t == tEps;
     }
     return false;
@@ -79,17 +100,19 @@ void PredictiveParser::parseNonterminal()
 {
     Nonterminal* stackNT = dynamic_cast<Nonterminal*>(this->stackTop);
     if (stackNT == nullptr) {
-        throw InternalErrorException("Dynamic cast to Nonterminal* failed\n");
+        throw InternalError("Dynamic cast to Nonterminal* failed, real type:" + std::string(typeid(*this->stackTop).name()) + "\n");
     }
 
     // Expression => give control to precedence parser
     if (stackNT->GetNonterminalType() == nExpression) {
-        if (*this->inputToken != tFuncName) {
-            throw ChangeParser();
-        }
-
-        if (this->functionCounter <= 0) {
-            throw ChangeParser();
+        // If not parsing function call, give control to precedence parser
+        if (!(*this->inputToken == tFuncName && this->parsingFunction) ||
+            // If parsing function call but new funcName is found, parse the new function call
+            (*this->inputToken == tFuncName && !this->firstFuncName)) {
+            PrecedenceParser* precedenceParser = new PrecedenceParser(this->pushdown);
+            precedenceParser->Parse();
+            delete precedenceParser;
+            return;
         }
     }
 
@@ -100,15 +123,17 @@ void PredictiveParser::parseNonterminal()
         logger->AddLeftSide(this->stackTop);
         Grammar* grammar = GrammarFactory::CreateGrammar(tableItem.grammarNumber);
 
-        delete this->pushdown.front();
-        this->pushdown.pop_front();
+        if (!(this->parsingFunction && *stackNT == nExpression)) {
+            delete this->pushdown.front();
+            this->pushdown.pop_front();
+        }
 
         Rule expandedRule = grammar->Expand(tableItem.ruleNumber);
         logger->AddRightSide(expandedRule);
 
         // if right side is not epsilon, it will be pushed
         if (!this->returnedEpsilon(expandedRule)) {
-            for (StackItem* item: expandedRule) {
+            for (Symbol* item: expandedRule) {
                 this->pushdown.push_front(item->Clone());
             }
         }
@@ -117,7 +142,7 @@ void PredictiveParser::parseNonterminal()
         delete grammar;
     }
     else {
-        throw SyntaxErrorException("Rule not found in LL table\n");
+        throw SyntaxError("Rule not found in LL table\n");
     }
 }
 
@@ -125,7 +150,7 @@ void PredictiveParser::parseToken()
 {
     Token* stackToken = dynamic_cast<Token*>(this->stackTop);
     if (stackToken == nullptr) {
-        throw InternalErrorException("Dynamic cast to Token* failed\n");
+        throw InternalError("Dynamic cast to Token* failed, real type:" + std::string(typeid(*this->stackTop).name()) + "\n");
     }
 
     // Case $:
@@ -134,25 +159,26 @@ void PredictiveParser::parseToken()
     }
 
     // Case T:
-    if (*this->inputToken == tFuncEnd) {
-        this->functionCounter--;
-        throw ChangeParser();
-    }
 
-    if (*this->inputToken == tExpEnd) {
-        delete this->inputToken;
-        inputTape.pop_front();
-        throw ChangeParser();
-    }
+    // if (*this->inputToken == tExpEnd) {
+    //     delete this->inputToken;
+    //     inputTape.pop_front();
+    //     std::cout << "Expression end" << std::endl;
+    //     return;
+    // }
 
     if (*stackToken == *this->inputToken) {
+        if (*stackToken == tFuncName) {
+            this->firstFuncName = false;
+        }
         delete this->inputToken;
         delete this->pushdown.front();
         this->pushdown.pop_front();
         inputTape.pop_front();
+        return;
     }
     else {
-        throw SyntaxErrorException("Unexpected token.\n");
+        throw SyntaxError("Unexpected token.\n");
     }
 }
 
@@ -168,10 +194,10 @@ void PredictiveParser::parseEnd()
             throw SyntaxAnalysisSuccess();
         }
         else {
-            throw InternalErrorException("Popped tEnd from input tape but there is still something left\n");
+            throw InternalError("Popped tEnd from input tape but there is still something left\n");
         }
     }
     else {
-        throw SyntaxErrorException("Unexpected token (expected End)\n");
+        throw SyntaxError("Unexpected token (expected End)\n");
     }
 }
