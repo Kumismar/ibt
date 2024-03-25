@@ -1,0 +1,402 @@
+% Tento soubor nahraďte vlastním souborem s obsahem práce.
+%=========================================================================
+% Autoři: Michal Bidlo, Bohuslav Křena, Jaroslav Dytrych, Petr Veigend a Adam Herout 2019
+
+% Pro kompilaci po částech (viz projekt.tex), nutno odkomentovat a upravit
+%\documentclass[../projekt.tex]{subfiles}
+%\begin{document}
+
+\chapter{Úvod}\label{1_uvod}
+
+
+\chapter{Abstrakt}\label{2_abstrakt}
+
+
+\chapter{Základy teorie formálních jazyků}\label{3_teorie}
+
+\section{Abeceda, řetězec a jazyk}
+\section{Chomského hierarchie}
+\section{Bezkontextová gramatika}
+
+\begin{definition}\label{def_bkg}
+    \emph{Bezkontextová gramatika} je čtveřice $G = (N, T, P, S)$, kde:
+    \begin{itemize}
+        \item $N$ je konečná množina neterminálních symbolů,
+        \item $T$ je konečná množina terminálních symbolů,
+        \item $P$ je konečná množina přepisovacích pravidel ve tvaru $A \rightarrow x$, $A \in N$ a $x \in (N \cup \Sigma)^*$,
+        \item $S \in N$ je výchozí symbol gramatiky.
+    \end{itemize}
+\end{definition}
+\dotaz{Patří derivační krok sem nebo až k~syntaktické analýze?}
+
+\section{Konečný automat}
+\begin{definition}\label{def_konecny_automat}
+    
+\end{definition}
+
+\section{\dotaz{Co dalšího doplnit?}}
+
+
+\chapter{Důležité pojmy syntaktické analýzy \dotaz{Které věci sem patří/nepatří a jaké budou podnadpisy?}}\label{5_teorie_sa}
+
+\section{Derivační krok}
+Myšlenka \emph{derivačního kroku} je aplikovat pravidlo z~množiny pravidel bezkontextové gramatiky, čímž se část původního řetězce přepíše na novou.
+\begin{definition}\label{def_derivacni_krok}
+    Nechť $G = (N, T, P, S)$ je BKG, $u, v \in (N \cup T)^*$ a $p = A \rightarrow x \in P$. \\
+    Potom $uAv$ přímo derivuje $uxv$ za použití $p$ v~$G$, zapsáno $uAv \Rightarrow uxv [p]$, zjednodušeně $uAv \Rightarrow uxv$.\\
+    Je možné říci, že $G$ provádí derivační krok z~$uAv$ do $uxv$.
+\end{definition}
+
+\subsection*{Sekvence derivačních kroků}
+\dotaz{Bude stačit definice z~prezentací nebo bude třeba jít do literatury a zmínit například uzávěry apod.?}
+
+\section{Množiny potřebné k~sestrojení LL tabulky}
+
+\section{LL tabulka}
+
+\section{Zásobníkový automat}\label{kap_zasobnikovy_automat}
+Zásobníkový automat je rozšíření konečného automatu, popsaného v~definici \ref{def_konecny_automat}, o~zásobník, matematicky přesněji o~zásobníkovou abecedu a~počáteční symbol na zásobníku.
+
+\begin{definition}\label{def_zasobnikovy_automat}
+    \emph{Zásobníkový automat} (ZA) je sedmice $M = (Q, \Sigma, \Gamma, R, s, S, F)$, kde:
+    \begin{itemize}
+        \item $Q$ je konečná množina stavů,
+        \item $\Sigma$ je vstupní abeceda,
+        \item $\Gamma$ je zásobníková abeceda,
+        \item $R$ je konečná množina pravidel tvaru $Apa \rightarrow wq$, kde $A \in \Gamma$, $p,q \in Q$, $a \in \Sigma \cup \{\varepsilon\}$,  
+        \item $s \in Q$ je počáteční stav, 
+        \item $S \in \Gamma$ je počáteční symbol na zásobníku,
+        \item $F \subseteq Q$ je množina koncových stavů.
+    \end{itemize}
+\end{definition}
+
+\subsection*{Rozšířený zásobníkový automat}\label{kap_rozsireny_ZA}
+Původní zásobníkový automat lze rozšírit o~další chování. Například o~možnost čtení více symbolů ze zásobníku než původního jednoho, tedy při přechodech mezi stavy měnit celé řetězce na vrcholu zásobníku.
+
+\begin{definition}
+    \emph{Rozšířený zásobníkový automat} (RZA) je sedmice $M = (Q, \Sigma, \Gamma, R, s, S, F)$, kde:
+    \begin{itemize}
+        \item $Q, \Sigma, \Gamma, s, S, F$ jsou definovány stejně jako u~ZA,
+        \item $R$ je konečná množina pravidel ve tvaru $vpa \rightarrow wq$, kde $v, w \in \Gamma^*$, $p, q \in Q$, $a \in \Sigma \cup \{\varepsilon\}$.
+    \end{itemize}
+\end{definition}
+
+\section{Prediktivní syntaktická analýza}
+
+\section{Precedenční tabulka}
+
+\section{Precedenční syntaktická analýza}
+
+\section{Abstraktní syntaktický strom}
+
+
+\chapter{Gramatické systémy}\label{kap_GS}
+
+Veškeré definice a znalosti použité v~této kapitole převzaty z~\cite{CDGS}, \cite{PCGS} a~\cite{Handbook-Of-Formal-Languages-2}.
+\dotaz{Jak uvést tuto kapitolu?}
+
+\section{Kooperující distribuované gramatické systémy}
+
+Kooperující distribuovaný (\emph{cooperating distributed}) gramatický systém stupně~\emph{n}~je systém gramatik, které mezi sebou sdílejí množinu neterminálů i~terminálů a~startovací symbol.
+Spolupracují mezi sebou předáváním řízení derivace aktuálně zpracovávaného řetězce dle pravidel nastaveného \emph{derivačního režimu}.
+
+\begin{definition}\label{def_cdgs}
+\text{Kooperující distribuovaný gramatický systém je $(n+3)$-tice}
+\begin{center}
+    $\Gamma = (N, T, S, P_1, \ldots ,P_n)$,
+\end{center}
+kde:
+\begin{itemize}
+    \item $N$, $T$, a $S$ jsou definovány stejně jako v~definici \ref{def_bkg},
+    \item $P_i$ je konečná množina pravidel ve tvaru $A\rightarrow x$, kde pravidla jsou definována stejně jako v~definici \ref{def_bkg}, nazývaná \emph{komponentou} systému, $i \in \{1, \ldots, n\}$,
+    \item $i$-tá gramatika systému se zapisuje jako $G_i = (N,T,S,P_i)$
+\end{itemize}   
+Alternativní definice pro CDGS je $\Gamma = ((N, T, S, P_1), \ldots , (N, T, S, P_n))$.
+\end{definition}
+
+\begin{convention}
+    Pro označení kooperujících distribuovaných gramatických systémů bude dále využito zkrácené \emph{CDGS}, případně \emph{CD gramatické systémy}.
+\end{convention}
+
+\subsection*{Derivační krok v~CDGS}
+Notace derivačního kroku v~CDGS je
+\begin{center}
+    $x \prescript{}{i}{\Rightarrow}^{f} y$.
+\end{center}
+Tento zápis znamená, že řetězec $x \in (N \cup T)^{*}$ derivuje řetězec $y \in (N \cup T)^{*}$ v~$i$-té komponentě za použití \emph{derivačního režimu} $f$.
+
+\subsubsection*{Derivační režimy}
+
+Prvním a~nejpřirozenějším příkladem je režim $*$ \dotaz{Jak tento režim nazvat?}, který byl v~\ref{def_derivacni_krok} definován pro bezkontextovou gramatiku a~princip v~CD gramatických systémech je podobný.
+Při použití tohoto derivačního režimu řetězec $x \in (N \cup T)^*$ přímo derivuje řetězec $y \in (N \cup T)^*$ v~libovolném počtu kroků v~$i$-té komponentě, zapsáno $x \prescript{}{i}{\Rightarrow}^{*}y$.
+Je možné předat řízení derivace jiné komponentě i~v~případě, že ve stejné komponentě lze s~derivací stejného řetězce pokračovat.
+
+Podobným příkladem je režim \emph{ukončovací}, který spočívá v~nutné derivaci řetězce v~dané komponentě, dokud je to možné. Značí se písmenem \emph{t}. Jsou dvě nutné podmínky, aby \emph{y} bylo derivovatelné z~\emph{x} v~komponentě $G_i$ režimem \emph{t}.
+\begin{enumerate}
+    \item $x \prescript{}{i}{\Rightarrow}^{*} y$\,--\,v~dané komponentě lze posloupností derivačních kroků získat řetězec $y$ z~řetězce $x$,
+    \item $y \prescript{}{i}{\nRightarrow} z$ pro všechna $z \in (N \cup T)^{*}$\,--\,ve stejné komponentě nelze nalézt další pravidlo, které by derivovalo $y$.
+\end{enumerate}
+\dotaz{Přidání $i$ k~šipce pro určení komponenty - může být?}
+Jinými slovy, pokud můžeme z~aktuálního řetězce v~aktuální komponentě odvodit řetězec nový, \emph{musí} se s~derivací v~této komponentě pokračovat. 
+
+Další derivační režimy:
+\begin{itemize}
+    \item alespoň \emph{k}~derivací, tedy $x_i \Rightarrow^{\geq k} y$,
+    \item nejvíce \emph{k}~derivací, tedy $x_i \Rightarrow^{\leq k} y$,
+    \item právě \emph{k}~derivací, tedy $x_i \Rightarrow^{=k} y$,
+\end{itemize}
+kde $k \in \mathbb{N} \cup \{0\}$ a $i$ symbolizuje $i$-tou komponentu gramatického systému.
+
+Derivačních režimů existuje mnohem více\dotaz{Zdroj?? - Mluvili jsme o tom na konzultaci a říkáte to i v záznamu přednášky TID. Stačil by asi klidně jen nějaký odkaz na výčet. }, nejsou ale pro tuto práci podstatné.
+Tyto režimy mohou být reprezentovány jako množina, což pomůže definovat další pojmy v~následující podkapitole o~generovaném jazyce.
+\begin{definition}\label{def_der_rezimy}
+    Nechť $k\in \mathbb{N}$ a $*$, $t$ představují derivační režimy. \\
+    Potom množina $D = \{*, t\} \cup \{\leq k, \geq k, =k\}$ reprezentuje derivační režimy použitelné v~CD gramatických systémech.
+\end{definition}
+
+\subsection*{Jazyk generovaný CD gramatickým systémem}
+Než bude definován samotný jazyk, je vhodné definovat pomocnou množinu, která reprezentuje \emph{možné derivace} z~řetězců.
+\begin{definition}\label{def_mozne_derivace}
+    Nechť $\Gamma = (N, T, S, P_1, \ldots, P_n)$. \\  
+    Potom $F(G_j,u,f)=\{v:u_j\Rightarrow^{f}v\},$ $j \in \{1, \ldots, n\},$ $f\in D,$ $u\in (N \cup T)^{*}$ je množina všech řetězců $v$ derivovatelných z~$u$ v~$j$-té komponentě za použití derivačního režimu $f$.
+\end{definition}
+\begin{definition}\label{def_generovany_jazyk}
+    Nechť $\Gamma = (N, T, S, P_1, \ldots, P_n)$. \\  
+    Jazyk generovaný systémem $\Gamma$ za derivačního režimu $f$, $L_f(\Gamma) = \{ w \in T^*:$ existují $v_0, v_1,\ldots, v_m$ takové, že $v_k \in F(G_{j_{k}},$ $v_{k-1}, f),$ $k \in \{1, \ldots, m\},$ $j_k \in \{1, \ldots, n\},$ $v_0 = S,$ $v_m = w$ pro $m \geq 1\}$.  
+\end{definition} 
+
+Výsledný řetězec $w$, který vznikl postupnou derivací startovacího symbolu $v_0$.
+Měl několik mezikroků, které jsou reprezentovány řetězci $v_1, \ldots, v_{m-1}$.
+Každý řetězec $v_k$, kde $1 \leq k \leq m$ byl zderivován z~řetězce $v_{k-1}$ v~komponentě $G_{j_{k}}$, kde $1 \leq j_k \leq n$, za derivačního režimu $f$.
+
+\begin{example}
+    Nechť $\Gamma = (\{S, A\}, \{a\}, S, P_1, P_2, P_3)$, kde $P_1 = \{S \rightarrow AA\}$, $P_2 = \{A \rightarrow S\}$, $P_3 = \{A \rightarrow a\}$.
+    Nechť $f = t$, $\Gamma$ pracuje na ukončovacím derivačním režimu.
+    Počáteční řetězec je počáteční symbol, tedy $S$. 
+    Je pouze jedna možnost, jak $S$~přepsat, a~to použitím pravidla z~$P_1$, $S \rightarrow AA$.
+    Neterminál $A$ se může přepsat zpátky na $S$, případně na terminál $a$.
+    Díky tomu, že v komponentě $P_1$ už neexistuje pravidlo, kterým by mohla derivace dále pokračovat, řízení derivace je předáno komponentě jiné.
+    Aktuálně zpracovávaný řetězec je $AA$, přičemž za použití režimu $t$ se musí přepsat oba neterminály $A$ ve stejné komponentě.
+    Při předání komponentě $P_3$ je řetězec přepsán na $aa$, komponenta $P_2$ jej přepíše na $SS$.
+    Ze startovacího symbolu dostaneme buď terminál $a$ nebo dva startovací symboly, což znamená, že počet terminálů $a$ se zdvojnásobí.
+    Nejméně se budou v konečném řetězci vyskytovat dva terminály $a$.
+    Jazyk generovaný systémem $\Gamma$, $L(\Gamma)_t = \{a^{2^n}, n \geq 1 \}$.
+    
+    \dotaz{Nejsem si jistý, jestli takovýto styl psaní příkladů je v pořádku.}
+\end{example}
+
+\subsection*{Klasifikace skupin CD jazyků}
+CD jazyky jsou jazyky, které jsou generovány CD gramatickými systémy.
+Tyto jazykové rodiny se rozdělují podle různých typů použitých CDGS.
+Jejich označení je
+\begin{center}
+    $CD^y_x(f)$,
+\end{center}
+kde:
+\begin{itemize}
+    \item $y$ určuje použití $\varepsilon$-pravidel: 
+    \begin{itemize}[label=$\circ$]
+        \item $y = \varepsilon$\,--\,$\varepsilon$-pravidla v~komponentách jsou povolena,
+        \item $y$ chybí\,--\,$\varepsilon$-pravidla se v~komponentách nemohou vyskytovat,
+    \end{itemize}
+    \item $x$ je stupeň gramatického systému:
+    \begin{itemize}[label=$\circ$]
+        \item $n, n \geq 1$\,--\,gramatický systém může obsashovat maximálně $n$~komponent,
+        \item $\infty$\,--\,gramatický systém nemá omezen počet komponent,
+    \end{itemize}
+    \item $f$ je derivační režim, $f \in D$.
+\end{itemize}
+
+\subsection*{Hybridní CD gramatické systémy}
+Hybridní CD gramatické systémy nabízí možnost definovat derivační režim samostatně pro jednotlivé komponenty systému.
+\begin{definition}
+    \emph{Hybridní CDGS} je n-tice $\Gamma = (N, T, S, (P_1, f_1), \ldots, (P_n, f_n))$, kde:
+    \begin{itemize}
+        \item $N, T, P_i, S$ jsou definovány stejně jako v~klasických CDGS (\ref{def_cdgs}),
+        \item $f_i$ je derivační režim $i$-té komponenty, $f_i \in D$ pro všechna $i \in \{1, \ldots, n\}$.
+    \end{itemize}
+\end{definition}
+
+Jazyk generovaný těmito gramatickými systémy je velmi podobný jazykům generovaným klasickými CDGS.
+Jediný rozdíl je v~použití derivačního režimu příslušné komponenty, který je v~definici označen jako $f_{j_k}$, místo společného derivačního režimu pro celý gramatický systém.
+\begin{definition}
+    Nechť $\Gamma = (N, T, S, (P_1, f_1), \ldots, (P_n, f_n))$.\\
+    Jazyk generovaný systémem $\Gamma$, $L(\Gamma) = \{w \in T^*:$ existují $v_0, v_1,\ldots, v_n$ takové, že \\ $v_k \in F(G_{j_k}, v_{k-1}, f_{j_k})$, $k \in \{1, \ldots, m\}$, $j_k \in \{1, \ldots, n\}$, $v_0 = S$, $v_m = w$ pro $m \geq 1$\}.
+\end{definition}
+\dotaz{Nějaké tipy a triky pro velmi nevhodné přetečení/zalamování řádků za nevhodným symbolem? $v_k \in F(\ldots)$ bylo na dvou řádcích, musel jsem manunálně zalomit za \uv{že}, jinak by zalomení bylo za \uv{$\in$}.}
+
+Zápis jazykových skupin generovaných hybridními CDGS je
+\begin{center}
+    $X\,CD^y_{x, v}(f) $, 
+\end{center}
+kde:
+\begin{itemize}
+    \item $x, y, f$ jsou definovány stejně jako u~nehybridních CDGS,
+    \item $v$ je nepovinné omezení počtu pravidel v~komponentách:
+    \begin{itemize}[label=$\circ$]
+        \item \emph{m}\,--\,každá komponenta $P_i, i \in \{1, \ldots, n\}$ obsahuje nejvíce $m$ pravidel, $m \geq 1$,
+        \item $\infty$, chybí\,--\, maximální počet pravidel pro komponenty není omezen,
+    \end{itemize}
+    \item $X$ určuje determinismus gramatického systému:
+    \begin{itemize}[label=$\circ$]
+        \item $D$\,--\,gramatický systém je deterministický, tedy pro každé $A \rightarrow u, A \rightarrow w \in P_i$ platí, že $u = w$,
+        \item \emph{nic}\,--\,gramatický systém je nedeterministický, tedy pro každý neterminální symbol může existovat více pravidel s~různými pravými stranami,
+        \item $H$\,--\,gramatický systém je hybridní. 
+        Nezapisuje se derivační režim, který je určen samostatně pro každou komponentu. 
+        \item \dotaz{Když je hybridní, může být obojí?
+        $H$ explicitně specifikuje, že každá komponenta bude mít svůj derivační režim, ale nic neříká o (ne)de\-ter\-mi\-nis\-mu, pokud to správně chápu.
+        Jestli je to tak, moc mi nedává smysl, aby se $H$ řadilo ke specifikaci determinismu, když specifikuje něco jiného.}
+    \end{itemize}
+\end{itemize}
+
+\section{Paralelní komunikující gramatické systémy}
+Paralelní komunikující (\emph{parallel communicating})\,--\,PC gramatický systém stupně $n$ je systém gramatik, které sdílí množinu neterminálů i~terminálů a~množinu komunikačních symbolů.
+Každá komponenta má svůj startovací symbol nazývaný \emph{axiom}.
+Spolupráce mezi gramatikami probíhá pomocí množiny komunikačních symbolů v~\emph{c}-derivačních krocích.
+\begin{definition}
+    Paralelní komunikující gramatický systém stupně $n, n \geq 1$ je $(n+3)$-tice
+    \begin{center}
+        $\Gamma = (N, K, T, (S_1, P_1), \ldots, (S_n, P_n))$,
+    \end{center}
+    kde:
+    \begin{itemize}
+        \item $N, T$ jsou definovány stejně jako u~bezkontextových gramatik (\ref{def_bkg}),
+        \item $K = \{Q_1, \ldots, Q_n\}$ je množina komunikačních symbolů ($N, K, T$ jsou navzájem disjunktní),
+        \item $P_i, i \in \{1, \ldots, n\}$ je množina pravidel nazývané komponenty, stejně jako u~CD gramatických systémů (\ref{def_cdgs}),
+        \item $i$-tá gramatika systému je konstrukt $G_i = (N \cup K, T, S_i, P_i), i \in \{1, \ldots, n\}$.
+    \end{itemize}
+\end{definition}
+
+\begin{convention}
+Pro označení paralelních komunikujících gramatických systémů bude dále využito zkrácené \emph{PCGS} nebo \emph{PC gramatické systémy}.
+\end{convention}
+
+\subsection*{Derivační kroky v PCGS}
+
+V~PC gramatických systémech existují dva druhy derivačního kroku, a~to \emph{g}-derivační krok a~\emph{c}-derivační krok.
+První zmíněný slouží k~přímé derivaci řetězce v~rámci jedné komponenty bez zásahu komponent jiných a~druhý slouží pro vzájemnou pomoc při derivaci řetězce. 
+PC gramatický systém \emph{vždy} preferuje c-derivační krok nad g-derivačním krokem.
+Ten se provede pokaždé, obsahuje-li alespoň jeden z~řetězců $x_i, i \in \{1, \ldots, n\}$ alespoň jeden komunikační symbol.
+
+Derivační kroky pracují nad \emph{konfigurací} PCGS.
+Následující definice převzata z~\cite{Various-communications-in-PC-grammar-systems}.
+\begin{definition}
+    Nechť $\Gamma = (N, K, T, (S_1, P_1), \ldots, (S_n, P_n))$ je PC gramatický systém.
+    Potom n-tice
+    \begin{center}
+        $(x_1, \ldots, x_n),$ $x_i \in (N \cup K \cup T)^*,$ $i \in \{1 \ldots, n\}$
+    \end{center}
+    se nazývá \emph{konfigurací} $\Gamma$. $(S_1, \ldots, S_n)$ je \emph{počáteční konfigurací} $\Gamma$.
+\end{definition}
+
+\subsubsection*{g-derivační krok}
+Nechť $\Gamma = (N, K, T, (P_1, S_1), \ldots, (P_n, S_n))$ je PCGS a~$(x_1, \ldots x_i),$ $(y_1, \ldots, y_i)$ jsou konfigurace $\Gamma$.
+$\Gamma$ udělá g-derivační krok, formálně zapsáno
+\begin{center}
+    $(x_1, \ldots, x_i) \prescript{}{g}{\Rightarrow} (y_1, \ldots, y_i)$
+\end{center}
+pokud $alph(x_i) \cap K = \emptyset$ a~zároveň:
+\begin{itemize}
+    \item $x_i \Rightarrow y_i$ v~$G_i = (N, K, T, (S_i, P_i))$\,--\,$y_i$ je přímo derivován z~$x_i$ v~gramatice $G_i$ (komponentě $P_i$), nebo
+    \item $x_i = y_i \in T^*$\,--\,$x_i$ již je řetězcem terminálů
+\end{itemize}   
+pro všechna $i \in \{1, \ldots, n\}$.
+
+
+\chapter{Použití gramatických systémů pro popis jazyka Koubp}
+
+\chapter{Implementace syntaktického analyzátoru pro jazyk Koubp \todo{rozdelit jinak sekce? co pripadne z~implementace doplnit?}}\label{7_implementace}
+
+\todo{uvod do teto kapitoly - navod na pouziti a build system?}
+
+\section{Přijímaný jazyk}
+
+Jazyk \emph{Koubp} je založený na jazyce IFJ22, který je podmnožinou jazyka PHP 8, jenž byl specifikován v~rámci zadání projektu do předmětu Formální jazyky a překladače v~akademickém roce 2022/2023.
+\todo{idealne citovat zadani projektu?}
+
+Některé aspekty jazyků jsou společné. 
+Oba dva jazyky jsou strukturované, podporují definici proměnných a~funkcí.
+Hlavní tělo programu se skládá z~prolínání sekvence příkazů a~definic funkcí, které se mohou vzájemně rekurzivně volat.
+Vstupním bodem programu není funkce \texttt{main()}, jak lze nalézt například u~jazyka C \cite{ISO-C-Standard}, analýza probíhá od začátku souboru.
+V~uživatelem definovaných funkcích může být větvení, iterace a~další běžné konstrukce.
+Veškeré proměnné jsou lokální, i~v~rámci hlavního těla programu.
+Soubory se zdrojovým kódem nelze slučovat a~vytvářet tak jediný modul, který by bylo možné zkompilovat.
+\todo{doplnit veci, ktere nejsou spolecne (nezabihat do detailu, vse bude specifikovano v~podnadpisech)}
+
+\subsection*{Deklarace a definice funkcí}
+
+\subsection*{Příkazy}
+
+\begin{itemize}
+    \item Přiřazení
+    \item Větvení
+    \item Cyklus while
+    \item Cyklus for
+    \item Volání funkcí
+\end{itemize}
+
+
+\subsection*{Výrazy}
+
+\begin{itemize}
+    \item Operátory
+    \item Priorita operátorů
+    \item Volání funkcí
+\end{itemize}
+
+\section{Gramatický systém definujíci syntax jazyka Koubp}
+\todo{tady si nejsem uplne jisty - gramaticky system bych dal urcite do prilohy, ale rad bych zminil princip indexace + jak to vypada v~ll tabulce a implementacne vyreseny deadlock.}
+\subsection*{Indexace neterminálů a význam pro implementaci} 
+
+\subsection*{Deadlock mezi neterminály statement a codeBlock}
+
+\section{Návrh řešení syntaktického analyzátoru}
+Implementace syntaktické analýzy je silně objektově orientována, veškeré datové struktury jsou reprezentovány třídami.
+Třídy reprezentující neterminály a~terminály mají společnou nadtřídu, díky čemuž je možné je ukládat do jednoho zásobníku.
+Podobně je to i~s~jednotlivými analyzátory, a proto je možné implementovat předávání řízení pomocí výjimek bez nutnosti neustálého vzájemného volání při analýze volání funkcí.
+Jednu nadtřídu mají také gramatiky, jednotlivé instance jsou poté konstruovány pomocí tovární metody.
+
+\subsection*{Práce s~gramatikami}
+Gramatiky jsou rozděleny tak, aby každá z~nich tvořila ucelenou část jazyka Koubp.
+Mimo čtvrtou gramatiku jsou všechny využívány pouze pro prediktivní analýzu.
+Ačkoliv téma čtvrté gramatiky je analýza výrazů, je využívána jak precedenčním, tak prediktivním analyzátorem.
+Důvod je zvolený postup prediktivní analýzy volání funkcí\,--\,o~samotné výrazy bez volání funkcí, tedy pouze s~konstantami, proměnnými a podobně, se postará analýza precedenční.
+
+\begin{figure}[h]
+\caption{\todo{Tady bude obrázek znázorňující oba dva parsery a šest gramatik a který s~čím pracuje.}}
+\label{fig_schema_analyzy}    
+\end{figure}
+
+\subsection*{Předávání řízení prediktivní a precedenční analýzy}
+V~programu je implementován systém výjimek, pro potřeby této podkapitoly je třeba znát výjimku (třídu) \texttt{ChangeParser}.
+Třída \texttt{Parser} deklaruje čistě virtuální metodu \texttt{Parse()}, která je přepsána oběma analyzátory.
+Kdykoliv se chytí výjimka \texttt{ChangeParser}, do ukazatele na třídu \texttt{Parser} se uloží adresa správného analyzátoru.
+
+\begin{figure}
+    \caption{\todo{tady bude vytazek z~kodu pro prepinani analyzatoru.}}
+    \label{fig_schema_zmeny_parseru}
+\end{figure}
+
+V~programu je několik podnětů, které tuto výjimku vyvolají.
+Jedním z~nich je neterminál \texttt{Expression} na vrcholu zásobníku pro prediktivní analýzu.
+V~tomto případě je zřejmé, že musí být předáno řízení precedenční analýze, aby mohla být provedena analýza výrazu.
+Pokud precedenční analýza narazí na token \texttt{tFuncName}, reprezentující počátek volání funkce, musí opět předat řízení zpět prediktivní analýze.
+
+\todo{presny popis zatim nemohu poskytnout, je to posledni vec, ktera mi chybi k~dokonceni SA. nicmene bude doplnen.}
+
+\begin{figure}[h]
+    \caption{\todo{Tady bude obrazek, kde bude napsany jednoduchy kod volani funkce, jeho reprezentace v~tokenech a navic vlozene pomocne tokeny, ktere parsery vyuzivaji.
+    Bude tam zobrazene, v~jakych mistech se provadi zmena analyz.}}
+\end{figure}
+
+\section{Lexikální analýza a nástroj Flex}
+Pro usnadnění práce byl lexikální analyzátor automaticky vygenerován nástrojem \emph{Flex}\footnote{Manuál k~programu k~dispozici na \href{https://westes.github.io/flex/manual/}{https://westes.github.io/flex/manual/}.} ze souboru s~lexémy popsanými regulárními výrazy.
+S~každým úspěšně analyzovaným lexémem následuje vložení tokenu do vstupní pásky pro syntaktickou analýzu.
+Znamená to tedy, že se nejdříve v~celém zdrojovém souboru ověří lexikální správnost, až poté správnost syntaktická. 
+Při konstrukci tokenu se inicializuje i~jeho datová část.
+
+\section{Abstraktní syntaktický strom}
+
+\chapter{Testování}
+
+\chapter{Závěr}

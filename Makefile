@@ -15,7 +15,7 @@ valgrind:
 	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=valgrind.log ./build/src/Parser
 
 thesis:
-	@cd doc/ibt && make
+	@cd doc/thesis && make
 
 clean:
-	@rm -rf build/
+	@rm -rf build/ && cd doc/thesis && make clean
