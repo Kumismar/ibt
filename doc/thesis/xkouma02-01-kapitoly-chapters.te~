@@ -6,6 +6,8 @@
 %\documentclass[../projekt.tex]{subfiles}
 %\begin{document}
 
+\chapter{Abstrakt}\label{kap_abstrakt}
+
 \chapter{Úvod}\label{kap_uvod}
 
 
@@ -13,7 +15,7 @@
 
 \section{Abeceda, řetězec a jazyk}
 \section{Chomského hierarchie}
-\section{Bezkontextová gramatika}\label{kap_bkg}
+\section{Bezkontextová gramatika}
 Následující definice převzaty z~\cite{TIN-opora}.
 \begin{definition}\label{def_bkg}
     \emph{Bezkontextová gramatika} je čtveřice $G = (N, T, P, S)$, kde:
@@ -32,7 +34,7 @@ Následující definice převzaty z~\cite{TIN-opora}.
     Pro označení bezkontextových gramatik bude v~textu dále využívána zkratka BKG.
 \end{convention}
 
-\subsection*{Derivační krok}\label{kap_der_krok}
+\subsection*{Derivační krok}
 Pro pochopení následující podkapitoly je nutné znát základní teorii relací, reflexivní a~tranzitivní uzávěr\footnote{Úvod do relací například zde \href{https://www.umat.fekt.vut.cz/~hlinena/IDM/SadyUloh/relacie.pdf}{https://www.umat.fekt.vut.cz/\textasciitilde hlinena/IDM/SadyUloh/relacie.pdf}}.
 \begin{definition}\label{def_derivacni_krok}
     Nechť $G = (N, T, P, S)$ je BKG, $\alpha, \beta  \in (N \cup T)^*$ a $p = A \rightarrow x \in P$. \\
@@ -46,8 +48,7 @@ Pro pochopení následující podkapitoly je nutné znát základní teorii rela
 \end{definition}
 To znamená, že pokud lze přepsat řetězec $\alpha = uAv$ na řetězec $\beta = uxv$ za použití pravidla $A \rightarrow x$, potom mezi řetězci $\alpha$ a~$\beta$ je relace přímé derivace, zapsáno $\alpha \Rightarrow \beta$.
 
-\subsection*{Sekvence derivačních kroků}\label{kap_sekvence_der_kroku}
-\begin{definition}\label{ref_tranz_uzaver}
+\begin{definition}
     Nechť $G = (N, T, P, S)$ je BKG a~$\alpha, \beta \in (N \cup T)^*$. \\
     Mezi řetězci $\alpha$ a $\beta$ platí relace $\Rightarrow^+$ nazývaná \emph{derivace}, jestliže existuje posloupnost přímých derivací $v_{i-1} \Rightarrow v_i, i \in \{1, \ldots, n\}, n \geq 1$ taková, že platí
     \begin{center}
@@ -60,13 +61,15 @@ To znamená, že pokud lze přepsat řetězec $\alpha = uAv$ na řetězec $\beta
 \end{definition}
 Jinými slovy, pokud řetězec $\alpha$ přímo derivuje řetězec $\beta$ v~nenulovém počtu kroků a~zároveň $\beta$ přímo derivuje řetězec $\gamma$ v~nenulovém počtu kroků, pak je zřejmé, že $\alpha$ derivuje $\gamma$ v~nenulovém počtu kroků, zapsáno $\alpha \Rightarrow^+ \gamma$. 
 
-\begin{definition}\label{def_refl_uzaver}
+\begin{definition}
     Nechť $G = (N, T, P, S)$ je BKG a~$\alpha, \beta \in (N \cup T)^*$. \\
     Jestliže v~$G$ platí pro řetězce $\alpha$ a~$\beta$ relace $\alpha \Rightarrow^+ \beta$ nebo identita $\alpha = \beta$, pak $\alpha \Rightarrow^* \beta$.
     Relace~$\Rightarrow^*$ je reflexivním a~tranzitivním uzávěrem relace přímé derivace $\Rightarrow$.  
 \end{definition}
 Reflexivní uzávěr relace přímé derivace $\Rightarrow$ znamená, že řetězec přímo derivuje sám sebe v~nula krocích.
 Také je možné říci, že se nepoužije žádné pravidlo k~přepsání řetězce na sebe sama, zapsáno $\alpha \Rightarrow^0 \alpha$.
+
+
 
 
 \section{Konečný automat}
@@ -136,7 +139,7 @@ Původní zásobníkový automat lze rozšírit o~další chování. Například
 Veškeré definice a znalosti použité v~této kapitole převzaty z~\cite{CDGS}, \cite{PCGS} a~\cite{Handbook-Of-Formal-Languages-2}.
 \dotaz{Jak uvést tuto kapitolu?}
 
-\section{Kooperující distribuované gramatické systémy}\label{kap_CDGS}
+\section{Kooperující distribuované gramatické systémy}
 
 Kooperující distribuovaný (\emph{cooperating distributed}) gramatický systém stupně~\emph{n}~je systém gramatik, které mezi sebou sdílejí množinu neterminálů i~terminálů a~startovací symbol.
 Spolupracují mezi sebou předáváním řízení derivace aktuálně zpracovávaného řetězce dle pravidel nastaveného \emph{derivačního režimu}.
@@ -168,8 +171,8 @@ Tento zápis znamená, že řetězec $x \in (N \cup T)^{*}$ derivuje řetězec $
 
 \subsubsection*{Derivační režimy}
 
-Prvním příkladem je režim $*$, který byl v~definici \ref{def_refl_uzaver} definován pro bezkontextovou gramatiku a~princip v~CD gramatických systémech je podobný.
-Při použití tohoto derivačního režimu řetězec $x \in (N \cup T)^*$ derivuje řetězec $y \in (N \cup T)^*$ v~libovolném počtu kroků v~$i$-té komponentě, zapsáno $x \prescript{}{i}{\Rightarrow}^{*}y$.
+Prvním a~nejpřirozenějším příkladem je režim $*$ \dotaz{Jak tento režim nazvat?}, který byl v~\ref{def_derivacni_krok} definován pro bezkontextovou gramatiku a~princip v~CD gramatických systémech je podobný.
+Při použití tohoto derivačního režimu řetězec $x \in (N \cup T)^*$ přímo derivuje řetězec $y \in (N \cup T)^*$ v~libovolném počtu kroků v~$i$-té komponentě, zapsáno $x \prescript{}{i}{\Rightarrow}^{*}y$.
 Je možné předat řízení derivace jiné komponentě i~v~případě, že ve stejné komponentě lze s~derivací stejného řetězce pokračovat.
 
 Podobným příkladem je režim \emph{ukončovací}, který spočívá v~nutné derivaci řetězce v~dané komponentě, dokud je to možné. Značí se písmenem \emph{t}. Jsou dvě nutné podmínky, aby \emph{y} bylo derivovatelné z~\emph{x} v~komponentě $G_i$ režimem \emph{t}.
@@ -192,30 +195,18 @@ Derivačních režimů existuje mnohem více\dotaz{Zdroj?? - Mluvili jsme o~tom 
 Tyto režimy mohou být reprezentovány jako množina, což pomůže definovat další pojmy v~následující podkapitole o~generovaném jazyce.
 \begin{definition}\label{def_der_rezimy}
     Nechť $k\in \mathbb{N}$ a $*$, $t$ představují derivační režimy. \\
-    Potom množina
-    \begin{center}
-        $D = \{*, t\} \cup \{\leq k, \geq k, =k\}$ 
-    \end{center}        
-    reprezentuje derivační režimy použitelné v~CD gramatických systémech.
+    Potom množina $D = \{*, t\} \cup \{\leq k, \geq k, =k\}$ reprezentuje derivační režimy použitelné v~CD gramatických systémech.
 \end{definition}
 
 \subsection*{Jazyk generovaný CD gramatickým systémem}
 Než bude definován samotný jazyk, je vhodné definovat pomocnou množinu, která reprezentuje \emph{možné derivace} z~řetězců.
 \begin{definition}\label{def_mozne_derivace}
     Nechť $\Gamma = (N, T, S, P_1, \ldots, P_n)$. \\  
-    Potom 
-    \begin{center}
-        $F(G_j,u,f)=\{v:u_j\Rightarrow^{f}v\},$ $j \in \{1, \ldots, n\},$ $f\in D,$ $u\in (N \cup T)^{*}$
-    \end{center}        
-    je množina všech řetězců $v$ derivovatelných z~$u$ v~$j$-té komponentě za použití derivačního režimu $f$.
+    Potom $F(G_j,u,f)=\{v:u_j\Rightarrow^{f}v\},$ $j \in \{1, \ldots, n\},$ $f\in D,$ $u\in (N \cup T)^{*}$ je množina všech řetězců $v$ derivovatelných z~$u$ v~$j$-té komponentě za použití derivačního režimu $f$.
 \end{definition}
-
 \begin{definition}\label{def_generovany_jazyk}
     Nechť $\Gamma = (N, T, S, P_1, \ldots, P_n)$. \\  
-    Jazyk generovaný systémem $\Gamma$ za derivačního režimu $f$ je 
-    \begin{center}
-         $L_f(\Gamma) = \{ w \in T^*:$ existují $v_0, v_1,\ldots, v_m$ takové, že $v_k \in F(G_{j_{k}},$ $v_{k-1}, f),$\\$k \in \{1, \ldots, m\},$ $j_k \in \{1, \ldots, n\},$ $v_0 = S,$ $v_m = w$ pro $m \geq 1\}$.  
-    \end{center}        
+    Jazyk generovaný systémem $\Gamma$ za derivačního režimu $f$, $L_f(\Gamma) = \{ w \in T^*:$ existují $v_0, v_1,\ldots, v_m$ takové, že $v_k \in F(G_{j_{k}},$ $v_{k-1}, f),$ $k \in \{1, \ldots, m\},$ $j_k \in \{1, \ldots, n\},$ $v_0 = S,$ $v_m = w$ pro $m \geq 1\}$.  
 \end{definition} 
 
 Výsledný řetězec $w$, který vznikl postupnou derivací startovacího symbolu $v_0$.
@@ -225,46 +216,17 @@ Každý řetězec $v_k$, kde $1 \leq k \leq m$ byl zderivován z~řetězce $v_{k
 \begin{example}
     Nechť $\Gamma = (\{S, A\}, \{a\}, S, P_1, P_2, P_3)$, kde $P_1 = \{S \rightarrow AA\}$, $P_2 = \{A \rightarrow S\}$, $P_3 = \{A \rightarrow a\}$.
     Nechť $f = t$, $\Gamma$ pracuje na ukončovacím derivačním režimu.
-
     Počáteční řetězec je počáteční symbol, tedy $S$. 
     Je pouze jedna možnost, jak $S$~přepsat, a~to použitím pravidla z~$P_1$, $S \rightarrow AA$.
-    \begin{enumerate}[label=i)]
-        \centering
-        \item $S \rightarrow AA$
-    \end{enumerate}
+    Neterminál $A$ se může přepsat zpátky na $S$, případně na terminál $a$.
     Díky tomu, že v~komponentě $P_1$ už neexistuje pravidlo, kterým by mohla derivace dále pokračovat, řízení derivace je předáno komponentě jiné.
-    Aktuálně zpracovávaný řetězec je $AA$.
-    Komponenty $P_1$ a~$P_2$ mají pravidla pro přepsání neterminálu $A$.
-    Při použití derivačního režimu \emph{t} je zřejmé, že celý řetězec bude přepisovat pouze jedna komponenta.
-    Při předání komponentě $P_3$ je řetězec přepsán na $aa$,
-    \begin{enumerate}[label=ii$_a$)]
-        \centering
-        \item $AA \rightarrow aa$ (\emph{úspěch})
-    \end{enumerate}
-    komponenta $P_2$ stejný řetězec přepíše na $SS$.
-    \begin{enumerate}[label=ii$_b$)]
-        \centering
-        \item $AA \rightarrow SS$
-    \end{enumerate}
-    Ze startovacího symbolu dostaneme buď terminál $a$ nebo dva startovací symboly.
-    To znamená, že pokaždé, kdy se $AA$ přepíše na $SS$, počet terminálů $a$ se zdvojnásobí.
-    \begin{center}
-        \begin{minipage}[h]{0.4\textwidth}
-            \begin{enumerate}
-                \item[iii$_b$)] $SS \rightarrow AAAA$
-                \item[iv$_b$)] $AAAA \rightarrow aaaa$
-            \end{enumerate}
-        \end{minipage}%
-        \begin{minipage}[h]{0.4\textwidth}
-            \begin{enumerate}
-                \item[iii$_b$)] $SS \rightarrow AAAA$
-                \item[iv$_c$)] $AAAA \rightarrow SSSS$
-                \item[v$_c$)] $SSSS \rightarrow AAAAAAAA$
-                \item[vi$_c$)] $AAAAAAAA \rightarrow aaaaaaaa$ 
-            \end{enumerate}
-        \end{minipage}%
-    \end{center}
-    Jazyk generovaný systémem $\Gamma$ za derivačního režimu \emph{t}, $L(\Gamma)_t = \{a^{2^n}, n \geq 1 \}$.
+    Aktuálně zpracovávaný řetězec je $AA$, přičemž za použití režimu $t$ se musí přepsat oba neterminály $A$ ve stejné komponentě.
+    Při předání komponentě $P_3$ je řetězec přepsán na $aa$, komponenta $P_2$ jej přepíše na $SS$.
+    Ze startovacího symbolu dostaneme buď terminál $a$ nebo dva startovací symboly, což znamená, že počet terminálů $a$ se zdvojnásobí.
+    Nejméně se budou v~konečném řetězci vyskytovat dva terminály $a$.
+    Jazyk generovaný systémem $\Gamma$, $L(\Gamma)_t = \{a^{2^n}, n \geq 1 \}$.
+    
+    \dotaz{Nejsem si jistý, jestli takovýto styl psaní příkladů je v~pořádku.}
 \end{example}
 
 \subsection*{Klasifikace skupin CD jazyků}
