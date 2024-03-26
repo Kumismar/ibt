@@ -89,6 +89,10 @@
 \usepackage{enumitem}
 \usepackage{mathtools}
 \usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\floatname{algorithm}{Algoritmus}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definice}

@@ -33,7 +33,7 @@ Následující definice převzaty z~\cite{TIN-opora}.
 \end{convention}
 
 \subsection*{Derivační krok}\label{kap_der_krok}
-Pro pochopení následující podkapitoly je nutné znát základní teorii relací, reflexivní a~tranzitivní uzávěr\footnote{Úvod do relací například zde \href{https://www.umat.fekt.vut.cz/~hlinena/IDM/SadyUloh/relacie.pdf}{https://www.umat.fekt.vut.cz/\textasciitilde hlinena/IDM/SadyUloh/relacie.pdf}}.
+Pro pochopení následující podkapitoly je nutné znát minimálně základní teorii množin a~relací, reflexivní a~tranzitivní uzávěr.
 \begin{definition}\label{def_derivacni_krok}
     Nechť $G = (N, T, P, S)$ je BKG, $\alpha, \beta  \in (N \cup T)^*$ a $p = A \rightarrow x \in P$. \\
     Mezi řetězci $\alpha$ a~$\beta$ platí binární relace $\underset{G}{\Rightarrow}$, nazývaná \emph{přímá derivace}, jestliže můžeme řetězce $\alpha$ a~$\beta$ vyjádřit ve tvaru
@@ -220,7 +220,7 @@ Než bude definován samotný jazyk, je vhodné definovat pomocnou množinu, kte
 
 Výsledný řetězec $w$, který vznikl postupnou derivací startovacího symbolu $v_0$.
 Měl několik mezikroků, které jsou reprezentovány řetězci $v_1, \ldots, v_{m-1}$.
-Každý řetězec $v_k$, kde $1 \leq k \leq m$ byl zderivován z~řetězce $v_{k-1}$ v~komponentě $G_{j_{k}}$, kde $1 \leq j_k \leq n$, za derivačního režimu $f$.
+Každý řetězec $v_k$, kde $k \in \{1, \ldots, m\}$ byl zderivován z~řetězce $v_{k-1}$ v~komponentě $G_{j_{k}}$, kde $j_k \in \{1, \ldots, n\}$, za derivačního režimu $f$.
 
 \begin{example}
     Nechť $\Gamma = (\{S, A\}, \{a\}, S, P_1, P_2, P_3)$, kde $P_1 = \{S \rightarrow AA\}$, $P_2 = \{A \rightarrow S\}$, $P_3 = \{A \rightarrow a\}$.
@@ -228,43 +228,30 @@ Každý řetězec $v_k$, kde $1 \leq k \leq m$ byl zderivován z~řetězce $v_{k
 
     Počáteční řetězec je počáteční symbol, tedy $S$. 
     Je pouze jedna možnost, jak $S$~přepsat, a~to použitím pravidla z~$P_1$, $S \rightarrow AA$.
-    \begin{enumerate}[label=i)]
-        \centering
-        \item $S \rightarrow AA$
-    \end{enumerate}
+    \begin{equation*}
+        S \rightarrow AA \quad [S \rightarrow AA]
+    \end{equation*}
     Díky tomu, že v~komponentě $P_1$ už neexistuje pravidlo, kterým by mohla derivace dále pokračovat, řízení derivace je předáno komponentě jiné.
     Aktuálně zpracovávaný řetězec je $AA$.
     Komponenty $P_1$ a~$P_2$ mají pravidla pro přepsání neterminálu $A$.
     Při použití derivačního režimu \emph{t} je zřejmé, že celý řetězec bude přepisovat pouze jedna komponenta.
     Při předání komponentě $P_3$ je řetězec přepsán na $aa$,
-    \begin{enumerate}[label=ii$_a$)]
-        \centering
-        \item $AA \rightarrow aa$ (\emph{úspěch})
-    \end{enumerate}
+    \begin{alignat*}{-1}
+        AA \rightarrow&&\; aA \quad &&[A \rightarrow a] \\
+        aA \rightarrow&&\; aa \,\quad &&[A \rightarrow a]
+    \end{alignat*}
     komponenta $P_2$ stejný řetězec přepíše na $SS$.
-    \begin{enumerate}[label=ii$_b$)]
-        \centering
-        \item $AA \rightarrow SS$
-    \end{enumerate}
+    \begin{alignat*}{-1}
+        AA  \rightarrow&&\; SA && \quad [A \rightarrow S] \\
+        SA  \rightarrow&&\; SS && \quad [A \rightarrow S] 
+    \end{alignat*}
+    \begin{alignat*}{-1}
+         SS \rightarrow&&\; AAS  \hphantom{A} \quad  &&[S \rightarrow AA] \\ 
+        AAS \rightarrow&&\; AAAA \quad &&[S \rightarrow AA]
+    \end{alignat*}
     Ze startovacího symbolu dostaneme buď terminál $a$ nebo dva startovací symboly.
     To znamená, že pokaždé, kdy se $AA$ přepíše na $SS$, počet terminálů $a$ se zdvojnásobí.
-    \begin{center}
-        \begin{minipage}[h]{0.4\textwidth}
-            \begin{enumerate}
-                \item[iii$_b$)] $SS \rightarrow AAAA$
-                \item[iv$_b$)] $AAAA \rightarrow aaaa$
-            \end{enumerate}
-        \end{minipage}%
-        \begin{minipage}[h]{0.4\textwidth}
-            \begin{enumerate}
-                \item[iii$_b$)] $SS \rightarrow AAAA$
-                \item[iv$_c$)] $AAAA \rightarrow SSSS$
-                \item[v$_c$)] $SSSS \rightarrow AAAAAAAA$
-                \item[vi$_c$)] $AAAAAAAA \rightarrow aaaaaaaa$ 
-            \end{enumerate}
-        \end{minipage}%
-    \end{center}
-    Jazyk generovaný systémem $\Gamma$ za derivačního režimu \emph{t}, $L(\Gamma)_t = \{a^{2^n}, n \geq 1 \}$.
+    Jazyk generovaný systémem $\Gamma$ za derivačního režimu \emph{t}, $L(\Gamma)_t = \{a^{2^n},$ $n \geq 1 \}$.
 \end{example}
 
 \subsection*{Klasifikace skupin CD jazyků}
@@ -288,6 +275,9 @@ kde:
     \end{itemize}
     \item $f$ je derivační režim, $f \in D$.
 \end{itemize}
+\begin{example}
+    $CD^\varepsilon_6 (t)$ je rodina jazyků generována CD gramatickými systémy s~maximálně šesti komponentami, povolenými $\varepsilon$-pravidly a~pracujícími nad ukončovacím režimem. 
+\end{example}
 
 \subsection*{Hybridní CD gramatické systémy}
 Hybridní CD gramatické systémy nabízí možnost definovat derivační režim samostatně pro jednotlivé komponenty systému.
@@ -303,9 +293,11 @@ Jazyk generovaný těmito gramatickými systémy je velmi podobný jazykům gene
 Jediný rozdíl je v~použití derivačního režimu příslušné komponenty, který je v~definici označen jako $f_{j_k}$, místo společného derivačního režimu pro celý gramatický systém.
 \begin{definition}
     Nechť $\Gamma = (N, T, S, (P_1, f_1), \ldots, (P_n, f_n))$.\\
-    Jazyk generovaný systémem $\Gamma$, $L(\Gamma) = \{w \in T^*:$ existují $v_0, v_1,\ldots, v_n$ takové, že \\ $v_k \in F(G_{j_k}, v_{k-1}, f_{j_k})$, $k \in \{1, \ldots, m\}$, $j_k \in \{1, \ldots, n\}$, $v_0 = S$, $v_m = w$ pro $m \geq 1$\}.
+    Jazyk generovaný systémem $\Gamma$, 
+    \begin{center}
+        $L(\Gamma) = \{w \in T^*:$ existují $v_0, v_1,\ldots, v_n$ takové, že \\ $v_k \in F(G_{j_k}, v_{k-1}, f_{j_k})$, $k \in \{1, \ldots, m\}$, $j_k \in \{1, \ldots, n\}$, $v_0 = S$, $v_m = w$ pro $m \geq 1$\}.
+    \end{center} 
 \end{definition}
-\dotaz{Nějaké tipy a triky pro velmi nevhodné přetečení/zalamování řádků za nevhodným symbolem? $v_k \in F(\ldots)$ bylo na dvou řádcích, musel jsem manunálně zalomit za \uv{že}, jinak by zalomení bylo za \uv{$\in$}.}
 
 Zápis jazykových skupin generovaných hybridními CDGS je
 \begin{center}
@@ -325,9 +317,6 @@ kde:
         \item \emph{nic}\,--\,gramatický systém je nedeterministický, tedy pro každý neterminální symbol může existovat více pravidel s~různými pravými stranami,
         \item $H$\,--\,gramatický systém je hybridní. 
         Nezapisuje se derivační režim, který je určen samostatně pro každou komponentu. 
-        \item \dotaz{Když je hybridní, může být obojí?
-        $H$ explicitně specifikuje, že každá komponenta bude mít svůj derivační režim, ale nic neříká o~(ne)de\-ter\-mi\-nis\-mu, pokud to správně chápu.
-        Jestli je to tak, moc mi nedává smysl, aby se $H$ řadilo ke specifikaci determinismu, když specifikuje něco jiného.}
     \end{itemize}
 \end{itemize}
 
@@ -343,7 +332,7 @@ Spolupráce mezi gramatikami probíhá pomocí množiny komunikačních symbolů
     kde:
     \begin{itemize}
         \item $N, T$ jsou definovány stejně jako u~bezkontextových gramatik (\ref{def_bkg}),
-        \item $K = \{Q_1, \ldots, Q_n\}$ je množina komunikačních symbolů ($N, K, T$ jsou navzájem disjunktní),
+        \item $K = \{Q_1, \ldots, Q_n\}$ je množina komunikačních symbolů ($N, K, T$ jsou navzájem disjunktní); index $i$ komunikačního symbolu $Q_i$ koresponduje s~indexem $i$-té komponenty,
         \item $P_i, i \in \{1, \ldots, n\}$ je množina pravidel nazývané komponenty, stejně jako u~CD gramatických systémů (\ref{def_cdgs}),
         \item $i$-tá gramatika systému je konstrukt $G_i = (N \cup K, T, S_i, P_i), i \in \{1, \ldots, n\}$.
     \end{itemize}
@@ -371,11 +360,11 @@ Následující definice převzata z~\cite{Various-communications-in-PC-grammar-s
     se nazývá \emph{konfigurací} $\Gamma$. $(S_1, \ldots, S_n)$ je \emph{počáteční konfigurací} $\Gamma$.
 \end{definition}
 
-\subsubsection*{g-derivační krok}
-Nechť $\Gamma = (N, K, T, (P_1, S_1), \ldots, (P_n, S_n))$ je PCGS a~$(x_1, \ldots x_i),$ $(y_1, \ldots, y_i)$ jsou konfigurace $\Gamma$.
+\subsubsection*{g-derivační krok}\label{kap_g_der_krok}
+Nechť $\Gamma = (N, K, T, (P_1, S_1), \ldots, (P_n, S_n))$ je PCGS a~$(x_1, \ldots x_n),$ $(y_1, \ldots, y_n)$ jsou konfigurace $\Gamma$.
 $\Gamma$ udělá g-derivační krok, formálně zapsáno
 \begin{center}
-    $(x_1, \ldots, x_i) \prescript{}{g}{\Rightarrow} (y_1, \ldots, y_i)$
+    $(x_1, \ldots, x_n) \prescript{}{g}{\Rightarrow} (y_1, \ldots, y_n)$
 \end{center}
 pokud $alph(x_i) \cap K = \emptyset$ a~zároveň:
 \begin{itemize}
@@ -384,6 +373,41 @@ pokud $alph(x_i) \cap K = \emptyset$ a~zároveň:
 \end{itemize}   
 pro všechna $i \in \{1, \ldots, n\}$.
 
+\subsection*{c-derivační krok}\label{kap_c_der_krok}
+Někdy taky nazýván \emph{komunikační krok}. Tento koncept umožňuje gramatikám spolupracovat a~vzájemně si mezi sebou měnit vygenerované řetězce pomocí komunikačních symbolů.
+Algoritmus ukazující princip komunikačního kroku je následující:
+\begin{algorithm}[h]
+\caption{c-derivační krok v PCGS}\label{alg_c_der_krok}
+\begin{algorithmic}[1]
+    \State \textbf{Vstup:} konfigurace $(x_1, \ldots, x_n)$
+    \State \textbf{Výstup:} konfigurace $(y_1, \ldots, y_n)$
+    \State 
+
+    \ForAll{$i \in \{1, \ldots, n\}$}
+        \State $z_i \gets x_i$
+    \EndFor
+    \ForAll{$i \in \{1, \ldots, n\}$}
+        \If{$alph(x_i) \cap K \neq \emptyset$ \textbf{and} \textbf{foreach} $Q_j$ \textbf{in} $x_i$: $alph(x_j) \cap K = \emptyset$}
+            \ForAll{$Q_j$ \textbf{in} $x_i$} 
+                \State $z_j \gets S_j$
+                \State zaměň $Q_j$ za $x_j$ v $x_i$
+                \State $z_i \gets x_i$\Comment{řetězec, který vznikl o krok zpět} 
+            \EndFor
+        \EndIf
+    \EndFor
+    \State proveď $(x_1, \ldots, x_n) \prescript{}{c}{\Rightarrow} (y_1, \ldots, y_n)$ s $y_i = z_i, i \in \{1, \ldots, n\}$ 
+\end{algorithmic}
+\end{algorithm}
+
+Pojďme si ukázat oba dva typy derivačních kroků na jednoduchém příkladu.
+
+\begin{example}
+    Nechť $\Gamma = (\{S_1, S_2, S_3\},$ $\{Q_3\},$ $\{a, b\},$ $(S_1, \{S_1 \rightarrow a\}),$ $(S_2, \{S_2 \rightarrow Q_3\}),$ $(S_3, \{S_3 \rightarrow b\}))$ je PCGS.
+    Počáteční konfigurace $\Gamma$ je zřejmě $(S_1, S_2, S_3)$.
+    Víme, že PC gramatické systémy \emph{vždy} preferují c-krok nad g-krokem, je-li to možné.
+    Nutná podmínka je, aby alespoň jeden z~řetězců v~aktuální konfiguraci obsahoval alespoň jeden komunikační symbol, což aktuálně není splněno.
+    $\Gamma$ tedy udělá g-krok, pokud je možné všechny řetězce v~komponentách se stejným indexem přepsat. 
+\end{example}
 
 \chapter{Použití gramatických systémů pro popis jazyka Koubp}
 
@@ -481,4 +505,4 @@ Při konstrukci tokenu se inicializuje i~jeho datová část.
 
 \chapter{Testování}
 
-\chapter{Závěr}
+\chapter{Závěr}\
