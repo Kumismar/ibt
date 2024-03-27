@@ -8,7 +8,6 @@
 
 \chapter{Úvod}\label{kap_uvod}
 
-
 \chapter{Základy teorie formálních jazyků}\label{kap_teorie}
 
 \section{Abeceda, řetězec a jazyk}
@@ -21,7 +20,7 @@ Následující definice převzaty z~\cite{TIN-opora}.
         \item $N$ je konečná množina neterminálních symbolů,
         \item $T$ je konečná množina terminálních symbolů,
         \item $P$ je konečná množina přepisovacích pravidel ve tvaru $A \rightarrow x$, $A \in N$ a $x \in (N \cup T)^*$,
-        \begin{itemize}[label=$\circ$]
+        \begin{itemize}[label=$\iiiint$]
             \item formálně vyjádřeno, množina $P$ přepisovacích pravidel pro bezkontextové gramatiky je podmnožinou kartézského součinu $P \subseteq  N \times (N \cup T)^*$. 
         \end{itemize}
         \item $S \in N$ je výchozí symbol gramatiky.
@@ -313,17 +312,21 @@ kde:
     \end{itemize}
     \item $X$ určuje determinismus gramatického systému:
     \begin{itemize}[label=$\circ$]
-        \item $D$\,--\,gramatický systém je deterministický, tedy pro každé $A \rightarrow u, A \rightarrow w \in P_i$ platí, že $u = w$,
-        \item \emph{nic}\,--\,gramatický systém je nedeterministický, tedy pro každý neterminální symbol může existovat více pravidel s~různými pravými stranami,
-        \item $H$\,--\,gramatický systém je hybridní. 
+        \item $D$\,--\,gramatický systém je deterministický, tedy pro každé $A \rightarrow u, A \rightarrow w \in P_i$, $i \in \{1, \ldots, n\}$ platí, že $u = w$.
+        Jinými slovy, pro všechny neterminály platí, že pro jejich přepis neexistují pravidla (ve \emph{všech} komponentách), která by měla různé pravé strany,
+        \item \emph{nic}\,--\,gramatický systém je nedeterministický.
+        To znamená, že v \emph{každé} komponentě existuje pravidlo pro nějaký neterminál, které má různé pravé strany.
+        \item $H$\,--\,gramatický systém je hybridní a~obsahuje alespoň jednu nedeterministickou komponentu a~jednu deterministickou komponentu.
         Nezapisuje se derivační režim, který je určen samostatně pro každou komponentu. 
     \end{itemize}
 \end{itemize}
 
 \section{Paralelní komunikující gramatické systémy}
-Paralelní komunikující (\emph{parallel communicating})\,--\,PC gramatický systém stupně $n$ je systém gramatik, které sdílí množinu neterminálů i~terminálů a~množinu komunikačních symbolů.
-Každá komponenta má svůj startovací symbol nazývaný \emph{axiom}.
-Spolupráce mezi gramatikami probíhá pomocí množiny komunikačních symbolů v~\emph{c}-derivačních krocích.
+Paralelní komunikující (\emph{parallel communicating})\,--\,PC gramatický systém stupně $n$ je systém gramatik, v~němž každá začíná vlastním startovacím symbolem (\emph{axiomem}), které sdílí množinu neterminálů i~terminálů a~nově množinu komunikačních symbolů.
+Komunikační symboly slouží ke komunikaci na vyžádání.
+Kdykoliv se vyskytnou ve větné formě libovolné komponenty, proběhne \emph{komunikační krok} (také nazýván \emph{c-derivační krok}).
+
+Komunikačních symbolů je stejné množství jako komponent v~PC gramatickém systému, $\{Q_1, \ldots, Q_n\}$, kde index symbolu $Q_i$ odkazuje na komponentu $P_i$ \cite{PCGS-chapter2}.
 \begin{definition}
     Paralelní komunikující gramatický systém stupně $n, n \geq 1$ je $(n+3)$-tice
     \begin{center}
@@ -359,6 +362,9 @@ Následující definice převzata z~\cite{Various-communications-in-PC-grammar-s
     \end{center}
     se nazývá \emph{konfigurací} $\Gamma$. $(S_1, \ldots, S_n)$ je \emph{počáteční konfigurací} $\Gamma$.
 \end{definition}
+Nutná podmínka k~proběhnutí libovolného derivačního kroku je $x_1 \notin T^*$.
+Pokud tato situace nastane, už je vygenerována věta jazyka definovaného PCGS a~dále se s~kroky nepokračuje. 
+\todo{odkaz na definici jazyka pcgs}
 
 \subsubsection*{g-derivační krok}\label{kap_g_der_krok}
 Nechť $\Gamma = (N, K, T, (P_1, S_1), \ldots, (P_n, S_n))$ je PCGS a~$(x_1, \ldots x_n),$ $(y_1, \ldots, y_n)$ jsou konfigurace $\Gamma$.
@@ -374,6 +380,7 @@ pokud $alph(x_i) \cap K = \emptyset$ a~zároveň:
 pro všechna $i \in \{1, \ldots, n\}$.
 
 \subsection*{c-derivační krok}\label{kap_c_der_krok}
+\todo{pridat matematickou formulaci z \cite{PCGS-chapter2}}
 Někdy taky nazýván \emph{komunikační krok}. Tento koncept umožňuje gramatikám spolupracovat a~vzájemně si mezi sebou měnit vygenerované řetězce pomocí komunikačních symbolů.
 Algoritmus ukazující princip komunikačního kroku je následující:
 \begin{algorithm}[h]
@@ -391,7 +398,7 @@ Algoritmus ukazující princip komunikačního kroku je následující:
             \ForAll{$Q_j$ \textbf{in} $x_i$} 
                 \State $z_j \gets S_j$
                 \State zaměň $Q_j$ za $x_j$ v $x_i$
-                \State $z_i \gets x_i$\Comment{řetězec, který vznikl o krok zpět} 
+                \State $z_i \gets x_i$\Comment{$x_i =$ řetězec, který vznikl o krok zpět} 
             \EndFor
         \EndIf
     \EndFor
@@ -399,14 +406,52 @@ Algoritmus ukazující princip komunikačního kroku je následující:
 \end{algorithmic}
 \end{algorithm}
 
-Pojďme si ukázat oba dva typy derivačních kroků na jednoduchém příkladu.
+\todo{prima derivace, jazyk generovany pcgs (z prezentaci), centralizovane, vracejici/nevracejici, notace jazyku}
+
+\subsection*{Příklady}\label{PCGS_priklady}
 
 \begin{example}
     Nechť $\Gamma = (\{S_1, S_2, S_3\},$ $\{Q_3\},$ $\{a, b\},$ $(S_1, \{S_1 \rightarrow a\}),$ $(S_2, \{S_2 \rightarrow Q_3\}),$ $(S_3, \{S_3 \rightarrow b\}))$ je PCGS.
     Počáteční konfigurace $\Gamma$ je zřejmě $(S_1, S_2, S_3)$.
     Víme, že PC gramatické systémy \emph{vždy} preferují c-krok nad g-krokem, je-li to možné.
     Nutná podmínka je, aby alespoň jeden z~řetězců v~aktuální konfiguraci obsahoval alespoň jeden komunikační symbol, což aktuálně není splněno.
-    $\Gamma$ tedy udělá g-krok, pokud je možné všechny řetězce v~komponentách se stejným indexem přepsat. 
+    $\Gamma$ tedy udělá g-krok.
+     \begin{equation*}
+    (S_1, S_2, S_3) \ \prescript{}{g}{\Rightarrow} \ (a, Q_3, b)
+     \end{equation*}
+     Nyní je v konfiguraci komunikační symbol, což indikuje, že bude následovat komunikační krok.
+     Při postupu podle algoritmu~\ref{alg_c_der_krok} je postup následující:
+     \begin{enumerate}
+        \item Zavedení pomocných řetězců $z_1 = a$, $z_2 = Q_3$, $z_3 = b$ podle řádků 4\,--\,6.
+        \item Kontrola, zda řetězec $x_i,$ $i \in \{1, \ldots, n\}$ z~původní konfigurace obsahuje komunikační symboly (podmínka $alph(x_i) \cap K \neq \emptyset$).
+        \begin{itemize}[label=$\circ$]
+            \item V~tomto příkladu splňuje podmínku pouze řetězec $x_2$, který obsahuje $Q_3$.
+        \end{itemize}
+        \item Pokud $x_i$ obsahuje komunikační symboly $Q_j$, z~každého se přečte index $j$ a~proběhne kontrola, zda všechny $j$-té řetězce konfigurace ($x_j$) \emph{neobsahují} komunikační symboly.
+        Tato část koresponduje s~podmínkou \textbf{foreach} $Q_j$ \textbf{in} $x_i:$ $alph(x_i) \cap K = \emptyset$ na řádku~8.
+        \begin{itemize}[label=$\circ$]
+            \item Řetězec $x_2$ obsahuje jeden komunikační symbol $Q_3$, jehož index odkazuje na řetězec $x_3$ z aktuální konfigurace. Hodnota řetězce $x_3$ je $b$, což znamená, že neobsahuje žádné další komunikační symboly.
+        \end{itemize}
+        \item Každý $Q_j$ v~$x_i$ se nahradí za $x_j$, pokud prošel podmínkou v předchozím kroku.
+        Zároveň se $z_j$ nastaví na počáteční symbol $j$-té komponenty.
+        Tyto kroky jsou v algoritmu na řádcích 9\,--\,12.
+        \begin{itemize}[label=$\circ$]
+            \item Komunikační symbol $Q_3$ bude v~$x_2$ nahrazen řetězcem $b$ z~$x_3$. Dále $x_3 \gets S_3$ a~$z_2 \gets x_2$.
+            Aktuálně $z_1 = a,$ $z_2 = b$, $z_3 = S_3$. 
+        \end{itemize}
+        \item Proveď $(x_1, \ldots, x_n) \ \prescript{}{c}{\Rightarrow} \ (y_1, \ldots, y_n)$, kde $y_i = z_i$ pro $i \in \{1, \ldots, n\}$.
+        \begin{itemize}[label=$\circ$]
+            \item Nová konfigurace $(y_1, y_2, y_3)$ bude stejná, jako pomocná konfigurace $(z_1, z_2, z_3)$, a~to $(a, b, S_3)$.
+        \end{itemize}
+    \end{enumerate}
+    \begin{center}
+        $(a, Q_3, b) \ \prescript{}{c}{\Rightarrow} \ (a, b, S_3)$
+    \end{center}
+    Poslední krok $\Gamma$ bude opět g-krok, protože aktuální konfigurace neobsahuje komunikační symboly.
+    Neterminál $S_3$ se přepíše na terminál $b$.
+    \begin{center}
+        $(a, b, S_3) \ \prescript{}{g}{\Rightarrow} \ (a, b, b)$
+    \end{center}
 \end{example}
 
 \chapter{Použití gramatických systémů pro popis jazyka Koubp}
