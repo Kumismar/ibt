@@ -132,7 +132,7 @@ Původní zásobníkový automat lze rozšírit o~další chování. Například
 
 \chapter{Gramatické systémy}\label{kap_GS}
 
-Veškeré definice a znalosti použité v~této kapitole převzaty z~\cite{CDGS}, \cite{PCGS} a~\cite{Handbook-Of-Formal-Languages-2}.
+Veškeré definice a znalosti použité v~této kapitole převzaty z~\cite{CDGS, PCGS, Handbook-Of-Formal-Languages-2}, není-li řečeno jinak.
 \dotaz{Jak uvést tuto kapitolu?}
 
 \section{Kooperující distribuované gramatické systémy}\label{kap_CDGS}
@@ -292,10 +292,11 @@ Jazyk generovaný těmito gramatickými systémy je velmi podobný jazykům gene
 Jediný rozdíl je v~použití derivačního režimu příslušné komponenty, který je v~definici označen jako $f_{j_k}$, místo společného derivačního režimu pro celý gramatický systém.
 \begin{definition}
     Nechť $\Gamma = (N, T, S, (P_1, f_1), \ldots, (P_n, f_n))$.\\
-    Jazyk generovaný systémem $\Gamma$, 
-    \begin{center}
-        $L(\Gamma) = \{w \in T^*:$ existují $v_0, v_1,\ldots, v_n$ takové, že \\ $v_k \in F(G_{j_k}, v_{k-1}, f_{j_k})$, $k \in \{1, \ldots, m\}$, $j_k \in \{1, \ldots, n\}$, $v_0 = S$, $v_m = w$ pro $m \geq 1$\}.
-    \end{center} 
+    Jazyk generovaný systémem $\Gamma$,
+    \begin{align*}
+        L(\Gamma) = \{&w \in T^*: \text{existují } v_0, v_1,\ldots, v_n \text{ takové, že } v_k \in F(G_{j_k}, v_{k-1}, f_{j_k}),\\
+        &k \in \{1, \ldots, m\}, j_k \in \{1, \ldots, n\}, v_0 = S, v_m = w \text{ pro } m \geq 1\}.
+    \end{align*}
 \end{definition}
 
 Zápis jazykových skupin generovaných hybridními CDGS je
@@ -364,7 +365,7 @@ Následující definice převzata z~\cite{Various-communications-in-PC-grammar-s
 \end{definition}
 Nutná podmínka k~proběhnutí libovolného derivačního kroku je $x_1 \notin T^*$.
 Pokud tato situace nastane, už je vygenerována věta jazyka definovaného PCGS a~dále se s~kroky nepokračuje. 
-\todo{odkaz na definici jazyka pcgs}
+Více v~definici \ref{def_gener_jazyk_pcgs}.
 
 \subsubsection*{g-derivační krok}\label{kap_g_der_krok}
 Nechť $\Gamma = (N, K, T, (P_1, S_1), \ldots, (P_n, S_n))$ je PCGS a~$(x_1, \ldots x_n),$ $(y_1, \ldots, y_n)$ jsou konfigurace $\Gamma$.
@@ -392,11 +393,11 @@ Algoritmus ukazující princip komunikačního kroku je následující:
 
     \ForAll{$i \in \{1, \ldots, n\}$}
         \State $z_i \gets x_i$
-    \EndFor
+    \EndFor 
     \ForAll{$i \in \{1, \ldots, n\}$}
         \If{$alph(x_i) \cap K \neq \emptyset$ \textbf{and} \textbf{foreach} $Q_j$ \textbf{in} $x_i$: $alph(x_j) \cap K = \emptyset$}
             \ForAll{$Q_j$ \textbf{in} $x_i$} 
-                \State $z_j \gets S_j$
+                \State $z_j \gets S_j$\Comment{vynecháno, pokud PCGS pracuje na nevracejícím se režimu}
                 \State zaměň $Q_j$ za $x_j$ v $x_i$
                 \State $z_i \gets x_i$\Comment{$x_i =$ řetězec, který vznikl o krok zpět} 
             \EndFor
@@ -406,52 +407,95 @@ Algoritmus ukazující princip komunikačního kroku je následující:
 \end{algorithmic}
 \end{algorithm}
 
-\todo{prima derivace, jazyk generovany pcgs (z prezentaci), centralizovane, vracejici/nevracejici, notace jazyku}
+\subsection*{Přímá derivace v PCGS}
+\begin{definition}
+    Konfigurace $(x_1, \ldots, x_n)$ přímo derivuje konfiguraci $(y_1, \ldots, y_n)$, zapsáno
+    \begin{center}
+        $(x_1, \ldots, x_n) \Rightarrow (y_1, \ldots, y_n)$
+    \end{center} 
+    právě tehdy, když
+    \begin{center}
+        $(x_1, \ldots, x_n)\ \prescript{}{g}{\Rightarrow}\ (y_1, \ldots, y_n)$
+    \end{center}
+    nebo
+    \begin{center}
+        $(x_1, \ldots, x_n)\ \prescript{}{c}{\Rightarrow}\ (y_1, \ldots, y_n)$.
+    \end{center}
+\end{definition}
+
+\subsection*{Jazyk generovaný PCGS}\label{def_gener_jazyk_pcgs}
+Generování větné formy končí v~momentě, kdy první komponenta dosáhne řetězce terminálů a~na řetězcích ostatních komponent nezáleží.
+\begin{definition}
+    Nechť $\Gamma = (N, K, T, (P_1, S_1), \ldots, (P_n, S_n))$ je PCGS.
+    Jazyk generovaný $\Gamma$ je stejný jako jazyk generovaný jeho první komponentou:
+    \begin{align*}
+        L_f(\Gamma) = \{&w \in T^*: (S_1, \ldots, S_n) \Rightarrow^*_f (w, \alpha_2, \ldots, \alpha_n),\\ 
+        &for\ \alpha_i \in \{N \cup T \cup K\},\ i \in \{2, \ldots, n\},\ f \in \{r, nr\}\},
+    \end{align*}
+    kde $r$ a~$nr$ specifikuje \emph{vracející} nebo \emph{nevracející} PCGS.
+\end{definition}
+
+\subsection*{Vracející a nevracející se režim}
+Pokud PC gramatický systém pracuje na vracejícím se režimu, potom komponenty, které v~rámci komunikačního kroku poslaly svůj řetězec jiným komponentám, generují řetězec od svého axiomu.
+Při nevracejícím se režimu komponenty pokračují ve zpracovávání aktuálního řetězce.
+
+Tato skutečnost se projeví na samotném komunikačním kroku, u~kterého se vynechá přiřazení axiomu do řetězce $z_j$\,--\,neprovede se krok na řádku 10 algoritmu \ref{alg_c_der_krok}.
+
+\subsection*{Centralizované PCGS}
+Centralizované PC gramatické systémy mají tu vlastnost, že pouze první komponenta (nazývaná \emph{master}) systému může generovat komunikační symboly a~tím žádat ostatní komponenty o~řetězce.
+Řeší jeden z~možných případů uváznutí, kdy komponenty v~cyklu zavádějí komunikační symboly a~donekonečna se provádí stejná sekvence komunikačních kroků. 
+
+\begin{definition}
+    Nechť $\Gamma = (N, K, T, (S_1, P_1), \ldots, (S_n, P_n))$ je PCGS.
+    Pokud pouze $P_1$ může uvést komunikační symboly, formálně
+    \begin{center}
+        $P_i \subseteq (N \cup T)^* \times (N \cup T)^*$ pro $i \in \{2, \ldots, n\}$,
+    \end{center}
+    potom $\Gamma$ je centralizovaný PC gramatický systém.
+    Jinak je necentralizovaný.
+\end{definition}
 
 \subsection*{Příklady}\label{PCGS_priklady}
 
 \begin{example}
-    Nechť $\Gamma = (\{S_1, S_2, S_3\},$ $\{Q_3\},$ $\{a, b\},$ $(S_1, \{S_1 \rightarrow a\}),$ $(S_2, \{S_2 \rightarrow Q_3\}),$ $(S_3, \{S_3 \rightarrow b\}))$ je PCGS.
+    Nechť $\Gamma = (\{S_1, S_2, S_3\},$ $\{Q_3\},$ $\{a, b\},$ $(S_1, \{S_1 \rightarrow Q_3\}),$ $(S_2, \{S_2 \rightarrow a\}),$ $(S_3, \{S_3 \rightarrow b\}))$ je PCGS.
     Počáteční konfigurace $\Gamma$ je zřejmě $(S_1, S_2, S_3)$.
     Víme, že PC gramatické systémy \emph{vždy} preferují c-krok nad g-krokem, je-li to možné.
     Nutná podmínka je, aby alespoň jeden z~řetězců v~aktuální konfiguraci obsahoval alespoň jeden komunikační symbol, což aktuálně není splněno.
     $\Gamma$ tedy udělá g-krok.
      \begin{equation*}
-    (S_1, S_2, S_3) \ \prescript{}{g}{\Rightarrow} \ (a, Q_3, b)
+    (S_1, S_2, S_3) \ \prescript{}{g}{\Rightarrow} \ (Q_3, a, b)
      \end{equation*}
      Nyní je v konfiguraci komunikační symbol, což indikuje, že bude následovat komunikační krok.
      Při postupu podle algoritmu~\ref{alg_c_der_krok} je postup následující:
      \begin{enumerate}
-        \item Zavedení pomocných řetězců $z_1 = a$, $z_2 = Q_3$, $z_3 = b$ podle řádků 4\,--\,6.
+        \item Zavedení pomocných řetězců $z_1 = Q_3$, $z_2 = a$, $z_3 = b$ podle řádků 4\,--\,6.
         \item Kontrola, zda řetězec $x_i,$ $i \in \{1, \ldots, n\}$ z~původní konfigurace obsahuje komunikační symboly (podmínka $alph(x_i) \cap K \neq \emptyset$).
         \begin{itemize}[label=$\circ$]
-            \item V~tomto příkladu splňuje podmínku pouze řetězec $x_2$, který obsahuje $Q_3$.
+            \item V~tomto příkladu splňuje podmínku pouze řetězec $x_1$, který obsahuje $Q_3$.
         \end{itemize}
         \item Pokud $x_i$ obsahuje komunikační symboly $Q_j$, z~každého se přečte index $j$ a~proběhne kontrola, zda všechny $j$-té řetězce konfigurace ($x_j$) \emph{neobsahují} komunikační symboly.
         Tato část koresponduje s~podmínkou \textbf{foreach} $Q_j$ \textbf{in} $x_i:$ $alph(x_i) \cap K = \emptyset$ na řádku~8.
         \begin{itemize}[label=$\circ$]
-            \item Řetězec $x_2$ obsahuje jeden komunikační symbol $Q_3$, jehož index odkazuje na řetězec $x_3$ z aktuální konfigurace. Hodnota řetězce $x_3$ je $b$, což znamená, že neobsahuje žádné další komunikační symboly.
+            \item Řetězec $x_1$ obsahuje jeden komunikační symbol $Q_3$, jehož index odkazuje na řetězec $x_3$ z aktuální konfigurace. Hodnota řetězce $x_3$ je $b$, ten žádné další komunikační symboly neobsahuje.
         \end{itemize}
         \item Každý $Q_j$ v~$x_i$ se nahradí za $x_j$, pokud prošel podmínkou v předchozím kroku.
         Zároveň se $z_j$ nastaví na počáteční symbol $j$-té komponenty.
         Tyto kroky jsou v algoritmu na řádcích 9\,--\,12.
         \begin{itemize}[label=$\circ$]
-            \item Komunikační symbol $Q_3$ bude v~$x_2$ nahrazen řetězcem $b$ z~$x_3$. Dále $x_3 \gets S_3$ a~$z_2 \gets x_2$.
-            Aktuálně $z_1 = a,$ $z_2 = b$, $z_3 = S_3$. 
+            \item Komunikační symbol $Q_3$ bude v~$x_1$ nahrazen řetězcem $b$ z~$x_3$. Dále $x_3 \gets S_3$ a~$z_1 \gets x_1$.
+            Aktuálně $z_1 = b,$ $z_2 = a$, $z_3 = S_3$. 
         \end{itemize}
         \item Proveď $(x_1, \ldots, x_n) \ \prescript{}{c}{\Rightarrow} \ (y_1, \ldots, y_n)$, kde $y_i = z_i$ pro $i \in \{1, \ldots, n\}$.
         \begin{itemize}[label=$\circ$]
-            \item Nová konfigurace $(y_1, y_2, y_3)$ bude stejná, jako pomocná konfigurace $(z_1, z_2, z_3)$, a~to $(a, b, S_3)$.
+            \item Nová konfigurace $(y_1, y_2, y_3)$ bude stejná, jako pomocná konfigurace $(z_1, z_2, z_3)$, a~to $(b, a, S_3)$.
         \end{itemize}
     \end{enumerate}
+    $\Gamma$ provede komunikační krok z $(Q_3, a, b)$ do $(b, a, S_3)$.
     \begin{center}
-        $(a, Q_3, b) \ \prescript{}{c}{\Rightarrow} \ (a, b, S_3)$
+        $(Q_3, a, b) \ \prescript{}{c}{\Rightarrow} \ (b, a, S_3)$
     \end{center}
-    Poslední krok $\Gamma$ bude opět g-krok, protože aktuální konfigurace neobsahuje komunikační symboly.
-    Neterminál $S_3$ se přepíše na terminál $b$.
-    \begin{center}
-        $(a, b, S_3) \ \prescript{}{g}{\Rightarrow} \ (a, b, b)$
-    \end{center}
+    Další kroky už $\Gamma$ provádět nebude, protože řetězec generovaný první komponentou je již řetězec terminálních symbolů.
 \end{example}
 
 \chapter{Použití gramatických systémů pro popis jazyka Koubp}
