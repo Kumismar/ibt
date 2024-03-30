@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-03-23 17:37
+ * @ Modified time: 2024-03-30 20:24
  */
 
 #include "nonterminal.hpp"
@@ -76,7 +76,7 @@ std::string Nonterminal::GetTypeString() const
     }
 }
 
-Symbol* Nonterminal::Clone() const
+Nonterminal* Nonterminal::Clone() const
 {
     return new Nonterminal(*this);
 }

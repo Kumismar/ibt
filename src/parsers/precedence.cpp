@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-03-23 18:52
+ * @ Modified time: 2024-03-30 21:09
  */
 
 #include "precedence.hpp"
@@ -277,7 +277,7 @@ void PrecedenceParser::reduce()
             delete item;
         }
         delete grammar;
-        throw SyntaxError("Sequence of tokens is not a rule.\n");
+        throw SyntaxError("Invalid token.\n");
     }
 }
 
@@ -294,6 +294,7 @@ void PrecedenceParser::push()
 {
     this->pushPrecedence();
     this->analysisPushdown.push_front(this->inputToken->Clone());
+    Logger::GetInstance()->AddTokenToRecents(*this->inputToken);
     delete this->inputToken;
     inputTape.pop_front();
 }
@@ -322,6 +323,6 @@ void PrecedenceParser::skipFunctionCall(InputTape::iterator& token)
     }
 
     if (**token == tExpEnd) {
-        throw SyntaxError("Function call not closed.\n");
+        throw SyntaxError("Invalid token.\n");
     }
 }

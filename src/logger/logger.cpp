@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-03-23 15:38
+ * @ Modified time: 2024-03-30 21:02
  */
 
 #include "logger.hpp"
@@ -81,6 +81,51 @@ void Logger::PrintTokens()
                   << "\tdata: " << token->GetDataString().c_str() << "\n";
     }
     std::cout << std::endl;
+}
+
+void Logger::AddTokenToRecents(Token& token)
+{
+    this->recentTokens.push_front(token.Clone());
+    if (this->recentTokens.size() > 10) {
+        delete this->recentTokens.back();
+        this->recentTokens.pop_back();
+    }
+}
+
+void Logger::PrintSyntaxError(const char* message)
+{
+    std::string red = "\033[1;31m";
+    std::string reset = "\033[0m";
+    std::cerr << red << "Syntax error: "
+              << reset << message;
+
+    // Get position of the error
+    size_t position = 0;
+    for (const auto& token: this->recentTokens) {
+        position += token->GetDataString().size() + 1; // for space between tokens
+    }
+
+    // Print recent tokens
+    for (auto it = this->recentTokens.rbegin(); it != this->recentTokens.rend(); it++) {
+        std::cerr << (*it)->GetDataString() << " ";
+    }
+
+    // Print max three more tokens
+    int i = 0;
+    for (const auto& token: inputTape) {
+        if (i >= 3) {
+            break;
+        }
+        std::cerr << token->GetDataString() << " ";
+        i++;
+    }
+
+    // Print error position
+    std::cerr << "\n";
+    for (size_t i = 0; i < position; i++) {
+        std::cerr << " ";
+    }
+    std::cerr << red << "^" << reset << std::endl;
 }
 
 void Logger::clearRule()

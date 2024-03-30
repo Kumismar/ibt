@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-03-23 19:22
+ * @ Modified time: 2024-03-30 21:07
  */
 
 #include "predictive.hpp"
@@ -142,7 +142,7 @@ void PredictiveParser::parseNonterminal()
         delete grammar;
     }
     else {
-        throw SyntaxError("Rule not found in LL table\n");
+        throw SyntaxError("Invalid token.\n");
     }
 }
 
@@ -159,18 +159,11 @@ void PredictiveParser::parseToken()
     }
 
     // Case T:
-
-    // if (*this->inputToken == tExpEnd) {
-    //     delete this->inputToken;
-    //     inputTape.pop_front();
-    //     std::cout << "Expression end" << std::endl;
-    //     return;
-    // }
-
     if (*stackToken == *this->inputToken) {
         if (*stackToken == tFuncName) {
             this->firstFuncName = false;
         }
+        Logger::GetInstance()->AddTokenToRecents(*this->inputToken);
         delete this->inputToken;
         delete this->pushdown.front();
         this->pushdown.pop_front();
@@ -178,7 +171,7 @@ void PredictiveParser::parseToken()
         return;
     }
     else {
-        throw SyntaxError("Unexpected token.\n");
+        throw SyntaxError("Unexpected token, expected: " + stackToken->GetTypeString() + "\n");
     }
 }
 
@@ -198,6 +191,6 @@ void PredictiveParser::parseEnd()
         }
     }
     else {
-        throw SyntaxError("Unexpected token (expected End)\n");
+        throw SyntaxError("Invalid token.\n");
     }
 }

@@ -1,11 +1,11 @@
 /**
  * @ Author: Ondřej Koumar (xkouma02@stud.fit.vutbr.cz)
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-03-23 17:22
+ * @ Modified time: 2024-03-30 20:12
  */
 
 #include "precedence_table.hpp"
-#include "internal_error.hpp"
+#include "syntax_error.hpp"
 #include "token.hpp"
 
 const std::vector<std::vector<char>> PrecedenceTable::precTable = {
@@ -91,6 +91,6 @@ unsigned PrecedenceTable::MapTokenToIndex(const Token& t)
         case tUnMinus:
             return 19;
         default:
-            throw InternalError("PrecedenceTable::MapTokenToIndex invalid token type");
+            throw SyntaxError("PrecedenceTable::MapTokenToIndex invalid token type");
     }
 }

@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-03-23 17:37
+ * @ Modified time: 2024-03-30 20:24
  */
 
 #pragma once
@@ -47,5 +47,5 @@ public:
 
     NonterminalType GetNonterminalType() const;
     std::string GetTypeString() const override;
-    Symbol* Clone() const override;
+    Nonterminal* Clone() const override;
 };

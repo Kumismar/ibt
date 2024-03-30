@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-03-23 11:45
+ * @ Modified time: 2024-03-30 20:58
  */
 
 #include "token.hpp"
@@ -22,7 +22,13 @@ Token::Token()
 Token::Token(const TokenType t)
     : type(t)
 {
-    this->data.type = None;
+    if (t == tEnd) {
+        this->data.type = String;
+        this->data.value.stringVal = new std::string("EOF");
+    }
+    else {
+        this->data.type = None;
+    }
     this->symbType = Token_t;
 }
 
@@ -208,7 +214,7 @@ std::string Token::GetDataString() const
     }
 }
 
-Symbol* Token::Clone() const
+Token* Token::Clone() const
 {
     return new Token(*this);
 }
