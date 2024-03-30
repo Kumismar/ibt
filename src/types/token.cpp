@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-03-30 20:58
+ * @ Modified time: 2024-03-30 21:37
  */
 
 #include "token.hpp"
@@ -37,6 +37,7 @@ Token::Token(const Token& other)
     : type(other.GetTokenType())
 {
     this->symbType = Token_t;
+    this->lineno = other.GetLineNo();
     if (other.data.type == String) {
         this->data.type = String;
         this->data.value.stringVal = new std::string(*other.data.value.stringVal);
@@ -85,6 +86,7 @@ void Token::SetTokenType(TokenType t)
 
 void Token::SetData(DataType dtype)
 {
+    this->lineno = yyget_lineno();
     std::string tmp = yytext;
 
     this->data.type = dtype;
@@ -212,6 +214,11 @@ std::string Token::GetDataString() const
         default:
             throw InternalError("Unknown data type in Token::GetDataString()\n");
     }
+}
+
+unsigned int Token::GetLineNo() const
+{
+    return this->lineno;
 }
 
 Token* Token::Clone() const

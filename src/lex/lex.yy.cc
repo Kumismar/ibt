@@ -352,8 +352,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 47
-#define YY_END_OF_BUFFER 48
+#define YY_NUM_RULES 48
+#define YY_END_OF_BUFFER 49
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -363,18 +363,18 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[108] =
     {   0,
-        0,    0,    0,    0,    0,    0,    0,    0,   48,   46,
-        1,    1,   25,   46,   46,    9,   10,   14,   13,   26,
-       39,   28,   15,   30,   27,    6,   18,   22,   20,   38,
-       38,   38,   38,   38,   38,   38,   38,   38,   11,   46,
-       12,   43,   47,   43,   45,   44,   17,    0,   37,    0,
-       23,   41,   40,    0,   30,   19,   16,   21,   38,   38,
-       38,   38,   38,   38,   38,    2,   38,   38,   38,   38,
-       38,   24,   42,   31,   38,   38,   38,   38,    4,   38,
-       33,   38,   38,   38,   38,   35,    8,   38,   38,   38,
-       38,   38,   32,   38,   38,   34,   38,   38,   38,    3,
+        0,    0,    0,    0,    0,    0,    0,    0,   49,   47,
+        2,    1,   26,   47,   47,   10,   11,   15,   14,   27,
+       40,   29,   16,   31,   28,    7,   19,   23,   21,   39,
+       39,   39,   39,   39,   39,   39,   39,   39,   12,   47,
+       13,   44,   48,   44,   46,   45,   18,    0,   38,    0,
+       24,   42,   41,    0,   31,   20,   17,   22,   39,   39,
+       39,   39,   39,   39,   39,    3,   39,   39,   39,   39,
+       39,   25,   43,   32,   39,   39,   39,   39,    5,   39,
+       34,   39,   39,   39,   39,   36,    9,   39,   39,   39,
+       39,   39,   33,   39,   39,   35,   39,   39,   39,    4,
 
-        7,   38,    5,   36,   38,   29,    0
+        8,   39,    6,   37,   39,   30,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -807,192 +807,197 @@ case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
 #line 23 "lex.l"
-;
+{ yylineno++; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 24 "lex.l"
-{ Token::AddToken(tIf, String); }
+{ /* ignore whitespace */ }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 25 "lex.l"
-{ Token::AddToken(tWhile, String); }
+{ Token::AddToken(tIf, String); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 26 "lex.l"
-{ Token::AddToken(tFor, String); }
+{ Token::AddToken(tWhile, String); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 27 "lex.l"
-{ Token::AddToken(tReturn, String); }
+{ Token::AddToken(tFor, String); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 28 "lex.l"
-{ Token::AddToken(tSemi, String); }
+{ Token::AddToken(tReturn, String); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 29 "lex.l"
-{ Token::AddToken(tElseif, String); }
+{ Token::AddToken(tSemi, String); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 30 "lex.l"
-{ Token::AddToken(tElse, String); }
+{ Token::AddToken(tElseif, String); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 31 "lex.l"
-{ Token::AddToken(tLPar, String); }
+{ Token::AddToken(tElse, String); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 32 "lex.l"
-{ Token::AddToken(tRPar, String); }
+{ Token::AddToken(tLPar, String); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 33 "lex.l"
-{ Token::AddToken(tLCurl, String); }
+{ Token::AddToken(tRPar, String); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 34 "lex.l"
-{ Token::AddToken(tRCurl, String); }
+{ Token::AddToken(tLCurl, String); }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 35 "lex.l"
-{ Token::AddToken(tPlus, String); }
+{ Token::AddToken(tRCurl, String); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 36 "lex.l"
-{ Token::AddToken(tMul, String); }
+{ Token::AddToken(tPlus, String); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 37 "lex.l"
-{ Token::AddToken(tDiv, String); }
+{ Token::AddToken(tMul, String); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 38 "lex.l"
-{ Token::AddToken(tEq, String); }
+{ Token::AddToken(tDiv, String); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 39 "lex.l"
-{ Token::AddToken(tNEq, String); }
+{ Token::AddToken(tEq, String); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 40 "lex.l"
-{ Token::AddToken(tLess, String); }
+{ Token::AddToken(tNEq, String); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 41 "lex.l"
-{ Token::AddToken(tLEq, String); }
+{ Token::AddToken(tLess, String); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 42 "lex.l"
-{ Token::AddToken(tGreater, String); }
+{ Token::AddToken(tLEq, String); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 43 "lex.l"
-{ Token::AddToken(tGEq, String); }
+{ Token::AddToken(tGreater, String); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 44 "lex.l"
-{ Token::AddToken(tAssign, String); }
+{ Token::AddToken(tGEq, String); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 45 "lex.l"
-{ Token::AddToken(tAnd, String); }
+{ Token::AddToken(tAssign, String); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 46 "lex.l"
-{ Token::AddToken(tOr, String); }
+{ Token::AddToken(tAnd, String); }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 47 "lex.l"
-{ Token::AddToken(tExcl, String); }
+{ Token::AddToken(tOr, String); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 48 "lex.l"
-{ Token::AddToken(tComma, String); }
+{ Token::AddToken(tExcl, String); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 49 "lex.l"
-{ Token::AddToken(tColon, String); }
+{ Token::AddToken(tComma, String); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 50 "lex.l"
-{ Token::AddToken(tConcat, String); }
+{ Token::AddToken(tColon, String); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 51 "lex.l"
-{ Token::AddToken(tFunction, String); }
+{ Token::AddToken(tConcat, String); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 52 "lex.l"
-{ Token::AddToken(tConst, Int); }
+{ Token::AddToken(tFunction, String); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 53 "lex.l"
-{ Token::AddToken(tConst, Float); }
+{ Token::AddToken(tConst, Int); }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 54 "lex.l"
-{ Token::AddToken(tConst, Bool); }
+{ Token::AddToken(tConst, Float); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 55 "lex.l"
-{ Token::AddToken(tInt, String); }
+{ Token::AddToken(tConst, Bool); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 56 "lex.l"
-{ Token::AddToken(tFloat, String); }
+{ Token::AddToken(tInt, String); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 57 "lex.l"
-{ Token::AddToken(tBool, String); }
+{ Token::AddToken(tFloat, String); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 58 "lex.l"
-{ Token::AddToken(tString, String); }
+{ Token::AddToken(tBool, String); }
 	YY_BREAK
 case 37:
-/* rule 37 can match eol */
 YY_RULE_SETUP
 #line 59 "lex.l"
-{ Token::AddToken(tConst, String); }
+{ Token::AddToken(tString, String); }
 	YY_BREAK
 case 38:
+/* rule 38 can match eol */
 YY_RULE_SETUP
-#line 61 "lex.l"
+#line 60 "lex.l"
+{ Token::AddToken(tConst, String); }
+	YY_BREAK
+case 39:
+YY_RULE_SETUP
+#line 62 "lex.l"
 { 
     int next_char = yyinput();
     while (next_char == ' ' || next_char == '\n' || next_char == '\t')
@@ -1005,9 +1010,9 @@ YY_RULE_SETUP
     unput(next_char);
 }
 	YY_BREAK
-case 39:
+case 40:
 YY_RULE_SETUP
-#line 73 "lex.l"
+#line 74 "lex.l"
 { 
     if (previousToken == tVariable || previousToken == tConst || previousToken == tRPar)
         Token::AddToken(tMinus, String); 
@@ -1015,58 +1020,58 @@ YY_RULE_SETUP
         Token::AddToken(tUnMinus, String);
 }
 	YY_BREAK
-case 40:
+case 41:
 YY_RULE_SETUP
-#line 80 "lex.l"
+#line 81 "lex.l"
 {
     BEGIN(LINE_COMMENT); 
 }
 	YY_BREAK
-case 41:
+case 42:
 YY_RULE_SETUP
-#line 84 "lex.l"
+#line 85 "lex.l"
 {
     BEGIN(COMMENT); 
 }
 	YY_BREAK
-case 42:
-YY_RULE_SETUP
-#line 88 "lex.l"
-{
-    BEGIN(INITIAL); 
-}
-	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 92 "lex.l"
+#line 89 "lex.l"
 {
+    BEGIN(INITIAL); 
 }
 	YY_BREAK
 case 44:
-/* rule 44 can match eol */
 YY_RULE_SETUP
-#line 95 "lex.l"
+#line 93 "lex.l"
 {
-    BEGIN(INITIAL); 
 }
 	YY_BREAK
 case 45:
+/* rule 45 can match eol */
 YY_RULE_SETUP
-#line 99 "lex.l"
+#line 96 "lex.l"
 {
+    BEGIN(INITIAL); 
 }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 102 "lex.l"
-{ throw LexicalError("Unknown lexeme: " + std::string(yytext) + "\n"); }
+#line 100 "lex.l"
+{
+}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 104 "lex.l"
+#line 103 "lex.l"
+{ throw LexicalError("Unknown lexeme: " + std::string(yytext) + "\n"); }
+	YY_BREAK
+case 48:
+YY_RULE_SETUP
+#line 105 "lex.l"
 ECHO;
 	YY_BREAK
-#line 1069 "lex.yy.cc"
+#line 1074 "lex.yy.cc"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENT):
 case YY_STATE_EOF(LINE_COMMENT):
@@ -2074,7 +2079,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 104 "lex.l"
+#line 105 "lex.l"
 
 
 int yywrap()

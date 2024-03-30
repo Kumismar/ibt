@@ -9,6 +9,7 @@ run:
 runtest:
 	@[ -f build/test/ParserTest ] || echo "executable not built yet; 'make' first"
 	@./build/test/ParserTest
+	@bash test/test.sh
 
 valgrind:
 	@[ -f build/src/Parser ] || echo "executable not built yet; 'make' first"

@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-03-30 20:24
+ * @ Modified time: 2024-03-30 21:44
  */
 
 #pragma once
@@ -85,6 +85,7 @@ class Token : public Symbol
 private:
     TokenType type;
     TokenData data;
+    unsigned int lineno;
 
 public:
     Token();
@@ -102,6 +103,7 @@ public:
     void SetData(DataType dtype);
     std::string GetTypeString() const override;
     std::string GetDataString() const;
+    unsigned int GetLineNo() const;
     Token* Clone() const override;
     static void AddToken(TokenType ttype, DataType dtype);
 };

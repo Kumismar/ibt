@@ -20,7 +20,8 @@
 
 %%
 
-[ \n\t]         ;
+\n              { yylineno++; }
+[ \t]           { /* ignore whitespace */ }
 "if"            { Token::AddToken(tIf, String); }
 "while"         { Token::AddToken(tWhile, String); }
 "for"           { Token::AddToken(tFor, String); }
