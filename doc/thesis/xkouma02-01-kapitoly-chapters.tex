@@ -20,7 +20,7 @@ Následující definice převzaty z~\cite{TIN-opora}.
         \item $N$ je konečná množina neterminálních symbolů,
         \item $T$ je konečná množina terminálních symbolů,
         \item $P$ je konečná množina přepisovacích pravidel ve tvaru $A \rightarrow x$, $A \in N$ a $x \in (N \cup T)^*$,
-        \begin{itemize}[label=$\iiiint$]
+        \begin{itemize}[label=$\circ$]
             \item formálně vyjádřeno, množina $P$ přepisovacích pravidel pro bezkontextové gramatiky je podmnožinou kartézského součinu $P \subseteq  N \times (N \cup T)^*$. 
         \end{itemize}
         \item $S \in N$ je výchozí symbol gramatiky.
@@ -29,10 +29,11 @@ Následující definice převzaty z~\cite{TIN-opora}.
 
 \begin{convention}
     Pro označení bezkontextových gramatik bude v~textu dále využívána zkratka BKG.
+    Neterminální symboly budou označovány jako neterminály, terminální symboly jako terminály.
 \end{convention}
 
 \subsection*{Derivační krok}\label{kap_der_krok}
-Pro pochopení následující podkapitoly je nutné znát minimálně základní teorii množin a~relací, reflexivní a~tranzitivní uzávěr.
+Myšlenkou derivačního kroku je přepsat aktuální řetězec na řetězec nový za použití pravidla BKG.
 \begin{definition}\label{def_derivacni_krok}
     Nechť $G = (N, T, P, S)$ je BKG, $\alpha, \beta  \in (N \cup T)^*$ a $p = A \rightarrow x \in P$. \\
     Mezi řetězci $\alpha$ a~$\beta$ platí binární relace $\underset{G}{\Rightarrow}$, nazývaná \emph{přímá derivace}, jestliže můžeme řetězce $\alpha$ a~$\beta$ vyjádřit ve tvaru
@@ -44,6 +45,10 @@ Pro pochopení následující podkapitoly je nutné znát minimálně základní
     Říká se také, že gramatika $G$ provádí \emph{derivační krok} z~$uAv$ do $uxv$, respektive z~$\alpha$ do $\beta$.
 \end{definition}
 To znamená, že pokud lze přepsat řetězec $\alpha = uAv$ na řetězec $\beta = uxv$ za použití pravidla $A \rightarrow x$, potom mezi řetězci $\alpha$ a~$\beta$ je relace přímé derivace, zapsáno $\alpha \Rightarrow \beta$.
+
+\begin{figure}
+    \caption{\todo{obrazek nahrazeni kusu retezce za novy - podobny jako je v ifj prezentaci}}
+\end{figure}
 
 \subsection*{Sekvence derivačních kroků}\label{kap_sekvence_der_kroku}
 \begin{definition}\label{ref_tranz_uzaver}
@@ -167,23 +172,22 @@ Tento zápis znamená, že řetězec $x \in (N \cup T)^{*}$ derivuje řetězec $
 
 \subsubsection*{Derivační režimy}
 
-Prvním příkladem je režim $*$, který byl v~definici \ref{def_refl_uzaver} definován pro bezkontextovou gramatiku a~princip v~CD gramatických systémech je podobný.
+Prvním příkladem je režim $*$, který byl v~definici \ref{def_refl_uzaver} uveden pro bezkontextovou gramatiku a~princip v~CD gramatických systémech je podobný.
 Při použití tohoto derivačního režimu řetězec $x \in (N \cup T)^*$ derivuje řetězec $y \in (N \cup T)^*$ v~libovolném počtu kroků v~$i$-té komponentě, zapsáno $x \prescript{}{i}{\Rightarrow}^{*}y$.
 Je možné předat řízení derivace jiné komponentě i~v~případě, že ve stejné komponentě lze s~derivací stejného řetězce pokračovat.
 
 Podobným příkladem je režim \emph{ukončovací}, který spočívá v~nutné derivaci řetězce v~dané komponentě, dokud je to možné. Značí se písmenem \emph{t}. Jsou dvě nutné podmínky, aby \emph{y} bylo derivovatelné z~\emph{x} v~komponentě $G_i$ režimem \emph{t}.
 \begin{enumerate}
-    \item $x \prescript{}{i}{\Rightarrow}^{*} y$\,--\,v~dané komponentě lze posloupností derivačních kroků získat řetězec $y$ z~řetězce $x$,
-    \item $y \prescript{}{i}{\nRightarrow} z$ pro všechna $z \in (N \cup T)^{*}$\,--\,ve stejné komponentě nelze nalézt další pravidlo, které by derivovalo $y$.
+    \item $x\; \prescript{}{i}{\Rightarrow}^{*}\; y$\,--\,v~dané komponentě lze posloupností derivačních kroků získat řetězec $y$ z~řetězce $x$,
+    \item $y\; \prescript{}{i}{\nRightarrow}\;\,z$ pro všechna $z \in (N \cup T)^{*}$\,--\,ve stejné komponentě nelze nalézt další pravidlo, které by derivovalo $y$.
 \end{enumerate}
-\dotaz{Přidání $i$ k~šipce pro určení komponenty - může být?}
 Jinými slovy, pokud můžeme z~aktuálního řetězce v~aktuální komponentě odvodit řetězec nový, \emph{musí} se s~derivací v~této komponentě pokračovat. 
 
 Další derivační režimy:
 \begin{itemize}
-    \item alespoň \emph{k}~derivací, tedy $x_i \Rightarrow^{\geq k} y$,
-    \item nejvíce \emph{k}~derivací, tedy $x_i \Rightarrow^{\leq k} y$,
-    \item právě \emph{k}~derivací, tedy $x_i \Rightarrow^{=k} y$,
+    \item alespoň \emph{k}~derivací, tedy $x\; \prescript{}{i}{\Rightarrow}^{\geq k}\ y$,
+    \item nejvíce \emph{k}~derivací, tedy $x\; \prescript{}{i}{\Rightarrow}^{\leq k}\ y$,
+    \item právě \emph{k}~derivací, tedy $x\; \prescript{}{i}{\Rightarrow}^{=k}\ y$,
 \end{itemize}
 kde $k \in \mathbb{N} \cup \{0\}$ a $i$ symbolizuje $i$-tou komponentu gramatického systému.
 
@@ -381,7 +385,6 @@ pokud $alph(x_i) \cap K = \emptyset$ a~zároveň:
 pro všechna $i \in \{1, \ldots, n\}$.
 
 \subsection*{c-derivační krok}\label{kap_c_der_krok}
-\todo{pridat matematickou formulaci z \cite{PCGS-chapter2}}
 Někdy taky nazýván \emph{komunikační krok}. Tento koncept umožňuje gramatikám spolupracovat a~vzájemně si mezi sebou měnit vygenerované řetězce pomocí komunikačních symbolů.
 Algoritmus ukazující princip komunikačního kroku je následující:
 \begin{algorithm}[h]
@@ -455,8 +458,8 @@ Centralizované PC gramatické systémy mají tu vlastnost, že pouze první kom
     Jinak je necentralizovaný.
 \end{definition}
 
-\subsection*{Příklady}\label{PCGS_priklady}
-
+\subsection*{Příklady}
+V~prvním příkladu bude pouze demonstrován princip obou derivačních kroků na systému, který generuje jen velmi omezený jazyk.
 \begin{example}
     Nechť $\Gamma = (\{S_1, S_2, S_3\},$ $\{Q_3\},$ $\{a, b\},$ $(S_1, \{S_1 \rightarrow Q_3\}),$ $(S_2, \{S_2 \rightarrow a\}),$ $(S_3, \{S_3 \rightarrow b\}))$ je PCGS.
     Počáteční konfigurace $\Gamma$ je zřejmě $(S_1, S_2, S_3)$.
@@ -496,6 +499,68 @@ Centralizované PC gramatické systémy mají tu vlastnost, že pouze první kom
         $(Q_3, a, b) \ \prescript{}{c}{\Rightarrow} \ (b, a, S_3)$
     \end{center}
     Další kroky už $\Gamma$ provádět nebude, protože řetězec generovaný první komponentou je již řetězec terminálních symbolů.
+    V~tomto příkladu byla použita sémantika vracejícího se PCGS, nicméně při použítí nevracejícího by jazyk vypadal stejně, jen výsledná konfigurace by se lišila v~řetězci $x_3$.
+    \begin{equation*}
+        L(\Gamma)_r = L(\Gamma)_{nr} = \{b\}
+    \end{equation*}
+\end{example}
+
+Ve druhém příkladu bude demonstrováno několik derivačních kroků a~bude se zkoumat výsledný generovaný jazyk.
+\begin{example}
+    Nechť $\Gamma = (\{S_1, S_1', S_2, S_3\}, K, {a, b, c}, (S_1, P_1), (S_2, P_2), (S_3, P_3)),$ kde:
+    \begin{align*}
+        P_1 = \{S_1 &\rightarrow abc, S_1 \rightarrow a^2b^2c^2, S_1 \rightarrow aS_1', S_1 \rightarrow a^3Q_2, \\
+                S_1' &\rightarrow aS_1', S_1' \rightarrow a^3Q_2, S_2 \rightarrow b^2Q_3, S_3 \rightarrow c\}, \\        
+        P_2 = \{S_2 &\rightarrow bS_2\}, \\
+        P_3 = \{S_3 &\rightarrow cS_3\}.
+    \end{align*}
+    Komunikační symboly může uvést pouze komponenta $P_1$, a~proto se jedná o~\emph{centralizovaný} PC gramatický systém.
+
+    Počáteční konfigurace je $(S_1, S_2, S_3)$.
+    $\Gamma$ může generovat konfiguraci $(aS_1', bS_2, cS_3)$ za použití pravidel $(S_1 \rightarrow aS_1', S_2 \rightarrow bS_2, S_3 \rightarrow cS_3)$.
+    \begin{equation*}
+        (S_1, S_2, S_3) \Rightarrow (aS_1', bS_2, cS_3)
+    \end{equation*}
+    Zřejmě při použití pravidel $(S_1' \rightarrow aS_1', S_2 \rightarrow bS_2, S_3 \rightarrow cS_3)$ $n$-krát po sobě je možné generovat konfigurace $(a^nS_1', b^nS_2, c^nS_3),\;n \geq 1$.
+    \begin{equation*}
+        (aS_1', bS_2, cS_3) \Rightarrow^* (a^nS_1', b^nS_2, c^nS_3)
+    \end{equation*}
+    Je vidět, že komponenty $P_2$ a~$P_3$ neustále používají ta samá pravidla, což je logické vzhledem k~jejich kardinalitě.
+    Pro zjednodušení zápisu, při každém g-derivačním kroku bude zmíněno pouze pravidlo komponenty $P_1$, pravidla komponent $P_2$ a~$P_3$ budou vždy stejná.
+
+    Z konfigurace $(a^nS_1', b^nS_2, c^nS_3)$ se na rozdílný výsledek dá dostat pouze za použití pravidla $S_1' \rightarrow a^3Q_2$.
+    \begin{equation*}
+        (a^nS_1', b^nS_2, c^nS_3) \Rightarrow (a^{n+3}Q_2, b^{n+1}S_2, c^{n+1}S_3)
+    \end{equation*} 
+    Provedeme c-derivační krok a~zaměníme $Q_2$ za $x_2$, nový $x_2$ bude $S_2$, který je axiomem $G_2$.
+    \begin{equation*}
+        (a^{n+3}Q_2, b^{n+1}S_2, c^{n+1}S_3) \Rightarrow (a^{n+3}b^{n+1}S_2, S_2, c^{n+1}S_3)
+    \end{equation*}
+    Jediné pravidlo pro symbol $S_2$ v~komponentě $P_1$ je $S_2 \rightarrow b^2Q_3$.
+    \begin{equation*}
+        (a^{n+3}b^{n+1}S_2, S_2, c^{n+1}S_3) \Rightarrow (a^{n+3}b^{n+3}Q_3, bS_2, c^{n+2}S_3)
+    \end{equation*}
+    Zaměníme $Q_3$ za $x_3$ nový $x_3$ bude $S_3$, který je axiomem $G_3$.
+    \begin{equation*}
+        (a^{n+3}b^{n+3}Q_3, bS_2, c^{n+2}S_3) \Rightarrow (a^{n+3}b^{n+3}c^{n+2}S_3, bS_2, S_3)
+    \end{equation*}
+    Pro $S_3$ je v~$P_1$ také pouze jediné pravidlo, které se může aplikovat, a to $S_3 \rightarrow c$.
+    \begin{equation*}
+        (a^{n+3}b^{n+3}c^{n+2}S_3, bS_2, S_3) \Rightarrow (a^{n+3}b^{n+3}c^{n+3}, bbS_2, cS_3)
+    \end{equation*}
+     $x_1$ je aktuálně řetězec terminálů, tudíž na něj nelze aplikovat žádné další pravidlo a~neobsahuje komunikační symboly.
+     Je tedy generovaným jazykem pro $\Gamma$ ve vracejícím se režimu.
+     Takto by vypadaly kroky pro nevracející se režim (konfigurace se začnou lišit od výskytu komunikačních symbolů):
+     \begin{align*}
+        (a^{n+3}Q_2, b^{n+1}S_2, c^{n+1}S_3) &\Rightarrow (a^{n+3}b^{n+1}S_2, b^{n+1}S_2, c^{n+1}S_3) \\
+        &\Rightarrow (a^{n+3}b^{n+3}Q_3, b^{n+2}S_2, c^{n+2}S_3) \\
+        &\Rightarrow (a^{n+3}b^{n+3}c^{n+2}S_3, b^{n+2}S_2, c^{n+2}S_3) \\
+        &\Rightarrow (a^{n+3}b^{n+3}c^{n+3}, b^{n+3}S_2, c^{n+3}S_3)
+     \end{align*}
+     Je tedy zřejmé, že:
+     \begin{equation*}
+        L(\Gamma)_r = L(\Gamma)_{nr} = \{a^nb^nc^n,\; n \geq 1\}.
+     \end{equation*}
 \end{example}
 
 \chapter{Použití gramatických systémů pro popis jazyka Koubp}
