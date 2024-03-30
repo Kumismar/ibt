@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-23 19:09
- * @ Modified time: 2024-03-24 22:56
+ * @ Modified time: 2024-03-30 13:21
  */
 
 #include <gtest/gtest.h>
@@ -283,4 +283,15 @@ TEST_F(PredictiveParserTests, FunctionDefinitionIntNoArgs)
         new Token(tReturn), new Token(tSemi),
         new Token(tRCurl), new Token(tEnd)
     };
+}
+
+TEST_F(PredictiveParserTests, StatementSequence)
+{
+    // variable = const; variable = const;
+    inputTape = {
+        new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tSemi),
+        new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tSemi),
+        new Token(tEnd)
+    };
+    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
 }
