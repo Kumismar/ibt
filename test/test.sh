@@ -38,5 +38,5 @@ for input_file in "$current_dir"/koubp_files/*.koubp; do
     fi
 done
 
-echo "Tests passed: $counter_successful"
-echo "Tests failed: $counter_failed"
+echo -e "${green}Tests passed: $counter_successful${no_color}"
+echo -e "${red}Tests failed: $counter_failed${no_color}"

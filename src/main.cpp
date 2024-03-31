@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-03-30 20:59
+ * @ Modified time: 2024-03-31 10:43
  */
 
 #include "analysis_success.hpp"
@@ -80,12 +80,12 @@ int main(int argc, char** argv)
     catch (LexicalError const& e) {
         std::cerr << "Lexical error: " << e.what() << std::endl;
         Cleanup();
-        return 5;
+        return 2;
     }
     catch (InternalError const& e) {
         std::cerr << "Internal error: " << e.what() << std::endl;
         Cleanup();
-        return 2;
+        return 99;
     }
 
     PredictiveParser* predParser = new PredictiveParser(stackos);
@@ -93,35 +93,28 @@ int main(int argc, char** argv)
 
     int retCode = 0;
 
-    while (true) {
-        try {
-            predParser->Parse(false);
-        }
-        catch (SyntaxAnalysisSuccess const& e) {
-            std::cout << "Parsing successful." << std::endl;
-            retCode = 0;
-            break;
-        }
-        catch (SyntaxError const& e) {
-            Logger::GetInstance()->PrintSyntaxError(e.what());
-            retCode = 1;
-            break;
-        }
-        catch (InternalError const& e) {
-            std::cerr << "Internal error: " << e.what() << std::endl;
-            retCode = 2;
-            break;
-        }
-        catch (std::exception const& e) {
-            std::cerr << "Unknown error: " << e.what() << std::endl;
-            retCode = 3;
-            break;
-        }
-        catch (...) {
-            std::cerr << "Unknown error." << std::endl;
-            retCode = 4;
-            break;
-        }
+    try {
+        predParser->Parse(false);
+    }
+    catch (SyntaxAnalysisSuccess const& e) {
+        std::cout << "Parsing successful." << std::endl;
+        retCode = 0;
+    }
+    catch (SyntaxError const& e) {
+        Logger::GetInstance()->PrintSyntaxError(e.what());
+        retCode = 1;
+    }
+    catch (InternalError const& e) {
+        std::cerr << "Internal error: " << e.what() << std::endl;
+        retCode = 99;
+    }
+    catch (std::exception const& e) {
+        std::cerr << "Unknown error: " << e.what() << std::endl;
+        retCode = -1;
+    }
+    catch (...) {
+        std::cerr << "Unknown error." << std::endl;
+        retCode = -1;
     }
 
     predParser->ClearStack();

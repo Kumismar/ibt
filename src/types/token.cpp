@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-03-30 21:37
+ * @ Modified time: 2024-03-30 21:53
  */
 
 #include "token.hpp"
@@ -210,7 +210,7 @@ std::string Token::GetDataString() const
         case Bool:
             return this->data.value.boolVal ? "true" : "false";
         case None:
-            return "none";
+            return "";
         default:
             throw InternalError("Unknown data type in Token::GetDataString()\n");
     }

@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-03-30 21:42
+ * @ Modified time: 2024-03-31 10:31
  */
 
 #include "logger.hpp"
@@ -33,6 +33,11 @@ Logger::~Logger()
 
 void Logger::Cleanup()
 {
+    for (const Token* token: Logger::instance->recentTokens) {
+        delete token;
+    }
+    Logger::instance->recentTokens.clear();
+
     if (Logger::instance != nullptr) {
         delete Logger::instance;
     }

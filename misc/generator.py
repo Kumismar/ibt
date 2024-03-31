@@ -1,3 +1,4 @@
+import os
 nonterminals = [
     "program      ",
     "statementList",
@@ -17,8 +18,8 @@ nonterminals = [
     "type         "
 ]
 
-with open("lltable.txt", 'r') as f1:
-    with open("vector.txt", 'w') as f2:
+with open(os.path.dirname(os.path.abspath(__file__)) + "/lltable.txt", 'r') as f1:
+    with open(os.path.dirname(os.path.abspath(__file__)) + "/vector.txt", 'w') as f2:
         f2.write(
             "const std::vector<std::vector<LLTableIndex>> LLTable::table = {\n")
         lines = f1.readlines()

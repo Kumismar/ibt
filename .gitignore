@@ -40,9 +40,6 @@ cmake-build-debug/
 # Logging files
 *.log
 
-# koubp files
-*.koubp
-
 # latex files
 *.aux
 *.bbl

@@ -90,10 +90,15 @@
     BEGIN(INITIAL); 
 }
 
+<COMMENT>\n {
+    yylineno++;
+}
+
 <COMMENT>. {
 }
 
 <LINE_COMMENT>"\n" {
+    yylineno++;
     BEGIN(INITIAL); 
 }
 

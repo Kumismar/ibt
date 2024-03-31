@@ -1,0 +1,13 @@
+function sum_of_digits(int num): int {
+    int sum = 0;
+    while (num > 0) {
+        int digit = num - (num / 10) * 10;
+        sum = sum + digit;
+        num = num / 10;
+    }
+    return sum;
+}
+
+print("Enter a number to calculate the sum of its digits:\n");
+int number = convert_int(readline());
+print("The sum of digits of " + convert_string(number) + " is: " + convert_string(sum_of_digits(number)));
