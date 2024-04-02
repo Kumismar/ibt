@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-02 14:27
+ * @ Modified time: 2024-04-02 22:41
  */
 
 #include "precedence.hpp"
@@ -13,6 +13,7 @@
 #include "logger.hpp"
 #include "nonterminal.hpp"
 #include "precedence_symbol.hpp"
+#include "predictive.hpp"
 #include "stack_item.hpp"
 #include "syntax_error.hpp"
 #include "token.hpp"
@@ -41,19 +42,7 @@ void PrecedenceParser::Parse()
         }
 
         if (*this->inputToken == tFuncName) {
-            this->insertFunctionEnd();
-            this->predictiveParser = new PredictiveParser(this->pushdown);
-            try {
-                this->predictiveParser->Parse(true);
-            }
-            catch (FunctionParsed const& e) {
-                delete this->predictiveParser;
-                this->inputToken = inputTape.front();
-            }
-            catch (ExceptionBase const& e) {
-                delete this->predictiveParser;
-                throw;
-            }
+            this->parseFunction();
         }
 
         if (this->parseIsSuccessful()) {
@@ -381,4 +370,21 @@ bool PrecedenceParser::isOperator(Token& token)
             token == tAnd || token == tOr ||
             token == tEq || token == tNEq || token == tLess || token == tGreater || token == tLEq || token == tGEq ||
             token == tAssign);
+}
+
+void PrecedenceParser::parseFunction()
+{
+    this->insertFunctionEnd();
+    PredictiveParser* predParser = new PredictiveParser(this->pushdown);
+    try {
+        predParser->Parse(true);
+    }
+    catch (FunctionParsed const& e) {
+        delete predParser;
+        this->inputToken = inputTape.front();
+    }
+    catch (...) {
+        delete predParser;
+        throw;
+    }
 }

@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-02 13:43
+ * @ Modified time: 2024-04-02 22:37
  */
 
 #pragma once
@@ -19,7 +19,6 @@ private:
     AnalysisStack& pushdown;
     AnalysisStack analysisPushdown;
     Logger* logger = nullptr;
-    PredictiveParser* predictiveParser = nullptr;
     Token* inputToken = nullptr;
     PrecedenceTable* table = nullptr;
 
@@ -38,6 +37,7 @@ private:
     void skipOperand(InputTape::iterator& token);
     void skipOperandInParentheses(InputTape::iterator& token);
     bool isOperator(Token& token);
+    void parseFunction();
 
 public:
     ~PrecedenceParser();

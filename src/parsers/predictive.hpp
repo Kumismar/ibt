@@ -21,7 +21,6 @@ private:
     AnalysisStack& pushdown;
     Symbol* stackTop = nullptr;
     Token* inputToken = nullptr;
-    PrecedenceParser* precedenceParser = nullptr;
     LLTable* table = nullptr;
     bool parsingFunction = false;
     bool firstFuncName = false;
@@ -30,6 +29,7 @@ private:
     void parseNonterminal();
     void parseToken();
     void parseEnd();
+    void parseExpression();
 
 public:
     ~PredictiveParser();

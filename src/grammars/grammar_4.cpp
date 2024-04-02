@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-03-23 17:34
+ * @ Modified time: 2024-04-02 23:03
  */
 
 #include "grammar_4.hpp"
@@ -34,7 +34,9 @@ const std::vector<Rule> Grammar4::rightSideRules = {
     { new Nonterminal(nExpression), new Nonterminal(nArgs2) },
     { new Token(tEps) },
     { new Token(tComma), new Nonterminal(nExpression), new Nonterminal(nArgs2) },
-    { new Token(tEps) }
+    { new Token(tEps) },
+    // A special rule for function call - this is pushed into inputTape as temporary token for precedence parser
+    { new Token(tFuncConst) }
 };
 
 Rule Grammar4::Expand(unsigned ruleNumber)

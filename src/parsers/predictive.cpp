@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-02 12:59
+ * @ Modified time: 2024-04-02 23:01
  */
 
 #include "predictive.hpp"
@@ -48,7 +48,7 @@ void PredictiveParser::Parse(bool parseFunction)
         if (*this->inputToken == tFuncEnd) {
             delete this->inputToken;
             inputTape.pop_front();
-            inputTape.push_front(new Token(tConst));
+            inputTape.push_front(new Token(tFuncConst));
             throw FunctionParsed();
         }
 
