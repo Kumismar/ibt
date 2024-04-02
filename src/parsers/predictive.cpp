@@ -2,11 +2,12 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-03-30 21:07
+ * @ Modified time: 2024-04-02 12:59
  */
 
 #include "predictive.hpp"
 #include "analysis_success.hpp"
+#include "exception_base.hpp"
 #include "function_parsed.hpp"
 #include "grammar_factory.hpp"
 #include "internal_error.hpp"
@@ -110,8 +111,14 @@ void PredictiveParser::parseNonterminal()
             // If parsing function call but new funcName is found, parse the new function call
             (*this->inputToken == tFuncName && !this->firstFuncName)) {
             PrecedenceParser* precedenceParser = new PrecedenceParser(this->pushdown);
-            precedenceParser->Parse();
-            delete precedenceParser;
+            try {
+                precedenceParser->Parse();
+                delete precedenceParser;
+            }
+            catch (ExceptionBase const& e) {
+                delete precedenceParser;
+                throw;
+            }
             return;
         }
     }
