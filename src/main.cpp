@@ -2,10 +2,11 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-03-31 10:43
+ * @ Modified time: 2024-04-02 12:22
  */
 
 #include "analysis_success.hpp"
+#include "cl_arguments_error.hpp"
 #include "grammar_1.hpp"
 #include "grammar_2.hpp"
 #include "grammar_3.hpp"
@@ -22,6 +23,7 @@
 #include <cstdio>
 #include <filesystem>
 #include <iostream>
+#include <unistd.h>
 
 
 void Cleanup()
@@ -57,44 +59,54 @@ void Lex(std::string& filename)
     yylex();
     yylex_destroy();
     inputTape.push_back(new Token(tEnd));
-    Logger* logger = Logger::GetInstance();
-    logger->PrintTokens();
+    Logger::GetInstance()->PrintTokens();
 }
 
-std::string GetFileName(int argc, char** argv)
+std::string ProcessArguments(int argc, char** argv)
 {
-    if (argc != 2) {
-        throw InternalError("Invalid number of arguments.\n");
+    std::string filename;
+    int opt;
+    bool fileOption = false;
+    while ((opt = getopt(argc, argv, "df:")) != -1) {
+        switch (opt) {
+            case 'd': {
+                Logger::GetInstance()->EnableDebugPrint();
+                break;
+            }
+            case 'f': {
+                filename = optarg;
+                fileOption = true;
+                break;
+            }
+            case '?':
+            default: {
+                std::string error = std::string("Invalid argument: '") + char(opt) + "'.\n";
+                throw CLArgumentsError(error.c_str());
+            }
+        }
     }
-    return std::string(argv[1]);
+
+    if (!fileOption) {
+        throw CLArgumentsError("No input file specified.\n");
+    }
+
+    return filename;
 }
+
 
 int main(int argc, char** argv)
 {
     AnalysisStack stackos;
-
-    try {
-        std::string filename = GetFileName(argc, argv);
-        Lex(filename);
-    }
-    catch (LexicalError const& e) {
-        std::cerr << "Lexical error: " << e.what() << std::endl;
-        Cleanup();
-        return 2;
-    }
-    catch (InternalError const& e) {
-        std::cerr << "Internal error: " << e.what() << std::endl;
-        Cleanup();
-        return 99;
-    }
-
-    PredictiveParser* predParser = new PredictiveParser(stackos);
-    predParser->InitSyntaxAnalysis();
-
     int retCode = 0;
 
     try {
+        std::string filename = ProcessArguments(argc, argv);
+        Lex(filename);
+        PredictiveParser* predParser = new PredictiveParser(stackos);
+        predParser->InitSyntaxAnalysis();
         predParser->Parse(false);
+        predParser->ClearStack();
+        delete predParser;
     }
     catch (SyntaxAnalysisSuccess const& e) {
         std::cout << "Parsing successful." << std::endl;
@@ -103,6 +115,14 @@ int main(int argc, char** argv)
     catch (SyntaxError const& e) {
         Logger::GetInstance()->PrintSyntaxError(e.what());
         retCode = 1;
+    }
+    catch (LexicalError const& e) {
+        Logger::GetInstance()->PrintLexicalError(e.what());
+        return 2;
+    }
+    catch (CLArgumentsError const& e) {
+        Logger::GetInstance()->PrintUsageError(e.what());
+        return 3;
     }
     catch (InternalError const& e) {
         std::cerr << "Internal error: " << e.what() << std::endl;
@@ -117,8 +137,6 @@ int main(int argc, char** argv)
         retCode = -1;
     }
 
-    predParser->ClearStack();
-    delete predParser;
     Cleanup();
     return retCode;
 }
