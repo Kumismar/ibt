@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-03-23 19:22
+ * @ Modified time: 2024-04-02 13:43
  */
 
 #pragma once
@@ -34,7 +34,10 @@ private:
     void cleanUpAfterParsing();
     void push();
     void initPrecedenceParsing();
-    void skipFunctionCall(InputTape::iterator& it);
+    void skipFunctionCall(InputTape::iterator& token);
+    void skipOperand(InputTape::iterator& token);
+    void skipOperandInParentheses(InputTape::iterator& token);
+    bool isOperator(Token& token);
 
 public:
     ~PrecedenceParser();

@@ -2,11 +2,12 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-02 12:28
+ * @ Modified time: 2024-04-02 13:08
  */
 
 #include "analysis_success.hpp"
 #include "cl_arguments_error.hpp"
+#include "exception_base.hpp"
 #include "grammar_1.hpp"
 #include "grammar_2.hpp"
 #include "grammar_3.hpp"
@@ -24,7 +25,6 @@
 #include <filesystem>
 #include <iostream>
 #include <unistd.h>
-
 
 void Cleanup()
 {
@@ -67,6 +67,7 @@ std::string ProcessArguments(int argc, char** argv)
     std::string filename;
     int opt;
     bool fileOption = false;
+
     while ((opt = getopt(argc, argv, "df:")) != -1) {
         switch (opt) {
             case 'd': {
@@ -78,7 +79,6 @@ std::string ProcessArguments(int argc, char** argv)
                 fileOption = true;
                 break;
             }
-            case '?':
             default: {
                 std::string error = std::string("Invalid argument: '") + char(opt) + "'.\n";
                 throw CLArgumentsError(error.c_str());
@@ -98,15 +98,13 @@ int main(int argc, char** argv)
 {
     AnalysisStack stackos;
     int retCode = 0;
+    PredictiveParser* predParser = new PredictiveParser(stackos);
 
     try {
         std::string filename = ProcessArguments(argc, argv);
         Lex(filename);
-        PredictiveParser* predParser = new PredictiveParser(stackos);
         predParser->InitSyntaxAnalysis();
         predParser->Parse(false);
-        predParser->ClearStack();
-        delete predParser;
     }
     catch (SyntaxAnalysisSuccess const& e) {
         std::cout << "Parsing successful." << std::endl;
@@ -128,6 +126,10 @@ int main(int argc, char** argv)
         std::cerr << "Internal error: " << e.what() << std::endl;
         retCode = 99;
     }
+    catch (ExceptionBase const& e) {
+        std::cerr << "Uncatched exception: " << e.what() << std::endl;
+        retCode = -1;
+    }
     catch (std::exception const& e) {
         std::cerr << "Unknown error: " << e.what() << std::endl;
         retCode = -1;
@@ -137,6 +139,8 @@ int main(int argc, char** argv)
         retCode = -1;
     }
 
+    predParser->ClearStack();
+    delete predParser;
     Cleanup();
     return retCode;
 }
