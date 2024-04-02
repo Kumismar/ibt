@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-23 19:09
- * @ Modified time: 2024-03-30 13:21
+ * @ Modified time: 2024-04-02 12:50
  */
 
 #include <gtest/gtest.h>
@@ -12,53 +12,49 @@
 #include "syntax_error.hpp"
 #include "token.hpp"
 
-class PredictiveParserTests : public ::testing::Test
+class PredictiveParserTestsSuccess : public ::testing::Test
 {
 protected:
     AnalysisStack stack;
-    PredictiveParser parser = PredictiveParser(this->stack);
+    PredictiveParser* parser = nullptr;
 
     void SetUp() override
     {
-        this->parser.InitSyntaxAnalysis();
+        this->parser = new PredictiveParser(this->stack);
+        this->parser->InitSyntaxAnalysis();
     }
 
     void TearDown() override
     {
-        this->parser.ClearStack();
+        this->parser->ClearStack();
         for (auto token: inputTape) {
             delete token;
         }
         inputTape.clear();
+        delete this->parser;
     }
 };
 
-TEST_F(PredictiveParserTests, EmptyInput)
-{
-    inputTape = { new Token(tEnd) };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxError);
-}
-
-TEST_F(PredictiveParserTests, VariableAssignment)
+TEST_F(PredictiveParserTestsSuccess, VariableAssignment)
 {
     inputTape = {
         new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tSemi),
         new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, IfStatementEmpty)
+TEST_F(PredictiveParserTestsSuccess, IfStatementEmpty)
 {
     // if (const) { }
     inputTape = {
         new Token(tIf), new Token(tLPar), new Token(tConst), new Token(tRPar),
         new Token(tLCurl), new Token(tRCurl), new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, IfStatement)
+TEST_F(PredictiveParserTestsSuccess, IfStatement)
 {
     // if (const) { variable = const; }
     inputTape = {
@@ -67,10 +63,10 @@ TEST_F(PredictiveParserTests, IfStatement)
         new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tSemi),
         new Token(tRCurl), new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, IfElseStatement)
+TEST_F(PredictiveParserTestsSuccess, IfElseStatement)
 {
     // if (const) { variable = const; } else { variable = const; }
     inputTape = {
@@ -83,10 +79,10 @@ TEST_F(PredictiveParserTests, IfElseStatement)
         new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tSemi),
         new Token(tRCurl), new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, IfElseifStatement)
+TEST_F(PredictiveParserTestsSuccess, IfElseifStatement)
 {
     // if (const) { variable = const; } elseif (const) { variable = const; }
     inputTape = {
@@ -99,10 +95,10 @@ TEST_F(PredictiveParserTests, IfElseifStatement)
         new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tSemi),
         new Token(tRCurl), new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, IfElseIfElseStatement)
+TEST_F(PredictiveParserTestsSuccess, IfElseIfElseStatement)
 {
     // if (const) { variable = const; } elseif (const) { variable = const; } else { variable = const; }
     inputTape = {
@@ -119,10 +115,10 @@ TEST_F(PredictiveParserTests, IfElseIfElseStatement)
         new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tSemi),
         new Token(tRCurl), new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, IfStatementNoBraces)
+TEST_F(PredictiveParserTestsSuccess, IfStatementNoBraces)
 {
     // if (const) variable = const;
     inputTape = {
@@ -130,10 +126,10 @@ TEST_F(PredictiveParserTests, IfStatementNoBraces)
         new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tSemi),
         new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, WhileLoop)
+TEST_F(PredictiveParserTestsSuccess, WhileLoop)
 {
     // while (const) { variable = const; }
     inputTape = {
@@ -142,10 +138,10 @@ TEST_F(PredictiveParserTests, WhileLoop)
         new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tSemi),
         new Token(tRCurl), new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, WhileLoopNoBraces)
+TEST_F(PredictiveParserTestsSuccess, WhileLoopNoBraces)
 {
     // while (const) variable = const;
     inputTape = {
@@ -153,10 +149,10 @@ TEST_F(PredictiveParserTests, WhileLoopNoBraces)
         new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tSemi),
         new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, ForLoop)
+TEST_F(PredictiveParserTestsSuccess, ForLoop)
 {
     // for (variable = const; const; const) { variable = const; }
     inputTape = {
@@ -168,10 +164,10 @@ TEST_F(PredictiveParserTests, ForLoop)
         new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tSemi),
         new Token(tRCurl), new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, ForLoopNoBraces)
+TEST_F(PredictiveParserTestsSuccess, ForLoopNoBraces)
 {
     // for (variable = const; const; const) variable = const;
     inputTape = {
@@ -182,30 +178,30 @@ TEST_F(PredictiveParserTests, ForLoopNoBraces)
         new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tSemi),
         new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, ReturnStatement)
+TEST_F(PredictiveParserTestsSuccess, ReturnStatement)
 {
     // return const;
     inputTape = {
         new Token(tReturn), new Token(tConst), new Token(tSemi),
         new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, ReturnStatementNoValue)
+TEST_F(PredictiveParserTestsSuccess, ReturnStatementNoValue)
 {
     // return;
     inputTape = {
         new Token(tReturn), new Token(tSemi),
         new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, Expression)
+TEST_F(PredictiveParserTestsSuccess, Expression)
 {
     // 3 + 4 * 5;
     inputTape = {
@@ -214,7 +210,7 @@ TEST_F(PredictiveParserTests, Expression)
     };
 }
 
-TEST_F(PredictiveParserTests, CodeBlock)
+TEST_F(PredictiveParserTestsSuccess, CodeBlock)
 {
     // { variable = const; }
     inputTape = {
@@ -222,19 +218,19 @@ TEST_F(PredictiveParserTests, CodeBlock)
         new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tSemi),
         new Token(tRCurl), new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, CodeBlockEmpty)
+TEST_F(PredictiveParserTestsSuccess, CodeBlockEmpty)
 {
     // { }
     inputTape = {
         new Token(tLCurl), new Token(tRCurl), new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, FunctionDefinitionNoTypeNoArgs)
+TEST_F(PredictiveParserTestsSuccess, FunctionDefinitionNoTypeNoArgs)
 {
     // function f(): { return; }
     inputTape = {
@@ -243,10 +239,10 @@ TEST_F(PredictiveParserTests, FunctionDefinitionNoTypeNoArgs)
         new Token(tReturn), new Token(tSemi),
         new Token(tRCurl), new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, FunctionDefinitionNoTypeOneArg)
+TEST_F(PredictiveParserTestsSuccess, FunctionDefinitionNoTypeOneArg)
 {
     // function f(int variable): { return variable; }
     inputTape = {
@@ -256,10 +252,10 @@ TEST_F(PredictiveParserTests, FunctionDefinitionNoTypeOneArg)
         new Token(tReturn), new Token(tVariable), new Token(tSemi),
         new Token(tRCurl), new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, FunctionDefinitionNoTypeTwoArgs)
+TEST_F(PredictiveParserTestsSuccess, FunctionDefinitionNoTypeTwoArgs)
 {
     // function f(int variable, int variable2): { return variable + variable2; }
     inputTape = {
@@ -270,10 +266,10 @@ TEST_F(PredictiveParserTests, FunctionDefinitionNoTypeTwoArgs)
         new Token(tReturn), new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tSemi),
         new Token(tRCurl), new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }
 
-TEST_F(PredictiveParserTests, FunctionDefinitionIntNoArgs)
+TEST_F(PredictiveParserTestsSuccess, FunctionDefinitionIntNoArgs)
 {
     // function f(): int { return; }
     inputTape = {
@@ -285,7 +281,7 @@ TEST_F(PredictiveParserTests, FunctionDefinitionIntNoArgs)
     };
 }
 
-TEST_F(PredictiveParserTests, StatementSequence)
+TEST_F(PredictiveParserTestsSuccess, StatementSequence)
 {
     // variable = const; variable = const;
     inputTape = {
@@ -293,5 +289,5 @@ TEST_F(PredictiveParserTests, StatementSequence)
         new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tSemi),
         new Token(tEnd)
     };
-    EXPECT_THROW(this->parser.Parse(false), SyntaxAnalysisSuccess);
+    EXPECT_THROW(this->parser->Parse(false), SyntaxAnalysisSuccess);
 }

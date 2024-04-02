@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-02 14:54
- * @ Modified time: 2024-03-23 19:29
+ * @ Modified time: 2024-04-02 12:49
  */
 
 #include <gtest/gtest.h>
@@ -15,10 +15,11 @@ class PrecedenceParserTest : public ::testing::Test
 {
 protected:
     AnalysisStack stack;
-    PrecedenceParser parser = PrecedenceParser(this->stack);
+    PrecedenceParser* parser = nullptr;
 
     void SetUp() override
     {
+        this->parser = new PrecedenceParser(this->stack);
         this->stack.push_front(new Nonterminal(nExpression));
     }
 
@@ -28,65 +29,66 @@ protected:
             delete token;
         }
         inputTape.clear();
+        delete this->parser;
     }
 };
 
 TEST_F(PrecedenceParserTest, SingleVariable)
 {
     inputTape = { new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
     EXPECT_TRUE(this->stack.empty());
 }
 
 TEST_F(PrecedenceParserTest, SimpleAssign)
 {
     inputTape = { new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
     EXPECT_TRUE(this->stack.empty());
 }
 
 TEST_F(PrecedenceParserTest, PlusOperator)
 {
     inputTape = { new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, MinusOperator)
 {
     inputTape = { new Token(tVariable), new Token(tMinus), new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, MulOperator)
 {
     inputTape = { new Token(tVariable), new Token(tMul), new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, DivOperator)
 {
     inputTape = { new Token(tVariable), new Token(tDiv), new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, ConcatOperator)
 {
     inputTape = { new Token(tVariable), new Token(tConcat), new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, AndOperator)
 {
     // a && b
     inputTape = { new Token(tVariable), new Token(tAnd), new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, OrOperator)
 {
     // a || b
     inputTape = { new Token(tVariable), new Token(tOr), new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 
@@ -94,49 +96,49 @@ TEST_F(PrecedenceParserTest, NotOperator)
 {
     // !a
     inputTape = { new Token(tExcl), new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, UnaryMinusOperator)
 {
     // -a
     inputTape = { new Token(tUnMinus), new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, AddMulCombination)
 {
     // a + b * c
     inputTape = { new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tMul), new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, SubDivCombination)
 {
     // a - b / c
     inputTape = { new Token(tVariable), new Token(tMinus), new Token(tVariable), new Token(tDiv), new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, MulAddCombination)
 {
     // a * b + c
     inputTape = { new Token(tVariable), new Token(tMul), new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, DivSubCombination)
 {
     // a / b - c
     inputTape = { new Token(tVariable), new Token(tDiv), new Token(tVariable), new Token(tMinus), new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, MulDivCombination)
 {
     // a * b / c
     inputTape = { new Token(tVariable), new Token(tMul), new Token(tVariable), new Token(tDiv), new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 
@@ -144,42 +146,42 @@ TEST_F(PrecedenceParserTest, VarInParentheses)
 {
     // (a)
     inputTape = { new Token(tLPar), new Token(tVariable), new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, AddInParentheses)
 {
     // (a + b)
     inputTape = { new Token(tLPar), new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, SubInParentheses)
 {
     // (a - b)
     inputTape = { new Token(tLPar), new Token(tVariable), new Token(tMinus), new Token(tConst), new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, MulInParentheses)
 {
     // (a * b)
     inputTape = { new Token(tLPar), new Token(tVariable), new Token(tMul), new Token(tVariable), new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, DivInParentheses)
 {
     // (a / b)
     inputTape = { new Token(tLPar), new Token(tVariable), new Token(tDiv), new Token(tVariable), new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, ConcatInParentheses)
 {
     // (a . b)
     inputTape = { new Token(tLPar), new Token(tVariable), new Token(tConcat), new Token(tConst), new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 
@@ -192,7 +194,7 @@ TEST_F(PrecedenceParserTest, NestedParentheses1)
         new Token(tRPar), new Token(tRPar),
         new Token(tExpEnd)
     };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, NestedParentheses2)
@@ -204,7 +206,7 @@ TEST_F(PrecedenceParserTest, NestedParentheses2)
         new Token(tPlus), new Token(tVariable),
         new Token(tRPar), new Token(tExpEnd)
     };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, NestedParentheses3)
@@ -221,7 +223,7 @@ TEST_F(PrecedenceParserTest, NestedParentheses3)
         new Token(tPlus), new Token(tVariable), new Token(tRPar),
         new Token(tExpEnd)
     };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, NestedParentheses4)
@@ -236,7 +238,7 @@ TEST_F(PrecedenceParserTest, NestedParentheses4)
         new Token(tRPar), new Token(tRPar),
         new Token(tExpEnd)
     };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 
@@ -248,7 +250,7 @@ TEST_F(PrecedenceParserTest, ParenthesesAndUnary1)
         new Token(tPlus), new Token(tUnMinus), new Token(tVariable),
         new Token(tRPar), new Token(tExpEnd)
     };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, ParenthesesAndUnary2)
@@ -258,7 +260,7 @@ TEST_F(PrecedenceParserTest, ParenthesesAndUnary2)
         new Token(tUnMinus), new Token(tUnMinus), new Token(tVariable),
         new Token(tExpEnd)
     };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 
@@ -271,7 +273,7 @@ TEST_F(PrecedenceParserTest, ParenthesesUnaryBinary1)
         new Token(tMul), new Token(tVariable),
         new Token(tRPar), new Token(tExpEnd)
     };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, ParenthesesUnaryBinary2)
@@ -282,7 +284,7 @@ TEST_F(PrecedenceParserTest, ParenthesesUnaryBinary2)
         new Token(tPlus), new Token(tVariable), new Token(tMul), new Token(tVariable),
         new Token(tExpEnd)
     };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, ParenthesesUnaryBinary3)
@@ -295,7 +297,7 @@ TEST_F(PrecedenceParserTest, ParenthesesUnaryBinary3)
         new Token(tPlus), new Token(tVariable),
         new Token(tRPar), new Token(tExpEnd)
     };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, ParenthesesUnaryBinary4)
@@ -307,35 +309,35 @@ TEST_F(PrecedenceParserTest, ParenthesesUnaryBinary4)
         new Token(tPlus), new Token(tVariable),
         new Token(tExpEnd)
     };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, FunctionCallNoArgs)
 {
     // f()
     inputTape = { new Token(tFuncName), new Token(tLPar), new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, FunctionCallOneArg)
 {
     // f(a)
     inputTape = { new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, FunctionCallTwoArgs)
 {
     // f(a, b)
     inputTape = { new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable), new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, FunctionCallThreeArgs)
 {
     // f(a, b, c)
     inputTape = { new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable), new Token(tComma), new Token(tVariable), new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, FunctionCallNested)
@@ -345,7 +347,7 @@ TEST_F(PrecedenceParserTest, FunctionCallNested)
                   new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable),
                   new Token(tRPar),
                   new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, FunctionCallNested2)
@@ -356,7 +358,7 @@ TEST_F(PrecedenceParserTest, FunctionCallNested2)
                   new Token(tRPar),
                   new Token(tComma), new Token(tVariable),
                   new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, FunctionCallNested3)
@@ -368,7 +370,7 @@ TEST_F(PrecedenceParserTest, FunctionCallNested3)
                   new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable),
                   new Token(tRPar),
                   new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, FunctionCallNested4)
@@ -380,7 +382,7 @@ TEST_F(PrecedenceParserTest, FunctionCallNested4)
                   new Token(tRPar),
                   new Token(tRPar), new Token(tComma), new Token(tVariable),
                   new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, FunctionCallNested5)
@@ -394,7 +396,7 @@ TEST_F(PrecedenceParserTest, FunctionCallNested5)
                   new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable),
                   new Token(tRPar),
                   new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, FunctionCallNested6)
@@ -408,7 +410,7 @@ TEST_F(PrecedenceParserTest, FunctionCallNested6)
                   new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable), new Token(tComma), new Token(tVariable),
                   new Token(tRPar),
                   new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, ExpressionInFunctionCall)
@@ -418,7 +420,7 @@ TEST_F(PrecedenceParserTest, ExpressionInFunctionCall)
                   new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tComma),
                   new Token(tVariable), new Token(tMul), new Token(tVariable),
                   new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, ExpressionInFunctionCall2)
@@ -428,7 +430,7 @@ TEST_F(PrecedenceParserTest, ExpressionInFunctionCall2)
                   new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tMul), new Token(tVariable), new Token(tComma),
                   new Token(tVariable),
                   new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, ExpressionInFunctionCall3)
@@ -438,7 +440,7 @@ TEST_F(PrecedenceParserTest, ExpressionInFunctionCall3)
                   new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tMul), new Token(tVariable), new Token(tComma),
                   new Token(tVariable), new Token(tPlus), new Token(tVariable),
                   new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, ExpressionInFunctionCall4)
@@ -448,7 +450,7 @@ TEST_F(PrecedenceParserTest, ExpressionInFunctionCall4)
                   new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tMul), new Token(tVariable), new Token(tComma),
                   new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tMul), new Token(tVariable),
                   new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, ExpressionInFunctionCall5)
@@ -458,7 +460,7 @@ TEST_F(PrecedenceParserTest, ExpressionInFunctionCall5)
                   new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tMul), new Token(tVariable), new Token(tComma),
                   new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tMul), new Token(tVariable), new Token(tPlus), new Token(tVariable),
                   new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, FunctionCallsInExpression)
@@ -467,7 +469,7 @@ TEST_F(PrecedenceParserTest, FunctionCallsInExpression)
     inputTape = { new Token(tVariable), new Token(tPlus),
                   new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable),
                   new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, FunctionCallsInExpression2)
@@ -476,7 +478,7 @@ TEST_F(PrecedenceParserTest, FunctionCallsInExpression2)
     inputTape = { new Token(tVariable), new Token(tPlus),
                   new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable), new Token(tRPar), new Token(tMul),
                   new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, FunctionCallsInExpression3)
@@ -486,7 +488,7 @@ TEST_F(PrecedenceParserTest, FunctionCallsInExpression3)
                   new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable), new Token(tRPar), new Token(tMul),
                   new Token(tVariable), new Token(tPlus), new Token(tVariable),
                   new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, FunctionCallsInExpression4)
@@ -497,7 +499,7 @@ TEST_F(PrecedenceParserTest, FunctionCallsInExpression4)
                   new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tMul),
                   new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable), new Token(tRPar),
                   new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, FunctionCallsInExpression5)
@@ -509,7 +511,7 @@ TEST_F(PrecedenceParserTest, FunctionCallsInExpression5)
                   new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable), new Token(tRPar), new Token(tPlus),
                   new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable), new Token(tRPar),
                   new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, MixedFunctionCallsAndExpressions)
@@ -523,7 +525,7 @@ TEST_F(PrecedenceParserTest, MixedFunctionCallsAndExpressions)
                   new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable), new Token(tRPar), new Token(tPlus),
                   new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable), new Token(tRPar),
                   new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, NestedFunctionCallsAndExpressions)
@@ -541,7 +543,7 @@ TEST_F(PrecedenceParserTest, NestedFunctionCallsAndExpressions)
                   new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable),
                   new Token(tRPar),
                   new Token(tRPar), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
 
 TEST_F(PrecedenceParserTest, AssignComplexExpression)
@@ -553,5 +555,5 @@ TEST_F(PrecedenceParserTest, AssignComplexExpression)
                   new Token(tRPar), new Token(tNEq), new Token(tConst),
                   new Token(tRPar),
                   new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser.Parse());
+    EXPECT_NO_THROW(this->parser->Parse());
 }
