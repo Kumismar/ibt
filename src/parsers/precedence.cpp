@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-03-30 21:10
+ * @ Modified time: 2024-04-02 14:27
  */
 
 #include "precedence.hpp"
@@ -35,9 +35,9 @@ void PrecedenceParser::Parse()
 
     while (true) {
         this->inputToken = inputTape.front();
-        if (this->inputToken == nullptr) {
+        if (inputTape.empty() || this->inputToken == nullptr) {
             this->clearStack();
-            throw InternalError("Nullptr in inputTape.\n");
+            throw SyntaxError("Missing token(s).\n");
         }
 
         if (*this->inputToken == tFuncName) {
@@ -179,31 +179,24 @@ bool PrecedenceParser::parseIsSuccessful()
 
 void PrecedenceParser::insertExpressionEnd()
 {
-    int counter = 0;
-    // find first non-expression token occurence and insert tExpEnd before it
-    for (auto token = inputTape.begin(); token != inputTape.end(); token++) {
-        if (**token == tFuncName) {
-            this->skipFunctionCall(token);
-        }
+    auto token = inputTape.begin();
+    while (token != inputTape.end()) {
+        // skip operand
+        this->skipOperand(token);
 
-        if (**token == tSemi || **token == tComma || **token == tEnd) {
-            inputTape.insert(token, new Token(tExpEnd));
-            return;
+        // if the operand was the last one, insert expEnd behind
+        if (!this->isOperator(**token)) {
+            break;
         }
-
-        // insert tExpEnd before the first right parenthesis that is not matched with left parenthesis
-        if (**token == tLPar) {
-            counter++;
-        }
-        else if (**token == tRPar) {
-            counter--;
-        }
-
-        if (counter < 0) {
-            inputTape.insert(token, new Token(tExpEnd));
-            return;
-        }
+        // skip operator
+        token++;
     }
+
+    if (token == inputTape.end()) {
+        throw SyntaxError("Missing token(s).\n");
+    }
+
+    inputTape.insert(token, new Token(tExpEnd));
 }
 
 void PrecedenceParser::clearStack()
@@ -305,9 +298,40 @@ void PrecedenceParser::initPrecedenceParsing()
     this->insertExpressionEnd();
 }
 
+void PrecedenceParser::skipOperand(InputTape::iterator& token)
+{
+    // skip unary operators
+    while (**token == tUnMinus || **token == tExcl) {
+        token++;
+        if (token == inputTape.end()) {
+            throw SyntaxError("Missing token(s).\n");
+        }
+    }
+
+    if (**token == tLPar) {
+        this->skipOperandInParentheses(token);
+        return;
+    }
+
+    if (**token == tFuncName) {
+        this->skipFunctionCall(token);
+        return;
+    }
+
+    if (**token != tConst && **token != tVariable) {
+        throw SyntaxError("Invalid token.\n");
+    }
+
+    token++;
+    if (token == inputTape.end()) {
+        throw SyntaxError("Missing token(s).\n");
+    }
+}
+
 void PrecedenceParser::skipFunctionCall(InputTape::iterator& token)
 {
     int counter = 0;
+
     for (token++; (token != inputTape.end() && **token != tExpEnd); token++) {
         if (**token == tLPar) {
             counter++;
@@ -322,7 +346,39 @@ void PrecedenceParser::skipFunctionCall(InputTape::iterator& token)
         }
     }
 
-    if (**token == tExpEnd) {
+    if (token == inputTape.end() || **token == tExpEnd) {
         throw SyntaxError("Invalid token.\n");
     }
+}
+
+void PrecedenceParser::skipOperandInParentheses(InputTape::iterator& token)
+{
+    int counter = 0;
+    while (token != inputTape.end()) {
+        if (**token == tLPar) {
+            counter++;
+        }
+        else if (**token == tRPar) {
+            counter--;
+        }
+
+        if (counter == 0) {
+            break;
+        }
+
+        token++;
+    }
+
+    token++;
+    if (token == inputTape.end()) {
+        throw SyntaxError("Missing token(s).\n");
+    }
+}
+
+bool PrecedenceParser::isOperator(Token& token)
+{
+    return (token == tPlus || token == tMinus || token == tMul || token == tDiv || token == tConcat ||
+            token == tAnd || token == tOr ||
+            token == tEq || token == tNEq || token == tLess || token == tGreater || token == tLEq || token == tGEq ||
+            token == tAssign);
 }
