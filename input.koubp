@@ -1,2 +1,1 @@
-int number = convert_int(readline())
-print("result is:" + convert_string(factorial(number)));
+print("Input any string that you'll like");

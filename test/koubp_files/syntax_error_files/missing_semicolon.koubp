@@ -1,4 +1,3 @@
-
 int base = 3;
 int exponent = 8;
 int result = 1;
