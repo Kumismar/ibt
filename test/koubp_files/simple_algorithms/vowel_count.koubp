@@ -1,11 +1,11 @@
-// print("Enter a string to count the number of vowels:\n");
-// string input_str = readline();
-// int vowel_count = 0;
-// int length = length(input_str);
-for (1; 1; 1) {
-    // string ch = substring(input_str, i, 1);
+print("Enter a string to count the number of vowels:\n");
+string input_str = readline();
+int vowel_count = 0;
+int length = length(input_str);
+for (int i = 0; i < length; i = i + 1) {
+    string ch = substring(input_str, i, 1);
     if (ch == "a" || ch == "e" || ch == "i" || ch == "o" || ch == "u") {
-        // vowel_count = vowel_count + 1;
+        vowel_count = vowel_count + 1;
     }
 }
-// print("The number of vowels in the string is: " + convert_string(vowel_count));
+print("The number of vowels in the string is: " + convert_string(vowel_count));

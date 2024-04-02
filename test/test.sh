@@ -11,15 +11,13 @@ reset="\e[0m"
 bold="\e[1m"
 yellow="\e[33m"
 current_dir="$(dirname $0)"
-echo -e "${bold}Current directory: $current_dir${reset}"
-
 executable="../build/src/Parser"
 
 counter_successful=0
 counter_failed=0
 
 for subdirectory in "$current_dir"/koubp_files/*/; do
-    echo -e "${bold}Processing files in directory: $subdirectory${reset}"
+    echo -e "${bold}Processing files in directory: $(basename $subdirectory)${reset}"
 
     for input_file in "$subdirectory"*.koubp; do
         echo -e "${yellow}Processing $input_file${reset}"
