@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-02 13:08
+ * @ Modified time: 2024-04-02 22:48
  */
 
 #include "analysis_success.hpp"
@@ -92,7 +92,6 @@ std::string ProcessArguments(int argc, char** argv)
 
     return filename;
 }
-
 
 int main(int argc, char** argv)
 {

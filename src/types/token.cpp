@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-02 17:51
+ * @ Modified time: 2024-04-02 23:04
  */
 
 #include "token.hpp"
@@ -193,6 +193,8 @@ std::string Token::GetTypeString() const
             return "EOE";
         case tFuncConst:
             return "funcConst";
+        case tFuncEnd:
+            return "funcEnd";
         default:
             throw InternalError("Unknown token type in Token::GetTypeString()\n");
     }

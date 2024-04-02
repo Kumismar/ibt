@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-02 12:25
+ * @ Modified time: 2024-04-02 22:45
  */
 
 #include "logger.hpp"
@@ -97,6 +97,10 @@ void Logger::PrintTokens()
 
 void Logger::AddTokenToRecents(Token& token)
 {
+    if (token == tFuncConst) {
+        return;
+    }
+
     this->recentTokens.push_front(token.Clone());
     if (this->recentTokens.size() > 10) {
         delete this->recentTokens.back();
