@@ -29,18 +29,19 @@ for subdirectory in "$current_dir"/koubp_files/*/; do
         if [ -f "$rc_file" ]; then
             expected_return_code=$(cat "$rc_file")
 
-            $current_dir/$executable $input_file
+            $current_dir/$executable -f $input_file > /dev/null
             return_code=$?
 
             if [ "$return_code" -eq "$expected_return_code" ]; then
                 ((counter_successful++))
-                echo -e "${green}Test $base_name passed${reset}"
+                echo -e "${green}Test $base_name passed${reset}\n"
             else
                 ((counter_failed++))
-                echo -e "${red}Test $base_name failed${reset}"
+                echo -e "${red}Test $base_name failed${reset}\n"
             fi
         else
-            echo -e "${red}Error: RC file not found for $base_name${reset}"
+            echo -e "${red}Error: RC file not found for $base_name${reset}\n"
+            ((counter_failed++))
         fi
     done
 done

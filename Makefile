@@ -4,7 +4,7 @@ all:
 
 run:
 	@[ -f build/src/Parser ] || echo "executable not build yet; 'make' first"
-	@./build/src/Parser input.koubp
+	@./build/src/Parser -f input.koubp
 
 runtest:
 	@[ -f build/test/ParserTest ] || echo "executable not built yet; 'make' first"
@@ -13,7 +13,7 @@ runtest:
 
 valgrind:
 	@[ -f build/src/Parser ] || echo "executable not built yet; 'make' first"
-	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=valgrind.log ./build/src/Parser
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=valgrind.log ./build/src/Parser -f input.koubp
 
 thesis:
 	@cd doc/thesis && make
