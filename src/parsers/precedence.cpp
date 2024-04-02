@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-02 22:41
+ * @ Modified time: 2024-04-02 23:13
  */
 
 #include "precedence.hpp"
@@ -230,13 +230,13 @@ void PrecedenceParser::insertFunctionEnd()
 
 void PrecedenceParser::reduce()
 {
+    Logger* logger = Logger::GetInstance();
+    Grammar4* grammar = new Grammar4();
     Rule tmpRule;
     this->findFirstRule(tmpRule);
-    Grammar4* grammar = new Grammar4();
+
     if (grammar->IsRule(tmpRule)) {
-        this->logger = Logger::GetInstance();
-        tmpRule.reverse(); // For logging purpose only, the rest of grammars work with reversed string
-        this->logger->AddRightSide(tmpRule);
+        logger->AddRightSide(tmpRule);
 
         for (unsigned i = 0; i < tmpRule.size() + 1 /* Pop rule and '<' */; i++) {
             delete this->analysisPushdown.front();
@@ -245,13 +245,13 @@ void PrecedenceParser::reduce()
         Nonterminal* toPush = new Nonterminal(nExpression);
         this->analysisPushdown.push_front(toPush);
 
-        this->logger->AddLeftSide(toPush);
-        this->logger->PrintRule();
+        logger->AddLeftSide(toPush);
+        logger->PrintRule();
+
         for (Symbol* item: tmpRule) {
             delete item;
         }
         delete grammar;
-        return;
     }
     else {
         this->clearStack();
