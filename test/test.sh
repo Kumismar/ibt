@@ -5,38 +5,45 @@
 
 #!/bin/bash
 
-red="\033[0;31m"
-green="\033[0;32m"
-no_color="\033[0m"
+red="\e[31m"
+green="\e[32m"
+reset="\e[0m"
+bold="\e[1m"
+yellow="\e[33m"
 current_dir="$(dirname $0)"
+echo -e "${bold}Current directory: $current_dir${reset}"
 
 executable="../build/src/Parser"
 
 counter_successful=0
 counter_failed=0
 
-for input_file in "$current_dir"/koubp_files/*.koubp; do
-    echo "Processing $input_file"
-    base_name=$(basename "$input_file" .koubp)
-    rc_file="$current_dir/koubp_files/$base_name.koubp.rc"
+for subdirectory in "$current_dir"/koubp_files/*/; do
+    echo -e "${bold}Processing files in directory: $subdirectory${reset}"
 
-    if [ -f "$rc_file" ]; then
-        expected_return_code=$(cat "$rc_file")
+    for input_file in "$subdirectory"*.koubp; do
+        echo -e "${yellow}Processing $input_file${reset}"
+        base_name=$(basename "$input_file" .koubp)
+        rc_file="$subdirectory/$base_name.koubp.rc"
 
-        $current_dir/$executable "$input_file"
-        return_code=$?
+        if [ -f "$rc_file" ]; then
+            expected_return_code=$(cat "$rc_file")
 
-        if [ "$return_code" -eq "$expected_return_code" ]; then
-            ((counter_successful++))
-            echo -e "${green}Test $base_name passed${no_color}"
+            $current_dir/$executable $input_file
+            return_code=$?
+
+            if [ "$return_code" -eq "$expected_return_code" ]; then
+                ((counter_successful++))
+                echo -e "${green}Test $base_name passed${reset}"
+            else
+                ((counter_failed++))
+                echo -e "${red}Test $base_name failed${reset}"
+            fi
         else
-            ((counter_failed++))
-            echo -e "${red}Test $base_name failed${no_color}"
+            echo -e "${red}Error: RC file not found for $base_name${reset}"
         fi
-    else
-        echo -e "${red}Error: RC file not found for $base_name${no_color}"
-    fi
+    done
 done
 
-echo -e "${green}Tests passed: $counter_successful${no_color}"
-echo -e "${red}Tests failed: $counter_failed${no_color}"
+echo -e "${green}Tests passed: $counter_successful${reset}"
+echo -e "${red}Tests failed: $counter_failed${reset}"

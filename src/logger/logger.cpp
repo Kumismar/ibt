@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-03-31 10:31
+ * @ Modified time: 2024-04-02 12:25
  */
 
 #include "logger.hpp"
@@ -33,14 +33,17 @@ Logger::~Logger()
 
 void Logger::Cleanup()
 {
-    for (const Token* token: Logger::instance->recentTokens) {
-        delete token;
+    if (Logger::instance == nullptr) {
+        return;
     }
-    Logger::instance->recentTokens.clear();
 
-    if (Logger::instance != nullptr) {
-        delete Logger::instance;
+    if (!Logger::instance->recentTokens.empty()) {
+        for (const Token* token: Logger::instance->recentTokens) {
+            delete token;
+        }
+        Logger::instance->recentTokens.clear();
     }
+    delete Logger::instance;
 }
 
 Logger* Logger::GetInstance()
@@ -75,6 +78,10 @@ void Logger::PrintRule()
 
 void Logger::PrintTokens()
 {
+    if (!this->enableDebugPrint) {
+        return;
+    }
+
     size_t maxTypeLength = 0;
     for (const auto& token: inputTape) {
         maxTypeLength = std::max(maxTypeLength, token->GetTypeString().size());
@@ -133,6 +140,26 @@ void Logger::PrintSyntaxError(const char* message)
     std::cerr << red << "^" << reset << std::endl;
 }
 
+void Logger::PrintLexicalError(const char* message)
+{
+    std::string red = "\033[1;31m";
+    std::string reset = "\033[0m";
+    std::cerr << red << "Lexical error " << reset << message;
+}
+
+void Logger::PrintUsageError(const char* message)
+{
+    std::string boldRed = "\033[1;31m";
+    std::string reset = "\033[0m";
+    std::string underlined = "\033[4m";
+    std::string bold = "\033[1m";
+
+    std::cerr << boldRed << "Usage error: " << reset << message
+              << "Usage: build/src/Parser " << underlined << "[-d]" << reset << " "
+              << underlined << "-f" << reset << " " << underlined << "<filename>\n"
+              << reset;
+}
+
 void Logger::clearRule()
 {
     delete this->leftSideRule;
@@ -141,4 +168,9 @@ void Logger::clearRule()
         delete item;
     }
     this->rightSideRule.clear();
+}
+
+void Logger::EnableDebugPrint()
+{
+    this->enableDebugPrint = true;
 }

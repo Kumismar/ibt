@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-03-30 21:00
+ * @ Modified time: 2024-04-02 12:08
  */
 
 #pragma once
@@ -20,6 +20,7 @@ private:
     std::ofstream file;
     Symbol* leftSideRule;
     Rule rightSideRule;
+    bool enableDebugPrint = false;
     Logger();
     ~Logger();
 
@@ -35,4 +36,7 @@ public:
     void PrintTokens();
     void AddTokenToRecents(Token& token);
     void PrintSyntaxError(const char* message);
+    void PrintLexicalError(const char* message);
+    void PrintUsageError(const char* message);
+    void EnableDebugPrint();
 };
