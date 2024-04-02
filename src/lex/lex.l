@@ -22,41 +22,41 @@
 
 \n              { yylineno++; }
 [ \t]           { /* ignore whitespace */ }
-"if"            { Token::AddToken(tIf, String); }
-"while"         { Token::AddToken(tWhile, String); }
-"for"           { Token::AddToken(tFor, String); }
-"return"        { Token::AddToken(tReturn, String); }
-";"             { Token::AddToken(tSemi, String); }
-"elseif"        { Token::AddToken(tElseif, String); }
-"else"          { Token::AddToken(tElse, String); }
-"("             { Token::AddToken(tLPar, String); }
-")"             { Token::AddToken(tRPar, String); }
-"{"             { Token::AddToken(tLCurl, String); }
-"}"             { Token::AddToken(tRCurl, String); }
-"+"             { Token::AddToken(tPlus, String); }
-"*"             { Token::AddToken(tMul, String); }
-"/"             { Token::AddToken(tDiv, String); }
-"=="            { Token::AddToken(tEq, String); }
-"!="            { Token::AddToken(tNEq, String); }
-"<"             { Token::AddToken(tLess, String); }
-"<="            { Token::AddToken(tLEq, String); }
-">"             { Token::AddToken(tGreater, String); }
-">="            { Token::AddToken(tGEq, String); }
-"="             { Token::AddToken(tAssign, String); }
-"&&"            { Token::AddToken(tAnd, String); }
-"||"            { Token::AddToken(tOr, String); }
-"!"             { Token::AddToken(tExcl, String); }
-","             { Token::AddToken(tComma, String); }
-":"             { Token::AddToken(tColon, String); }
-"."             { Token::AddToken(tConcat, String); }
-"function"      { Token::AddToken(tFunction, String); }
+"if"            { Token::AddToken(tIf, None); }
+"while"         { Token::AddToken(tWhile, None); }
+"for"           { Token::AddToken(tFor, None); }
+"return"        { Token::AddToken(tReturn, None); }
+";"             { Token::AddToken(tSemi, None); }
+"elseif"        { Token::AddToken(tElseif, None); }
+"else"          { Token::AddToken(tElse, None); }
+"("             { Token::AddToken(tLPar, None); }
+")"             { Token::AddToken(tRPar, None); }
+"{"             { Token::AddToken(tLCurl, None); }
+"}"             { Token::AddToken(tRCurl, None); }
+"+"             { Token::AddToken(tPlus, None); }
+"*"             { Token::AddToken(tMul, None); }
+"/"             { Token::AddToken(tDiv, None); }
+"=="            { Token::AddToken(tEq, None); }
+"!="            { Token::AddToken(tNEq, None); }
+"<"             { Token::AddToken(tLess, None); }
+"<="            { Token::AddToken(tLEq, None); }
+">"             { Token::AddToken(tGreater, None); }
+">="            { Token::AddToken(tGEq, None); }
+"="             { Token::AddToken(tAssign, None); }
+"&&"            { Token::AddToken(tAnd, None); }
+"||"            { Token::AddToken(tOr, None); }
+"!"             { Token::AddToken(tExcl, None); }
+","             { Token::AddToken(tComma, None); }
+":"             { Token::AddToken(tColon, None); }
+"."             { Token::AddToken(tConcat, None); }
+"function"      { Token::AddToken(tFunction, None); }
 [0-9]+          { Token::AddToken(tConst, Int); }
 [0-9]+"."[0-9]+ { Token::AddToken(tConst, Float); }
 "true"|"false"  { Token::AddToken(tConst, Bool); }
-"int"           { Token::AddToken(tInt, String); }
-"float"         { Token::AddToken(tFloat, String); }
-"bool"          { Token::AddToken(tBool, String); }
-"string"        { Token::AddToken(tString, String); }
+"int"           { Token::AddToken(tInt, None); }
+"float"         { Token::AddToken(tFloat, None); }
+"bool"          { Token::AddToken(tBool, None); }
+"string"        { Token::AddToken(tString, None); }
 \"(\\.|[^\\"])*\" { Token::AddToken(tConst, String); }
 
 [a-zA-Z_][a-zA-Z0-9_]* { 
@@ -73,9 +73,9 @@
 
 "-" { 
     if (previousToken == tVariable || previousToken == tConst || previousToken == tRPar)
-        Token::AddToken(tMinus, String); 
+        Token::AddToken(tMinus, None); 
     else
-        Token::AddToken(tUnMinus, String);
+        Token::AddToken(tUnMinus, None);
 }
 
 "//" {

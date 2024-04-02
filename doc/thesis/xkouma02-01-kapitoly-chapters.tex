@@ -216,9 +216,10 @@ Než bude definován samotný jazyk, je vhodné definovat pomocnou množinu, kte
 \begin{definition}\label{def_generovany_jazyk}
     Nechť $\Gamma = (N, T, S, P_1, \ldots, P_n)$. \\  
     Jazyk generovaný systémem $\Gamma$ za derivačního režimu $f$ je 
-    \begin{center}
-         $L_f(\Gamma) = \{ w \in T^*:$ existují $v_0, v_1,\ldots, v_m$ takové, že $v_k \in F(G_{j_{k}},$ $v_{k-1}, f),$\\$k \in \{1, \ldots, m\},$ $j_k \in \{1, \ldots, n\},$ $v_0 = S,$ $v_m = w$ pro $m \geq 1\}$.  
-    \end{center}        
+    \begin{align*}
+         L_f(\Gamma) = \{&w \in T^*: \text{ existují } v_0, v_1,\ldots, v_m \text{ takové, že } v_k \in F(G_{j_{k}},v_{k-1}, f),\\
+         &k \in \{1, \ldots, m\},\;j_k \in \{1, \ldots, n\},\;v_0 = S,\;v_m = w \text{ pro } m \geq 1\}.
+    \end{align*}        
 \end{definition} 
 
 Výsledný řetězec $w$, který vznikl postupnou derivací startovacího symbolu $v_0$.
@@ -318,7 +319,7 @@ kde:
     \item $X$ určuje determinismus gramatického systému:
     \begin{itemize}[label=$\circ$]
         \item $D$\,--\,gramatický systém je deterministický, tedy pro každé $A \rightarrow u, A \rightarrow w \in P_i$, $i \in \{1, \ldots, n\}$ platí, že $u = w$.
-        Jinými slovy, pro všechny neterminály platí, že pro jejich přepis neexistují pravidla (ve \emph{všech} komponentách), která by měla různé pravé strany,
+        Jinými slovy, pro všechny neterminály platí, že pro jejich přepis neexistují pravidla (ve \emph{všech} komponentách), která by měla různé pravé strany.
         \item \emph{nic}\,--\,gramatický systém je nedeterministický.
         To znamená, že v \emph{každé} komponentě existuje pravidlo pro nějaký neterminál, které má různé pravé strany.
         \item $H$\,--\,gramatický systém je hybridní a~obsahuje alespoň jednu nedeterministickou komponentu a~jednu deterministickou komponentu.
@@ -406,7 +407,7 @@ Algoritmus ukazující princip komunikačního kroku je následující:
             \EndFor
         \EndIf
     \EndFor
-    \State proveď $(x_1, \ldots, x_n) \prescript{}{c}{\Rightarrow} (y_1, \ldots, y_n)$ s $y_i = z_i, i \in \{1, \ldots, n\}$ 
+    \State proveď $(x_1, \ldots, x_n) \prescript{}{c}{\Rightarrow} (y_1, \ldots, y_n)$ s $y_i = z_i,\;i \in \{1, \ldots, n\}$ 
 \end{algorithmic}
 \end{algorithm}
 
@@ -565,6 +566,15 @@ Ve druhém příkladu bude demonstrováno několik derivačních kroků a~bude s
 
 \chapter{Použití gramatických systémů pro popis jazyka Koubp}
 
+
+\todo{základní popis použitého GS, jak je spojený s CDGS a potažmo PCGS}
+
+\todo{popsat možný deadlock mezi neterminály codeblock a statement}
+
+\todo{indexace neterminálů}
+
+\todo{ll tabulka, která obsahuje uspořádané dvojice}
+
 \chapter{Implementace syntaktického analyzátoru pro jazyk Koubp \todo{rozdelit jinak sekce? co pripadne z~implementace doplnit?}}\label{7_implementace}
 
 \todo{uvod do teto kapitoly - navod na pouziti a build system?}
@@ -608,13 +618,11 @@ Soubory se zdrojovým kódem nelze slučovat a~vytvářet tak jediný modul, kte
 \todo{tady si nejsem uplne jisty - gramaticky system bych dal urcite do prilohy, ale rad bych zminil princip indexace + jak to vypada v~ll tabulce a implementacne vyreseny deadlock.}
 \subsection*{Indexace neterminálů a význam pro implementaci} 
 
-\subsection*{Deadlock mezi neterminály statement a codeBlock}
-
 \section{Návrh řešení syntaktického analyzátoru}
 Implementace syntaktické analýzy je silně objektově orientována, veškeré datové struktury jsou reprezentovány třídami.
-Třídy reprezentující neterminály a~terminály mají společnou nadtřídu, díky čemuž je možné je ukládat do jednoho zásobníku.
-Podobně je to i~s~jednotlivými analyzátory, a proto je možné implementovat předávání řízení pomocí výjimek bez nutnosti neustálého vzájemného volání při analýze volání funkcí.
+Třídy reprezentující neterminály a~terminály mají společnou nadtřídu, díky čemuž je možné je ukládat do jednoho zásobníku za pomoci šablon.
 Jednu nadtřídu mají také gramatiky, jednotlivé instance jsou poté konstruovány pomocí tovární metody.
+Analyzátory jsou také reprezentovány třídami, společnou nadtřídu ale nemají.
 
 \subsection*{Práce s~gramatikami}
 Gramatiky jsou rozděleny tak, aby každá z~nich tvořila ucelenou část jazyka Koubp.
@@ -628,16 +636,14 @@ Důvod je zvolený postup prediktivní analýzy volání funkcí\,--\,o~samotné
 \end{figure}
 
 \subsection*{Předávání řízení prediktivní a precedenční analýzy}
-V~programu je implementován systém výjimek, pro potřeby této podkapitoly je třeba znát výjimku (třídu) \texttt{ChangeParser}.
-Třída \texttt{Parser} deklaruje čistě virtuální metodu \texttt{Parse()}, která je přepsána oběma analyzátory.
-Kdykoliv se chytí výjimka \texttt{ChangeParser}, do ukazatele na třídu \texttt{Parser} se uloží adresa správného analyzátoru.
+Při nutnosti předání řízení druhému analyzátoru je na místě vytvořena nová instance a~okamžité zavolání metody \texttt{Parse()}.
+
 
 \begin{figure}
     \caption{\todo{tady bude vytazek z~kodu pro prepinani analyzatoru.}}
     \label{fig_schema_zmeny_parseru}
 \end{figure}
 
-V~programu je několik podnětů, které tuto výjimku vyvolají.
 Jedním z~nich je neterminál \texttt{Expression} na vrcholu zásobníku pro prediktivní analýzu.
 V~tomto případě je zřejmé, že musí být předáno řízení precedenční analýze, aby mohla být provedena analýza výrazu.
 Pokud precedenční analýza narazí na token \texttt{tFuncName}, reprezentující počátek volání funkce, musí opět předat řízení zpět prediktivní analýze.
@@ -653,7 +659,8 @@ Pokud precedenční analýza narazí na token \texttt{tFuncName}, reprezentujíc
 Pro usnadnění práce byl lexikální analyzátor automaticky vygenerován nástrojem \emph{Flex}\footnote{Manuál k~programu k~dispozici na \href{https://westes.github.io/flex/manual/}{https://westes.github.io/flex/manual/}.} ze souboru s~lexémy popsanými regulárními výrazy.
 S~každým úspěšně analyzovaným lexémem následuje vložení tokenu do vstupní pásky pro syntaktickou analýzu.
 Znamená to tedy, že se nejdříve v~celém zdrojovém souboru ověří lexikální správnost, až poté správnost syntaktická. 
-Při konstrukci tokenu se inicializuje i~jeho datová část.
+Při konstrukci tokenu se inicializuje i~jeho datová část, do kterého patří datový typ a~samotná data.
+Data jsou inicializována i~pro tokeny, které žádná data v~programu nereprezentují\,--\, 
 
 \section{Abstraktní syntaktický strom}
 

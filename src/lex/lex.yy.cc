@@ -817,142 +817,142 @@ YY_RULE_SETUP
 case 3:
 YY_RULE_SETUP
 #line 25 "lex.l"
-{ Token::AddToken(tIf, String); }
+{ Token::AddToken(tIf, None); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 26 "lex.l"
-{ Token::AddToken(tWhile, String); }
+{ Token::AddToken(tWhile, None); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 27 "lex.l"
-{ Token::AddToken(tFor, String); }
+{ Token::AddToken(tFor, None); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 28 "lex.l"
-{ Token::AddToken(tReturn, String); }
+{ Token::AddToken(tReturn, None); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 29 "lex.l"
-{ Token::AddToken(tSemi, String); }
+{ Token::AddToken(tSemi, None); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 30 "lex.l"
-{ Token::AddToken(tElseif, String); }
+{ Token::AddToken(tElseif, None); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 31 "lex.l"
-{ Token::AddToken(tElse, String); }
+{ Token::AddToken(tElse, None); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 32 "lex.l"
-{ Token::AddToken(tLPar, String); }
+{ Token::AddToken(tLPar, None); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 33 "lex.l"
-{ Token::AddToken(tRPar, String); }
+{ Token::AddToken(tRPar, None); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 34 "lex.l"
-{ Token::AddToken(tLCurl, String); }
+{ Token::AddToken(tLCurl, None); }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 35 "lex.l"
-{ Token::AddToken(tRCurl, String); }
+{ Token::AddToken(tRCurl, None); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 36 "lex.l"
-{ Token::AddToken(tPlus, String); }
+{ Token::AddToken(tPlus, None); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 37 "lex.l"
-{ Token::AddToken(tMul, String); }
+{ Token::AddToken(tMul, None); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 38 "lex.l"
-{ Token::AddToken(tDiv, String); }
+{ Token::AddToken(tDiv, None); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 39 "lex.l"
-{ Token::AddToken(tEq, String); }
+{ Token::AddToken(tEq, None); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 40 "lex.l"
-{ Token::AddToken(tNEq, String); }
+{ Token::AddToken(tNEq, None); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 41 "lex.l"
-{ Token::AddToken(tLess, String); }
+{ Token::AddToken(tLess, None); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 42 "lex.l"
-{ Token::AddToken(tLEq, String); }
+{ Token::AddToken(tLEq, None); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 43 "lex.l"
-{ Token::AddToken(tGreater, String); }
+{ Token::AddToken(tGreater, None); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 44 "lex.l"
-{ Token::AddToken(tGEq, String); }
+{ Token::AddToken(tGEq, None); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 45 "lex.l"
-{ Token::AddToken(tAssign, String); }
+{ Token::AddToken(tAssign, None); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 46 "lex.l"
-{ Token::AddToken(tAnd, String); }
+{ Token::AddToken(tAnd, None); }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 47 "lex.l"
-{ Token::AddToken(tOr, String); }
+{ Token::AddToken(tOr, None); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 48 "lex.l"
-{ Token::AddToken(tExcl, String); }
+{ Token::AddToken(tExcl, None); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 49 "lex.l"
-{ Token::AddToken(tComma, String); }
+{ Token::AddToken(tComma, None); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 50 "lex.l"
-{ Token::AddToken(tColon, String); }
+{ Token::AddToken(tColon, None); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 51 "lex.l"
-{ Token::AddToken(tConcat, String); }
+{ Token::AddToken(tConcat, None); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 52 "lex.l"
-{ Token::AddToken(tFunction, String); }
+{ Token::AddToken(tFunction, None); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
@@ -972,22 +972,22 @@ YY_RULE_SETUP
 case 34:
 YY_RULE_SETUP
 #line 56 "lex.l"
-{ Token::AddToken(tInt, String); }
+{ Token::AddToken(tInt, None); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 57 "lex.l"
-{ Token::AddToken(tFloat, String); }
+{ Token::AddToken(tFloat, None); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 58 "lex.l"
-{ Token::AddToken(tBool, String); }
+{ Token::AddToken(tBool, None); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
 #line 59 "lex.l"
-{ Token::AddToken(tString, String); }
+{ Token::AddToken(tString, None); }
 	YY_BREAK
 case 38:
 /* rule 38 can match eol */
@@ -1015,9 +1015,9 @@ YY_RULE_SETUP
 #line 74 "lex.l"
 { 
     if (previousToken == tVariable || previousToken == tConst || previousToken == tRPar)
-        Token::AddToken(tMinus, String); 
+        Token::AddToken(tMinus, None); 
     else
-        Token::AddToken(tUnMinus, String);
+        Token::AddToken(tUnMinus, None);
 }
 	YY_BREAK
 case 41:

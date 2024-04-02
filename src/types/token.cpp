@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-03-30 21:53
+ * @ Modified time: 2024-04-02 17:51
  */
 
 #include "token.hpp"
@@ -190,9 +190,9 @@ std::string Token::GetTypeString() const
         case tEnd:
             return "EOF";
         case tExpEnd:
-            return "end of expression";
+            return "EOE";
         case tFuncConst:
-            return "function constant";
+            return "funcConst";
         default:
             throw InternalError("Unknown token type in Token::GetTypeString()\n");
     }
@@ -210,7 +210,7 @@ std::string Token::GetDataString() const
         case Bool:
             return this->data.value.boolVal ? "true" : "false";
         case None:
-            return "";
+            return this->GetTypeString();
         default:
             throw InternalError("Unknown data type in Token::GetDataString()\n");
     }
