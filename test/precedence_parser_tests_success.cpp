@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-02 14:54
- * @ Modified time: 2024-04-02 12:49
+ * @ Modified time: 2024-04-03 17:32
  */
 
 #include <gtest/gtest.h>
@@ -11,7 +11,7 @@
 #include "precedence.hpp"
 #include "token.hpp"
 
-class PrecedenceParserTest : public ::testing::Test
+class PrecedenceParserTestSuccess : public ::testing::Test
 {
 protected:
     AnalysisStack stack;
@@ -33,58 +33,51 @@ protected:
     }
 };
 
-TEST_F(PrecedenceParserTest, SingleVariable)
-{
-    inputTape = { new Token(tVariable), new Token(tExpEnd) };
-    EXPECT_NO_THROW(this->parser->Parse());
-    EXPECT_TRUE(this->stack.empty());
-}
-
-TEST_F(PrecedenceParserTest, SimpleAssign)
+TEST_F(PrecedenceParserTestSuccess, SimpleAssign)
 {
     inputTape = { new Token(tVariable), new Token(tAssign), new Token(tConst), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
     EXPECT_TRUE(this->stack.empty());
 }
 
-TEST_F(PrecedenceParserTest, PlusOperator)
+TEST_F(PrecedenceParserTestSuccess, PlusOperator)
 {
     inputTape = { new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, MinusOperator)
+TEST_F(PrecedenceParserTestSuccess, MinusOperator)
 {
     inputTape = { new Token(tVariable), new Token(tMinus), new Token(tVariable), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, MulOperator)
+TEST_F(PrecedenceParserTestSuccess, MulOperator)
 {
     inputTape = { new Token(tVariable), new Token(tMul), new Token(tVariable), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, DivOperator)
+TEST_F(PrecedenceParserTestSuccess, DivOperator)
 {
     inputTape = { new Token(tVariable), new Token(tDiv), new Token(tVariable), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, ConcatOperator)
+TEST_F(PrecedenceParserTestSuccess, ConcatOperator)
 {
     inputTape = { new Token(tVariable), new Token(tConcat), new Token(tVariable), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, AndOperator)
+TEST_F(PrecedenceParserTestSuccess, AndOperator)
 {
     // a && b
     inputTape = { new Token(tVariable), new Token(tAnd), new Token(tVariable), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, OrOperator)
+TEST_F(PrecedenceParserTestSuccess, OrOperator)
 {
     // a || b
     inputTape = { new Token(tVariable), new Token(tOr), new Token(tVariable), new Token(tExpEnd) };
@@ -92,49 +85,49 @@ TEST_F(PrecedenceParserTest, OrOperator)
 }
 
 
-TEST_F(PrecedenceParserTest, NotOperator)
+TEST_F(PrecedenceParserTestSuccess, NotOperator)
 {
     // !a
     inputTape = { new Token(tExcl), new Token(tVariable), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, UnaryMinusOperator)
+TEST_F(PrecedenceParserTestSuccess, UnaryMinusOperator)
 {
     // -a
     inputTape = { new Token(tUnMinus), new Token(tVariable), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, AddMulCombination)
+TEST_F(PrecedenceParserTestSuccess, AddMulCombination)
 {
     // a + b * c
     inputTape = { new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tMul), new Token(tVariable), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, SubDivCombination)
+TEST_F(PrecedenceParserTestSuccess, SubDivCombination)
 {
     // a - b / c
     inputTape = { new Token(tVariable), new Token(tMinus), new Token(tVariable), new Token(tDiv), new Token(tVariable), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, MulAddCombination)
+TEST_F(PrecedenceParserTestSuccess, MulAddCombination)
 {
     // a * b + c
     inputTape = { new Token(tVariable), new Token(tMul), new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, DivSubCombination)
+TEST_F(PrecedenceParserTestSuccess, DivSubCombination)
 {
     // a / b - c
     inputTape = { new Token(tVariable), new Token(tDiv), new Token(tVariable), new Token(tMinus), new Token(tVariable), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, MulDivCombination)
+TEST_F(PrecedenceParserTestSuccess, MulDivCombination)
 {
     // a * b / c
     inputTape = { new Token(tVariable), new Token(tMul), new Token(tVariable), new Token(tDiv), new Token(tVariable), new Token(tExpEnd) };
@@ -142,42 +135,42 @@ TEST_F(PrecedenceParserTest, MulDivCombination)
 }
 
 
-TEST_F(PrecedenceParserTest, VarInParentheses)
+TEST_F(PrecedenceParserTestSuccess, VarInParentheses)
 {
     // (a)
     inputTape = { new Token(tLPar), new Token(tVariable), new Token(tRPar), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, AddInParentheses)
+TEST_F(PrecedenceParserTestSuccess, AddInParentheses)
 {
     // (a + b)
     inputTape = { new Token(tLPar), new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tRPar), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, SubInParentheses)
+TEST_F(PrecedenceParserTestSuccess, SubInParentheses)
 {
     // (a - b)
     inputTape = { new Token(tLPar), new Token(tVariable), new Token(tMinus), new Token(tConst), new Token(tRPar), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, MulInParentheses)
+TEST_F(PrecedenceParserTestSuccess, MulInParentheses)
 {
     // (a * b)
     inputTape = { new Token(tLPar), new Token(tVariable), new Token(tMul), new Token(tVariable), new Token(tRPar), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, DivInParentheses)
+TEST_F(PrecedenceParserTestSuccess, DivInParentheses)
 {
     // (a / b)
     inputTape = { new Token(tLPar), new Token(tVariable), new Token(tDiv), new Token(tVariable), new Token(tRPar), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, ConcatInParentheses)
+TEST_F(PrecedenceParserTestSuccess, ConcatInParentheses)
 {
     // (a . b)
     inputTape = { new Token(tLPar), new Token(tVariable), new Token(tConcat), new Token(tConst), new Token(tRPar), new Token(tExpEnd) };
@@ -185,7 +178,7 @@ TEST_F(PrecedenceParserTest, ConcatInParentheses)
 }
 
 
-TEST_F(PrecedenceParserTest, NestedParentheses1)
+TEST_F(PrecedenceParserTestSuccess, NestedParentheses1)
 {
     // (a + (b * c))
     inputTape = {
@@ -197,7 +190,7 @@ TEST_F(PrecedenceParserTest, NestedParentheses1)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, NestedParentheses2)
+TEST_F(PrecedenceParserTestSuccess, NestedParentheses2)
 {
     // (a + (b * c) + d)
     inputTape = {
@@ -209,7 +202,7 @@ TEST_F(PrecedenceParserTest, NestedParentheses2)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, NestedParentheses3)
+TEST_F(PrecedenceParserTestSuccess, NestedParentheses3)
 {
     // (a + (b * (c + (d * e) + f) + g) + h)
     inputTape = {
@@ -226,7 +219,7 @@ TEST_F(PrecedenceParserTest, NestedParentheses3)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, NestedParentheses4)
+TEST_F(PrecedenceParserTestSuccess, NestedParentheses4)
 {
     // ((((a + b)) * d) + (c * e))
     inputTape = {
@@ -242,7 +235,7 @@ TEST_F(PrecedenceParserTest, NestedParentheses4)
 }
 
 
-TEST_F(PrecedenceParserTest, ParenthesesAndUnary1)
+TEST_F(PrecedenceParserTestSuccess, ParenthesesAndUnary1)
 {
     // (a + (-b))
     inputTape = {
@@ -253,7 +246,7 @@ TEST_F(PrecedenceParserTest, ParenthesesAndUnary1)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, ParenthesesAndUnary2)
+TEST_F(PrecedenceParserTestSuccess, ParenthesesAndUnary2)
 {
     // (-(-a))
     inputTape = {
@@ -264,7 +257,7 @@ TEST_F(PrecedenceParserTest, ParenthesesAndUnary2)
 }
 
 
-TEST_F(PrecedenceParserTest, ParenthesesUnaryBinary1)
+TEST_F(PrecedenceParserTestSuccess, ParenthesesUnaryBinary1)
 {
     // (a + (-b) * c)
     inputTape = {
@@ -276,7 +269,7 @@ TEST_F(PrecedenceParserTest, ParenthesesUnaryBinary1)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, ParenthesesUnaryBinary2)
+TEST_F(PrecedenceParserTestSuccess, ParenthesesUnaryBinary2)
 {
     // (-(-a) + b * c)
     inputTape = {
@@ -287,7 +280,7 @@ TEST_F(PrecedenceParserTest, ParenthesesUnaryBinary2)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, ParenthesesUnaryBinary3)
+TEST_F(PrecedenceParserTestSuccess, ParenthesesUnaryBinary3)
 {
     // (a + (-b) * c + d)
     inputTape = {
@@ -300,7 +293,7 @@ TEST_F(PrecedenceParserTest, ParenthesesUnaryBinary3)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, ParenthesesUnaryBinary4)
+TEST_F(PrecedenceParserTestSuccess, ParenthesesUnaryBinary4)
 {
     // (-(-a) + b * c + d)
     inputTape = {
@@ -312,35 +305,35 @@ TEST_F(PrecedenceParserTest, ParenthesesUnaryBinary4)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, FunctionCallNoArgs)
+TEST_F(PrecedenceParserTestSuccess, FunctionCallNoArgs)
 {
     // f()
     inputTape = { new Token(tFuncName), new Token(tLPar), new Token(tRPar), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, FunctionCallOneArg)
+TEST_F(PrecedenceParserTestSuccess, FunctionCallOneArg)
 {
     // f(a)
     inputTape = { new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tRPar), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, FunctionCallTwoArgs)
+TEST_F(PrecedenceParserTestSuccess, FunctionCallTwoArgs)
 {
     // f(a, b)
     inputTape = { new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable), new Token(tRPar), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, FunctionCallThreeArgs)
+TEST_F(PrecedenceParserTestSuccess, FunctionCallThreeArgs)
 {
     // f(a, b, c)
     inputTape = { new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma), new Token(tVariable), new Token(tComma), new Token(tVariable), new Token(tRPar), new Token(tExpEnd) };
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, FunctionCallNested)
+TEST_F(PrecedenceParserTestSuccess, FunctionCallNested)
 {
     // f(a, g(b, c))
     inputTape = { new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tComma),
@@ -350,7 +343,7 @@ TEST_F(PrecedenceParserTest, FunctionCallNested)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, FunctionCallNested2)
+TEST_F(PrecedenceParserTestSuccess, FunctionCallNested2)
 {
     // f(g(a, b), c)
     inputTape = { new Token(tFuncName), new Token(tLPar),
@@ -361,7 +354,7 @@ TEST_F(PrecedenceParserTest, FunctionCallNested2)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, FunctionCallNested3)
+TEST_F(PrecedenceParserTestSuccess, FunctionCallNested3)
 {
     // f(g(a, b), h(c, d))
     inputTape = { new Token(tFuncName), new Token(tLPar),
@@ -373,7 +366,7 @@ TEST_F(PrecedenceParserTest, FunctionCallNested3)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, FunctionCallNested4)
+TEST_F(PrecedenceParserTestSuccess, FunctionCallNested4)
 {
     // f(g(a, h(b, c)), d)
     inputTape = { new Token(tFuncName), new Token(tLPar),
@@ -385,7 +378,7 @@ TEST_F(PrecedenceParserTest, FunctionCallNested4)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, FunctionCallNested5)
+TEST_F(PrecedenceParserTestSuccess, FunctionCallNested5)
 {
     // f(g(a, h(b, c)), i(d, e))
     inputTape = { new Token(tFuncName), new Token(tLPar),
@@ -399,7 +392,7 @@ TEST_F(PrecedenceParserTest, FunctionCallNested5)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, FunctionCallNested6)
+TEST_F(PrecedenceParserTestSuccess, FunctionCallNested6)
 {
     // f(g(a, h(b, c)), i(d, e, f))
     inputTape = { new Token(tFuncName), new Token(tLPar),
@@ -413,7 +406,7 @@ TEST_F(PrecedenceParserTest, FunctionCallNested6)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, ExpressionInFunctionCall)
+TEST_F(PrecedenceParserTestSuccess, ExpressionInFunctionCall)
 {
     // f(a + b, c * d)
     inputTape = { new Token(tFuncName), new Token(tLPar),
@@ -423,7 +416,7 @@ TEST_F(PrecedenceParserTest, ExpressionInFunctionCall)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, ExpressionInFunctionCall2)
+TEST_F(PrecedenceParserTestSuccess, ExpressionInFunctionCall2)
 {
     // f(a + b * c, d)
     inputTape = { new Token(tFuncName), new Token(tLPar),
@@ -433,7 +426,7 @@ TEST_F(PrecedenceParserTest, ExpressionInFunctionCall2)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, ExpressionInFunctionCall3)
+TEST_F(PrecedenceParserTestSuccess, ExpressionInFunctionCall3)
 {
     // f(a + b * c, d + e)
     inputTape = { new Token(tFuncName), new Token(tLPar),
@@ -443,7 +436,7 @@ TEST_F(PrecedenceParserTest, ExpressionInFunctionCall3)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, ExpressionInFunctionCall4)
+TEST_F(PrecedenceParserTestSuccess, ExpressionInFunctionCall4)
 {
     // f(a + b * c, d + e * f)
     inputTape = { new Token(tFuncName), new Token(tLPar),
@@ -453,7 +446,7 @@ TEST_F(PrecedenceParserTest, ExpressionInFunctionCall4)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, ExpressionInFunctionCall5)
+TEST_F(PrecedenceParserTestSuccess, ExpressionInFunctionCall5)
 {
     // f(a + b * c, d + e * f + g)
     inputTape = { new Token(tFuncName), new Token(tLPar),
@@ -463,7 +456,7 @@ TEST_F(PrecedenceParserTest, ExpressionInFunctionCall5)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, FunctionCallsInExpression)
+TEST_F(PrecedenceParserTestSuccess, FunctionCallsInExpression)
 {
     // a + f(b, c)
     inputTape = { new Token(tVariable), new Token(tPlus),
@@ -472,7 +465,7 @@ TEST_F(PrecedenceParserTest, FunctionCallsInExpression)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, FunctionCallsInExpression2)
+TEST_F(PrecedenceParserTestSuccess, FunctionCallsInExpression2)
 {
     // a + f(b, c) * d
     inputTape = { new Token(tVariable), new Token(tPlus),
@@ -481,7 +474,7 @@ TEST_F(PrecedenceParserTest, FunctionCallsInExpression2)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, FunctionCallsInExpression3)
+TEST_F(PrecedenceParserTestSuccess, FunctionCallsInExpression3)
 {
     // a + f(b, c) * d + e
     inputTape = { new Token(tVariable), new Token(tPlus),
@@ -491,7 +484,7 @@ TEST_F(PrecedenceParserTest, FunctionCallsInExpression3)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, FunctionCallsInExpression4)
+TEST_F(PrecedenceParserTestSuccess, FunctionCallsInExpression4)
 {
     // a + f(b, c) * d + e * f(g, h)
     inputTape = { new Token(tVariable), new Token(tPlus),
@@ -502,7 +495,7 @@ TEST_F(PrecedenceParserTest, FunctionCallsInExpression4)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, FunctionCallsInExpression5)
+TEST_F(PrecedenceParserTestSuccess, FunctionCallsInExpression5)
 {
     // a + f(b, c) * d + e * f(g, h) + i(j, k)
     inputTape = { new Token(tVariable), new Token(tPlus),
@@ -514,7 +507,7 @@ TEST_F(PrecedenceParserTest, FunctionCallsInExpression5)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, MixedFunctionCallsAndExpressions)
+TEST_F(PrecedenceParserTestSuccess, MixedFunctionCallsAndExpressions)
 {
     // f(a + b, c * d) + e * f(g, h) + i(j, k)
     inputTape = { new Token(tFuncName), new Token(tLPar),
@@ -528,7 +521,7 @@ TEST_F(PrecedenceParserTest, MixedFunctionCallsAndExpressions)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, NestedFunctionCallsAndExpressions)
+TEST_F(PrecedenceParserTestSuccess, NestedFunctionCallsAndExpressions)
 {
     // f(a + f(b(c + 1), c(g(3) * 5)), d * f(g, h))
     inputTape = { new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tPlus),
@@ -546,7 +539,7 @@ TEST_F(PrecedenceParserTest, NestedFunctionCallsAndExpressions)
     EXPECT_NO_THROW(this->parser->Parse());
 }
 
-TEST_F(PrecedenceParserTest, AssignComplexExpression)
+TEST_F(PrecedenceParserTestSuccess, AssignComplexExpression)
 {
     // a = ((b = f(i + 2)) != 0)
     inputTape = { new Token(tVariable), new Token(tAssign), new Token(tLPar),

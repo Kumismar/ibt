@@ -17,11 +17,12 @@ counter_successful=0
 counter_failed=0
 
 for subdirectory in "$current_dir"/koubp_files/*/; do
-    echo -e "${bold}Processing files in directory: $(basename $subdirectory)${reset}"
+    dir_base=$(basename $subdirectory)
+    echo -e "${bold}Processing files in directory: $dir_base${reset}"
 
     for input_file in "$subdirectory"*.koubp; do
-        echo -e "${yellow}Processing $input_file${reset}"
         base_name=$(basename "$input_file" .koubp)
+        echo -e "${yellow}Processing $dir_base/$base_name${reset}"
         rc_file="$subdirectory/$base_name.koubp.rc"
 
         if [ -f "$rc_file" ]; then
