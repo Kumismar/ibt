@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-02 23:12
+ * @ Modified time: 2024-04-03 12:11
  */
 
 #include "logger.hpp"
@@ -61,9 +61,8 @@ void Logger::AddLeftSide(Symbol* leftSide)
 
 void Logger::AddRightSide(Rule& rightSide)
 {
-    rightSide.reverse(); // For logging purpose only, grammars work with reversed strings
-    for (const Symbol* item: rightSide) {
-        this->rightSideRule.push_front(item->Clone());
+    for (auto symbol = rightSide.rbegin(); symbol != rightSide.rend(); symbol++) {
+        this->rightSideRule.push_front((*symbol)->Clone());
     }
 }
 

@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-03-30 21:44
+ * @ Modified time: 2024-04-03 18:16
  */
 
 #pragma once
@@ -58,7 +58,7 @@ typedef enum tokenType
     tEps
 } TokenType;
 
-typedef enum
+typedef enum dataType
 {
     Int,
     Float,

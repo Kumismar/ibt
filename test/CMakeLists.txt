@@ -16,7 +16,8 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 add_executable(ParserTest
-    precedence_parser_tests.cpp
+    precedence_parser_tests_success.cpp
+    precedence_parser_tests_fail.cpp
     predictive_parser_tests_success.cpp
     predictive_parser_tests_fail.cpp
 )
