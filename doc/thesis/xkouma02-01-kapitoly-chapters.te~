@@ -47,7 +47,7 @@ Myšlenkou derivačního kroku je přepsat aktuální řetězec na řetězec nov
 To znamená, že pokud lze přepsat řetězec $\alpha = uAv$ na řetězec $\beta = uxv$ za použití pravidla $A \rightarrow x$, potom mezi řetězci $\alpha$ a~$\beta$ je relace přímé derivace, zapsáno $\alpha \Rightarrow \beta$.
 
 \begin{figure}
-    \caption{\todo{obrazek nahrazeni kusu retezce za novy - podobny jako je v~ifj prezentaci}}
+    \caption{\todo{obrazek nahrazeni kusu retezce za novy - podobny jako je v ifj prezentaci}}
 \end{figure}
 
 \subsection*{Sekvence derivačních kroků}\label{kap_sekvence_der_kroku}
@@ -74,7 +74,7 @@ Také je možné říci, že se nepoužije žádné pravidlo k~přepsání řet�
 
 
 \section{Konečný automat}
-Definice související s~konečnými automaty převzaty z~\cite{meduna2023automata}, není-li řečeno jinak.
+Definice související s teorií automatů převzaty z~\cite{meduna2023automata}, není-li řečeno jinak.
 \begin{definition}\label{def_konecny_automat}
     \emph{Konečný automat} je pětice
     \begin{equation*}
@@ -99,11 +99,11 @@ Definice související s~konečnými automaty převzaty z~\cite{meduna2023automa
     Pro označení konečných automatů bude dále v~textu použito zkrácené KA. 
 \end{convention}
 
-U~konečných automatů popisujeme jejich \emph{konfiguraci}\,--\,ve kterém stavu se nachází a~jaký řetězec na vstupní pásce.
+U konečných automatů popisujeme jejich \emph{konfiguraci}\,--\,ve kterém stavu se nachází a~jaký řetězec na vstupní pásce.
 \begin{definition}\label{def_konfigurace_ka}
-    Nechť $M = (Q, \Sigma, R, s, F)$ je KA. Dle autorů v~\cite{TIN-opora} je konfigurace $M$ uspořádaná dvojice
+    Nechť $M = (Q, \Sigma, R, s, F)$ je KA. Konfigurace $M$ je řetězec
     \begin{equation*}
-        (q, w) \in Q \times \Sigma^*.
+        qv,\; q \in Q,\; v \in \Sigma^*.
     \end{equation*} 
     Nechť $X_M$ značí množinu všech konfigurací $M$.
 \end{definition}
@@ -112,20 +112,16 @@ Pomocí konfigurací můžeme definovat \emph{přechody} KA, které reprezentuj�
 Výpočetní krok znamená přechod z~jedné konfigurace do druhé za přečtení symbolu ze vstupní pásky.
 \begin{definition}\label{def_prechod_ka}
     Nechť $M = (Q, \Sigma, R, s, F)$ je KA.\\
-    Binární relace $\vdash_{\scriptscriptstyle M}$, nazývána přechodem KA $M$, je
+    Přechod $\vdash_M$ KA $M$ je
     \begin{equation*}
-        \beta\; \vdash_{\scriptscriptstyle M}\chi,
+        \beta\; \vdash_M\; \chi,\; \beta = qax, \chi = px \in X_M,\; qa \rightarrow p \in R.
     \end{equation*}
-    kde $\beta = (q, ax),\, \chi = (p, x) \in X_M,$ a~$qa \rightarrow p \in R$.
-    Je to binární relace na množině konfigurací\,--\,pokud $\beta\, \vdash_{\scriptscriptstyle M} \chi$, pak $(\beta, \chi) \in X_M \times X_M$.
-    Pokud $a = \varepsilon$, není ze vstupní pásky přečten žádný symbol.
-    
-    Symboly $\vdash_{\scriptscriptstyle M}^n, \vdash_{\scriptscriptstyle M}^+$ a~$\vdash_{\scriptscriptstyle M}^*$ nechť značí příslušně $n$-tou mocninu pro $n \geq 0$, tranzitivní a reflexivně-tranzitivní uzávěr relace $\vdash_M$ podobně jako u~derivačního kroku BKG (\ref{def_derivacni_krok}), čímž reprezentují \emph{sekvenci přechodů} KA $M$.
-    Například pro konfigurace $\beta$ a~$\chi$ platí $\beta\; \vdash_{\scriptscriptstyle M}^+ \chi$ právě tehdy, když
-    \begin{equation*}
-        \beta = c_0 \vdash_{\scriptscriptstyle M} c_1 \vdash_{\scriptscriptstyle M} \ldots \vdash_{\scriptscriptstyle M} c_{n-1} \vdash_{\scriptscriptstyle M} c_{n} = \chi,
-    \end{equation*}
-    pokud $\beta, \chi, c_1, \ldots, c_{n-1} \in X_M,\; n \geq 1$.
+    Pokud $a = \varepsilon$, není ze vstupní přečten žádný symbol.
+
+    Matematicky se dá vyjádřit jako binární relace na množině konfigurací\,--\,pokud $\beta\, \vdash\, \chi$, pak $(\beta, \chi) \in X_M \times X_M$.
+    Symboly $\vdash_M^n, \vdash_M^+$ a~$\vdash_M^*$ nechť značí příslušně $n$-tou mocninu pro $n \geq 0$, tranzitivní a reflexivně-tranzitivní uzávěr relace $X_M \times X_M$ podobně jako u~derivačního kroku BKG (\ref{def_derivacni_krok}), čímž reprezentují \emph{sekvenci přechodů} KA $M$.
+
+    Bude-li zřejmé, že se jedná o~přechod v~automatu $M$, pak budou relace zapsány pouze ve tvaru $\vdash,\; \vdash^n,\; \vdash^+,\; \vdash^*$.  
 \end{definition}
 
 \begin{definition}
@@ -134,25 +130,17 @@ Výpočetní krok znamená přechod z~jedné konfigurace do druhé za přečten�
     \begin{equation*}
         L(M) = \{w \in \Sigma^*: sw\; \vdash^* f,\; f \in F\}.
     \end{equation*}
-    Jsou to řetězce takové, po jejichž zpracování skončí $M$ v~koncovém stavu.
 \end{definition}
-
 
 \begin{definition}
     Nechť $M = (Q, \Sigma, R, s, F)$ je KA.\\
-    $M$ je \emph{KA bez $\varepsilon$-přechodů}, pokud pro každé pravidlo $qa \rightarrow p \in R$ platí, že $a \neq \varepsilon$.
+    $M$ je KA bez $\varepsilon$-přechodů, pokud pro každé pravidlo $pa \rightarrow q \in R$ platí, že $a \neq y$.
 \end{definition}
 
-\begin{definition}
-    Nechť $M = (Q, \Sigma, R, s, F)$ je KA bez $\varepsilon$-přechodů.\\
-    $M$ je \emph{deterministický KA} právě tehdy, když pro každé $q \in Q$ a~každé $a \in \Sigma$ neexistuje více než jedno $p \in Q$ takové, že $qa \rightarrow p \in R$.
-    Jinými slovy, z~jednoho stavu není možné přejít do několika stavů přečtením stejného symbolu.
-\end{definition}
+
 
 \section{Zásobníkový automat}\label{kap_zasobnikovy_automat}
-Zásobníkový automat je rozšíření konečného automatu, popsaného v~definici \ref{def_konecny_automat}, o~zásobník.
-Zásobník slouží jako paměťové médium, na které si automat může ukládat informace v~podobě symbolů zásobníkové abecedy.
-Následující definice převzaty z~\cite{TIN-opora}.
+Zásobníkový automat je rozšíření konečného automatu, popsaného v~definici \ref{def_konecny_automat}, o~zásobník, matematicky přesněji o~zásobníkovou abecedu a~počáteční symbol na zásobníku.
 \begin{definition}\label{def_zasobnikovy_automat}
     \emph{Zásobníkový automat} (ZA) je sedmice 
     \begin{center}
@@ -160,50 +148,15 @@ Následující definice převzaty z~\cite{TIN-opora}.
     \end{center}
     kde:
     \begin{itemize}
-        \item $Q, \Sigma, s, F$ jsou definovány stejně jako v~definici \ref{def_konecny_automat},
-        \item $\Gamma$ je konečná zásobníková abeceda,
-        \item $R$ je konečná relace $R \subseteq \Gamma \times Q \times (\Sigma \cup \{\varepsilon\}) \times \Gamma^* \times Q$ nazývána množinou pravidel ZA,
-        \begin{itemize}[label=$\circ$]
-            \item každé pravidlo $(A, q, a, w, p)$ může být zapsáno ve tvaru $Aqa \rightarrow wp$, kde $A \in \Gamma,$ $q, p \in Q,\; a \in \Sigma \cup \{\varepsilon\},\; w \in \Gamma^*$,
-        \end{itemize}  
-        \item $S \in \Gamma$ je počáteční symbol na zásobníku.
+        \item $Q$ je konečná množina stavů,
+        \item $\Sigma$ je vstupní abeceda,
+        \item $\Gamma$ je zásobníková abeceda,
+        \item $R$ je konečná množina pravidel tvaru $Apa \rightarrow wq$, kde $A \in \Gamma$, $p,q \in Q$, $a \in \Sigma \cup \{\varepsilon\}$,  
+        \item $s \in Q$ je počáteční stav, 
+        \item $S \in \Gamma$ je počáteční symbol na zásobníku,
+        \item $F \subseteq Q$ je množina koncových stavů.
     \end{itemize}
 \end{definition}
-
-\begin{convention}
-    Zásobníkové automaty budou dále značeny zkráceně ZA.
-\end{convention}
-
-\begin{definition}
-    Nechť $M = (Q, \Sigma, \Gamma, R, s, S, F)$ je ZA.\\
-    Konfigurací ZA nazveme trojici
-    \begin{equation*}
-        (q, w, \alpha) \in Q \times \Sigma^* \times \Gamma^*, 
-    \end{equation*}
-    kde
-    \begin{itemize}
-        \item $q$ je aktuální stav automatu (\emph{řídící jednotky}),
-        \item $w$ je doposud nepřečtená část vstupního řetězce, jehož první symbol je aktuálně pod čtecí hlavou.
-        Pokud $w = \varepsilon$, všechny symboly byly ze vstupní pásky již přečteny,
-        \item $\alpha$ je obsah zásobníku.
-    \end{itemize}
-    Nechť $X_M$ reprezentuje množinu všech konfigurací ZA $M$.
-\end{definition}
-
-\begin{definition}
-    Nechť $M = (Q, \Sigma, \Gamma, R, s, S, F)$ je ZA.\\
-    Přechod ZA je binární relace definována nad množinou konfigurací (podobně jako v definici \ref{def_prechod_ka}) v~podobě
-    \begin{equation*}
-        \beta\; \vdash_{\scriptscriptstyle M} \chi,
-    \end{equation*}
-    kde $\beta = (uX, q, av),\; \chi = (ux, p, v)$ a~$Xqa \rightarrow xp \in R$.
-    Symbolem $X$ je reprezentován vrchol zásobníku a~symbol $a$ nechť reprezentuje aktuální symbol pod čtecí hlavou.
-    Pokud $x = \varepsilon$, pak se pouze vyjme $X$ ze zásobníku bez náhrady.
-    Relace $\vdash_{\scriptscriptstyle M}^n,\; \vdash_{\scriptscriptstyle M}^+,\; \vdash_{\scriptscriptstyle M}^*$ jsou opět $n$-tou mocninou relace, tranzitivním a~reflexivně-tran\-zi\-tiv\-ním uzávěrem.
-\end{definition}
-Oproti klasickým KA se při přechodu musí pracovat se zásobníkem, ze kterého se vyjme symbol $X$, namísto něj se vloží symbol $x$.
-
-
 
 \subsection*{Rozšířený zásobníkový automat}\label{kap_rozsireny_ZA}
 Původní zásobníkový automat lze rozšírit o~další chování. Například o~možnost čtení více symbolů ze zásobníku než původního jednoho, tedy při přechodech mezi stavy měnit celé řetězce na vrcholu zásobníku.
@@ -222,9 +175,17 @@ Původní zásobníkový automat lze rozšírit o~další chování. Například
 
 \chapter{Důležité pojmy syntaktické analýzy \dotaz{Které věci sem patří/nepatří a jaké budou podnadpisy?}}\label{5_teorie_sa}
 
+
+
+\dotaz{Bude stačit definice z~prezentací nebo bude třeba jít do literatury a zmínit například uzávěry apod.?}
+
 \section{Množiny potřebné k~sestrojení LL tabulky}
 
 \section{LL tabulka}
+
+
+
+
 
 \section{Prediktivní syntaktická analýza}
 
@@ -346,8 +307,8 @@ Každý řetězec $v_k$, kde $k \in \{1, \ldots, m\}$ byl zderivován z~řetězc
     \end{alignat*}
     komponenta $P_2$ stejný řetězec přepíše na $SS$.
     \begin{alignat*}{-1}
-        AA  \rightarrow&&\; SA && \quad [A~\rightarrow S] \\
-        SA  \rightarrow&&\; SS && \quad [A~\rightarrow S] 
+        AA  \rightarrow&&\; SA && \quad [A \rightarrow S] \\
+        SA  \rightarrow&&\; SS && \quad [A \rightarrow S] 
     \end{alignat*}
     \begin{alignat*}{-1}
          SS \rightarrow&&\; AAS  \hphantom{A} \quad  &&[S \rightarrow AA] \\ 
@@ -421,7 +382,7 @@ kde:
         \item $D$\,--\,gramatický systém je deterministický, tedy pro každé $A \rightarrow u, A \rightarrow w \in P_i$, $i \in \{1, \ldots, n\}$ platí, že $u = w$.
         Jinými slovy, pro všechny neterminály platí, že pro jejich přepis neexistují pravidla (ve \emph{všech} komponentách), která by měla různé pravé strany.
         \item \emph{nic}\,--\,gramatický systém je nedeterministický.
-        To znamená, že v~\emph{každé} komponentě existuje pravidlo pro nějaký neterminál, které má různé pravé strany.
+        To znamená, že v \emph{každé} komponentě existuje pravidlo pro nějaký neterminál, které má různé pravé strany.
         \item $H$\,--\,gramatický systém je hybridní a~obsahuje alespoň jednu nedeterministickou komponentu a~jednu deterministickou komponentu.
         Nezapisuje se derivační režim, který je určen samostatně pro každou komponentu. 
     \end{itemize}
@@ -489,7 +450,7 @@ pro všechna $i \in \{1, \ldots, n\}$.
 Někdy taky nazýván \emph{komunikační krok}. Tento koncept umožňuje gramatikám spolupracovat a~vzájemně si mezi sebou měnit vygenerované řetězce pomocí komunikačních symbolů.
 Algoritmus ukazující princip komunikačního kroku je následující:
 \begin{algorithm}[h]
-\caption{c-derivační krok v~PCGS}\label{alg_c_der_krok}
+\caption{c-derivační krok v PCGS}\label{alg_c_der_krok}
 \begin{algorithmic}[1]
     \State \textbf{Vstup:} konfigurace $(x_1, \ldots, x_n)$
     \State \textbf{Výstup:} konfigurace $(y_1, \ldots, y_n)$
@@ -502,16 +463,16 @@ Algoritmus ukazující princip komunikačního kroku je následující:
         \If{$alph(x_i) \cap K \neq \emptyset$ \textbf{and} \textbf{foreach} $Q_j$ \textbf{in} $x_i$: $alph(x_j) \cap K = \emptyset$}
             \ForAll{$Q_j$ \textbf{in} $x_i$} 
                 \State $z_j \gets S_j$\Comment{vynecháno, pokud PCGS pracuje na nevracejícím se režimu}
-                \State zaměň $Q_j$ za $x_j$ v~$x_i$
-                \State $z_i \gets x_i$\Comment{$x_i =$ řetězec, který vznikl o~krok zpět} 
+                \State zaměň $Q_j$ za $x_j$ v $x_i$
+                \State $z_i \gets x_i$\Comment{$x_i =$ řetězec, který vznikl o krok zpět} 
             \EndFor
         \EndIf
     \EndFor
-    \State proveď $(x_1, \ldots, x_n) \prescript{}{c}{\Rightarrow} (y_1, \ldots, y_n)$ s~$y_i = z_i,\;i \in \{1, \ldots, n\}$ 
+    \State proveď $(x_1, \ldots, x_n) \prescript{}{c}{\Rightarrow} (y_1, \ldots, y_n)$ s $y_i = z_i,\;i \in \{1, \ldots, n\}$ 
 \end{algorithmic}
 \end{algorithm}
 
-\subsection*{Přímá derivace v~PCGS}
+\subsection*{Přímá derivace v PCGS}
 \begin{definition}
     Konfigurace $(x_1, \ldots, x_n)$ přímo derivuje konfiguraci $(y_1, \ldots, y_n)$, zapsáno
     \begin{center}
@@ -570,7 +531,7 @@ V~prvním příkladu bude pouze demonstrován princip obou derivačních kroků 
      \begin{equation*}
     (S_1, S_2, S_3) \ \prescript{}{g}{\Rightarrow} \ (Q_3, a, b)
      \end{equation*}
-     Nyní je v~konfiguraci komunikační symbol, což indikuje, že bude následovat komunikační krok.
+     Nyní je v konfiguraci komunikační symbol, což indikuje, že bude následovat komunikační krok.
      Při postupu podle algoritmu~\ref{alg_c_der_krok} je postup následující:
      \begin{enumerate}
         \item Zavedení pomocných řetězců $z_1 = Q_3$, $z_2 = a$, $z_3 = b$ podle řádků 4\,--\,6.
@@ -581,11 +542,11 @@ V~prvním příkladu bude pouze demonstrován princip obou derivačních kroků 
         \item Pokud $x_i$ obsahuje komunikační symboly $Q_j$, z~každého se přečte index $j$ a~proběhne kontrola, zda všechny $j$-té řetězce konfigurace ($x_j$) \emph{neobsahují} komunikační symboly.
         Tato část koresponduje s~podmínkou \textbf{foreach} $Q_j$ \textbf{in} $x_i:$ $alph(x_i) \cap K = \emptyset$ na řádku~8.
         \begin{itemize}[label=$\circ$]
-            \item Řetězec $x_1$ obsahuje jeden komunikační symbol $Q_3$, jehož index odkazuje na řetězec $x_3$ z~aktuální konfigurace. Hodnota řetězce $x_3$ je $b$, ten žádné další komunikační symboly neobsahuje.
+            \item Řetězec $x_1$ obsahuje jeden komunikační symbol $Q_3$, jehož index odkazuje na řetězec $x_3$ z aktuální konfigurace. Hodnota řetězce $x_3$ je $b$, ten žádné další komunikační symboly neobsahuje.
         \end{itemize}
-        \item Každý $Q_j$ v~$x_i$ se nahradí za $x_j$, pokud prošel podmínkou v~předchozím kroku.
+        \item Každý $Q_j$ v~$x_i$ se nahradí za $x_j$, pokud prošel podmínkou v předchozím kroku.
         Zároveň se $z_j$ nastaví na počáteční symbol $j$-té komponenty.
-        Tyto kroky jsou v~algoritmu na řádcích 9\,--\,12.
+        Tyto kroky jsou v algoritmu na řádcích 9\,--\,12.
         \begin{itemize}[label=$\circ$]
             \item Komunikační symbol $Q_3$ bude v~$x_1$ nahrazen řetězcem $b$ z~$x_3$. Dále $x_3 \gets S_3$ a~$z_1 \gets x_1$.
             Aktuálně $z_1 = b,$ $z_2 = a$, $z_3 = S_3$. 
@@ -595,7 +556,7 @@ V~prvním příkladu bude pouze demonstrován princip obou derivačních kroků 
             \item Nová konfigurace $(y_1, y_2, y_3)$ bude stejná, jako pomocná konfigurace $(z_1, z_2, z_3)$, a~to $(b, a, S_3)$.
         \end{itemize}
     \end{enumerate}
-    $\Gamma$ provede komunikační krok z~$(Q_3, a, b)$ do $(b, a, S_3)$.
+    $\Gamma$ provede komunikační krok z $(Q_3, a, b)$ do $(b, a, S_3)$.
     \begin{center}
         $(Q_3, a, b) \ \prescript{}{c}{\Rightarrow} \ (b, a, S_3)$
     \end{center}
@@ -629,7 +590,7 @@ Ve druhém příkladu bude demonstrováno několik derivačních kroků a~bude s
     Je vidět, že komponenty $P_2$ a~$P_3$ neustále používají ta samá pravidla, což je logické vzhledem k~jejich kardinalitě.
     Pro zjednodušení zápisu, při každém g-derivačním kroku bude zmíněno pouze pravidlo komponenty $P_1$, pravidla komponent $P_2$ a~$P_3$ budou vždy stejná.
 
-    Z~konfigurace $(a^nS_1', b^nS_2, c^nS_3)$ se na rozdílný výsledek dá dostat pouze za použití pravidla $S_1' \rightarrow a^3Q_2$.
+    Z konfigurace $(a^nS_1', b^nS_2, c^nS_3)$ se na rozdílný výsledek dá dostat pouze za použití pravidla $S_1' \rightarrow a^3Q_2$.
     \begin{equation*}
         (a^nS_1', b^nS_2, c^nS_3) \Rightarrow (a^{n+3}Q_2, b^{n+1}S_2, c^{n+1}S_3)
     \end{equation*} 
@@ -667,7 +628,7 @@ Ve druhém příkladu bude demonstrováno několik derivačních kroků a~bude s
 \chapter{Použití gramatických systémů pro popis jazyka Koubp}
 
 
-\todo{základní popis použitého GS, jak je spojený s~CDGS a potažmo PCGS}
+\todo{základní popis použitého GS, jak je spojený s CDGS a potažmo PCGS}
 
 \todo{popsat možný deadlock mezi neterminály codeblock a statement}
 

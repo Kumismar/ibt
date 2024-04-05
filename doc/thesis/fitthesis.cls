@@ -91,6 +91,7 @@
 \usepackage{enumitem}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{turnstile}
 
 \floatname{algorithm}{Algoritmus}
 
