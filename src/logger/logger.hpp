@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-02 12:08
+ * @ Modified time: 2024-04-04 10:27
  */
 
 #pragma once
@@ -15,10 +15,13 @@
 class Logger
 {
 private:
+    std::string red = "\033[1;31m";
+    std::string reset = "\033[0m";
+
     static Logger* instance;
     std::list<Token*> recentTokens;
     std::ofstream file;
-    Symbol* leftSideRule;
+    Symbol* leftSideRule = nullptr;
     Rule rightSideRule;
     bool enableDebugPrint = false;
     Logger();

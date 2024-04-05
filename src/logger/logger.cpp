@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-03 12:11
+ * @ Modified time: 2024-04-04 10:24
  */
 
 #include "logger.hpp"
@@ -110,10 +110,8 @@ void Logger::AddTokenToRecents(Token& token)
 
 void Logger::PrintSyntaxError(const char* message)
 {
-    std::string red = "\033[1;31m";
-    std::string reset = "\033[0m";
-    std::cerr << red << "Syntax error "
-              << reset << "near line " << std::to_string(this->recentTokens.front()->GetLineNo()) << ": " << message;
+    std::cerr << this->red << "Syntax error "
+              << this->reset << "near line " << std::to_string(this->recentTokens.front()->GetLineNo()) << ": " << message;
 
     // Get position of the error
     size_t position = 0;
@@ -126,7 +124,7 @@ void Logger::PrintSyntaxError(const char* message)
         std::cerr << (*it)->GetDataString() << " ";
     }
 
-    // Print max three more tokens
+    // Print max three more tokens from input tape
     int i = 0;
     for (const auto& token: inputTape) {
         if (i >= 3) {
@@ -141,7 +139,7 @@ void Logger::PrintSyntaxError(const char* message)
     for (size_t i = 0; i < position; i++) {
         std::cerr << " ";
     }
-    std::cerr << red << "^" << reset << std::endl;
+    std::cerr << this->red << "^" << this->reset << std::endl;
 }
 
 void Logger::PrintLexicalError(const char* message)
