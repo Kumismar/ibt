@@ -2,10 +2,11 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-02 22:48
+ * @ Modified time: 2024-04-07 17:00
  */
 
 #include "analysis_success.hpp"
+#include "ast.hpp"
 #include "cl_arguments_error.hpp"
 #include "exception_base.hpp"
 #include "grammar_1.hpp"
@@ -35,6 +36,7 @@ void Cleanup()
     Grammar5::Cleanup();
     Grammar6::Cleanup();
     Logger::Cleanup();
+    AST::Cleanup();
 
     if (!inputTape.empty()) {
         for (const auto& token: inputTape) {

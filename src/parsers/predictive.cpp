@@ -2,11 +2,14 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-03 22:58
+ * @ Modified time: 2024-04-07 16:59
  */
 
 #include "predictive.hpp"
 #include "analysis_success.hpp"
+#include "ast.hpp"
+#include "ast_node.hpp"
+#include "ast_node_factory.hpp"
 #include "exception_base.hpp"
 #include "function_parsed.hpp"
 #include "grammar_factory.hpp"
@@ -104,8 +107,11 @@ void PredictiveParser::parseNonterminal()
         throw InternalError("Dynamic cast to Nonterminal* failed, real type:" + std::string(typeid(*this->stackTop).name()) + "\n");
     }
 
+    if (stackNT->GetNonterminalType() == nStop) {
+        AST::GetInstance()->PopContext();
+    }
     // Expression => give control to precedence parser
-    if (stackNT->GetNonterminalType() == nExpression) {
+    else if (stackNT->GetNonterminalType() == nExpression) {
         // If not parsing function call, give control to precedence parser
         if (!(*this->inputToken == tFuncName && this->parsingFunction) ||
             // If parsing function call but new funcName is found, parse the new function call
@@ -126,15 +132,21 @@ void PredictiveParser::parseNonterminal()
     LLTableIndex tableItem = (*this->table)[*stackNT][*this->inputToken];
     // Rule exists -> pop old nonterminal, expand it and push new string to the stack
     if (tableItem != LLTableIndex({ 0, 0 })) {
+        ASTNode* node = ASTNodeFactory::CreateASTNode(*stackNT, *this->inputToken);
+        // if nonterminal doesnt have corresponding AST node, nullptr is returned
+        if (node != nullptr) {
+            AST::GetInstance()->GetCurrentContext()->LinkNode(node, *stackNT);
+        }
+
         Logger* logger = Logger::GetInstance();
         logger->AddLeftSide(this->stackTop);
-        Grammar* grammar = GrammarFactory::CreateGrammar(tableItem.grammarNumber);
 
         if (!(this->parsingFunction && *stackNT == nExpression)) {
             delete this->pushdown.front();
             this->pushdown.pop_front();
         }
 
+        Grammar* grammar = GrammarFactory::CreateGrammar(tableItem.grammarNumber);
         Rule expandedRule = grammar->Expand(tableItem.ruleNumber);
         logger->AddRightSide(expandedRule);
 
@@ -170,6 +182,8 @@ void PredictiveParser::parseToken()
         if (*stackToken == tFuncName) {
             this->firstFuncName = false;
         }
+        // AST nodes gradually add information to themselves based on tokens parsed
+        AST::GetInstance()->GetCurrentContext()->ProcessToken(*this->inputToken);
         Logger::GetInstance()->AddTokenToRecents(*this->inputToken);
         delete this->inputToken;
         delete this->pushdown.front();

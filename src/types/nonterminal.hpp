@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-03-30 20:24
+ * @ Modified time: 2024-04-07 16:57
  */
 
 #pragma once
@@ -27,6 +27,8 @@ typedef enum nonterminalType
     nStatements,
     nVoluntaryType,
     nType,
+    // auxiliary type for handling AST context stack
+    nStop
 } NonterminalType;
 
 class Nonterminal : public Symbol

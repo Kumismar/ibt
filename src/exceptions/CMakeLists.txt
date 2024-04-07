@@ -1,5 +1,7 @@
-# Author: Ondřej Koumar
-# Date: 2024-03-18
+# @ Author: Ondřej Koumar
+# @ Email: xkouma02@stud.fit.vutbr.cz
+# @ Create Time: 2024-03-18 19:12
+# @ Modified time: 2024-04-07 16:40
 
 target_sources(ParserLibrary PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/exception_base.cpp"

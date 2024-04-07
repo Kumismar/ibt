@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 10:29
- * @ Modified time: 2024-04-04 11:12
+ * @ Modified time: 2024-04-07 16:24
  */
 
 #pragma once
@@ -25,4 +25,7 @@ class Statement : public ASTNode
 {
 protected:
     StatementType type;
+
+public:
+    virtual ~Statement();
 };
