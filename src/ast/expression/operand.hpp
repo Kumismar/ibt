@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 11:23
- * @ Modified time: 2024-04-03 18:20
+ * @ Modified time: 2024-04-07 21:49
  */
 
 #pragma once
@@ -24,8 +24,11 @@ class Operand
 {
 protected:
     OperandType type;
+    OperandData data;
 
 public:
+    Operand();
+    Operand(Token& t);
     virtual ~Operand()
     {
     }

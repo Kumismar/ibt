@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-07 16:18
- * @ Modified time: 2024-04-07 16:24
+ * @ Modified time: 2024-04-07 20:49
  */
 
 #pragma once
@@ -23,4 +23,12 @@ void StatementList::Cleanup()
             delete item->data.expression;
         }
     }
+}
+
+void StatementList::ProcessToken(Token& token)
+{
+}
+
+void LinkNode(ASTNode* node, Nonterminal& nt)
+{
 }

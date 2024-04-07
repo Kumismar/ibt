@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-03 18:16
+ * @ Modified time: 2024-04-07 22:30
  */
 
 #pragma once
@@ -54,6 +54,7 @@ typedef enum tokenType
     tEnd,
     tExpEnd,
     tFuncEnd,
+    // Auxiliary token used to indicate end of function
     tFuncConst,
     tEps
 } TokenType;
@@ -105,6 +106,7 @@ public:
     std::string GetDataString() const;
     unsigned int GetLineNo() const;
     Token* Clone() const override;
+    DataType GetDataType() const;
     static void AddToken(TokenType ttype, DataType dtype);
 };
 

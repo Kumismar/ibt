@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-07 14:28
- * @ Modified time: 2024-04-07 16:39
+ * @ Modified time: 2024-04-07 20:32
  */
 
 #include "ast_node_factory.hpp"
@@ -23,9 +23,6 @@
 ASTNode* ASTNodeFactory::CreateASTNode(Nonterminal& nt, Token& t)
 {
     switch (nt.GetNonterminalType()) {
-        case nStatementList: {
-            return new StatementList();
-        }
         case nStatement: {
             switch (t.GetTokenType()) {
                 case tIf: {
@@ -43,14 +40,14 @@ ASTNode* ASTNodeFactory::CreateASTNode(Nonterminal& nt, Token& t)
                 case tSemi: {
                     return new Semicolon();
                 }
-                case tLPar:
-                case tFuncName:
-                case tVariable:
-                case tUnMinus:
-                case tExcl:
-                case tConst: {
-                    return new Expression();
-                }
+                // case tLPar:
+                // case tFuncName:
+                // case tVariable:
+                // case tUnMinus:
+                // case tExcl:
+                // case tConst: {
+                //     return new Expression();
+                // }
                 case tInt:
                 case tBool:
                 case tString:
@@ -70,12 +67,15 @@ ASTNode* ASTNodeFactory::CreateASTNode(Nonterminal& nt, Token& t)
                 return nullptr;
             }
         }
+        case nStatements: {
+            return new StatementList();
+        }
         case nFunctionDef: {
             return new FunctionDefinition();
         }
-        case nExpression: {
-            return new Expression();
-        }
+        // case nExpression: {
+        //     return new Expression();
+        // }
         case nCodeBlock: {
             return new CodeBlock();
         }

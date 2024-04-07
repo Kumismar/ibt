@@ -2,26 +2,28 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 11:16
- * @ Modified time: 2024-04-07 16:47
+ * @ Modified time: 2024-04-07 21:04
  */
 
 #pragma once
 
+#include "code_block.hpp"
 #include "elseif_statement.hpp"
 #include "expression.hpp"
 #include "statement.hpp"
-#include "statement_list.hpp"
 #include <vector>
 
 class IfStatement : public Statement
 {
 private:
+    bool processingElse = false;
     Expression* condition = nullptr;
-    StatementList* ifBody = nullptr;
+    CodeBlock* ifBody = nullptr;
     std::vector<ElseifStatement*> elseifs;
-    StatementList* elseBody = nullptr;
+    CodeBlock* elseBody = nullptr;
 
 public:
+    IfStatement();
     void ProcessToken(Token& token) override;
     void LinkNode(ASTNode* node, Nonterminal& nt) override;
 };

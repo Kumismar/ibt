@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-07 16:59
+ * @ Modified time: 2024-04-07 20:42
  */
 
 #include "predictive.hpp"
@@ -109,6 +109,8 @@ void PredictiveParser::parseNonterminal()
 
     if (stackNT->GetNonterminalType() == nStop) {
         AST::GetInstance()->PopContext();
+        delete this->stackTop;
+        return;
     }
     // Expression => give control to precedence parser
     else if (stackNT->GetNonterminalType() == nExpression) {

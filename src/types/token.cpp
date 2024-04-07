@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-05 10:12
+ * @ Modified time: 2024-04-07 22:29
  */
 
 #include "token.hpp"
@@ -226,6 +226,11 @@ unsigned int Token::GetLineNo() const
 Token* Token::Clone() const
 {
     return new Token(*this);
+}
+
+DataType Token::GetDataType() const
+{
+    return this->data.type;
 }
 
 
