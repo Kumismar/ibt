@@ -46,10 +46,10 @@ Myšlenkou derivačního kroku je přepsat aktuální řetězec na řetězec nov
 \end{definition}
 To znamená, že pokud lze přepsat řetězec $\alpha = uAv$ na řetězec $\beta = uxv$ za použití pravidla $A \rightarrow x$, potom mezi řetězci $\alpha$ a~$\beta$ je relace přímé derivace, zapsáno $\alpha \Rightarrow \beta$.
 
-\begin{figure}[h]
+\begin{figure}[t]
     \centering
-    \includesvg{obrazky-figures/derivacni_krok_bkg}
-    \caption{\todo{obrazek nahrazeni kusu retezce za novy - podobny jako je v~ifj prezentaci}}
+    \includegraphics{obrazky-figures/derivacni_krok_bkg.eps}
+    \caption{Ilustrace derivačního kroku za použití pravidla $A \rightarrow x$.}
 \end{figure}
 
 \subsection*{Sekvence derivačních kroků}\label{kap_sekvence_der_kroku}
@@ -90,7 +90,7 @@ Definice související s~konečnými automaty převzaty z~\cite{meduna2023automa
         \begin{itemize}[label=$\circ$]
             \item je nazývána \emph{množinou pravidel} ve tvaru $qa \rightarrow p,\; q, p \in Q,\;a \in \Sigma \cup \{\varepsilon\}$.
             Jakákoli uspořádaná trojice $(q, a, p) \in R$ je pravidlem, zapsáno $qa \rightarrow p$.
-            \item Další možnost zápisu je zobrazení $R: Q \times \Sigma \rightarrow 2^Q$ \cite{TIN-opora}.
+            \item Další možnost zápisu je zobrazení (\emph{přechodová funkce}) $R: Q \times \Sigma \rightarrow 2^Q$ \cite{TIN-opora}.
         \end{itemize}
         \item $s \in Q$ je počáteční stav automatu,
         \item $F \subseteq Q$ je konečná množina koncových stavů. 
