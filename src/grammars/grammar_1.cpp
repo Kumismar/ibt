@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-03 12:08
+ * @ Modified time: 2024-04-07 20:34
  */
 
 #include "grammar_1.hpp"
@@ -11,10 +11,10 @@
 #include "token.hpp"
 
 const std::vector<Rule> Grammar1::rightSideRules = {
-    { new Nonterminal(nStatement), new Nonterminal(nStatementList) },
-    { new Nonterminal(nFunctionDef), new Nonterminal(nStatementList) },
-    { new Nonterminal(nStatement), new Nonterminal(nStatementList) },
-    { new Nonterminal(nFunctionDef), new Nonterminal(nStatementList) },
+    { new Nonterminal(nStatement), new Nonterminal(nStop), new Nonterminal(nStatementList) },
+    { new Nonterminal(nFunctionDef), new Nonterminal(nStop), new Nonterminal(nStatementList) },
+    { new Nonterminal(nStatement), new Nonterminal(nStop), new Nonterminal(nStatementList) },
+    { new Nonterminal(nFunctionDef), new Nonterminal(nStop), new Nonterminal(nStatementList) },
     { new Token(tEps) }
 };
 
