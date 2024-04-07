@@ -15,12 +15,12 @@ $(CO).ps: $(CO).dvi
 	dvips $(CO)
 
 $(CO).pdf: clean
-	pdflatex $(CO)
-	-bibtex $(CO)
+	pdflatex -shell-enable $(CO)
+	bibtex $(CO)
 	# makeglossaries $(CO)
 	# makeglossaries-lite $(CO)
-	pdflatex $(CO)
-	pdflatex $(CO)
+	pdflatex -shell-enable $(CO)
+	pdflatex -shell-enable $(CO)
 
 $(CO).dvi: $(CO).tex $(CO).bib
 	latex $(CO)

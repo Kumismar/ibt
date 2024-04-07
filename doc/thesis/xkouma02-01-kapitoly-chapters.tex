@@ -46,7 +46,9 @@ Myšlenkou derivačního kroku je přepsat aktuální řetězec na řetězec nov
 \end{definition}
 To znamená, že pokud lze přepsat řetězec $\alpha = uAv$ na řetězec $\beta = uxv$ za použití pravidla $A \rightarrow x$, potom mezi řetězci $\alpha$ a~$\beta$ je relace přímé derivace, zapsáno $\alpha \Rightarrow \beta$.
 
-\begin{figure}
+\begin{figure}[h]
+    \centering
+    \includesvg{obrazky-figures/derivacni_krok_bkg}
     \caption{\todo{obrazek nahrazeni kusu retezce za novy - podobny jako je v~ifj prezentaci}}
 \end{figure}
 
@@ -178,13 +180,13 @@ Následující definice převzaty z~\cite{TIN-opora}.
     Nechť $M = (Q, \Sigma, \Gamma, R, s, S, F)$ je ZA.\\
     Konfigurací ZA nazveme trojici
     \begin{equation*}
-        (q, w, \alpha) \in Q \times \Sigma^* \times \Gamma^*, 
+        (w, q, \alpha) \in \Sigma^* \times Q \times \Gamma^*, 
     \end{equation*}
     kde
     \begin{itemize}
-        \item $q$ je aktuální stav automatu (\emph{řídící jednotky}),
         \item $w$ je doposud nepřečtená část vstupního řetězce, jehož první symbol je aktuálně pod čtecí hlavou.
         Pokud $w = \varepsilon$, všechny symboly byly ze vstupní pásky již přečteny,
+        \item $q$ je aktuální stav automatu (\emph{řídící jednotky}),
         \item $\alpha$ je obsah zásobníku.
     \end{itemize}
     Nechť $X_M$ reprezentuje množinu všech konfigurací ZA $M$.
@@ -196,12 +198,12 @@ Následující definice převzaty z~\cite{TIN-opora}.
     \begin{equation*}
         \beta\; \vdash_{\scriptscriptstyle M} \chi,
     \end{equation*}
-    kde $\beta = (uX, q, av),\; \chi = (ux, p, v)$ a~$Xqa \rightarrow xp \in R$.
-    Symbolem $X$ je reprezentován vrchol zásobníku a~symbol $a$ nechť reprezentuje aktuální symbol pod čtecí hlavou.
-    Pokud $x = \varepsilon$, pak se pouze vyjme $X$ ze zásobníku bez náhrady.
+    kde $\beta = (uA, q, av),\; \chi = (uw, p, v)$ a~$Aqa \rightarrow wp \in R$.
+    Symbolem $A$ je reprezentován vrchol zásobníku a~symbol $a$ nechť reprezentuje aktuální symbol pod čtecí hlavou.
+    Pokud $w = \varepsilon$, pak se pouze vyjme $A$ ze zásobníku bez náhrady.
     Relace $\vdash_{\scriptscriptstyle M}^n,\; \vdash_{\scriptscriptstyle M}^+,\; \vdash_{\scriptscriptstyle M}^*$ jsou opět $n$-tou mocninou relace, tranzitivním a~reflexivně-tran\-zi\-tiv\-ním uzávěrem.
 \end{definition}
-Oproti klasickým KA se při přechodu musí pracovat se zásobníkem, ze kterého se vyjme symbol $X$, namísto něj se vloží symbol $x$.
+Oproti klasickým KA se při přechodu musí pracovat se zásobníkem, ze kterého se vyjme symbol $A$, namísto něj se vloží symbol $w$.
 
 
 

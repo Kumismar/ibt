@@ -91,7 +91,6 @@
 \usepackage{enumitem}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-\usepackage{turnstile}
 
 \floatname{algorithm}{Algoritmus}
 
@@ -128,6 +127,8 @@
         \usepackage[pdftex]{graphicx}
     \fi
 \fi
+
+\usepackage{svg}
 
 \newtoggle{phd_summary}
 \togglefalse{phd_summary}
@@ -1254,7 +1255,6 @@
 \usepackage{xcolor,colortbl}
 \usepackage{multirow}
 \usepackage{tabularx}
-\usepackage{graphicx}
 \usepackage{url}
 \DeclareUrlCommand\url{\def\UrlLeft{<}\def\UrlRight{>} \urlstyle{tt}}
 \def\UrlBreaks{\do\/\do-}
