@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-07 23:08
+ * @ Modified time: 2024-04-08 11:40
  */
 
 #include "while_loop.hpp"
@@ -14,6 +14,17 @@
 WhileLoop::WhileLoop()
 {
     this->type = While_s;
+}
+
+WhileLoop::~WhileLoop()
+{
+    if (this->body != nullptr) {
+        delete this->body;
+    }
+
+    if (this->condition != nullptr) {
+        delete this->condition;
+    }
 }
 
 void WhileLoop::ProcessToken(Token& token)

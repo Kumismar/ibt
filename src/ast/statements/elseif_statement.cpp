@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-07 22:59
+ * @ Modified time: 2024-04-08 12:01
  */
 
 #include "elseif_statement.hpp"
@@ -13,6 +13,17 @@
 ElseifStatement::ElseifStatement()
 {
     this->type = Elseif_s;
+}
+
+ElseifStatement::~ElseifStatement()
+{
+    if (this->condition != nullptr) {
+        delete this->condition;
+    }
+
+    if (this->body != nullptr) {
+        delete this->body;
+    }
 }
 
 void ElseifStatement::ProcessToken(Token& token)

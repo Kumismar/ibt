@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-07 22:57
+ * @ Modified time: 2024-04-08 12:44
  */
 
 #include "for_loop.hpp"
@@ -16,6 +16,31 @@
 ForLoop::ForLoop()
 {
     this->type = For_s;
+    this->init = new Initialization();
+    this->init->type = NoType;
+}
+
+ForLoop::~ForLoop()
+{
+    if (this->init->type == Decl) {
+        delete this->init->data.decl;
+    }
+    else if (this->init->type == Expr) {
+        delete this->init->data.expr;
+    }
+    delete this->init;
+
+    if (this->condition != nullptr) {
+        delete this->condition;
+    }
+
+    if (this->endExpr != nullptr) {
+        delete this->endExpr;
+    }
+
+    if (this->body != nullptr) {
+        delete this->body;
+    }
 }
 
 void ForLoop::ProcessToken(Token& token)
@@ -42,7 +67,8 @@ void ForLoop::LinkNode(ASTNode* node, Nonterminal& nt)
             }
 
             if (this->phase == INITIALIZATION) {
-                this->init.exp = tmp;
+                this->init->type = Expr;
+                this->init->data.expr = tmp;
                 this->phase = CONDITION;
             }
             else if (this->phase == CONDITION) {
@@ -53,7 +79,6 @@ void ForLoop::LinkNode(ASTNode* node, Nonterminal& nt)
                 this->endExpr = tmp;
                 this->phase = BODY;
             }
-
             break;
         }
         case nDeclOrExpr: {
@@ -66,7 +91,8 @@ void ForLoop::LinkNode(ASTNode* node, Nonterminal& nt)
                 throw InternalError("ForLoop::LinkNode (case nDeclOrExp) invalid type: " + std::string(typeid(*node).name()));
             }
 
-            this->init.decl = tmp;
+            this->init->type = Decl;
+            this->init->data.decl = tmp;
             break;
         }
         default: {

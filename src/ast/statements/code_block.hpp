@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-07 16:36
- * @ Modified time: 2024-04-07 23:02
+ * @ Modified time: 2024-04-08 12:03
  */
 
 #pragma once
@@ -13,7 +13,8 @@
 typedef enum stType
 {
     Single_t,
-    List_t
+    List_t,
+    NoStatement
 } StType;
 
 typedef union stOrStList
@@ -30,6 +31,7 @@ private:
 
 public:
     CodeBlock();
+    ~CodeBlock() override;
     void ProcessToken(Token& token) override;
     void LinkNode(ASTNode* node, Nonterminal& nt) override;
 };

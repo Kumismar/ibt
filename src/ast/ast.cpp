@@ -2,12 +2,14 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-07 17:00
+ * @ Modified time: 2024-04-08 12:29
  */
 
 #include "ast.hpp"
 #include "internal_error.hpp"
 #include "statement_list.hpp"
+
+AST* AST::instance = nullptr;
 
 AST::AST()
 {
@@ -15,10 +17,19 @@ AST::AST()
     this->nodeContext.push(this->root);
 }
 
+AST::~AST()
+{
+    delete this->root;
+    while (!this->nodeContext.empty()) {
+        // All the objects in AST were already deleted, just pop the pointers
+        AST::instance->nodeContext.pop();
+    }
+}
+
 ASTNode* AST::GetCurrentContext()
 {
     if (this->nodeContext.empty()) {
-        throw InternalError("");
+        throw InternalError("AST::GetCurrentContext node context empty\n");
     }
     return this->nodeContext.top();
 }
@@ -26,6 +37,11 @@ ASTNode* AST::GetCurrentContext()
 void AST::PopContext()
 {
     this->nodeContext.pop();
+}
+
+void AST::PushContext(ASTNode* node)
+{
+    this->nodeContext.push(node);
 }
 
 AST* AST::GetInstance()
@@ -41,9 +57,5 @@ void AST::Cleanup()
     if (AST::instance == nullptr) {
         return;
     }
-    AST::instance->root->Cleanup();
-    while (!AST::instance->nodeContext.empty()) {
-        // All the objects in AST were already deleted, just pop the pointers
-        AST::instance->nodeContext.pop();
-    }
+    delete AST::instance;
 }

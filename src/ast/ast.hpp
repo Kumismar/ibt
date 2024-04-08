@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 10:26
- * @ Modified time: 2024-04-07 16:59
+ * @ Modified time: 2024-04-08 11:36
  */
 
 
@@ -25,6 +25,7 @@ public:
 
     ASTNode* GetCurrentContext();
     void PopContext();
+    void PushContext(ASTNode* node);
     static AST* GetInstance();
     static void Cleanup();
 };

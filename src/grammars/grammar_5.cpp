@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-07 20:41
+ * @ Modified time: 2024-04-08 13:31
  */
 
 #include "grammar_5.hpp"
@@ -13,7 +13,7 @@
 const std::vector<Rule> Grammar5::rightSideRules = {
     { new Token(tLCurl), new Nonterminal(nStatements), new Nonterminal(nStop), new Token(tRCurl) },
     { new Nonterminal(nStatement), new Nonterminal(nStop) },
-    { new Nonterminal(nStatement), new Nonterminal(nStop), new Nonterminal(nStatements), new Nonterminal(nStop) },
+    { new Nonterminal(nStatement), new Nonterminal(nStop), new Nonterminal(nStatements) },
     { new Token(tEps) }
 };
 

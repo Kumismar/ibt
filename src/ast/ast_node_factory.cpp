@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-07 14:28
- * @ Modified time: 2024-04-07 20:32
+ * @ Modified time: 2024-04-08 12:22
  */
 
 #include "ast_node_factory.hpp"
@@ -79,7 +79,6 @@ ASTNode* ASTNodeFactory::CreateASTNode(Nonterminal& nt, Token& t)
         case nCodeBlock: {
             return new CodeBlock();
         }
-
         default: {
             return nullptr;
         }

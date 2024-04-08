@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-07 22:56
+ * @ Modified time: 2024-04-08 11:42
  */
 
 #include "return_statement.hpp"
@@ -14,6 +14,13 @@
 ReturnStatement::ReturnStatement()
 {
     this->type = Return_s;
+}
+
+ReturnStatement::~ReturnStatement()
+{
+    if (this->expr != nullptr) {
+        delete this->expr;
+    }
 }
 
 void ReturnStatement::ProcessToken(Token& token)

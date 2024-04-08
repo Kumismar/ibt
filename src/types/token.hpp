@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-07 22:30
+ * @ Modified time: 2024-04-08 11:10
  */
 
 #pragma once
@@ -107,6 +107,7 @@ public:
     unsigned int GetLineNo() const;
     Token* Clone() const override;
     DataType GetDataType() const;
+    Value GetData() const;
     static void AddToken(TokenType ttype, DataType dtype);
 };
 

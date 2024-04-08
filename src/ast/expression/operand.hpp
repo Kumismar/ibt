@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 11:23
- * @ Modified time: 2024-04-07 21:49
+ * @ Modified time: 2024-04-08 10:50
  */
 
 #pragma once
@@ -10,9 +10,9 @@
 #include "token.hpp"
 typedef enum operandType
 {
-    Constant,
-    Variable,
-    FunctionCall
+    Constant_t,
+    Variable_t,
+    FunctionCall_t
 } OperandType;
 
 typedef struct OperandData {
@@ -27,8 +27,6 @@ protected:
     OperandData data;
 
 public:
-    Operand();
-    Operand(Token& t);
     virtual ~Operand()
     {
     }

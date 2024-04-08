@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 18:14
- * @ Modified time: 2024-04-03 18:21
+ * @ Modified time: 2024-04-08 10:53
  */
 
 #pragma once
@@ -12,6 +12,6 @@
 
 class Constant : public Operand
 {
-private:
-    OperandData data;
+public:
+    ~Constant() override;
 };

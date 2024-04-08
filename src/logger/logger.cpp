@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-04 10:24
+ * @ Modified time: 2024-04-08 11:24
  */
 
 #include "logger.hpp"
@@ -110,6 +110,11 @@ void Logger::AddTokenToRecents(Token& token)
 
 void Logger::PrintSyntaxError(const char* message)
 {
+    if (this->recentTokens.empty()) {
+        std::cerr << this->red << "File is empty!" << this->reset << std::endl;
+        return;
+    }
+
     std::cerr << this->red << "Syntax error "
               << this->reset << "near line " << std::to_string(this->recentTokens.front()->GetLineNo()) << ": " << message;
 

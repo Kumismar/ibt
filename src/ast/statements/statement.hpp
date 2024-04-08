@@ -2,12 +2,13 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 10:29
- * @ Modified time: 2024-04-07 22:59
+ * @ Modified time: 2024-04-08 11:01
  */
 
 #pragma once
 
 #include "ast_node.hpp"
+#include "nonterminal.hpp"
 
 typedef enum statementType
 {
@@ -29,5 +30,7 @@ protected:
     StatementType type;
 
 public:
-    virtual ~Statement();
+    virtual ~Statement() override = default;
+    virtual void ProcessToken(Token& t) override = 0;
+    virtual void LinkNode(ASTNode* node, Nonterminal& nt) override = 0;
 };

@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 11:44
- * @ Modified time: 2024-04-07 21:56
+ * @ Modified time: 2024-04-08 10:28
  */
 
 #pragma once
@@ -20,6 +20,7 @@ private:
 
 public:
     Declaration();
+    ~Declaration() override;
     void ProcessToken(Token& token) override;
     void LinkNode(ASTNode* node, Nonterminal& nt) override;
 };

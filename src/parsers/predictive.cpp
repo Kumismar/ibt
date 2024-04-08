@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-07 20:42
+ * @ Modified time: 2024-04-08 11:36
  */
 
 #include "predictive.hpp"
@@ -110,6 +110,7 @@ void PredictiveParser::parseNonterminal()
     if (stackNT->GetNonterminalType() == nStop) {
         AST::GetInstance()->PopContext();
         delete this->stackTop;
+        this->pushdown.pop_front();
         return;
     }
     // Expression => give control to precedence parser
@@ -138,6 +139,7 @@ void PredictiveParser::parseNonterminal()
         // if nonterminal doesnt have corresponding AST node, nullptr is returned
         if (node != nullptr) {
             AST::GetInstance()->GetCurrentContext()->LinkNode(node, *stackNT);
+            AST::GetInstance()->PushContext(node);
         }
 
         Logger* logger = Logger::GetInstance();

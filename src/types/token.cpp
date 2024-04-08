@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-07 22:29
+ * @ Modified time: 2024-04-08 11:20
  */
 
 #include "token.hpp"
@@ -17,6 +17,7 @@ Token::Token()
 {
     this->data.type = None;
     this->symbType = Token_t;
+    this->lineno = yyget_lineno();
 }
 
 Token::Token(const TokenType t)
@@ -30,6 +31,7 @@ Token::Token(const TokenType t)
         this->data.type = None;
     }
     this->symbType = Token_t;
+    this->lineno = yyget_lineno();
 }
 
 
@@ -231,6 +233,11 @@ Token* Token::Clone() const
 DataType Token::GetDataType() const
 {
     return this->data.type;
+}
+
+Value Token::GetData() const
+{
+    return this->data.value;
 }
 
 

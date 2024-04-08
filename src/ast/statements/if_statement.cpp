@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-07 21:37
+ * @ Modified time: 2024-04-08 12:45
  */
 
 #include "if_statement.hpp"
@@ -16,6 +16,28 @@
 IfStatement::IfStatement()
 {
     this->type = If_s;
+}
+
+IfStatement::~IfStatement()
+{
+    if (this->condition != nullptr) {
+        delete this->condition;
+    }
+
+    if (this->elseBody != nullptr) {
+        delete this->elseBody;
+    }
+
+    if (this->ifBody != nullptr) {
+        delete this->ifBody;
+    }
+
+    if (!this->elseifs.empty()) {
+        for (auto elseif: this->elseifs) {
+            delete elseif;
+        }
+        this->elseifs.clear();
+    }
 }
 
 void IfStatement::ProcessToken(Token& token)

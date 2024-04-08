@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-07 22:56
+ * @ Modified time: 2024-04-08 13:37
  */
 
 #include "function_definition.hpp"
@@ -12,7 +12,7 @@
 #include "statement.hpp"
 #include "token.hpp"
 
-void Parameter::SetType(const DataType type)
+void Parameter::SetType(const TokenType type)
 {
     this->type = type;
 }
@@ -27,15 +27,35 @@ FunctionDefinition::FunctionDefinition()
     this->type = FuncDef_s;
 }
 
+FunctionDefinition::~FunctionDefinition()
+{
+    if (currentParam != nullptr) {
+        delete currentParam;
+        this->params.pop_front();
+    }
+
+    if (!this->params.empty()) {
+        for (auto param: this->params) {
+            delete param;
+        }
+        this->params.clear();
+    }
+
+
+    if (this->body != nullptr) {
+        delete this->body;
+    }
+}
+
 void FunctionDefinition::ProcessToken(Token& token)
 {
     if (this->isType(token)) {
-        if (this->body == nullptr) {
-            this->currentParam = new Parameter();
-            this->currentParam->SetType(token.GetDataType());
+        if (**std::next(inputTape.begin()) == tLCurl) { // next token is '{'
+            this->setReturnType(token);
         }
         else {
-            this->setReturnType(token);
+            this->currentParam = new Parameter();
+            this->currentParam->SetType(token.GetTokenType());
         }
     }
     else if (token == tVariable) {
