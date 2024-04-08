@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-08 13:37
+ * @ Modified time: 2024-04-08 22:41
  */
 
 #include "function_definition.hpp"
@@ -73,8 +73,8 @@ void FunctionDefinition::ProcessToken(Token& token)
 
 void FunctionDefinition::LinkNode(ASTNode* node, Nonterminal& nt)
 {
-    if (nt.GetNonterminalType() == nCodeBlock) {
-        CodeBlock* tmp = dynamic_cast<CodeBlock*>(node);
+    if (nt.GetNonterminalType() == nStatements) {
+        StatementList* tmp = dynamic_cast<StatementList*>(node);
         if (tmp == nullptr) {
             throw InternalError("FunctionDefiniton::LinkNode (case nCodeBlock) invalid type: " + std::string(typeid(*node).name()));
         }

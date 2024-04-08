@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 18:30
- * @ Modified time: 2024-04-08 13:36
+ * @ Modified time: 2024-04-08 22:40
  */
 
 #pragma once
@@ -30,7 +30,7 @@ private:
     std::string name;
     DataType returnType;
     std::list<Parameter*> params;
-    CodeBlock* body = nullptr;
+    StatementList* body = nullptr;
 
     bool isType(const Token& token) const;
     void setReturnType(const Token& token);

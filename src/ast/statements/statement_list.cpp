@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-07 16:18
- * @ Modified time: 2024-04-08 12:58
+ * @ Modified time: 2024-04-08 22:50
  */
 
 #pragma once
@@ -46,6 +46,11 @@ void StatementList::LinkNode(ASTNode* node, Nonterminal& nt)
 
         tmp->type = Expression_t;
         tmp->data.expression = tmpNode;
+    }
+    else if (nt.GetNonterminalType() == nStatements) {
+        // This is the case of rule <statements> -> <statement> <statements> where new node is generated for each <statements>
+        // Since there has to be <codeblock> between in order to have nested statements, we can just ignore it.
+        return;
     }
     else {
         Statement* tmpStmt = dynamic_cast<Statement*>(node);
