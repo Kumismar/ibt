@@ -122,13 +122,17 @@ Výpočetní krok znamená přechod z~jedné konfigurace do druhé za přečten�
     Je to binární relace na množině konfigurací\,--\,pokud $\beta\, \vdash_{\scriptscriptstyle M} \chi$, pak $(\beta, \chi) \in X_M \times X_M$.
     Pokud $a = \varepsilon$, není ze vstupní pásky přečten žádný symbol.
     
-    Symboly $\vdash_{\scriptscriptstyle M}^n, \vdash_{\scriptscriptstyle M}^+$ a~$\vdash_{\scriptscriptstyle M}^*$ nechť značí příslušně $n$-tou mocninu pro $n \geq 0$, tranzitivní a reflexivně-tranzitivní uzávěr relace $\vdash_M$ podobně jako u~derivačního kroku BKG (\ref{def_derivacni_krok}), čímž reprezentují \emph{sekvenci přechodů} KA $M$.
+    Symboly $\vdash_{\scriptscriptstyle M}^n, \vdash_{\scriptscriptstyle M}^+$ a~$\vdash_{\scriptscriptstyle M}^*$ nechť značí příslušně $n$-tou mocninu pro $n \geq 0$, tranzitivní a reflexivně-tranzitivní uzávěr relace $\vdash_{\scriptscriptstyle M}$ podobně jako u~derivačního kroku BKG (\ref{def_derivacni_krok}), čímž reprezentují \emph{sekvenci přechodů} KA $M$.
     Například pro konfigurace $\beta$ a~$\chi$ platí $\beta\; \vdash_{\scriptscriptstyle M}^+ \chi$ právě tehdy, když
     \begin{equation*}
         \beta = c_0 \vdash_{\scriptscriptstyle M} c_1 \vdash_{\scriptscriptstyle M} \ldots \vdash_{\scriptscriptstyle M} c_{n-1} \vdash_{\scriptscriptstyle M} c_{n} = \chi,
     \end{equation*}
     pokud $\beta, \chi, c_1, \ldots, c_{n-1} \in X_M,\; n \geq 1$.
 \end{definition}
+
+\begin{convention}
+    Bude-li z~kontextu jasné, že se jedná o~přechod automatu~$M$, pak bude relace přechodu $\vdash$ psána bez indexu $M$.  
+\end{convention}
 
 \begin{definition}
     Nechť $M = (Q, \Sigma, R, s, F)$ je KA.\\
@@ -166,7 +170,7 @@ Následující definice převzaty z~\cite{TIN-opora}.
         \item $\Gamma$ je konečná zásobníková abeceda,
         \item $R$ je konečná relace $R \subseteq \Gamma \times Q \times (\Sigma \cup \{\varepsilon\}) \times \Gamma^* \times Q$ nazývána množinou pravidel ZA,
         \begin{itemize}[label=$\circ$]
-            \item každé pravidlo $(A, q, a, w, p)$ může být zapsáno ve tvaru $Aqa \rightarrow wp$, kde $A \in \Gamma,$ $q, p \in Q,\; a \in \Sigma \cup \{\varepsilon\},\; w \in \Gamma^*$,
+            \item každé pravidlo $(A, q, a, w, p)$ může být zapsáno ve tvaru $Aqa \rightarrow wp$, kde $A \in \Gamma,$ $q, p \in Q,\; a \in \Sigma \cup \{\varepsilon\},\; w \in \Gamma^*$ \cite{meduna2017modely},
         \end{itemize}  
         \item $S \in \Gamma$ je počáteční symbol na zásobníku.
     \end{itemize}
@@ -176,50 +180,121 @@ Následující definice převzaty z~\cite{TIN-opora}.
     Zásobníkové automaty budou dále značeny zkráceně ZA.
 \end{convention}
 
-\begin{definition}
+\begin{definition}\label{def_konfigurace_za}
     Nechť $M = (Q, \Sigma, \Gamma, R, s, S, F)$ je ZA.\\
     Konfigurací ZA nazveme trojici
     \begin{equation*}
-        (w, q, \alpha) \in \Sigma^* \times Q \times \Gamma^*, 
+        (\alpha, q, w) \in \Gamma^* \times Q \times \Sigma^*, 
     \end{equation*}
     kde
     \begin{itemize}
-        \item $w$ je doposud nepřečtená část vstupního řetězce, jehož první symbol je aktuálně pod čtecí hlavou.
-        Pokud $w = \varepsilon$, všechny symboly byly ze vstupní pásky již přečteny,
+        \item $\alpha$ je obsah zásobníku,
         \item $q$ je aktuální stav automatu (\emph{řídící jednotky}),
-        \item $\alpha$ je obsah zásobníku.
+        \item $w$ je doposud nepřečtená část vstupního řetězce, jehož první symbol je aktuálně pod čtecí hlavou.
+        Pokud $w = \varepsilon$, všechny symboly byly ze vstupní pásky již přečteny.
     \end{itemize}
     Nechť $X_M$ reprezentuje množinu všech konfigurací ZA $M$.
 \end{definition}
 
-\begin{definition}
+\begin{definition}\label{def_prechod_za}
     Nechť $M = (Q, \Sigma, \Gamma, R, s, S, F)$ je ZA.\\
-    Přechod ZA je binární relace definována nad množinou konfigurací (podobně jako v definici \ref{def_prechod_ka}) v~podobě
+    Přechod ZA je binární relace definována nad množinou konfigurací (podobně jako v~definici \ref{def_prechod_ka}) v~podobě
     \begin{equation*}
-        \beta\; \vdash_{\scriptscriptstyle M} \chi,
+        \beta\; \vdash \chi,
     \end{equation*}
     kde $\beta = (uA, q, av),\; \chi = (uw, p, v)$ a~$Aqa \rightarrow wp \in R$.
     Symbolem $A$ je reprezentován vrchol zásobníku a~symbol $a$ nechť reprezentuje aktuální symbol pod čtecí hlavou.
     Pokud $w = \varepsilon$, pak se pouze vyjme $A$ ze zásobníku bez náhrady.
-    Relace $\vdash_{\scriptscriptstyle M}^n,\; \vdash_{\scriptscriptstyle M}^+,\; \vdash_{\scriptscriptstyle M}^*$ jsou opět $n$-tou mocninou relace, tranzitivním a~reflexivně-tran\-zi\-tiv\-ním uzávěrem.
+    Relace $\vdash^n,\; \vdash^+,\; \vdash^*$ jsou opět $n$-tou mocninou relace, tranzitivním a~reflexivně-tran\-zi\-tiv\-ním uzávěrem.
 \end{definition}
 Oproti klasickým KA se při přechodu musí pracovat se zásobníkem, ze kterého se vyjme symbol $A$, namísto něj se vloží symbol $w$.
 
-
-
 \subsection*{Rozšířený zásobníkový automat}\label{kap_rozsireny_ZA}
-Původní zásobníkový automat lze rozšírit o~další chování. Například o~možnost čtení více symbolů ze zásobníku než původního jednoho, tedy při přechodech mezi stavy měnit celé řetězce na vrcholu zásobníku.
+Rozšířené zásobníkové automaty reprezentují přirozené rozšíření klasických ZA, které na zásobníku mohou pracovat pouze s~jeho vrcholem.
+Rozšířené zásobníkové automaty mohou provádět expanzi symbolů na zásobníku v~libovolné hloubce, jinak pracují indenticky.
+Text a~definice v~této kapitole převzaty z~\cite{meduna2023automata, meduna_zemek_2014}, není-li řečeno jinak.
 
-\begin{definition}
+\begin{definition}\label{def_rza}
     \emph{Rozšířený zásobníkový automat} (RZA) je sedmice
     \begin{center}
         $M = (Q, \Sigma, \Gamma, R, s, S, F)$,
     \end{center}
     kde:
     \begin{itemize}
-        \item $Q, \Sigma, \Gamma, s, S, F$ jsou definovány stejně jako u~ZA (\ref{def_zasobnikovy_automat}),
-        \item $R$ je konečná množina pravidel ve tvaru $vpa \rightarrow wq$, kde $v, w \in \Gamma^*$, $p, q \in Q$, $a \in \Sigma \cup \{\varepsilon\}$.
+        \item $Q, \Sigma, s, S, F$ jsou definovány stejně jako u~klasických ZA (\ref{def_zasobnikovy_automat}),
+        \item $\Gamma$ je zásobníková abeceda, $\mathbb{N},\; Q,$ a~$\Gamma$ jsou navzájem disjunktní, $\Sigma \subseteq \Gamma$\dotaz{opravdu $\subseteq$ a ne $\subset$?}  a~$\Gamma \setminus \Sigma$ obsahuje speciální symbol $\#$ (\emph{spodní symbol}), který je považován za dno zásobníku, 
+        \item $R$ je konečná relace
+        \begin{alignat*}{-1}
+             &(\mathbb{N} \times Q \,\times \,&& (\Gamma \setminus (\Sigma \cup \{\#\})) &&\times Q \times (\Gamma \setminus \{\#\})^+) \;\cup \\
+             &(\mathbb{N} \times Q \,\times \,&& \{\#\} &&\times Q \times (\Gamma \setminus \{\#\})^*\{\#\}),
+        \end{alignat*}
+        místo uspořádané pětice $(m, q, A, p, v) \in R$ píšeme $mqA \rightarrow pv \in R$ a~$R$ nazýváme množinou pravidel.
+        \begin{itemize}[label=$\circ$]
+            \item Z definice $R$ lze vidět, že jsou dva typy přechodových pravidel, dají se zapsat ve tvaru
+            \begin{align*}
+                mqA  &\rightarrow pv,\\
+                mq\# &\rightarrow pv\# \; \cite{meduna_rgd_pda}.
+            \end{align*}
+            O~jejich použití a~rozdílech je psáno v~definici \ref{def_prechod_rza}.
+        \end{itemize}
     \end{itemize}
+\end{definition}
+
+\begin{convention}
+    Rozšířené zásobníkové automaty budou dále označeny zkratkou RZA.
+\end{convention}
+
+Přechody RZA pracují, stejně jako přechody ZA, nad konfiguracemi.
+Konfigurace jsou podobné těm u~klasických ZA, nicméně stav zásobníku musí končit symbolem $\#$ a~zbytek řetězce na zásobníku jej nesmí obsahovat. 
+\begin{definition}\label{def_konfigurace_za}
+    Nechť $M = (Q, \Sigma, \Gamma, R, s, S, F)$ je RZA.\\
+    Konfigurací RZA nazveme trojici
+    \begin{equation*}
+        (q, w, \alpha) \in Q \times \Sigma^* \times (\Gamma \setminus \{\#\})^*\{\#\}.
+    \end{equation*}
+    Nechť $X_M$ reprezentuje množinu všech konfigurací RZA $M$.
+\end{definition}
+
+Další podobnost je práce s~řetězci abedecedy $\Sigma$ a~s~pravidly při přechodech. 
+Jediná změna od klasických ZA již byla zmíněna na začátku této kapitoly\,--\,při přechodech se na vrcholu zásobníku mohou měnit celé řetězce.
+
+\begin{definition}\label{def_prechod_rza}
+    Nechť $M = (Q, \Sigma, \Gamma, R, s, S, F)$ je RZA a~$\beta,\; \chi \in X_M$ jeho konfigurace.\\
+    $M$ vyjme (anglicky \emph{pops}) ze zásobníku symbol a~přejde z~konfigurace $\beta$ do konfigurace $\chi$ za přečtení symbolu vstupní pásky, symbolicky zapsáno
+    \begin{equation*}
+        \beta\, \prescript{}{p}{\vdash}\; \chi,
+    \end{equation*}
+    pokud konfigurace jsou ve tvaru $\beta = (q, au, az),\; \chi = (q, u, z),\; a \in \Sigma$, $u \in \Sigma^*$, ${z \in \Gamma^*}$.
+    $M$ rozšíří (anglicky \emph{expands}) symbol na zásobníku a~přejde z~konfigurace $\beta$ do konfigurace $\chi$ za přečtení symbolu ze vstupní pásky, symbolicky zapsáno
+    \begin{equation*}
+        \beta\, \prescript{}{e}{\vdash}\; \chi,
+    \end{equation*} 
+    pokud konfigurace jsou ve tvaru $\beta = (q, w, uAz),\; \chi = (p, w, uvz)$ a~zároveň $mqA \rightarrow pv \in R$; $q, p \in Q$, $w \in \Sigma^*$, $A \in \Gamma$, $u, v, z \in \Gamma^*$; $m$ je hloubka symbolu $A$ v~zásobníku, respektive $u$ obsahuje $m-1$ \emph{nevstupních} symbolů (symboly $a$, pro které platí $\{a\, :\, a \in \Gamma \setminus \Sigma\}$). 
+    Pro zobrazení, že automat udělá přechod $\beta\, \prescript{}{e}{\vdash}\; \chi$ podle pravidla $mqA \rightarrow pv$, píšeme
+     \begin{equation*}
+        \beta\, \prescript{}{e}{\vdash}\; \chi \ \; [mqA \rightarrow pv].
+    \end{equation*}
+    $M$ udělá \emph{přechod} z~$\beta$ do $\chi$, psáno
+    \begin{equation*}
+        \beta\, \vdash\, \chi
+    \end{equation*}
+    právě tehdy, když $M$ udělá vyjmutí symbolu $\beta\, \prescript{}{p}{\vdash}\; \chi$ nebo expanzi symbolu $\beta\, \prescript{}{e}{\vdash}\; \chi$.
+    Tranzitivní uzávěry $\prescript{}{p}{\vdash^+}, \prescript{}{e}{\vdash^+}$, reflexivně-tranzitivní uzávěry $\prescript{}{p}{\vdash^*}, \prescript{}{e}{\vdash^*}$ a~$n$-té mocniny $\prescript{}{p}{\vdash^n}, \prescript{}{e}{\vdash^n}$ jsou definovány standardně.
+    Alternativní definice přechodu je popsána v~\cite{TIN-opora}.
+\end{definition}
+\begin{figure}[ht]
+    \caption{\todo{obrazek p-prechodu a e-prechodu rza}}\label{fig_prechod_rza}
+\end{figure}
+
+Pokud existuje $n \in \mathbb{N}$ takové, že pro všechna pravidla $M$ platí, že jejich hloubka je maximálně rovna $n$, pak říkáme, že $M$ je hloubky maximálně $n$, zapsáno $\prescript{}{n}{M}$.
+
+\begin{definition}
+    Nechť $\prescript{}{n}{M} = (Q, \Sigma, \Gamma, R, s, S, F)$ je RZA hloubky $n \in \mathbb{N}$. \\
+    Jazyk přijímaný automatem $M$ je
+    \begin{equation*}
+        L(\prescript{}{n}{M}) = \{w \in \Sigma^*: (s, w, S\#) \vdash^* (f, \varepsilon, \#) \text{ v } \prescript{}{n}{M},\; f \in F\}.
+    \end{equation*}
+
 \end{definition}
 
 \chapter{Důležité pojmy syntaktické analýzy \dotaz{Které věci sem patří/nepatří a jaké budou podnadpisy?}}\label{5_teorie_sa}

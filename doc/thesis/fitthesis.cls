@@ -106,7 +106,8 @@
 \newtheorem{example}{Příklad}
 \numberwithin{example}{section}
 
-
+\binoppenalty 9999
+\relpenalty 9999
 
 \ifczech
     \main@language{czech}
