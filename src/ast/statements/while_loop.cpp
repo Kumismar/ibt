@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-08 11:40
+ * @ Modified time: 2024-04-12 11:27
  */
 
 #include "while_loop.hpp"
@@ -42,6 +42,7 @@ void WhileLoop::LinkNode(ASTNode* node, Nonterminal& nt)
             }
 
             this->condition = tmp;
+            break;
         }
         case nCodeBlock: {
             CodeBlock* tmp = dynamic_cast<CodeBlock*>(node);
@@ -50,6 +51,7 @@ void WhileLoop::LinkNode(ASTNode* node, Nonterminal& nt)
             }
 
             this->body = tmp;
+            break;
         }
         default: {
             return;
