@@ -109,6 +109,13 @@
 \binoppenalty 9999
 \relpenalty 9999
 
+\usepackage{tocloft}
+\newlistof{dotazy}{qrs}{Dotazy}
+\newcommand{\dotaz}[1]{%
+    \textcolor{cyan}{\textbf{[[#1]]}}% Add your custom formatting here
+    \refstepcounter{dotazy}%
+    \addcontentsline{qrs}{dotazy}{\protect\numberline{\thedotazy}#1}\par}
+
 \ifczech
     \main@language{czech}
 \else
@@ -1380,8 +1387,6 @@
 
 %END Jan Pluskal (ipluskal) listings
 
-% Příkaz pro dotaz
-\newcommand{\dotaz}[1]{\textcolor{cyan}{\textbf{[[#1]]}}}
 
 % Příkazy pro TODO (3 alternativy - lze zvolit preferovanou)
 % commands for TODO (3 alternatives - preferred one can be selected)

@@ -6,11 +6,15 @@
 %\documentclass[../projekt.tex]{subfiles}
 %\begin{document}
 
+\listofdotazy
+
 \chapter{Úvod}\label{kap_uvod}
 
 \chapter{Základy teorie formálních jazyků}\label{kap_teorie}
+Základní přehled matematických znalostí potřebných k~pochopení této kapitoly (a~tím i~celé této práce) je popsán například v~\cite{meduna_zemek_2014}, druhá kapitola.
 
 \section{Abeceda, řetězec a jazyk}
+
 \section{Chomského hierarchie}
 \section{Bezkontextová gramatika}\label{kap_bkg}
 Následující definice převzaty z~\cite{TIN-opora}.
@@ -158,7 +162,7 @@ Výpočetní krok znamená přechod z~jedné konfigurace do druhé za přečten�
 \section{Zásobníkový automat}\label{kap_zasobnikovy_automat}
 Zásobníkový automat je rozšíření konečného automatu, popsaného v~definici \ref{def_konecny_automat}, o~zásobník.
 Zásobník slouží jako paměťové médium, na které si automat může ukládat informace v~podobě symbolů zásobníkové abecedy.
-Následující definice převzaty z~\cite{TIN-opora}.
+Následující definice převzaty z~\cite{meduna2023automata, TIN-opora}.
 \begin{definition}\label{def_zasobnikovy_automat}
     \emph{Zásobníkový automat} (ZA) je sedmice 
     \begin{center}
@@ -208,6 +212,32 @@ Následující definice převzaty z~\cite{TIN-opora}.
     Relace $\vdash^n,\; \vdash^+,\; \vdash^*$ jsou opět $n$-tou mocninou relace, tranzitivním a~reflexivně-tran\-zi\-tiv\-ním uzávěrem.
 \end{definition}
 Oproti klasickým KA se při přechodu musí pracovat se zásobníkem, ze kterého se vyjme symbol $A$, namísto něj se vloží symbol $w$.
+
+Automat $M$ přijímá řetězec právě tehdy, když $Ssw \vdash^* uf$ v~$M;$ $u \in \Gamma^*, f \in F$.
+\begin{definition}\label{def_jazyk_za}
+    Nechť $M = (Q, \Sigma, \Gamma, R, s, S, F)$ je ZA.\\
+    Jazyk přijímaný $M$ je
+    \begin{equation*}
+        L(M) = \{w : w \in \Sigma^*,\; Ssw \vdash^* f,\; f \in F\}.
+    \end{equation*}
+\end{definition}
+
+\begin{example}\label{example_za}
+    Nechť $M = (\{s, f\}, \{a, b\}, \{S, a\}, R, s, S, \{f\})$ je ZA a 
+    \begin{equation*}
+        R = \{Ssa \rightarrow as,\; asas \rightarrow aas,\; asb \rightarrow f,\; afb \rightarrow f\}.
+    \end{equation*}
+    Počáteční konfigurace nechť je $(S, s, aaabbb)$.
+    Přechody $M$ budou vypadat následovně:
+    \begin{alignat*}{2}
+        (S, s, aaabbb) &\vdash (a, s, aabbb) \quad && [Ssa \rightarrow as] \\
+                       &\vdash (aa, s, abbb) \quad && [asa \rightarrow aas] \\
+                       &\vdash (aaa, s, bbb) \quad && [asa \rightarrow aas] \\
+                       &\vdash (aa, f, bb) \quad   && [asb \rightarrow f] \\ 
+                       &\vdash (a, f, b) \quad      && [afb \rightarrow f] \\
+                       &\vdash (\varepsilon, f, \varepsilon) \quad && [afb \rightarrow f]
+    \end{alignat*}
+\end{example}
 
 \subsection*{Rozšířený zásobníkový automat}\label{kap_rozsireny_ZA}
 Rozšířené zásobníkové automaty reprezentují přirozené rozšíření klasických ZA, které na zásobníku mohou pracovat pouze s~jeho vrcholem.
@@ -270,7 +300,7 @@ Jediná změna od klasických ZA již byla zmíněna na začátku této kapitoly
         \beta\, \prescript{}{e}{\vdash}\; \chi,
     \end{equation*} 
     pokud konfigurace jsou ve tvaru $\beta = (q, w, uAz),\; \chi = (p, w, uvz)$ a~zároveň $mqA \rightarrow pv \in R$; $q, p \in Q$, $w \in \Sigma^*$, $A \in \Gamma$, $u, v, z \in \Gamma^*$; $m$ je hloubka symbolu $A$ v~zásobníku, respektive $u$ obsahuje $m-1$ \emph{nevstupních} symbolů (symboly $a$, pro které platí $\{a\, :\, a \in \Gamma \setminus \Sigma\}$). 
-    Pro zobrazení, že automat udělá přechod $\beta\, \prescript{}{e}{\vdash}\; \chi$ podle pravidla $mqA \rightarrow pv$, píšeme
+    Pro ilustraci, že automat udělá přechod $\beta\, \prescript{}{e}{\vdash}\; \chi$ podle pravidla $mqA \rightarrow pv$, píšeme
      \begin{equation*}
         \beta\, \prescript{}{e}{\vdash}\; \chi \ \; [mqA \rightarrow pv].
     \end{equation*}
@@ -288,16 +318,60 @@ Jediná změna od klasických ZA již byla zmíněna na začátku této kapitoly
 
 Pokud existuje $n \in \mathbb{N}$ takové, že pro všechna pravidla $M$ platí, že jejich hloubka je maximálně rovna $n$, pak říkáme, že $M$ je hloubky maximálně $n$, zapsáno $\prescript{}{n}{M}$.
 
-\begin{definition}
+\begin{definition}\label{def_jazyk_rza}
     Nechť $\prescript{}{n}{M} = (Q, \Sigma, \Gamma, R, s, S, F)$ je RZA hloubky $n \in \mathbb{N}$. \\
     Jazyk přijímaný automatem $M$ je
     \begin{equation*}
         L(\prescript{}{n}{M}) = \{w \in \Sigma^*: (s, w, S\#) \vdash^* (f, \varepsilon, \#) \text{ v } \prescript{}{n}{M},\; f \in F\}.
     \end{equation*}
-
 \end{definition}
 
-\chapter{Důležité pojmy syntaktické analýzy \dotaz{Které věci sem patří/nepatří a jaké budou podnadpisy?}}\label{5_teorie_sa}
+Tyto jazyky jsou přijímané vyprázdněním zásobníku a~zároveň přechodem do koncového stavu automatu.
+Dále existují jazyky přijímané RZA pouze vyprázdněním zásobníku, přičemž automat se nemusí dostat do koncového stavu.
+
+\begin{definition}\label{def_jazyk_rza_empty}
+    Nechť $\prescript{}{n}{M} = (Q, \Sigma, \Gamma, R, s, S, F)$ je RZA hloubky $n \in \mathbb{N}$. \\
+    Jazyk přijímaný automatem M vyprázdněním zásobníku je
+    \begin{equation*}
+        E(\prescript{}{n}{M}) = \{w \in \Sigma^* : (s, w, S\#) \vdash^* (q, \varepsilon, \#) \text{ v~}\prescript{}{n}{M},\; q \in Q\}.
+    \end{equation*}
+\end{definition}
+
+\begin{example}\label{example_rza}
+    Nechť $\prescript{}{2}{M} = (\{s, q, p, f\}, \{a, b, c\}, \Sigma \cup \{A, S, \#\}, R, s, S, \{f\})$, kde $R$ je
+    \begin{alignat*}{3}
+        & 1sS \rightarrow qAA, \qquad \qquad && 1qA \rightarrow fab, \qquad \qquad && 1fA \rightarrow fc, \\
+        & 1qA \rightarrow paAb, \qquad \qquad && 2pA \rightarrow qAc. \qquad \qquad &&
+    \end{alignat*}
+    Mějme počáteční konfiguraci $(s, aabbcc, S\#)$.
+    $M$ udělá nejdříve dvakrát expanzi\,--\,jednou expanduje startovací symbol na $AA$, přičemž $A$ není vstupní symbol, takže expanze proběhne podruhé.
+    \begin{alignat*}{2}
+        (s, aabbcc, S\#)\, &\prescript{}{e}{\vdash}\; (q, aabbcc, AA\#) \quad && [1sS \rightarrow qAA] \\
+                           &\prescript{}{e}{\vdash}\; (p, aabbcc, aAbA\#) \quad && [1qA \rightarrow paAb] \\
+    \end{alignat*}
+    Na aktuální konfiguraci je vidět, že na vrcholu zásobníku i~aktuálně čtený symbol je $a$.
+    $M$ tento symbol vyjme.
+    \begin{equation*}
+        (p, aabbcc, aAbA\#)\, \prescript{}{p}{\vdash}\; (p, abbcc, AbA\#)
+    \end{equation*}
+    Následující krok bude znovu expanze, tentokrát hlouběji v~zásobníku.
+    \begin{equation*}
+        (p, abbcc, AbA\#)\, \prescript{}{e}{\vdash}\; (q, abbcc, AbAc\#) \quad [2pA \rightarrow qAc]
+    \end{equation*}
+    Dále přijímání řetězce probíhá stejným způsobem jako v předešlých krocích.
+    \dotaz{Příklad v knize - přeskočení kroku z 5 na 6, z kroku 7 na 8 je psána expanze, ale nic se v konfiguraci nezměnilo - vysvětlím osobně}
+    \begin{alignat*}{2}
+        (q, abbcc, AbAc\#)\, &\prescript{}{e}{\vdash}\; (q, abbcc, abbAc\#) \quad && [1qA \rightarrow fab] \\
+                             &\prescript{}{p}{\vdash}\; (f, bbcc, bbAc\#) \quad && \\
+                             &\prescript{}{p}{\vdash}\; (f, bcc, bAc\#) \quad && \\
+                             &\prescript{}{p}{\vdash}\; (f, cc, Ac\#) \quad && \\
+                             &\prescript{}{e}{\vdash}\; (f, cc, cc\#) \quad && [1fA \rightarrow fc] \\ 
+                             &\prescript{}{p}{\vdash}\; (f, c, c\#) \quad && \\
+                             &\prescript{}{p}{\vdash}\; (f, \varepsilon, \#) \quad &&
+    \end{alignat*}
+\end{example}
+
+\chapter{Důležité pojmy syntaktické analýzy}\label{5_teorie_sa}
 
 \section{Množiny potřebné k~sestrojení LL tabulky}
 
