@@ -89,10 +89,28 @@
 \usepackage{enumitem}
 \usepackage{mathtools}
 \usepackage{enumitem}
-\usepackage{algorithm}
+\usepackage[section]{algorithm}
 \usepackage{algpseudocode}
 
 \floatname{algorithm}{Algoritmus}
+
+\counterwithin{table}{section}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+
+\algnewcommand\algorithmicinput{\textbf{Vstup:}}
+\algnewcommand\Input{\item[\algorithmicinput]}
+\algnewcommand\algorithmicoutput{\textbf{Výstup:}}
+\algnewcommand\Output{\item[\algorithmicoutput]}
+\algnewcommand\algorithmicspace{\textbf{}}
+\algnewcommand\NewLine{\item[\algorithmicspace]}
+
+\algnewcommand\algorithmicswitch{\textbf{switch}}
+\algnewcommand\algorithmiccase{\textbf{case}}
+
+\algdef{SE}[SWITCH]{Switch}{EndSwitch}[1]{\algorithmicswitch\ #1\ \textbf{:}}{\algorithmicend\ \algorithmicswitch}
+\algdef{SE}[CASE]{Case}{EndCase}[1]{\algorithmiccase\ #1\ \textbf{:}}{\algorithmicend\ \algorithmiccase}
+\algtext*{EndSwitch}
+\algtext*{EndCase}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definice}
@@ -108,13 +126,6 @@
 
 \binoppenalty 9999
 \relpenalty 9999
-
-\usepackage{tocloft}
-\newlistof{dotazy}{qrs}{Dotazy}
-\newcommand{\dotaz}[1]{%
-    \textcolor{cyan}{\textbf{[[#1]]}}% Add your custom formatting here
-    \refstepcounter{dotazy}%
-    \addcontentsline{qrs}{dotazy}{\protect\numberline{\thedotazy}#1}\par}
 
 \ifczech
     \main@language{czech}
@@ -1390,9 +1401,20 @@
 
 % Příkazy pro TODO (3 alternativy - lze zvolit preferovanou)
 % commands for TODO (3 alternatives - preferred one can be selected)
-\newcommand{\todo}[1]{\textcolor{red}{\textbf{[[#1]]}}}
-%\usepackage[colorinlistoftodos,prependcaption,textsize=tiny, disable]{todonotes}
-%\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+
+\usepackage{tocloft}
+\newlistof{dotazy}{dot}{Dotazy}
+\newcommand{\dotaz}[1]{%
+    \textcolor{cyan}{\textbf{[[#1]]}}% Add your custom formatting here
+    \refstepcounter{dotazy}%
+    \addcontentsline{dot}{dotazy}{\protect\numberline{\thedotazy}\textcolor{cyan}{#1}}\par}
+
+\newlistof{todos}{tod}{Todos}
+\newcommand{\todo}[1]{%
+    \textcolor{red}{\textbf{[[#1]]}}
+    \refstepcounter{todos}%
+    \addcontentsline{tod}{todos}{\protect\numberline{\thetodos}#1}\par}
+
 
 \newcommand{\phony}[1]{\textcolor{gray}{#1}}
 \newcommand{\blind}[1]{\textcolor{gray}{\Blindtext[#1]}}
