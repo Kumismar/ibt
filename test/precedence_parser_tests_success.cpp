@@ -2,11 +2,12 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-02 14:54
- * @ Modified time: 2024-04-03 17:32
+ * @ Modified time: 2024-04-15 14:48
  */
 
 #include <gtest/gtest.h>
 
+#include "ast.hpp"
 #include "nonterminal.hpp"
 #include "precedence.hpp"
 #include "token.hpp"
@@ -30,6 +31,7 @@ protected:
         }
         inputTape.clear();
         delete this->parser;
+        AST::GetInstance()->Cleanup();
     }
 };
 

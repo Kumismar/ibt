@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-08 12:29
+ * @ Modified time: 2024-04-15 15:02
  */
 
 #include "ast.hpp"
@@ -19,17 +19,20 @@ AST::AST()
 
 AST::~AST()
 {
-    delete this->root;
     while (!this->nodeContext.empty()) {
         // All the objects in AST were already deleted, just pop the pointers
         AST::instance->nodeContext.pop();
+    }
+    if (this->root != nullptr) {
+        delete this->root;
+        this->root = nullptr;
     }
 }
 
 ASTNode* AST::GetCurrentContext()
 {
     if (this->nodeContext.empty()) {
-        throw InternalError("AST::GetCurrentContext node context empty\n");
+        return nullptr;
     }
     return this->nodeContext.top();
 }
@@ -58,4 +61,5 @@ void AST::Cleanup()
         return;
     }
     delete AST::instance;
+    AST::instance = nullptr;
 }

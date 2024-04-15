@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 11:26
- * @ Modified time: 2024-04-03 17:56
+ * @ Modified time: 2024-04-15 16:25
  */
 
 #pragma once
@@ -15,5 +15,5 @@ class UnaryExpression : public Expression
 {
 private:
     Operator* optr = nullptr;
-    Operand* operand = nullptr;
+    Expression* operand = nullptr;
 };

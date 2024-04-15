@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 11:22
- * @ Modified time: 2024-04-03 17:55
+ * @ Modified time: 2024-04-15 16:25
  */
 
 #pragma once
@@ -14,7 +14,7 @@
 class BinaryExpression : Expression
 {
 private:
-    Operand* left = nullptr;
+    Expression* left = nullptr;
     Operator* optr = nullptr;
-    Operand* right = nullptr;
+    Expression* right = nullptr;
 };

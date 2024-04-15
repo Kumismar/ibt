@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-08 22:41
+ * @ Modified time: 2024-04-15 16:07
  */
 
 #include "function_definition.hpp"
@@ -31,7 +31,7 @@ FunctionDefinition::~FunctionDefinition()
 {
     if (currentParam != nullptr) {
         delete currentParam;
-        this->params.pop_front();
+        this->params.pop_back();
     }
 
     if (!this->params.empty()) {

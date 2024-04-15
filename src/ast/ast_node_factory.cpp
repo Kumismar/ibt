@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-07 14:28
- * @ Modified time: 2024-04-08 12:22
+ * @ Modified time: 2024-04-15 15:55
  */
 
 #include "ast_node_factory.hpp"
@@ -60,12 +60,7 @@ ASTNode* ASTNodeFactory::CreateASTNode(Nonterminal& nt, Token& t)
             }
         }
         case nIf2: {
-            if (t.GetTokenType() == tElseif) {
-                return new ElseifStatement();
-            }
-            else {
-                return nullptr;
-            }
+            return new ElseifStatement();
         }
         case nStatements: {
             return new StatementList();

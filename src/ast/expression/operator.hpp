@@ -2,11 +2,12 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 11:25
- * @ Modified time: 2024-04-03 18:39
+ * @ Modified time: 2024-04-15 16:27
  */
 
 #pragma once
 
+#include "token.hpp"
 typedef enum operatorType
 {
     Plus,
@@ -31,4 +32,8 @@ class Operator
 {
 private:
     OperatorType type;
+
+public:
+    OperatorType GetType() const;
+    void SetType(const TokenType& t);
 };

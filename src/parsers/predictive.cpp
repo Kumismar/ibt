@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-08 22:26
+ * @ Modified time: 2024-04-15 16:08
  */
 
 #include "predictive.hpp"
@@ -138,8 +138,11 @@ void PredictiveParser::parseNonterminal()
         ASTNode* node = ASTNodeFactory::CreateASTNode(*stackNT, *this->inputToken);
         // if nonterminal doesnt have corresponding AST node, nullptr is returned
         if (node != nullptr) {
-            AST::GetInstance()->GetCurrentContext()->LinkNode(node, *stackNT);
-            AST::GetInstance()->PushContext(node);
+            ASTNode* tmpNode = AST::GetInstance()->GetCurrentContext();
+            if (tmpNode != nullptr) {
+                tmpNode->LinkNode(node, *stackNT);
+                AST::GetInstance()->PushContext(node);
+            }
         }
 
         Logger* logger = Logger::GetInstance();
