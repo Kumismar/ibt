@@ -1523,7 +1523,7 @@ LR analýza je podrobně popsána v~\cite{medunaElementsOfCompDesign}.
 \subsection*{Precedenční analýza výrazů}
 Precedenční analyzátor pracuje na základě $G = (N, T, P, S)$ pomocí \emph{precedenční tabulky}.
 Precedenční tabulka je struktura se sloupci i~řádky tvořenými symboly z~množiny $T \cup \{\$\}$, kterými se tabulka v~praxi indexuje.
-Každé pole precedenční tabulky má hodnotu jednoho ze symbolů množiny $\{<, >, =, \times\}$.
+Každé pole precedenční tabulky má hodnotu jednoho ze symbolů množiny $\{<, >, =, \times, \text{\checkmark}\}$.
 
 Analyzátor si na zásobník ukládá terminály i~neterminály a~navíc speciální znak $<$, který určuje počátek řetězce připravený na redukci.
 Dno zásobníku pak reprezentuje symbol \$; zásobníková abeceda toho analyzátoru je tedy $T \cup \{<, \$\}$.
@@ -1565,20 +1565,27 @@ Informace k~algoritmu čerpány z~\cite{medunaElementsOfCompDesign,meduna2017sa-
                 \Case{$\times$}
                     \State chyba \Comment{tabulka detekovala chybu}
                 \EndCase
+                \Case{\checkmark}
+                    \State úspěch
+                \EndCase
             \EndSwitch
-        \Until{$b = \$$ \textbf{and} \texttt{stack.top()} = $\$S$}
+        \Until{chyba \textbf{or} úspěch}
     \end{algorithmic}
 \end{algorithm}
 
 Jednotlivé kroky analýzy jsou určeny precedenční tabulkou, jejíž řádek je indexován nejvrchnějším (\emph{topmost}) terminálem na zásobníku a~sloupec je indexován vstupním terminálem, případně symbolem~\$.
-Pokud je v~políčku tabulky symbol $=$ nebo $<$, pak analyzátor provede operaci $SHIFT$, přičemž pro symbol $<$ na zásobník prvně vloží $<$ a~až poté vstupní symbol.
-Symbol $<$ slouží k~rozpoznání řetězce, který má být v~rámci redukce na zásobníku nahrazen.
-Pokud je v~tabule na políčku $>$, pak proběhne operace $REDUCE$, při které:
+Pokud je v~políčku tabulky symbol $=$ nebo $<$, pak analyzátor provede operaci $SHIFT$.
+Je-li varianta $SHIFT(<)$, pak je nejdříve na zásobník vložen symbol $<$, a~to před první terminál, který se na zásobníku vyskytuje\,--\,pokud je na vrcholu zásobníku neterminál, přeskočí se.
+Slouží k~rozpoznání řetězce, který má být v~rámci redukce na zásobníku nahrazen.
+Poté se vloží na zásobník i~vstupní symbol a~přečte se nový ze vstupního řetězce.
+Pokud je v~tabulce na políčku $>$, pak proběhne operace $REDUCE$, při které:
 \begin{enumerate}
     \item najde na zásobníku řetězec $\alpha$, který má být zredukován (přepsán) řetězcem novým,
     \item určí pravidlo, u kterého se pravá strana rovná řetězci $\alpha$,
     \item nahradí řetězec $\alpha$ levou stranou určeného pravidla.
-\end{enumerate} 
+\end{enumerate}
+Když tabulka vrátí symbol $\times$, nastává chyba. 
+Při symbolu \checkmark analýza končí úspěšně.
 
 Na následujícím příkladu z~\cite{medunaElementsOfCompDesign} je ukázán princip fungování algoritmu \ref{alg_precedencni_sa}.
 \begin{example}
@@ -1592,7 +1599,7 @@ Na následujícím příkladu z~\cite{medunaElementsOfCompDesign} je ukázán pr
     A~předpokládejme precedenční tabulku s~těmito hodnotami:
     \begin{table}[h]
         \centering
-        \begin{tabularx}{0.33\textwidth}{X|XXXXXX}
+        \begin{tabularx}{0.34\textwidth}{X|XXXXXX}
             \hline 
             & $\wedge$ & $\vee$ & $i$ & $($ & $)$ & \$ \\
             \hline
@@ -1601,16 +1608,72 @@ Na následujícím příkladu z~\cite{medunaElementsOfCompDesign} je ukázán pr
             $i$ & $>$ & $>$ & $\times$ & $\times$ & $>$ & $>$ \\
             $($ & $<$ & $<$ & $<$ & $<$ & $=$ & $>$ \\
             $)$ & $>$ & $>$ & $\times$ & $\times$ & $>$ & $>$ \\
-            \$ & $<$ & $<$ & $<$ & $<$ & $\times$ & $\times$ \\
+            \$ & $<$ & $<$ & $<$ & $<$ & $\times$ & \checkmark \\
             \hline 
         \end{tabularx}
         \caption{Precedenční tabulka pro pravidla $G$.}
     \end{table}
+
+    Nechť vstupní řetězec je $i \wedge (i \vee i)\$$.
+    \todo{obrazek dvou moznych derivacnich stromu}
+    Analýza toho řetězce je znázorněna v~tabulce \ref{tab_priklad_precedencni}.
+    \begin{table}[h]
+        \centering
+        \begin{tabularx}{0.85\textwidth}{p{0.24\textwidth}rrp{0.27\textwidth}}
+            \toprule
+            \textbf{Zásobník} & \textbf{Precedence} & \textbf{Vstup} & \textbf{Akce} \\
+            \midrule
+            $\underline{\$}$                   & $[\$, i] \rightarrow \; <$                  & $\underline{i} \wedge (i \vee i)\$$ & $SHIFT(<)$ \\
+            $\$<\underline{i}$                 & $[i, \wedge] \rightarrow \; >$              & $\underline{\wedge} (i \vee i)\$$   & $REDUCE(C \rightarrow i)$ \\
+            $\underline{\$}C$                  & $[\$ ,\wedge] \rightarrow \; <$             & $\underline{\wedge} (i \vee i)\$$  & $SHIFT(<)$ \\
+            $\$<C\underline{\wedge}$           & $[\wedge, (] \rightarrow \; <$              & $\underline{(}i \vee i)\$$          & $SHIFT(<)$ \\
+            $\$<C\wedge<\underline{(} $        & $[(, i] \rightarrow \; < $                  & $\underline{i} \vee i) \$ $         & $SHIFT(<) $ \\
+            $\$<C\wedge<(<\underline{i} $      & $[i, \vee] \rightarrow \; > $               & $\underline{\vee} i)\$ $            & $REDUCE(C \rightarrow i) $ \\
+            $\$<C\wedge<\underline{(}C $       & $[(, \vee] \rightarrow \; < $               & $\underline{\vee} i)\$ $            & $SHIFT(<)$ \\
+            $\$<C\wedge<(<C\underline{\vee}$   & $[\vee, i] \rightarrow \; <  $              & $\underline{i})\$ $                 & $SHIFT(<)$ \\
+            $\$<C\wedge<(<C\vee<\underline{i}$ & $[i, )] \rightarrow \; > $                  & $\underline{)}\$ $                  & $REDUCE(C \rightarrow i)$ \\
+            $\$<C\wedge<(<C\underline{\vee}C$  & $[\vee, )] \rightarrow \; > $               & $\underline{)}\$ $                  & $REDUCE(C \rightarrow C \vee C)$ \\
+            $\$<C\wedge<\underline{(}C$        & $[(, )] \rightarrow \; = $                  & $\underline{)}\$ $                  & $SHIFT(=)$ \\
+            $\$<C\wedge<(C\underline{)}$       & $[), \$] \rightarrow \; > $                 & $\underline{\$} $                   & $REDUCE(C \rightarrow (C))$ \\
+            $\$<C\underline{\wedge} C$         & $[\wedge, \$] \rightarrow \; > $            & $\underline{\$} $                   & $REDUCE(C \rightarrow C \wedge C)$ \\
+            $\underline{\$}C$                  & $[\$, \$] \rightarrow \; \text{\checkmark}$ & $\underline{\$} $                   & úspěch \\
+            \bottomrule
+        \end{tabularx}
+        \caption{Demonstrace algoritmu \ref{alg_precedencni_sa}.}
+        \label{tab_priklad_precedencni}
+    \end{table}
 \end{example}    
+\todo{obrazek derivacniho stromu}
 
 \subsection*{Konstrukce precedenční tabulky}
+Doposud nebylo zmíněno, co znamenají položky precedenční tabulky pro analýzu výrazů.
+Znaménka $<$, a~$>$ se interpretují jako priorita operátotů.
+Mějme dva operátory, například $\odot$ a~$\bigtriangleup$.
+Pokud $\odot < \bigtriangleup$, pak $\bigtriangleup$ má vyšší prioritu, a~v~algoritmu to znamená, že pravá strana pravidla obsahující operátor $\bigtriangleup$ bude redukována dříve než pravá strana obsahující operátor $\odot$ a~naopak.
+Pravidla pro tvorbu tabulky jsou pak následující \cite{medunaElementsOfCompDesign,meduna2017sa-zdola-nahoru}:
+\begin{enumerate}
+    \item Pokud operátor $\bigtriangleup$ má vyšší matematickou prioritu než operátor $\odot$, pak $\bigtriangleup > \odot$ a~$\odot < \bigtriangleup$.
+    \item Pokud operátory $\bigtriangleup$ a~$\odot$ jsou stejné matematické priority a~levě asociativní, pak $\bigtriangleup < \odot$ a~$\odot < \bigtriangleup$.
+    Pro pravě asociativní operátory platí $\bigtriangleup > \odot$ a~$\odot > \bigtriangleup$.
+    \item Pokud $a \in T$ může předcházet operandu $i$, pak $a < i$.
+    \item Pokud $a \in T$ může následovat za operandem $i$, pak $i > a$.
+    \item Závorky:
+    \begin{enumerate}
+        \item Pro jeden pár závorek platí $(=)$.
+        \item Pro $a \in T \setminus \{) ,\$\}$ platí $( < a$.
+        \item Pro $a \in T \setminus\{(, \$\}$ platí $a > )$.
+        \item Pokud $a \in T$ může předcházet $($, pak $a < ($. 
+        \item Pokud $a \in T$ může následovat za $)$, pak $) > a$.
+    \end{enumerate}
+    \item Nechť $\odot$ je libovolný operátor.
+    Pak platí $\$ < \odot$ a~$\odot > \$$.
+    Dále platí $\$ \text{ \checkmark } \$$.
+    \item Zbytek tabulky je vyplněn symbolem $\times$.
+\end{enumerate}
 
-\section{Abstraktní syntaktický strom}
+Precedenční analýza nedokáže pracovat s~$\varepsilon$-pravidly a~pravidly se stejnou pravou stranou pro jiné neterminály.
+V~praxi se tedy většinou používá výhradně pro analýzu výrazů.
+Často se kombinuje s~analýzou shora dolů (ať už prediktivní analýzou či rekurzívním sestupem), kdy analýza shora dolů kontroluje vstupní řetězec mimo výrazy a~pro výrazy předává řízení analýze precedenční.
 
 \chapter{Implementace syntaktického analyzátoru pro jazyk Koubp}\label{kap_implementace}
 
