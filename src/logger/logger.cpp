@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-08 11:24
+ * @ Modified time: 2024-04-15 19:13
  */
 
 #include "logger.hpp"
@@ -61,7 +61,7 @@ void Logger::AddLeftSide(Symbol* leftSide)
 
 void Logger::AddRightSide(Rule& rightSide)
 {
-    for (auto symbol = rightSide.rbegin(); symbol != rightSide.rend(); symbol++) {
+    for (auto symbol = rightSide.begin(); symbol != rightSide.end(); symbol++) {
         this->rightSideRule.push_front((*symbol)->Clone());
     }
 }
