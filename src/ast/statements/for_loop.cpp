@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-08 12:44
+ * @ Modified time: 2024-04-16 13:01
  */
 
 #include "for_loop.hpp"
@@ -41,6 +41,24 @@ ForLoop::~ForLoop()
     if (this->body != nullptr) {
         delete this->body;
     }
+}
+
+void ForLoop::PrintTree(std::ofstream& file, int& id, int parentId)
+{
+    int currentId = id++;
+    file << "node" << parentId << " -> node" << currentId << ";\n";
+    file << "node" << currentId << " [label=\"ForLoop\"];\n";
+
+    if (this->init->type == Decl) {
+        this->init->data.decl->PrintTree(file, id, currentId);
+    }
+    else if (this->init->type == Expr) {
+        this->init->data.expr->PrintTree(file, id, currentId);
+    }
+
+    this->condition->PrintTree(file, id, currentId);
+    this->endExpr->PrintTree(file, id, currentId);
+    this->body->PrintTree(file, id, currentId);
 }
 
 void ForLoop::ProcessToken(Token& token)

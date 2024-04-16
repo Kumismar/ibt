@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-07 16:18
- * @ Modified time: 2024-04-08 22:50
+ * @ Modified time: 2024-04-16 15:36
  */
 
 #pragma once
@@ -11,6 +11,11 @@
 #include "expression.hpp"
 #include "internal_error.hpp"
 #include "statement.hpp"
+
+StatementList::StatementList()
+{
+    this->type = StatementList_n;
+}
 
 StatementList::~StatementList()
 {
@@ -28,6 +33,22 @@ StatementList::~StatementList()
         delete item;
     }
     this->statements.clear();
+}
+
+void StatementList::PrintTree(std::ofstream& file, int& id, int parentId)
+{
+    int currentId = id++;
+    file << "node" << parentId << " -> node" << currentId << ";\n";
+    file << "node" << currentId << " [label=\"StatementList\"];\n";
+
+    for (auto item: this->statements) {
+        if (item->type == Statement_t) {
+            item->data.statement->PrintTree(file, id, currentId);
+        }
+        else {
+            item->data.expression->PrintTree(file, id, currentId);
+        }
+    }
 }
 
 void StatementList::ProcessToken(Token& token)

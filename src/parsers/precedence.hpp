@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-02 23:09
+ * @ Modified time: 2024-04-15 19:43
  */
 
 #pragma once
@@ -37,6 +37,8 @@ private:
     void skipOperandInParentheses(InputTape::iterator& token);
     bool isOperator(Token& token);
     void parseFunction();
+    void makeASTNode(Rule& rule);
+    bool isUnaryExpression(Rule& rule);
 
 public:
     ~PrecedenceParser();

@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-12 11:27
+ * @ Modified time: 2024-04-16 14:17
  */
 
 #include "while_loop.hpp"
@@ -24,6 +24,21 @@ WhileLoop::~WhileLoop()
 
     if (this->condition != nullptr) {
         delete this->condition;
+    }
+}
+
+void WhileLoop::PrintTree(std::ofstream& file, int& id, int parentId)
+{
+    int currentId = id++;
+    file << "node" << parentId << " -> node" << currentId << ";\n";
+    file << "node" << currentId << " [label=\"WhileLoop\"];\n";
+
+    if (this->condition != nullptr) {
+        this->condition->PrintTree(file, id, currentId);
+    }
+
+    if (this->body != nullptr) {
+        this->body->PrintTree(file, id, currentId);
     }
 }
 

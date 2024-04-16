@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-07 20:26
+ * @ Modified time: 2024-04-16 13:28
  */
 
 #include "analysis_success.hpp"
@@ -70,7 +70,7 @@ std::string ProcessArguments(int argc, char** argv)
     int opt;
     bool fileOption = false;
 
-    while ((opt = getopt(argc, argv, "df:")) != -1) {
+    while ((opt = getopt(argc, argv, "df:t")) != -1) {
         switch (opt) {
             case 'd': {
                 Logger::GetInstance()->EnableDebugPrint();
@@ -79,6 +79,10 @@ std::string ProcessArguments(int argc, char** argv)
             case 'f': {
                 filename = optarg;
                 fileOption = true;
+                break;
+            }
+            case 't': {
+                AST::GetInstance()->SetTreeFlag();
                 break;
             }
             default: {
@@ -108,6 +112,7 @@ int main(int argc, char** argv)
         predParser->Parse(false);
     }
     catch (SyntaxAnalysisSuccess const& e) {
+        AST::GetInstance()->PrintTree();
         std::cout << "Parsing successful." << std::endl;
         retCode = 0;
     }

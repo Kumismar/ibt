@@ -1,0 +1,27 @@
+digraph G {
+node0 [label="Program"];
+node0 -> node1;
+node1 [label="StatementList"];
+node1 -> node2;
+node2 [label="IfStatement"];
+node2 -> node3;
+node3 [label="BinaryExpression"];
+node3 -> node4;
+node4 [label="Variable: number"];
+node3 -> node5;
+node5 [label="<"];
+node3 -> node6;
+node6 [label="Constant: 0"];
+node2 -> node7;
+node7 [label="CodeBlock"];
+node7 -> node8;
+node8 [label="StatementList"];
+node8 -> node9;
+node9 [label="ReturnStatement"];
+node9 -> node10;
+node10 [label="UnaryExpression"];
+node10 -> node11;
+node11 [label="-"];
+node10 -> node12;
+node12 [label="Constant: 1"];
+}

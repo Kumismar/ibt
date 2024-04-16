@@ -2,11 +2,10 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-15 16:07
+ * @ Modified time: 2024-04-16 14:41
  */
 
 #include "function_definition.hpp"
-#include "code_block.hpp"
 #include "internal_error.hpp"
 #include "nonterminal.hpp"
 #include "statement.hpp"
@@ -20,6 +19,21 @@ void Parameter::SetType(const TokenType type)
 void Parameter::SetName(const std::string& name)
 {
     this->name = name;
+}
+
+void Parameter::PrintTree(std::ofstream& file, int& id, int parentId)
+{
+    int currentId = id++;
+    file << "node" << parentId << " -> node" << currentId << ";\n";
+    file << "node" << currentId << " [label=\"Parameter\"];\n";
+
+    file << "node" << currentId << " -> node" << ++currentId << ";\n";
+    id++;
+    file << "node" << currentId << " [label=\"Name: " << this->name << "\"];\n";
+
+    file << "node" << currentId << " -> node" << ++currentId << ";\n";
+    id++;
+    file << "node" << currentId << " [label=\"Type: " << this->type << "\"];\n";
 }
 
 FunctionDefinition::FunctionDefinition()
@@ -45,6 +59,28 @@ FunctionDefinition::~FunctionDefinition()
     if (this->body != nullptr) {
         delete this->body;
     }
+}
+
+void FunctionDefinition::PrintTree(std::ofstream& file, int& id, int parentId)
+{
+    int currentId = id++;
+    file << "node" << parentId << " -> node" << currentId << ";\n";
+    file << "node" << currentId << " [label=\"FunctionDefinition\"];\n";
+
+    int functionId = currentId;
+    file << "node" << currentId << "-> node" << ++currentId << ";\n";
+    id++;
+    file << "node" << currentId << " [label=\"Name: " << this->name << "\"];\n";
+
+    for (auto param: this->params) {
+        param->PrintTree(file, id, functionId);
+    }
+
+    currentId = id++;
+    file << "node" << functionId << "-> node" << ++currentId << ";\n";
+    id++;
+    file << "node" << currentId << " [label=\"ReturnType: " << this->returnType << "\"];\n";
+    this->body->PrintTree(file, id, functionId);
 }
 
 void FunctionDefinition::ProcessToken(Token& token)

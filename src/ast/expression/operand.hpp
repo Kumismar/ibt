@@ -2,11 +2,12 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 11:23
- * @ Modified time: 2024-04-08 10:50
+ * @ Modified time: 2024-04-15 20:39
  */
 
 #pragma once
 
+#include "expression.hpp"
 #include "token.hpp"
 typedef enum operandType
 {
@@ -15,16 +16,12 @@ typedef enum operandType
     FunctionCall_t
 } OperandType;
 
-typedef struct OperandData {
-    DataType type;
-    Value value;
-} OperandData;
 
-class Operand
+class Operand : public Expression
 {
 protected:
     OperandType type;
-    OperandData data;
+    TokenData data;
 
 public:
     virtual ~Operand()

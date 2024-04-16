@@ -4,12 +4,15 @@ all:
 
 run:
 	@[ -f build/src/Parser ] || echo "executable not build yet; 'make' first"
-	@./build/src/Parser -f input.koubp
+	@./build/src/Parser -f input.koubp -d -t
 
 runtest:
 	@[ -f build/test/ParserTest ] || echo "executable not built yet; 'make' first"
 	@./build/test/ParserTest
 	@bash test/test.sh
+
+tree:
+	@dot -Tpdf tree.dot -o tree.pdf
 
 valgrind:
 	@[ -f build/src/Parser ] || echo "executable not built yet; 'make' first"

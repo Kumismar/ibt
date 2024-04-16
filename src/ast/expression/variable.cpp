@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-08 11:02
- * @ Modified time: 2024-04-08 12:52
+ * @ Modified time: 2024-04-16 13:50
  */
 
 #include "variable.hpp"
@@ -13,18 +13,25 @@ Variable::Variable(Token& token)
 {
     this->type = Variable_t;
     this->data.type = token.GetDataType();
-    Value tokenData = token.GetData();
     if (this->data.type == String) {
-        this->data.value.stringVal = new std::string(*tokenData.stringVal);
-    }
-    else {
-        this->data.value = tokenData;
+        this->name = std::string((*token.GetData().stringVal));
+        return;
     }
 }
 
-Variable::~Variable()
+void Variable::PrintTree(std::ofstream& file, int& id, int parentId)
 {
-    if (this->data.type == String) {
-        delete this->data.value.stringVal;
-    }
+    int currentId = id++;
+    file << "node" << parentId << " -> node" << currentId << ";\n";
+    file << "node" << currentId << " [label=\"Variable: " << this->name << "\"];\n";
+}
+
+void Variable::ProcessToken(Token& token)
+{
+    return;
+}
+
+void Variable::LinkNode(ASTNode* node, Nonterminal& nt)
+{
+    return;
 }

@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 11:25
- * @ Modified time: 2024-04-15 16:27
+ * @ Modified time: 2024-04-16 13:08
  */
 
 #pragma once
@@ -16,7 +16,7 @@ typedef enum operatorType
     Divide,
     Concat,
     Assign,
-    Equal,
+    Equal_ot,
     NotEqual,
     Less,
     LessEqual,
@@ -35,5 +35,6 @@ private:
 
 public:
     OperatorType GetType() const;
-    void SetType(const TokenType& t);
+    Operator(TokenType t);
+    void PrintTree(std::ofstream& file, int& id, int parentId);
 };

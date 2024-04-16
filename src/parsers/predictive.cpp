@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-15 16:08
+ * @ Modified time: 2024-04-16 14:13
  */
 
 #include "predictive.hpp"
@@ -102,13 +102,14 @@ void PredictiveParser::ClearStack()
 
 void PredictiveParser::parseNonterminal()
 {
+    AST* ast = AST::GetInstance();
     Nonterminal* stackNT = dynamic_cast<Nonterminal*>(this->stackTop);
     if (stackNT == nullptr) {
         throw InternalError("Dynamic cast to Nonterminal* failed, real type:" + std::string(typeid(*this->stackTop).name()) + "\n");
     }
 
     if (stackNT->GetNonterminalType() == nStop) {
-        AST::GetInstance()->PopContext();
+        ast->PopContext();
         delete this->stackTop;
         this->pushdown.pop_front();
         return;
@@ -122,6 +123,8 @@ void PredictiveParser::parseNonterminal()
             PrecedenceParser* precedenceParser = new PrecedenceParser(this->pushdown);
             try {
                 precedenceParser->Parse();
+                ast->GetCurrentContext()->LinkNode(ast->GetExpressionContext(), *stackNT);
+                ast->PopExpressionContext();
                 delete precedenceParser;
             }
             catch (ExceptionBase const& e) {
@@ -138,11 +141,8 @@ void PredictiveParser::parseNonterminal()
         ASTNode* node = ASTNodeFactory::CreateASTNode(*stackNT, *this->inputToken);
         // if nonterminal doesnt have corresponding AST node, nullptr is returned
         if (node != nullptr) {
-            ASTNode* tmpNode = AST::GetInstance()->GetCurrentContext();
-            if (tmpNode != nullptr) {
-                tmpNode->LinkNode(node, *stackNT);
-                AST::GetInstance()->PushContext(node);
-            }
+            ast->GetCurrentContext()->LinkNode(node, *stackNT);
+            ast->PushContext(node);
         }
 
         Logger* logger = Logger::GetInstance();

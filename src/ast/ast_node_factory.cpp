@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-07 14:28
- * @ Modified time: 2024-04-15 15:55
+ * @ Modified time: 2024-04-16 13:21
  */
 
 #include "ast_node_factory.hpp"
@@ -37,9 +37,9 @@ ASTNode* ASTNodeFactory::CreateASTNode(Nonterminal& nt, Token& t)
                 case tReturn: {
                     return new ReturnStatement();
                 }
-                case tSemi: {
-                    return new Semicolon();
-                }
+                // case tSemi: {
+                //     return new Semicolon();
+                // }
                 // case tLPar:
                 // case tFuncName:
                 // case tVariable:
