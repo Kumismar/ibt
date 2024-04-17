@@ -11,9 +11,9 @@
 #include "token.hpp"
 
 const std::vector<Rule> Grammar5::rightSideRules = {
-    { new Token(tLCurl), new Nonterminal(nStatements), new Nonterminal(nStop), new Token(tRCurl) },
+    { new Token(tLCurl), new Nonterminal(nStatements), new Token(tRCurl), new Nonterminal(nStop) },
     { new Nonterminal(nStatement), new Nonterminal(nStop) },
-    { new Nonterminal(nStatement), new Nonterminal(nStop), new Nonterminal(nStatements) },
+    { new Nonterminal(nStatement), new Nonterminal(nStatements) },
     { new Token(tEps) }
 };
 

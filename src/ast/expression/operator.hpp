@@ -26,6 +26,7 @@ typedef enum operatorType
     Or,
     Not,
     UnaryMinus,
+    ExpInParentheses
 } OperatorType;
 
 class Operator

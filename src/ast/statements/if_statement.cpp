@@ -2,11 +2,10 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-16 14:21
+ * @ Modified time: 2024-04-17 16:13
  */
 
 #include "if_statement.hpp"
-#include "code_block.hpp"
 #include "elseif_statement.hpp"
 #include "expression.hpp"
 #include "internal_error.hpp"
@@ -71,7 +70,7 @@ void IfStatement::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     switch (nt.GetNonterminalType()) {
         case nCodeBlock: {
-            CodeBlock* tmp = dynamic_cast<CodeBlock*>(node);
+            StatementList* tmp = dynamic_cast<StatementList*>(node);
             if (tmp == nullptr) {
                 throw InternalError("IfStatement::LinkNode (case nCodeBlock) invalid type: " + std::string(typeid(*node).name()));
             }

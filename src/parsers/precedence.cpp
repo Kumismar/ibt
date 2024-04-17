@@ -2,13 +2,14 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-16 14:15
+ * @ Modified time: 2024-04-17 16:17
  */
 
 #include "precedence.hpp"
 #include "ast.hpp"
 #include "binary_expression.hpp"
 #include "constant.hpp"
+#include "function_call.hpp"
 #include "function_parsed.hpp"
 #include "grammar_4.hpp"
 #include "internal_error.hpp"
@@ -384,9 +385,19 @@ void PrecedenceParser::parseFunction()
     this->insertFunctionEnd();
     PredictiveParser* predParser = new PredictiveParser(this->pushdown);
     try {
+        FunctionCall* tmp = new FunctionCall();
+        AST::GetInstance()->PushContext(tmp);
         predParser->Parse(true);
     }
     catch (FunctionParsed const& e) {
+        ASTNode* context = AST::GetInstance()->GetCurrentContext();
+        FunctionCall* parsedFuncCall = dynamic_cast<FunctionCall*>(context);
+        if (parsedFuncCall == nullptr) {
+            throw InternalError("PrecedenceParser::parseFunction current context isnt fCall after fCall parsing, real type:" + std::string(typeid(*context).name()));
+        }
+
+        AST::GetInstance()->PushExpressionContext(parsedFuncCall);
+        AST::GetInstance()->PopContext();
         delete predParser;
         this->inputToken = inputTape.front();
     }
@@ -416,8 +427,9 @@ void PrecedenceParser::makeASTNode(Rule& rule)
             ast->PushExpressionContext(tmpConst);
         }
         else if (*operandToken == tFuncConst) {
-            Constant* tmpConst = new Constant(tFuncConst);
-            ast->PushExpressionContext(tmpConst);
+            return;
+            //Constant* tmpConst = new Constant(tFuncConst);
+            //ast->PushExpressionContext(tmpConst);
         }
         else {
             throw InternalError("PrecedenceParser::makeASTNode case newOperand token is not var or const\n");
@@ -436,9 +448,17 @@ void PrecedenceParser::makeASTNode(Rule& rule)
     }
     else if (rule.size() == 3) {
         Symbol* tmpSymb = *std::next(this->analysisPushdown.begin());
+
+        Token* possibleRPar = dynamic_cast<Token*>(*this->analysisPushdown.begin());
+        if (possibleRPar != nullptr && *possibleRPar == tRPar) {
+            UnaryExpression* tmpExp = new UnaryExpression(tLPar);
+            ast->PushExpressionContext(tmpExp);
+            return;
+        }
+
         Token* optr = dynamic_cast<Token*>(tmpSymb);
         if (optr == nullptr) {
-            throw InternalError("PrecedenceParser::makeASTNode case UnaryExp optr is not Token*, real type:" + std::string(typeid(*tmpSymb).name()) + "\n");
+            throw InternalError("PrecedenceParser::makeASTNode case BinaryExp optr is not Token*, real type:" + std::string(typeid(*tmpSymb).name()) + "\n");
         }
 
         BinaryExpression* tmpExp = new BinaryExpression(optr->GetTokenType());
@@ -457,7 +477,7 @@ bool PrecedenceParser::isUnaryExpression(Rule& rule)
 
     Token* tmp = dynamic_cast<Token*>(rule.front());
     if (tmp != nullptr) {
-        return *tmp == tLPar;
+        return (*tmp != tLPar);
     }
     return false;
 }

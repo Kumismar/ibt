@@ -2,11 +2,10 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-16 14:17
+ * @ Modified time: 2024-04-17 16:13
  */
 
 #include "while_loop.hpp"
-#include "code_block.hpp"
 #include "internal_error.hpp"
 #include "nonterminal.hpp"
 #include "statement.hpp"
@@ -60,7 +59,7 @@ void WhileLoop::LinkNode(ASTNode* node, Nonterminal& nt)
             break;
         }
         case nCodeBlock: {
-            CodeBlock* tmp = dynamic_cast<CodeBlock*>(node);
+            StatementList* tmp = dynamic_cast<StatementList*>(node);
             if (tmp == nullptr) {
                 throw InternalError("WhileLoop::LinkNode (case nCodeBlock) invalid type: " + std::string(typeid(*node).name()));
             }

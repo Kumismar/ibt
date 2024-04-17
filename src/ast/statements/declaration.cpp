@@ -35,6 +35,12 @@ void Declaration::PrintTree(std::ofstream& file, int& id, int parentId)
     file << "node" << currentId << " [label=\"Declaration\"];\n";
 
     this->left->PrintTree(file, id, currentId);
+
+    int assignId = ++id;
+    file << "node" << currentId << "-> node" << assignId << "\n";
+    file << "node" << assignId << "[label=\"=\"];\n";
+    id++;
+
     this->right->PrintTree(file, id, currentId);
 }
 

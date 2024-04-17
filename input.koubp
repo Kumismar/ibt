@@ -1,14 +1,16 @@
-//function factorial(int number): int {
-    if (number < 0) {
-        return -1;
+function decimal_to_binary(int decimal): string {
+    string binary = "";
+    while (decimal > 0) {
+        int remainder = decimal - (decimal / 2) * 2;
+        binary = convert_string(remainder) + binary;
+        decimal = decimal / 2;
     }
-    elseif (number <= 1) {
-        return 1;
+    if (length(binary) == 0) {
+        binary = "0";
     }
+    return binary;
+}
 
-//     return number * factorial(number - 1);
-// }
-// 
-// print("Give a number to calculate factorial:\n");
-// int number = convert_int(readline());
-// print("result is:" + convert_string(factorial(number)));
+print("Enter a decimal number to convert to binary:\n");
+int decimal_number = convert_int(readline());
+print("The binary equivalent of " + convert_string(decimal_number) + " is: " + decimal_to_binary(decimal_number));

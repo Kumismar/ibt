@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-16 14:41
+ * @ Modified time: 2024-04-17 17:02
  */
 
 #include "function_definition.hpp"
@@ -33,11 +33,12 @@ void Parameter::PrintTree(std::ofstream& file, int& id, int parentId)
 
     file << "node" << currentId << " -> node" << ++currentId << ";\n";
     id++;
-    file << "node" << currentId << " [label=\"Type: " << this->type << "\"];\n";
+    file << "node" << currentId << " [label=\"Type: " << this->typeToString(this->type) << "\"];\n";
 }
 
 FunctionDefinition::FunctionDefinition()
 {
+    this->nodeType = FuncDef_n;
     this->type = FuncDef_s;
 }
 
@@ -79,7 +80,7 @@ void FunctionDefinition::PrintTree(std::ofstream& file, int& id, int parentId)
     currentId = id++;
     file << "node" << functionId << "-> node" << ++currentId << ";\n";
     id++;
-    file << "node" << currentId << " [label=\"ReturnType: " << this->returnType << "\"];\n";
+    file << "node" << currentId << " [label=\"ReturnType: " << this->typeToString(this->returnType) << "\"];\n";
     this->body->PrintTree(file, id, functionId);
 }
 
@@ -145,6 +146,48 @@ void FunctionDefinition::setReturnType(const Token& token)
         }
         default: {
             throw InternalError("FunctionDefinition::setReturnType invalid token type: " + token.GetTypeString());
+        }
+    }
+}
+
+std::string Parameter::typeToString(TokenType t) const
+{
+    switch (t) {
+        case tInt: {
+            return "Int";
+        }
+        case tFloat: {
+            return "Float";
+        }
+        case tBool: {
+            return "Bool";
+        }
+        case tString: {
+            return "String";
+        }
+        default: {
+            throw InternalError("FunctionDefinition::typeToString invalid token type: " + std::to_string(t));
+        }
+    }
+}
+
+std::string FunctionDefinition::typeToString(DataType t) const
+{
+    switch (t) {
+        case Int: {
+            return "Int";
+        }
+        case Float: {
+            return "Float";
+        }
+        case Bool: {
+            return "Bool";
+        }
+        case String: {
+            return "String";
+        }
+        default: {
+            throw InternalError("FunctionDefinition::typeToString invalid data type: " + std::to_string(t));
         }
     }
 }

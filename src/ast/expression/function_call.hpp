@@ -16,6 +16,7 @@ class FunctionCall : public Operand
 {
 private:
     std::string name;
+    Expression* currentArg = nullptr;
     std::vector<Expression*> arguments;
 
 public:

@@ -14,7 +14,6 @@ class Constant : public Operand
 {
 public:
     Constant(Token& t);
-    Constant(TokenType t);
     ~Constant() override;
     void PrintTree(std::ofstream& file, int& id, int parentId) override;
     void ProcessToken(Token& token) override;

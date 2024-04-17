@@ -4,7 +4,6 @@
 # @ Modified time: 2024-04-03 11:11
 
 target_sources(ParserLibrary PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/code_block.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/elseif_statement.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/for_loop.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/function_definition.cpp

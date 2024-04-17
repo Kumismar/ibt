@@ -2,13 +2,14 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-16 13:02
+ * @ Modified time: 2024-04-16 22:23
  */
 
 #include "elseif_statement.hpp"
 #include "expression.hpp"
 #include "internal_error.hpp"
 #include "nonterminal.hpp"
+#include "statement_list.hpp"
 
 ElseifStatement::ElseifStatement()
 {
@@ -54,7 +55,7 @@ void ElseifStatement::LinkNode(ASTNode* node, Nonterminal& nt)
             break;
         }
         case nCodeBlock: {
-            CodeBlock* tmp = dynamic_cast<CodeBlock*>(node);
+            StatementList* tmp = dynamic_cast<StatementList*>(node);
             if (tmp == nullptr) {
                 throw InternalError("ElseifStatement::LinkNode (case nCodeBlock) invalid type: " + std::string(typeid(*node).name()));
             }

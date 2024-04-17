@@ -52,7 +52,7 @@ void Lex(std::string& filename)
 
     fs::path toOpen(filename);
     if (!fs::exists(toOpen)) {
-        throw InternalError("Input file not found.\n");
+        throw CLArgumentsError("Input file not found.\n");
     }
 
     if ((yyin = fopen(toOpen.c_str(), "r")) == nullptr) {

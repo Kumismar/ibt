@@ -13,13 +13,12 @@ typedef enum expressionType
 {
     Unary,
     Binary,
-    SingleOperand
 } ExpressionType;
 
 class Expression : public ASTNode
 {
 protected:
-    ExpressionType type;
+    ExpressionType expressionType;
 
 public:
     virtual ~Expression() override = default;

@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-16 14:13
+ * @ Modified time: 2024-04-16 22:50
  */
 
 #include "predictive.hpp"
@@ -89,7 +89,6 @@ void PredictiveParser::InitSyntaxAnalysis()
     this->pushdown.push_front(new Nonterminal(nProgram));
 }
 
-
 void PredictiveParser::ClearStack()
 {
     if (!this->pushdown.empty()) {
@@ -103,7 +102,7 @@ void PredictiveParser::ClearStack()
 void PredictiveParser::parseNonterminal()
 {
     AST* ast = AST::GetInstance();
-    Nonterminal* stackNT = dynamic_cast<Nonterminal*>(this->stackTop);
+    Nonterminal* stackNT = dynamic_cast<Nonterminal*>(this->stackTop->Clone());
     if (stackNT == nullptr) {
         throw InternalError("Dynamic cast to Nonterminal* failed, real type:" + std::string(typeid(*this->stackTop).name()) + "\n");
     }
@@ -112,6 +111,7 @@ void PredictiveParser::parseNonterminal()
         ast->PopContext();
         delete this->stackTop;
         this->pushdown.pop_front();
+        delete stackNT;
         return;
     }
     // Expression => give control to precedence parser
@@ -125,9 +125,11 @@ void PredictiveParser::parseNonterminal()
                 precedenceParser->Parse();
                 ast->GetCurrentContext()->LinkNode(ast->GetExpressionContext(), *stackNT);
                 ast->PopExpressionContext();
+                delete stackNT;
                 delete precedenceParser;
             }
             catch (ExceptionBase const& e) {
+                delete stackNT;
                 delete precedenceParser;
                 throw;
             }
@@ -138,18 +140,11 @@ void PredictiveParser::parseNonterminal()
     LLTableIndex tableItem = (*this->table)[*stackNT][*this->inputToken];
     // Rule exists -> pop old nonterminal, expand it and push new string to the stack
     if (tableItem != LLTableIndex({ 0, 0 })) {
-        ASTNode* node = ASTNodeFactory::CreateASTNode(*stackNT, *this->inputToken);
-        // if nonterminal doesnt have corresponding AST node, nullptr is returned
-        if (node != nullptr) {
-            ast->GetCurrentContext()->LinkNode(node, *stackNT);
-            ast->PushContext(node);
-        }
-
         Logger* logger = Logger::GetInstance();
         logger->AddLeftSide(this->stackTop);
 
         if (!(this->parsingFunction && *stackNT == nExpression)) {
-            delete this->pushdown.front();
+            delete this->stackTop;
             this->pushdown.pop_front();
         }
 
@@ -157,8 +152,15 @@ void PredictiveParser::parseNonterminal()
         Rule expandedRule = grammar->Expand(tableItem.ruleNumber);
         logger->AddRightSide(expandedRule);
 
-        // if right side is not epsilon, it will be pushed
+        // if right side is not epsilon, it will be pushed and ASTNode will be created
         if (!this->returnedEpsilon(expandedRule)) {
+            ASTNode* node = ASTNodeFactory::CreateASTNode(*stackNT, *this->inputToken);
+            // if nonterminal doesnt have corresponding AST node, nullptr is returned
+            if (node != nullptr) {
+                ast->GetCurrentContext()->LinkNode(node, *stackNT);
+                ast->PushContext(node);
+            }
+
             for (Symbol* item: expandedRule) {
                 this->pushdown.push_front(item->Clone());
             }
@@ -170,6 +172,7 @@ void PredictiveParser::parseNonterminal()
     else {
         throw SyntaxError("Invalid token.\n");
     }
+    delete stackNT;
 }
 
 void PredictiveParser::parseToken()

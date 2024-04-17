@@ -13,7 +13,7 @@
 BinaryExpression::BinaryExpression(TokenType t)
 {
     AST* ast = AST::GetInstance();
-    this->type = Binary;
+    this->expressionType = Binary;
     this->right = ast->GetExpressionContext();
     ast->PopExpressionContext();
     this->left = ast->GetExpressionContext();

@@ -2,12 +2,12 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-07 14:28
- * @ Modified time: 2024-04-16 13:21
+ * @ Modified time: 2024-04-17 16:13
  */
 
 #include "ast_node_factory.hpp"
+#include "ast.hpp"
 #include "ast_node.hpp"
-#include "code_block.hpp"
 #include "declaration.hpp"
 #include "elseif_statement.hpp"
 #include "for_loop.hpp"
@@ -37,17 +37,6 @@ ASTNode* ASTNodeFactory::CreateASTNode(Nonterminal& nt, Token& t)
                 case tReturn: {
                     return new ReturnStatement();
                 }
-                // case tSemi: {
-                //     return new Semicolon();
-                // }
-                // case tLPar:
-                // case tFuncName:
-                // case tVariable:
-                // case tUnMinus:
-                // case tExcl:
-                // case tConst: {
-                //     return new Expression();
-                // }
                 case tInt:
                 case tBool:
                 case tString:
@@ -62,17 +51,17 @@ ASTNode* ASTNodeFactory::CreateASTNode(Nonterminal& nt, Token& t)
         case nIf2: {
             return new ElseifStatement();
         }
-        case nStatements: {
-            return new StatementList();
-        }
         case nFunctionDef: {
             return new FunctionDefinition();
         }
-        // case nExpression: {
-        //     return new Expression();
-        // }
         case nCodeBlock: {
-            return new CodeBlock();
+            return new StatementList();
+        }
+        case nStatements: {
+            if (AST::GetInstance()->GetCurrentContext()->GetNodeType() == FuncDef_n) {
+                return new StatementList();
+            }
+            return nullptr;
         }
         default: {
             return nullptr;

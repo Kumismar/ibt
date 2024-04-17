@@ -2,15 +2,15 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 11:41
- * @ Modified time: 2024-04-16 13:00
+ * @ Modified time: 2024-04-17 16:12
  */
 
 #pragma once
 
-#include "code_block.hpp"
 #include "declaration.hpp"
 #include "expression.hpp"
 #include "statement.hpp"
+#include "statement_list.hpp"
 
 typedef enum phase
 {
@@ -45,7 +45,7 @@ private:
     Initialization* init = nullptr;
     Expression* condition = nullptr;
     Expression* endExpr = nullptr;
-    CodeBlock* body = nullptr;
+    StatementList* body = nullptr;
 
     bool nextIsType();
 

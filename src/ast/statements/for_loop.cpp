@@ -2,15 +2,15 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-16 13:01
+ * @ Modified time: 2024-04-17 16:14
  */
 
 #include "for_loop.hpp"
-#include "code_block.hpp"
 #include "expression.hpp"
 #include "internal_error.hpp"
 #include "nonterminal.hpp"
 #include "statement.hpp"
+#include "statement_list.hpp"
 #include "token.hpp"
 
 ForLoop::ForLoop()
@@ -70,7 +70,7 @@ void ForLoop::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     switch (nt.GetNonterminalType()) {
         case nCodeBlock: {
-            CodeBlock* tmp = dynamic_cast<CodeBlock*>(node);
+            StatementList* tmp = dynamic_cast<StatementList*>(node);
             if (tmp == nullptr) {
                 throw InternalError("ForLoop::LinkNode (case nCodeBlock) invalid type: " + std::string(typeid(*node).name()));
             }

@@ -9,6 +9,7 @@
 #include "expression.hpp"
 #include "internal_error.hpp"
 #include "token.hpp"
+#include <regex>
 
 Constant::Constant(Token& t)
 {
@@ -19,18 +20,6 @@ Constant::Constant(Token& t)
         return;
     }
     this->data.value = t.GetData();
-}
-
-Constant::Constant(TokenType t)
-{
-    if (t == tFuncConst) {
-        this->type = Constant_t;
-        this->data.type = String;
-        this->data.value.stringVal = new std::string("FunctionCall");
-    }
-    else {
-        throw InternalError("Constant::Constant TokenType is not tFuncConst\n");
-    }
 }
 
 Constant::~Constant()
@@ -46,7 +35,9 @@ void Constant::PrintTree(std::ofstream& file, int& id, int parentId)
     file << "node" << parentId << " -> node" << currentId << ";\n";
     file << "node" << currentId << " [label=\"Constant: ";
     if (this->data.type == String) {
-        file << *this->data.value.stringVal;
+        // escape double quotes in the original string
+        std::string escapedBackslashes = std::regex_replace(*this->data.value.stringVal, std::regex(R"(\\)"), "\\\\");
+        file << std::regex_replace(escapedBackslashes, std::regex(R"(")"), "\\\"");
     }
     else if (this->data.type == Int) {
         file << this->data.value.intVal;

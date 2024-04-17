@@ -11,10 +11,10 @@
 #include "token.hpp"
 
 const std::vector<Rule> Grammar1::rightSideRules = {
-    { new Nonterminal(nStatement), new Nonterminal(nStop), new Nonterminal(nStatementList) },
-    { new Nonterminal(nFunctionDef), new Nonterminal(nStop), new Nonterminal(nStatementList) },
-    { new Nonterminal(nStatement), new Nonterminal(nStop), new Nonterminal(nStatementList) },
-    { new Nonterminal(nFunctionDef), new Nonterminal(nStop), new Nonterminal(nStatementList) },
+    { new Nonterminal(nStatement), new Nonterminal(nStatementList) },
+    { new Nonterminal(nFunctionDef), new Nonterminal(nStatementList) },
+    { new Nonterminal(nStatement), new Nonterminal(nStatementList) },
+    { new Nonterminal(nFunctionDef), new Nonterminal(nStatementList) },
     { new Token(tEps) }
 };
 

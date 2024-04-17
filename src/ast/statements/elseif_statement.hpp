@@ -2,20 +2,20 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 11:19
- * @ Modified time: 2024-04-16 12:37
+ * @ Modified time: 2024-04-16 22:23
  */
 
 #pragma once
 
-#include "code_block.hpp"
 #include "expression.hpp"
 #include "statement.hpp"
+#include "statement_list.hpp"
 
 class ElseifStatement : public Statement
 {
 private:
     Expression* condition = nullptr;
-    CodeBlock* body = nullptr;
+    StatementList* body = nullptr;
 
 public:
     ElseifStatement();

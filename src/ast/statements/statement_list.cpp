@@ -14,7 +14,7 @@
 
 StatementList::StatementList()
 {
-    this->type = StatementList_n;
+    this->nodeType = StatementList_n;
 }
 
 StatementList::~StatementList()

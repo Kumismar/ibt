@@ -2,13 +2,13 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 18:30
- * @ Modified time: 2024-04-16 12:56
+ * @ Modified time: 2024-04-17 17:02
  */
 
 #pragma once
 
-#include "code_block.hpp"
 #include "statement.hpp"
+#include "statement_list.hpp"
 #include "token.hpp"
 #include <string>
 
@@ -17,6 +17,7 @@ class Parameter
 private:
     std::string name;
     TokenType type;
+    std::string typeToString(TokenType t) const;
 
 public:
     void SetType(const TokenType type);
@@ -35,6 +36,7 @@ private:
 
     bool isType(const Token& token) const;
     void setReturnType(const Token& token);
+    std::string typeToString(DataType t) const;
 
 public:
     FunctionDefinition();

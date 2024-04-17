@@ -77,6 +77,10 @@ Operator::Operator(TokenType t)
             this->type = UnaryMinus;
             break;
         }
+        case tLPar: {
+            this->type = ExpInParentheses;
+            break;
+        }
         default: {
             throw InternalError("Operator::Operator invalid token type, realtype: " + std::to_string(t));
         }
