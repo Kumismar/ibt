@@ -111,6 +111,7 @@ void ForLoop::LinkNode(ASTNode* node, Nonterminal& nt)
 
             this->init->type = Decl;
             this->init->data.decl = tmp;
+            this->phase = CONDITION;
             break;
         }
         default: {

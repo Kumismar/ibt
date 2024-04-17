@@ -1,16 +1,24 @@
-function decimal_to_binary(int decimal): string {
-    string binary = "";
-    while (decimal > 0) {
-        int remainder = decimal - (decimal / 2) * 2;
-        binary = convert_string(remainder) + binary;
-        decimal = decimal / 2;
+function count_words(string text): int {
+    int count = 0;
+    bool in_word = false;
+    for (int i = 0; i < length(text); i = i + 1) {
+        if (substring(text, i, 1) == " ") {
+            in_word = false;
+        } else if (!in_word) {
+            in_word = true;
+            count = count + 1;
+        }
     }
-    if (length(binary) == 0) {
-        binary = "0";
-    }
-    return binary;
+    return count;
 }
 
-print("Enter a decimal number to convert to binary:\n");
-int decimal_number = convert_int(readline());
-print("The binary equivalent of " + convert_string(decimal_number) + " is: " + decimal_to_binary(decimal_number));
+print("Enter the input filename:\n");
+string input_filename = readline();
+string text = read_file(input_filename);
+int word_count = count_words(text);
+
+print("Enter the output filename:\n");
+string output_filename = readline();
+write_file(output_filename, "The file '" + input_filename + "' contains " + to_string(word_count) + " words.\n");
+
+print("Word count has been written to '" + output_filename + "'.\n");

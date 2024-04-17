@@ -37,10 +37,17 @@ ASTNode* ASTNodeFactory::CreateASTNode(Nonterminal& nt, Token& t)
                 case tReturn: {
                     return new ReturnStatement();
                 }
+                default: {
+                    return nullptr;
+                }
+            }
+        }
+        case nDeclOrExpr: {
+            switch(t.GetTokenType()) {
                 case tInt:
-                case tBool:
+                case tFloat:
                 case tString:
-                case tFloat: {
+                case tBool: {
                     return new Declaration();
                 }
                 default: {
@@ -49,7 +56,10 @@ ASTNode* ASTNodeFactory::CreateASTNode(Nonterminal& nt, Token& t)
             }
         }
         case nIf2: {
-            return new ElseifStatement();
+            if (t.GetTokenType() == tElseif) {
+                return new ElseifStatement();
+            }
+            return nullptr;
         }
         case nFunctionDef: {
             return new FunctionDefinition();
