@@ -45,7 +45,10 @@ cmake-build-debug/
 *.bbl
 *.blg
 *.lof
-*.out
+*.pdf
 *.toc
 *.synctex.gz
 *.ptc
+
+# graph files
+*.dot
