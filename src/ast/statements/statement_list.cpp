@@ -73,6 +73,15 @@ void StatementList::LinkNode(ASTNode* node, Nonterminal& nt)
         // Since there has to be <codeblock> between in order to have nested statements, we can just ignore it.
         return;
     }
+    else if (nt.GetNonterminalType() == nCodeBlock) {
+        StatementList* tmpStmtList = dynamic_cast<StatementList*>(node);
+        if (tmpStmtList == nullptr) {
+            throw InternalError("StatementList::LinkNode (case nCodeBlock) invalid type: " + std::string(typeid(*node).name()));
+        }
+
+        tmp->type = StList_t;
+        tmp->data.statementList = tmpStmtList;
+    }
     else {
         Statement* tmpStmt = dynamic_cast<Statement*>(node);
         if (tmpStmt == nullptr) {

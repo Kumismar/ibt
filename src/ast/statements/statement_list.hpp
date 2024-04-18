@@ -15,13 +15,18 @@
 typedef enum type
 {
     Statement_t,
-    Expression_t
+    Expression_t,
+    StList_t
 } StOrExpType;
+
+// Forward declaration for circular dependency
+class StatementList;
 
 typedef union statementData
 {
     Statement* statement;
     Expression* expression;
+    StatementList* statementList;
 } StOrExpData;
 
 typedef struct statementOrExpression {
