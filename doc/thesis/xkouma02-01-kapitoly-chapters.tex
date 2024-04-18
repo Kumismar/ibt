@@ -1684,24 +1684,29 @@ Jazyk \emph{Koubp} je založený na jazyce IFJ22, který je podmnožinou jazyka 
 
 Některé aspekty jazyků jsou společné. 
 Oba dva jazyky jsou strukturované, podporují definici proměnných a~funkcí.
+U~obou jazyků záleží na velikosti písmen (jsou tedy \emph{case-sensitive}).
 Hlavní tělo programu se skládá z~prolínání sekvence příkazů a~definic funkcí, přičemž definice funkcí nemohou být vnořené, ale mohou se vzájemně rekurzívně volat.
 Vstupním bodem programu není funkce \texttt{main()}, jak lze nalézt například u~jazyka C \cite{ISO-C-Standard}, analýza probíhá od začátku souboru.
 Není podporováno slučování souborů se zdrojovým kódem pomocí příkazů \texttt{import}, \texttt{include} a~podobných a~tím vytvoření jediného modulu, který by bylo možné zkompilovat.
 Ve zdrojovém souboru a~uživatelem definovaných funkcích může být větvení, iterace a~další běžné konstrukce.
-Veškeré proměnné jsou lokální, i~v~rámci hlavního těla programu.
+Veškeré proměnné jsou lokální, i~v~rámci hlavního těla programu. \todo{tohle napsat do prvni podkapitoly}
+
+Jazyk Koubp je narozdíl od jazyka IFJ22 staticky typovaný (datový typ proměnné se určuje za překladu).
+Dále nemá povinný \emph{prolog}, který je v~jazyce IFJ22 uveden pro kompatibilitu s~PHP.
+
+\section{Obecné vlastnosti a~datové typy}
+
 
 \subsection*{Deklarace a definice funkcí}
 
 \subsection*{Příkazy}
 
 \begin{itemize}
-    \item Přiřazení
+    \item Definice a přiřazení
     \item Větvení
-    \item Cyklus while
-    \item Cyklus for
-    \item Volání funkcí
+    \item Cyklus while a cyklus for 
+    \item Příkaz return
 \end{itemize}
-
 
 \subsection*{Výrazy}
 
@@ -1710,6 +1715,8 @@ Veškeré proměnné jsou lokální, i~v~rámci hlavního těla programu.
     \item Priorita operátorů
     \item Volání funkcí
 \end{itemize}
+
+\section*{Vestavěné funkce}
 
 \section{Gramatický systém definujíci syntax jazyka Koubp}
 \dotaz{samotne gramatiky patri do prilohy nebo je mam hodit sem?}
