@@ -1684,12 +1684,11 @@ Jazyk \emph{Koubp} je založený na jazyce IFJ22, který je podmnožinou jazyka 
 
 Některé aspekty jazyků jsou společné. 
 Oba dva jazyky jsou strukturované, podporují definici proměnných a~funkcí.
-Hlavní tělo programu se skládá z~prolínání sekvence příkazů a~definic funkcí, které se mohou vzájemně rekurzivně volat.
+Hlavní tělo programu se skládá z~prolínání sekvence příkazů a~definic funkcí, přičemž definice funkcí nemohou být vnořené, ale mohou se vzájemně rekurzívně volat.
 Vstupním bodem programu není funkce \texttt{main()}, jak lze nalézt například u~jazyka C \cite{ISO-C-Standard}, analýza probíhá od začátku souboru.
-V~uživatelem definovaných funkcích může být větvení, iterace a~další běžné konstrukce.
+Není podporováno slučování souborů se zdrojovým kódem pomocí příkazů \texttt{import}, \texttt{include} a~podobných a~tím vytvoření jediného modulu, který by bylo možné zkompilovat.
+Ve zdrojovém souboru a~uživatelem definovaných funkcích může být větvení, iterace a~další běžné konstrukce.
 Veškeré proměnné jsou lokální, i~v~rámci hlavního těla programu.
-Soubory se zdrojovým kódem nelze slučovat a~vytvářet tak jediný modul, který by bylo možné zkompilovat.
-\todo{doplnit veci, ktere nejsou spolecne (nezabihat do detailu, vse bude specifikovano v~podnadpisech)}
 
 \subsection*{Deklarace a definice funkcí}
 

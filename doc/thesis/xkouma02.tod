@@ -14,11 +14,10 @@
 \contentsline {todos}{\numberline {14}opet by to chtelo nejaky obrazky}{32}{todos.14}%
 \contentsline {todos}{\numberline {15}obrazek dvou moznych derivacnich stromu}{36}{todos.15}%
 \contentsline {todos}{\numberline {16}obrazek derivacniho stromu}{36}{todos.16}%
-\contentsline {todos}{\numberline {17}doplnit veci, ktere nejsou spolecne (nezabihat do detailu, vse bude specifikovano v~podnadpisech)}{38}{todos.17}%
-\contentsline {todos}{\numberline {18}základní popis použitého GS, jak je spojený s~CDGS a potažmo PCGS}{39}{todos.18}%
-\contentsline {todos}{\numberline {19}popsat možný deadlock mezi neterminály codeblock a statement}{39}{todos.19}%
-\contentsline {todos}{\numberline {20}indexace neterminálů}{39}{todos.20}%
-\contentsline {todos}{\numberline {21}ll tabulka, která obsahuje uspořádané dvojice}{39}{todos.21}%
-\contentsline {todos}{\numberline {22}Tady bude obrázek znázorňující oba dva parsery a šest gramatik a který s~čím pracuje.}{39}{todos.22}%
-\contentsline {todos}{\numberline {23}tady bude vytazek z~kodu pro prepinani analyzatoru.}{39}{todos.23}%
-\contentsline {todos}{\numberline {24}Tady bude obrazek, kde bude napsany jednoduchy kod volani funkce, jeho reprezentace v~tokenech a navic vlozene pomocne tokeny, ktere parsery vyuzivaji. Bude tam zobrazene, v~jakych mistech se provadi zmena analyz.}{40}{todos.24}%
+\contentsline {todos}{\numberline {17}základní popis použitého GS, jak je spojený s~CDGS a potažmo PCGS}{39}{todos.17}%
+\contentsline {todos}{\numberline {18}popsat možný deadlock mezi neterminály codeblock a statement}{39}{todos.18}%
+\contentsline {todos}{\numberline {19}indexace neterminálů}{39}{todos.19}%
+\contentsline {todos}{\numberline {20}ll tabulka, která obsahuje uspořádané dvojice}{39}{todos.20}%
+\contentsline {todos}{\numberline {21}Tady bude obrázek znázorňující oba dva parsery a šest gramatik a který s~čím pracuje.}{39}{todos.21}%
+\contentsline {todos}{\numberline {22}tady bude vytazek z~kodu pro prepinani analyzatoru.}{39}{todos.22}%
+\contentsline {todos}{\numberline {23}Tady bude obrazek, kde bude napsany jednoduchy kod volani funkce, jeho reprezentace v~tokenech a navic vlozene pomocne tokeny, ktere parsery vyuzivaji. Bude tam zobrazene, v~jakych mistech se provadi zmena analyz.}{40}{todos.23}%

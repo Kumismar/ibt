@@ -116,13 +116,15 @@ void PredictiveParser::parseNonterminal()
     }
     // Expression => give control to precedence parser
     else if (stackNT->GetNonterminalType() == nExpression) {
-        // If not parsing function call, give control to precedence parser
-        if (!(*this->inputToken == tFuncName && this->parsingFunction) ||
-            // If parsing function call but new funcName is found, parse the new function call
-            (*this->inputToken == tFuncName && !this->firstFuncName)) {
+        bool notParsingFunctionCall = !(*this->inputToken == tFuncName && this->parsingFunction);
+        // Function call nested within another function call.
+        bool newFuncNameFound = *this->inputToken == tFuncName && !this->firstFuncName;
+
+        if (notParsingFunctionCall || newFuncNameFound) {
             PrecedenceParser* precedenceParser = new PrecedenceParser(this->pushdown);
             try {
                 precedenceParser->Parse();
+                // After precedence parsing, link the expression to the current node.
                 ast->GetCurrentContext()->LinkNode(ast->GetExpressionContext(), *stackNT);
                 ast->PopExpressionContext();
                 delete stackNT;
@@ -143,6 +145,7 @@ void PredictiveParser::parseNonterminal()
         Logger* logger = Logger::GetInstance();
         logger->AddLeftSide(this->stackTop);
 
+        // If parsing function call, do not pop Expression from stack, Precedence parser is in charge of it.
         if (!(this->parsingFunction && *stackNT == nExpression)) {
             delete this->stackTop;
             this->pushdown.pop_front();
@@ -152,15 +155,16 @@ void PredictiveParser::parseNonterminal()
         Rule expandedRule = grammar->Expand(tableItem.ruleNumber);
         logger->AddRightSide(expandedRule);
 
-        // if right side is not epsilon, it will be pushed and ASTNode will be created
+        // If right side is not epsilon, it will be pushed and ASTNode will be created.
         if (!this->returnedEpsilon(expandedRule)) {
             ASTNode* node = ASTNodeFactory::CreateASTNode(*stackNT, *this->inputToken);
-            // if nonterminal doesnt have corresponding AST node, nullptr is returned
+            // If nonterminal doesnt have corresponding AST node, nullptr is returned.
             if (node != nullptr) {
                 ast->GetCurrentContext()->LinkNode(node, *stackNT);
                 ast->PushContext(node);
             }
 
+            // Push the expanded rule to the stack.
             for (Symbol* item: expandedRule) {
                 this->pushdown.push_front(item->Clone());
             }
@@ -192,14 +196,14 @@ void PredictiveParser::parseToken()
         if (*stackToken == tFuncName) {
             this->firstFuncName = false;
         }
-        // AST nodes gradually add information to themselves based on tokens parsed
+        // AST nodes gradually add information to themselves based on tokens parsed.
         AST::GetInstance()->GetCurrentContext()->ProcessToken(*this->inputToken);
         Logger::GetInstance()->AddTokenToRecents(*this->inputToken);
+
         delete this->inputToken;
         delete this->pushdown.front();
         this->pushdown.pop_front();
         inputTape.pop_front();
-        return;
     }
     else {
         throw SyntaxError("Unexpected token, expected: " + stackToken->GetTypeString() + "\n");
@@ -218,6 +222,7 @@ void PredictiveParser::parseEnd()
             throw SyntaxAnalysisSuccess();
         }
         else {
+            // Not empty inputTape should never happen in this case, syntax error would be thrown earlier, which is why InternalError.
             throw InternalError("Popped tEnd from input tape but there is still something left\n");
         }
     }
