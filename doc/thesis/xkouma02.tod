@@ -1,25 +1,25 @@
-\contentsline {todos}{\numberline {1}zmenit pismenka}{8}{todos.1}%
-\contentsline {todos}{\numberline {2}jendoduchy priklad KA i s prechodovym diagramem}{11}{todos.2}%
-\contentsline {todos}{\numberline {3}Jestli bude cas - pridat prechodovy diagram}{12}{todos.3}%
-\contentsline {todos}{\numberline {4}pridat obrazek}{14}{todos.4}%
-\contentsline {todos}{\numberline {5}v cele kapitole refaktorovat pismenka dle konvence}{16}{todos.5}%
-\contentsline {todos}{\numberline {6}pouzit Input Output a NewLine}{21}{todos.6}%
-\contentsline {todos}{\numberline {7}jestli zbude cas, napsat vlastnimi slovy, inspirace v \cite {medunaElementsOfCompDesign}, strana 83}{26}{todos.7}%
-\contentsline {todos}{\numberline {8}pouzit Input Output a NewLine}{26}{todos.8}%
-\contentsline {todos}{\numberline {9}nejaky obrazecek by to chtelo}{27}{todos.9}%
-\contentsline {todos}{\numberline {10}pouzit Input Output a NewLine}{27}{todos.10}%
-\contentsline {todos}{\numberline {11}pouzit Input Output a NewLine}{28}{todos.11}%
-\contentsline {todos}{\numberline {12}ilustrujici obrazek (podobny jako v ifj prezentaci 7)}{28}{todos.12}%
-\contentsline {todos}{\numberline {13}pouzit Input Output a NewLine}{28}{todos.13}%
-\contentsline {todos}{\numberline {14}opet by to chtelo nejaky obrazky}{31}{todos.14}%
-\contentsline {todos}{\numberline {15}obrazek dvou moznych derivacnich stromu}{35}{todos.15}%
-\contentsline {todos}{\numberline {16}obrazek derivacniho stromu}{35}{todos.16}%
-\contentsline {todos}{\numberline {18}doplnit definici funkce treba faktorial nebo neco jednoduchyho}{38}{todos.18}%
-\contentsline {todos}{\numberline {17}vlozit odkaz na definici overloadingu}{38}{todos.17}%
-\contentsline {todos}{\numberline {19}základní popis použitého GS, jak je spojený s~CDGS a potažmo PCGS}{39}{todos.19}%
-\contentsline {todos}{\numberline {20}popsat možný deadlock mezi neterminály codeblock a statement}{39}{todos.20}%
-\contentsline {todos}{\numberline {21}indexace neterminálů}{39}{todos.21}%
-\contentsline {todos}{\numberline {22}ll tabulka, která obsahuje uspořádané dvojice}{39}{todos.22}%
-\contentsline {todos}{\numberline {23}Tady bude obrázek znázorňující oba dva parsery a šest gramatik a který s~čím pracuje.}{39}{todos.23}%
-\contentsline {todos}{\numberline {24}tady bude vytazek z~kodu pro prepinani analyzatoru.}{40}{todos.24}%
-\contentsline {todos}{\numberline {25}Tady bude obrazek, kde bude napsany jednoduchy kod volani funkce, jeho reprezentace v~tokenech a navic vlozene pomocne tokeny, ktere parsery vyuzivaji. Bude tam zobrazene, v~jakych mistech se provadi zmena analyz.}{40}{todos.25}%
+\contentsline {todos}{\numberline {1}zmenit pismenka}{9}{todos.1}%
+\contentsline {todos}{\numberline {2}jendoduchy priklad KA i s prechodovym diagramem}{12}{todos.2}%
+\contentsline {todos}{\numberline {3}Jestli bude cas - pridat prechodovy diagram}{13}{todos.3}%
+\contentsline {todos}{\numberline {4}pridat obrazek}{15}{todos.4}%
+\contentsline {todos}{\numberline {5}v cele kapitole refaktorovat pismenka dle konvence}{17}{todos.5}%
+\contentsline {todos}{\numberline {6}pouzit Input Output a NewLine}{22}{todos.6}%
+\contentsline {todos}{\numberline {7}jestli zbude cas, napsat vlastnimi slovy, inspirace v \cite {medunaElementsOfCompDesign}, strana 83}{27}{todos.7}%
+\contentsline {todos}{\numberline {8}pouzit Input Output a NewLine}{27}{todos.8}%
+\contentsline {todos}{\numberline {9}nejaky obrazecek by to chtelo}{28}{todos.9}%
+\contentsline {todos}{\numberline {10}pouzit Input Output a NewLine}{28}{todos.10}%
+\contentsline {todos}{\numberline {11}pouzit Input Output a NewLine}{29}{todos.11}%
+\contentsline {todos}{\numberline {12}ilustrujici obrazek (podobny jako v ifj prezentaci 7)}{29}{todos.12}%
+\contentsline {todos}{\numberline {13}pouzit Input Output a NewLine}{29}{todos.13}%
+\contentsline {todos}{\numberline {14}opet by to chtelo nejaky obrazky}{32}{todos.14}%
+\contentsline {todos}{\numberline {15}obrazek dvou moznych derivacnich stromu}{36}{todos.15}%
+\contentsline {todos}{\numberline {16}obrazek derivacniho stromu}{36}{todos.16}%
+\contentsline {todos}{\numberline {18}doplnit definici funkce treba faktorial nebo neco jednoduchyho}{39}{todos.18}%
+\contentsline {todos}{\numberline {17}vlozit odkaz na definici overloadingu}{39}{todos.17}%
+\contentsline {todos}{\numberline {19}základní popis použitého GS, jak je spojený s~CDGS a potažmo PCGS}{40}{todos.19}%
+\contentsline {todos}{\numberline {20}popsat možný deadlock mezi neterminály codeblock a statement}{40}{todos.20}%
+\contentsline {todos}{\numberline {21}indexace neterminálů}{40}{todos.21}%
+\contentsline {todos}{\numberline {22}ll tabulka, která obsahuje uspořádané dvojice}{40}{todos.22}%
+\contentsline {todos}{\numberline {23}Tady bude obrázek znázorňující oba dva parsery a šest gramatik a který s~čím pracuje.}{40}{todos.23}%
+\contentsline {todos}{\numberline {24}tady bude vytazek z~kodu pro prepinani analyzatoru.}{41}{todos.24}%
+\contentsline {todos}{\numberline {25}Tady bude obrazek, kde bude napsany jednoduchy kod volani funkce, jeho reprezentace v~tokenech a navic vlozene pomocne tokeny, ktere parsery vyuzivaji. Bude tam zobrazene, v~jakych mistech se provadi zmena analyz.}{41}{todos.25}%
