@@ -1682,24 +1682,85 @@ V~praxi se tedy většinou používá výhradně pro analýzu výrazů.
 Jazyk \emph{Koubp} je založený na jazyce IFJ22, který je podmnožinou jazyka PHP 8, jenž byl specifikován v~rámci zadání projektu do předmětu Formální jazyky a překladače v~akademickém roce 2022/2023.
 \dotaz{je mozne citovat zadani projektu? pokud ano, jak se k nemu dostat?}
 
-Některé aspekty jazyků jsou společné. 
-Oba dva jazyky jsou strukturované, podporují definici proměnných a~funkcí.
+\subsection*{Obecné vlastnosti}
+Jazyk Koubp je strukturovaný jazyk.
+Podporuje deklaraci funkcí a~proměnných, které při deklaraci musí být explicitně definovány.
 Hlavní tělo programu se skládá z~prolínání sekvence příkazů a~definic funkcí, přičemž definice funkcí nemohou být vnořené, ale mohou se vzájemně rekurzívně volat.
 Vstupním bodem programu není funkce \texttt{main()}, jak lze nalézt například u~jazyka C \cite{ISO-C-Standard}, analýza probíhá od začátku souboru.
 Není podporováno slučování souborů se zdrojovým kódem pomocí příkazů \texttt{import}, \texttt{include} a~podobných a~tím vytvoření jediného modulu, který by bylo možné zkompilovat.
 Ve zdrojovém souboru a~uživatelem definovaných funkcích může být větvení, iterace a~další běžné konstrukce.
 Veškeré proměnné jsou lokální, i~v~rámci hlavního těla programu.
+Proměnné mají rozsah platnosti v~\emph{bloku kódu}, což je sekvence příkazů ve složených závorkách \texttt{\{\}}.
+Tyto bloky kódu se mohou libovolně zanořovat.
+V jazyce Koubp nejsou důležité \emph{bílé mezery (whitespaces)}.
+Klíčová slova jazyka jsou
+\begin{center}
+    \texttt{if, while, for, return, elseif, else, function, if, float, string, bool}.
+\end{center}
+
+Identifikátory proměnných jsou posloupnosti alfanumerických znaků a~znak \textunderscore; identifikátor nesmí začínat číslicí.
+Regulárním výrazem zapsáno jako:
+\begin{center}
+    \texttt{[a-zA-Z\textunderscore][a-zA-Z0-9\textunderscore]*}
+\end{center}
+
+Jazyk Koubp podporuje čtyři datové typy, a~to \texttt{int, float, bool, string}.
+Jejich literály jsou definovány následovně:
+\begin{itemize}
+    \item Celočíselné literály jsou neprázdná posloupnost číslic, regulární výraz je
+    \begin{center}
+        \texttt{[0-9]+}
+    \end{center} 
+    \item Literály pro desetinná čísla, respektive čísla s~plovoucí desetinnou čárkou, jsou neprázdná posloupnost číslic následovaná tečkou, za kterou je další neprázdná posloupnost číslic.
+    \begin{center}
+        \texttt{[0-9]+.[0-9]+}
+    \end{center}
+    \item Literály typu \texttt{bool} jsou \texttt{true} a~\texttt{false}.
+    \item Řetězcové literály jsou posloupností (i~prázdnou) znaků uzavřenou v~uvozovkách.
+    Pro zapsání speciálních znaků je možnost použít \emph{escape sekvence}, které začínají zpětným lomítkem.
+    \begin{center}
+        \texttt{\textbackslash"(\textbackslash\textbackslash.|[\^{}\textbackslash\textbackslash"])*\textbackslash"}
+    \end{center}
+\end{itemize}
+
+Jsou také podporovány řádkové a~blokové komentáře.
+Řádkový komentář je sekvence znaků počínající dvojitým lomítkem \texttt{//}, končí na konci aktuálního řádku.
+Blokový komentář může být na více řádků počínaje znaky \texttt{/*}, konče znaky \texttt{*/}.
 
 \subsection*{Deklarace a definice funkcí}
+Jak bylo zmíněno v~úvodu této kapitoly, deklarované funkce musí být rovnou definovány.
+Jazyk Koubp nepodporuje \emph{přetěžování (overloading)}\footnote{\todo{vlozit odkaz na definici overloadingu}} funkcí.
+Definice funkce se skládá z~hlavičky za klíčovým slovem \texttt{function} a~těla funkce.
+V~hlavičce se definuje název funkce, návratový typ a~počet parametrů a~jejich datové typy.
+Schematicky vypadá následovně:
+\begin{center}
+    \texttt{function <jméno> ( <seznam parametrů> ) : <datový typ> \{ <tělo funkce> \}}
+\end{center}
+Dvojtečka před datovým typem musí být uvedena vždy, a~to i~v~případě, že funkce nemá návratovou hodnotu (takzvaně \texttt{void} funkce).
+V~tomto případě za dvojtečkou ihned následuje levá složená závorka \texttt{\{}.
+Parametry funkce jsou oddělené čárkami a~jejich struktura je:
+\begin{center}
+     \texttt{<datový typ>} \texttt{<jméno proměnné>}
+\end{center}
+Tělo funkce je pak neprázdná sekvence příkazů.
+Příklad definice funkce je:
+\begin{center}
+    \todo{doplnit definici funkce treba faktorial nebo neco jednoduchyho}
+\end{center}
 
 \subsection*{Příkazy}
-
+Jazyk Koubp podoruje obvyklé příkazy a~konstrukce programovacích jazyků.
 \begin{itemize}
-    \item Přiřazení
-    \item Větvení
-    \item Cyklus while
-    \item Cyklus for
-    \item Volání funkcí
+    \item \emph{Přiřazení}\,--\,stejně, jako u~definic funkcí, deklarace není možná.
+    Hodnota se může přiřadit do již definované proměnné nebo při vytvoření nové proměnné, která předtím definovaná nebyla.
+    \begin{align*}
+        \text{\texttt{<datový typ> <jméno proměnné> }} &\text{\texttt{= <hodnota>}} \\
+        \text{\texttt{<jméno proměnné> }} &\text{\texttt{= <hodnota>}}        
+    \end{align*}
+    \item \emph{Větvení}
+    \item \emph{Cyklus while}
+    \item \emph{Cyklus for}
+    \item \emph{Volání funkcí}
 \end{itemize}
 
 
