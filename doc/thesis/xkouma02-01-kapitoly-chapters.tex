@@ -1677,9 +1677,10 @@ V~praxi se tedy většinou používá výhradně pro analýzu výrazů.
 
 \chapter{Implementace syntaktického analyzátoru pro jazyk Koubp}\label{kap_implementace}
 
-\section{Přijímaný jazyk}
+\section{Přijímaný jazyk}\label{kap_prijimany_jazyk}
 
 Jazyk \emph{Koubp} je založený na jazyce IFJ22, který je podmnožinou jazyka PHP 8, jenž byl specifikován v~rámci zadání projektu do předmětu Formální jazyky a překladače v~akademickém roce 2022/2023.
+V~této kapitole jsou popsány především syntaktické konstrukty jazyka Koubp a~není podrobně popsána sémantika příkazů, protože sémantická analýza není předmětem této práce.
 \dotaz{je mozne citovat zadani projektu? pokud ano, jak se k nemu dostat?}
 
 \subsection*{Obecné vlastnosti}
@@ -1695,7 +1696,7 @@ Tyto bloky kódu se mohou libovolně zanořovat.
 V jazyce Koubp nejsou důležité \emph{bílé mezery (whitespaces)}.
 Klíčová slova jazyka jsou
 \begin{center}
-    \texttt{if, while, for, return, elseif, else, function, if, float, string, bool}.
+    \texttt{if, while, for, return, elseif, else, function, int, float, string, bool}.
 \end{center}
 
 Identifikátory proměnných jsou posloupnosti alfanumerických znaků a~znak \textunderscore; identifikátor nesmí začínat číslicí.
@@ -1749,7 +1750,7 @@ Příklad definice funkce je:
 \end{center}
 
 \subsection*{Příkazy}
-Jazyk Koubp podoruje obvyklé příkazy a~konstrukce programovacích jazyků.
+Jazyk Koubp podoruje obvyklé příkazy a~konstrukce jiných programovacích jazyků.
 \begin{itemize}
     \item \emph{Přiřazení}\,--\,stejně, jako u~definic funkcí, deklarace není možná.
     Hodnota se může přiřadit do již definované proměnné nebo při vytvoření nové proměnné, která předtím definovaná nebyla.
@@ -1757,75 +1758,505 @@ Jazyk Koubp podoruje obvyklé příkazy a~konstrukce programovacích jazyků.
         \text{\texttt{<datový typ> <jméno proměnné> }} &\text{\texttt{= <hodnota>}} \\
         \text{\texttt{<jméno proměnné> }} &\text{\texttt{= <hodnota>}}        
     \end{align*}
-    \item \emph{Větvení}
-    \item \emph{Cyklus while}
-    \item \emph{Cyklus for}
-    \item \emph{Volání funkcí}
+    \item \emph{Větvení}\,--\,podmíněný příkaz podporuje klíčová slova \texttt{if}, \texttt{elseif}, \texttt{else}.
+    Ačkoliv je možnost používat přímo klíčové slovo \texttt{elseif}, jazyk Koubp podporuje i~sekvenci \texttt{else if}, jejichž sémantický rozdíl je patrně vidět na obrázcích \ref{fig_ast_elseif} a~\ref{fig_ast_else_if}.
+    Syntaxe je následující:
+    \begin{lstlisting}[language=Koubp]
+        if (vyraz) {
+            sekvence_prikazu
+        }
+        elseif (vyraz) {
+            sekvence_prikazu
+        }
+        else {
+            sekvence_prikazu
+        }
+    \end{lstlisting}
+    Je podporováno psát sekvence příkazů i~bez složených závorek \texttt{\{\}}.
+    V tom případě se ke konstrukci vztahuje pouze první příkaz, který se za konstrukcí vyskytuje, podobně jako v~jazyce C \cite{ISO-C-Standard}.
+    Tohle pravidlo platí i~pro příkazy nebo sekvence příkazů v~cyklech. 
+    \begin{lstlisting}[language=Koubp]
+        if (vyraz) 
+            prikaz;
+        elseif (vyraz)
+            prikaz;
+        else
+            prikaz;
+    \end{lstlisting}
+    \begin{figure}[ht]
+        \todo{pridat ast obrazek if-elseif}
+        \caption{Programem vygenerovaný AST pro konstrukci \texttt{if-elseif}}
+        \label{fig_ast_elseif}
+    \end{figure}
+    \begin{figure}[ht]
+        \todo{pridat ast obrazek if-else if}
+        \caption{Programem vygenerovaný AST pro konstrukci \texttt{if-else if}}
+        \label{fig_ast_else_if}
+    \end{figure}
+    \item \emph{Cyklus while}\,--\,Vykonává se sekvence příkazů (nebo příkaz) tak dlouho, dokud \emph{výraz} není vyhodnocen jako pravda.
+    \begin{lstlisting}[language=Koubp]
+        while (vyraz) {
+            sekvence_prikazu
+        }
+
+        while (vyraz)
+            prikaz;
+    \end{lstlisting}
+    \item \emph{Cyklus for} se skládá z~hlavičky a~těla.
+    Hlavička se skládá ze tří částí\,--\,inicializace a~dva výrazy, všechny jsou odděleny středníkem.
+    Inicializace může být výraz, deklarace nebo přiřazení.
+    \begin{lstlisting}[language=Koubp]
+        for (inicializace; vyraz; vyraz) {
+            sekvence_prikazu
+        }
+
+        for (inicializace; vyraz; vyraz) 
+            prikaz;
+    \end{lstlisting}
+    \item \emph{Příkaz return}\,--\,začíná klíčovým slovem \texttt{return} a~následuje volitelný výraz.
+    Vrátí hodnotu výrazu z~volané funkce nebo spuštěného programu.
+    \begin{lstlisting}[language=Koubp]
+        return vyraz;
+        return;
+    \end{lstlisting}
 \end{itemize}
 
 \subsection*{Výrazy}
+Výrazy jazyka Koubp jsou tvořeny operátory, operandy a~závorkami.
+Mezi operandy se řadí proměnné, konstanty (literály) a~volání funkcí.
 
 \begin{itemize}
-    \item Operátory
-    \item Priorita operátorů
-    \item Volání funkcí
+    \item Operátory jsou unární (\texttt{! -}) a~binární, které se dále dělí na
+    \begin{itemize}[label=$\circ$]
+        \item aritmetické \texttt{. + - * /},
+        \item logické \texttt{\&\& ||},
+        \item relační \texttt{== != > < >= <=},
+        \item přiřazení \texttt{=}.
+    \end{itemize}
+    Unární mínus je v~implementaci reprezentováno jiným tokenem než binární mínus.
+    Na přiřazení se v~jazyce Koubp hledí jako na operátor s~nejmenší prioritou.
+    Proto například výraz
+    \begin{center}
+        \texttt{variable = 1 + 2 + 3 = retezec1.retezec2;}
+    \end{center}
+    je syntakticky v~pořádku.
+    O~dodatečnou kontrolu správnosti tohoto výrazu se musí postarat sémantická analýza. 
+    \item Tabulka \ref{tab_priorita_operatoru} ilustruje prioritu operátorů sestupně a~jejich asociativitu.
+    Asociativita udává, v~jakém pořadí se vyhodnotí operátory se stejnou prioritou.
+    Například, mějme výraz
+    \begin{center}
+        1 + 2 + 3.
+    \end{center}
+    Pokud operátor \texttt{+} je levě asociativní, pak je výraz vyhodnocen jako
+    \begin{center}
+        (1 + 2) + 3,
+    \end{center}
+    v~opačném případě jako
+    \begin{center}
+        1 + (2 + 3).
+    \end{center}
+    Asociativita je důležitá především u~operátorů, které nejsou komutativní, jako například operátor dělení \texttt{/}.
+    Nicméně se musí definovat pro všechny operátory, aby precedenční analyzátor věděl, který z~výrazů má vyhodnotit dříve.
+    Implementačně to znamená, že výrazy s~operátory s~vyšší prioritou budou vyhodnoceny dříve než operátory s~nižší prioritou.
+    \begin{table}[ht]
+        \centering
+        \begin{tabularx}{0.7\textwidth}{p{0.15\textwidth}p{0.3\textwidth}X}
+            \toprule
+            \textbf{Pořadí} & \textbf{Seznam operátorů} & \textbf{Asociativita} \\
+            \midrule
+            1) & \texttt{! -} & levá \\
+            2) & \texttt{* /} & levá \\
+            3) & \texttt{+ - .} & levá \\
+            4) & \texttt{== != > < >= <=} & levá \\
+            5) & \texttt{\&\& ||} & levá \\
+            \bottomrule
+        \end{tabularx}
+        \caption{Priorita operátorů a jejich asociativita.}
+        \label{tab_priorita_operatoru}
+    \end{table}
+    \item Volání funkce je bráno jako operand, který se může ve výrazech běžně používat.
+    Dále má jako argumenty výrazy oddělené čárkami, tudíž se mohou libovolně zanořovat.
+    Následující příklad je syntakticky správně v~jazyce Koubp.
+    \begin{lstlisting}[language=Koubp]
+        int p = foo(s1."bar\n", 8*7) + !convert_bool(readline());
+    \end{lstlisting}
 \end{itemize}
 
-\section*{Vestavěné funkce}
+\subsection*{Vestavěné funkce}
+Jazyk Koubp má několik vestavěných funkcí, které se ve zdrojovém kódu mohou použít bez jejich předchozí definice.
+Dělí se na vstupně-výstupní funkce, funkce pro typovou konverzi a~funkce pro práci s~řetězci.
+
+Vstupně-výstupní funkce pro práci se standardním vstupem/výstupem jsou:
+\begin{itemize}
+    \item \texttt{function print(string vyraz1, string vyraz2, \ldots)},
+    \item \texttt{function readline(): string}.
+\end{itemize}
+Funkce \texttt{print()} na standardní výstup vypíše výrazy postupně zleva doprava bez oddělovačů.
+Pro zapsání jiných typů než řetězce je možné použít funkce pro typovou konverzi, případně znak \texttt{\$} uvnitř řetězce pro vepsání hodnoty proměnné do řetězce.
+Například v~následujícím příkladu
+\begin{lstlisting}[language=Koubp]
+    float cislo = 42.37;
+    print("$cislo\n");
+    print(convert_string(cislo)."\n");
+\end{lstlisting}
+se v~obou případech vypíše na standardní výstup stejný řetězec.
+Pro vypsání znaku \texttt{\$} musí být použita escape sekvence, tudíž \texttt{\textbackslash\$}.
+Pro konstantní hodnoty funguje pouze varianta s~funkcí \texttt{convert\textunderscore string()}.
+Funkce \texttt{readline()} přečte sekvenci znaků ukončenou \texttt{\textbackslash n} ze standardního vstupu a~vrátí ji jako řetězec.
+
+Pro práci se soubory jsou funkce
+\begin{itemize}
+    \item \texttt{function file\textunderscore open(string filename): int},
+    \item \texttt{function file\textunderscore write(string filename, string buffer)},
+    \item \texttt{function file\textunderscore readline(string filename): string},
+    \item \texttt{function file\textunderscore close(string filename): int}.
+\end{itemize}
+Sémantika je očekáváná.
+Funkce \texttt{file\textunderscore open()} otevře soubor specifikovaný v~parametru \texttt{filename} pro čtení nebo zápis a~vrací návratový kód pomocí kterého se může identifikovat chyba.
+\texttt{file\textunderscore write()} zapíše do souboru \texttt{filename} řetězec v~parametru \texttt{buffer}.
+Dále funkce \texttt{file\textunderscore readline()} přečte jeden řádek ze souboru, případně vrací prázdný řetězec a~funkce \texttt{file\textunderscore close()} zavře soubor \texttt{filename} pro čtení i~zápis, vrací návratový kód pro detekci chyby.
+
+Typové konverze jsou uskutečněny funkcemi
+\begin{itemize}
+    \item \texttt{function convert\textunderscore int(term): int},
+    \item \texttt{function convert\textunderscore string(term): string},
+    \item \texttt{function convert\textunderscore float(term): float},
+    \item \texttt{function convert\textunderscore bool(term): bool},
+\end{itemize}
+a~jsou to jediné vestavěné funkce, které pracují s~operandem libovolného datového typu.
+Například:
+\begin{lstlisting}[language=Koubp]
+    int cislo = convert_int(readline());
+    bool hodnota = convert_bool(cislo);
+    print(convert_string(hodnota)); // Vypise "true" nebo "false" na stdin
+\end{lstlisting}
+
+Poslední vestavěné funkce jsou takové, které pracují s~řetězci.
+Jsou to funkce
+\begin{itemize}
+    \item \texttt{function strlen(string s): int} a 
+    \item \texttt{function substring(string s, int i, int j): string}.
+\end{itemize}
+Funkce \texttt{strlen()} vrací délku řetězce, který je dán jako parametr a~\texttt{substring()} vrátí podřetězec řetězce \texttt{s} od indexu \texttt{i} po index \texttt{j}.
 
 \section{Gramatický systém definujíci syntax jazyka Koubp}
-\dotaz{samotne gramatiky patri do prilohy nebo je mam hodit sem?}
-\todo{základní popis použitého GS, jak je spojený s~CDGS a potažmo PCGS}
+Gramatický systém popisující syntax jazyka Koubp je CD gramatický systém.
+Formálně zapsáno, je to devítice $\Gamma = (N, T, S, P_1, P_2, P_3, P_4, P_6, P_6)$, kde:
+\begin{align*}
+    N & = 
+        \begin{aligned}[t]
+          \{&\texttt{PROGRAM}, \texttt{ STATEMENT\_LIST}, \texttt{ STATEMENT}, \texttt{ IF2}, \texttt{ DECLOREXP}, \texttt{ RETURNEXP},\\
+            &\texttt{FUNCDEF}, \texttt{ PARAMS}, \texttt{ PARAMS2}, \texttt{ EXPRESSION}, \texttt{ ARGS}, \texttt{ ARGS2}, \texttt{ CODEBLOCK},\\
+            &\texttt{STATEMENTS}, \texttt{ VOLTYPE}, \texttt{ TYPE}\}
+        \end{aligned}\\
+    T & = 
+        \begin{aligned}[t]
+          \{&\texttt{if}, \texttt{ elseif}, \texttt{ else}, \texttt{ while}, \texttt{ for}, \texttt{ return}, \texttt{ function}, \texttt{ int}, \texttt{ float},\\
+            &\texttt{string}, \texttt{ bool}, \texttt{ variable}, \texttt{ constant}, \texttt{ functionName}, \texttt{ +}, \texttt{ -}, \texttt{ *}, \texttt{ /},\\
+            &\texttt{.}, \texttt{ \&\&}, \texttt{ ||}, \texttt{ ==}, \texttt{ !=}, \texttt{ >}, \texttt{ <}, \texttt{ >=}, \texttt{ <=}, \texttt{ :}, \texttt{ ,}, \texttt{ (}, \texttt{ )}, \texttt{ \{} \texttt{ \}}\}
+        \end{aligned}\\
+    S & = \texttt{PROGRAM}
+\end{align*}
 
-\todo{popsat možný deadlock mezi neterminály codeblock a statement}
 
-\todo{indexace neterminálů}
 
-\todo{ll tabulka, která obsahuje uspořádané dvojice}
+Komponenty systému jsou navrhnuty tak, aby každá z~nich tvořila ucelenou část jazyka Koubp.
+První komponenta popisuje strukturu programu\,--\,sekvence příkazů a~definic funkcí.
+\begin{equation*}
+    P_1 = \{ 
+        \begin{aligned}[t] 
+            &\texttt{PROGRAM \textrightarrow{} STATEMENT STATEMENT\textunderscore LIST},\\
+            &\texttt{PROGRAM \textrightarrow{} FUNCDEF STATEMENT\textunderscore LIST},\\
+            &\texttt{STATEMENT\textunderscore LIST \textrightarrow{} STATEMENT STATEMENT\textunderscore LIST},\\
+            &\texttt{STATEMENT\textunderscore LIST \textrightarrow{} FUNCDEF STATEMENT\textunderscore LIST},\\
+            &\texttt{STATEMENT\textunderscore LIST \textrightarrow{} }\varepsilon\}
+        \end{aligned}
+\end{equation*}
 
-\section{Návrh řešení syntaktického analyzátoru}
+Druhá komponenta obsahuje seznam příkazů a~běžných konstrukcí doplněné o~jejich pomocné neterminály.
+\begin{equation*}
+    P_2 = \{ 
+        \begin{aligned}[t] 
+            &\texttt{STATEMENT \textrightarrow{} } \texttt{if ( EXPRESSION ) CODEBLOCK IF2},\\
+            &\texttt{STATEMENT \textrightarrow{} } \texttt{while ( EXPRESSION ) CODEBLOCK},\\
+            &\texttt{STATEMENT \textrightarrow{} } \texttt{for ( DECLOREXP; EXPRESSION; EXPRESSION ) CODEBLOCK},\\
+            &\texttt{STATEMENT \textrightarrow{} } \texttt{DECLOREXP;},\\
+            &\texttt{STATEMENT \textrightarrow{} } \texttt{CODEBLOCK},\\
+            &\texttt{STATEMENT \textrightarrow{} } \texttt{return RETURNEXP;},\\
+            &\texttt{STATEMENT \textrightarrow{} } \texttt{;},\\
+            &\texttt{IF2 \textrightarrow{} } \texttt{elseif ( EXPRESSION ) CODEBLOCK IF2},\\
+            &\texttt{IF2 \textrightarrow{} } \texttt{else CODEBLOCK},\\
+            &\texttt{IF2 \textrightarrow{} } \varepsilon,\\
+            &\texttt{DECLOREXP \textrightarrow{} } \texttt{TYPE variable = EXPRESSION},\\
+            &\texttt{DECLOREXP \textrightarrow{} } \texttt{EXPRESSION},\\
+            &\texttt{RETURNEXP \textrightarrow{} } \texttt{EXPRESSION},\\
+            &\texttt{RETURNEXP \textrightarrow{} } \varepsilon\} 
+        \end{aligned}
+\end{equation*}
+
+
+Třetí komponenta zahrnuje definici funkce a~pomocné neterminály.
+\begin{equation*}
+    P_3 = \{ 
+        \begin{aligned}[t] 
+            &\texttt{FUNCDEF \textrightarrow{} } \texttt{function functionName ( PARAMS ) : VOLTYPE \{ STATEMENTS \}},\\
+            &\texttt{PARAMS \textrightarrow{} } \texttt{EXPRESSION PARAMS2}, \\
+            &\texttt{PARAMS \textrightarrow{} } \varepsilon,\\
+            &\texttt{PARAMS2 \textrightarrow{} } \texttt{, EXPRESSION PARAMS2},\\
+            &\texttt{PARAMS2 \textrightarrow{} } \varepsilon \}
+        \end{aligned}
+\end{equation*}
+
+Čtvrtá komponenta popisuje veškerou práci s~výrazy a~obsahuje pomocné neterminály pro volání funkcí.
+Nechť symboly $\lfloor$ a~$\rceil$ ohraničují možnosti terminálů, které se v~daném pravidle mohou vyskytovat.
+\begin{equation*}
+    P_4 = \{ 
+        \begin{aligned}[t] 
+            &\texttt{EXPRESSION \textrightarrow{} } \texttt{EXPRESSION } \lfloor \texttt{+ - * / . \&\& || == != > < >= <= =}\rceil \texttt{ EXPRESSION},\\
+            &\texttt{EXPRESSION \textrightarrow{} } \lfloor \texttt{! -} \rceil \texttt{ EXPRESSION}, \\
+            &\texttt{EXPRESSION \textrightarrow{} } \texttt{variable},\\
+            &\texttt{EXPRESSION \textrightarrow{} } \texttt{constant},\\
+            &\texttt{EXPRESSION \textrightarrow{} } \texttt{functionName},\\
+            &\texttt{EXPRESSION \textrightarrow{} } \texttt{( EXPRESSION )} \}
+        \end{aligned}
+\end{equation*}
+
+Pátá komponenta pojednává o~bloku kódu, který byl vysvětlen v~úvodu kapitoly \ref{kap_prijimany_jazyk}.
+Důvod pro použití samostatné komponenty pro tuto konstrukci, a~ne znovupoužití neterminálu \texttt{STATEMENT\textunderscore LIST}, je explicitní zakázání zanořování definic funkcí.
+V~této konstrukci se tedy mohou vyskytovat libovolné příkazy a~jejich sekvence, nesmí se tam objevit definice funkce. 
+\begin{equation*}
+    P_5 = \{ 
+        \begin{aligned}[t] 
+            &\texttt{CODEBLOCK \textrightarrow{} } \texttt{\{ STATEMENTS \}},\\
+            &\texttt{CODEBLOCK \textrightarrow{} } \texttt{STATEMENT}, \\
+            &\texttt{STATEMENTS \textrightarrow{} } \texttt{STATEMENT STATEMENTS},\\
+            &\texttt{STATEMENTS \textrightarrow{} } \varepsilon \}
+        \end{aligned}
+\end{equation*}
+
+Šestá komponenta obsahuje pouze neterminály související s~datovými typy.
+\begin{equation*}
+    P_6 = \{ 
+        \begin{aligned}[t] 
+            &\texttt{VOLTYPE \textrightarrow{} } \texttt{TYPE},\\
+            &\texttt{VOLTYPE \textrightarrow{} } \varepsilon, \\
+            &\texttt{TYPE \textrightarrow{} } \texttt{int},\\
+            &\texttt{TYPE \textrightarrow{} } \texttt{float},\\
+            &\texttt{TYPE \textrightarrow{} } \texttt{string},\\
+            &\texttt{TYPE \textrightarrow{} } \texttt{bool} \}
+        \end{aligned}
+\end{equation*}
+
+Všimněme si, že mezi neterminály \texttt{STATEMENT} a~\texttt{CODEBLOCK} teoreticky může nastat situace, kdy se tyto dva neterminály budou vzájemně derivovat donekonečna, přičemž oba budou čekat na jinou derivaci druhého a~nastane \emph{deadlock}.
+Tato situace je vyřešená implementačně\,--\,neterminál \texttt{STATEMENT} bude derivovat neterminál \texttt{CODEBLOCK} jen a~pouze tehdy, bude-li na vstupu terminál \texttt{\{}.
+
+\dotaz{samotne komponenty patri do prilohy nebo je mam nechat tady?}
+
+\subsection*{Indexace neterminálů a LL tabulka}
+Každému neterminálu z~množiny $N$ v~$\Gamma$ je přiřazen index, který odkazuje na různé komponenty $P_i \in \Gamma,\; i \in \{1, \ldots, 6\}$.
+Každý neterminál má pravidla pro expanzi pouze v~jedné komponentě, díky čemuž je možné deterministicky zvolit komponentu, které se bude předávat řízení syntaktické analýzy.
+Pomocí vstupního terminálu se poté v~komponentě zvolí pravidlo, které se použije pro expanzi.
+Tato indexace lze matematicky popsat zobrazením z~množiny neterminálů do podmnožiny přirozených čísel, které korespondují s~indexy komponent v~konkrétním gramatickém systému.
+V~tomto případě se jedná o~zobrazení
+\begin{align*}
+    N &\rightarrow \{i: P_i \in \Gamma\} \\
+    N &\rightarrow \{1, 2, 3, 4, 5, 6\}
+\end{align*}
+které je definováno v~tabulce \ref{tab_zobrazeni_indexy}.
+\begin{table}[ht]
+    \centering
+    \begin{tabularx}{0.5\textwidth}{Xc}
+        \toprule
+        \textbf{Neterminál} & \textbf{Index komponenty}\\
+        \midrule
+        \texttt{PROGRAM} & 1\\
+        \texttt{STATEMENT\textunderscore LIST} & 1\\
+        \texttt{STATEMENT} & 2\\
+        \texttt{IF2} & 2\\
+        \texttt{DECLOREXP} & 2\\
+        \texttt{RETURNEXP} & 2\\
+        \texttt{FUNCDEF} & 3\\
+        \texttt{PARAMS} & 3\\
+        \texttt{PARAMS2} & 3\\
+        \texttt{EXPRESSION} & 4\\
+        \texttt{ARGS} & 4\\
+        \texttt{ARGS2} & 4\\
+        \texttt{CODEBLOCK} & 5\\
+        \texttt{STATEMENTS} & 5\\
+        \texttt{VOLTYPE} & 6\\
+        \texttt{TYPE} & 6\\
+        \bottomrule
+    \end{tabularx}
+    \caption{Zobrazovací funkce neterminálů na indexy komponent.}
+    \label{tab_zobrazeni_indexy}
+\end{table}
+
+LL tabulka syntaktického analyzátoru obsahuje kromě obvyklých čísel pravidel uspořádané dvojice \emph{(číslo komponenty, číslo pravidla)}.
+Samotná tabulka je sestavena pomocí množin \emph{Empty($\alpha$)}, \emph{First($\alpha$)}, \emph{Follow(A)} a~\emph{Predict($A \rightarrow \alpha$)}.
+První tři množiny se vytvoří standardním způsobem pro každý terminál a~neterminál.
+Množina \emph{Predict($A \rightarrow \alpha$)} se sestavuje pro každé pravidlo, stejně jako u~LL gramatik, reprezentované uspořádanou dvojicí.
+Prediktivní množiny a~LL tabulka pro GS $\Gamma$ popisující jazyk Koubp jsou v~příloze. \todo{ref priloha, vlozeni prilohy}
+
+\dotaz{Tato část mi přijde hodně hodně stručná -- rád bych k ní napsal něco víc, ale nevím, co by sem ještě mohlo patřit.
+Budu ještě potřebovat pomoci s~formalizací této části.}
+
+\section{Návrh řešení syntaktického analyzátoru}\label{kap_reseni_sa}
 Implementace syntaktické analýzy je silně objektově orientována, veškeré datové struktury jsou reprezentovány třídami.
-Třídy reprezentující neterminály a~terminály mají společnou nadtřídu, díky čemuž je možné je ukládat do jednoho zásobníku za pomoci šablon.
+Třídy reprezentující neterminály a~terminály mají společnou nadtřídu, díky čemuž je možné je ukládat do jednoho zásobníku za použití polymorfismu.
 Jednu nadtřídu mají také gramatiky, jednotlivé instance jsou poté konstruovány pomocí tovární metody.
 Analyzátory jsou také reprezentovány třídami, společnou nadtřídu ale nemají.
 
-\subsection*{Práce s~gramatikami}
-Gramatiky jsou rozděleny tak, aby každá z~nich tvořila ucelenou část jazyka Koubp.
-Mimo čtvrtou gramatiku jsou všechny využívány pouze pro prediktivní analýzu.
-Ačkoliv téma čtvrté gramatiky je analýza výrazů, je využívána jak precedenčním, tak prediktivním analyzátorem.
-Důvod je zvolený postup prediktivní analýzy volání funkcí\,--\,o~samotné výrazy bez volání funkcí, tedy pouze s~konstantami, proměnnými a podobně, se postará analýza precedenční.
+\subsection*{Práce s~komponentami}
+Všechny komponenty jsou využívány pouze prediktivním analyzátorem, mimo čtvrtou.
+Ačkoliv téma čtvrté komponenty je analýza výrazů, je využívána jak precedenčním, tak prediktivním analyzátorem.
+Důvod je zvolený postup prediktivní analýzy volání funkcí\,--\,o~samotné výrazy bez volání funkcí, tedy pouze výrazy s~konstantami, proměnnými a~podobně, se postará analýza precedenční.
 
-\begin{figure}[ht]\label{fig_schema_analyzy}
-    \caption{Schéma analýzy}
-    \todo{Tady bude obrázek znázorňující oba dva parsery a šest gramatik a který s~čím pracuje.}
-\end{figure}
 
 \subsection*{Předávání řízení prediktivní a precedenční analýzy}
-Při nutnosti předání řízení druhému analyzátoru je na místě vytvořena nová instance a~okamžité zavolání metody \texttt{Parse()}.
+Prediktivní a~precedenční analýza si navzájem předávají řízení.
+Prediktivní analyzátor předá řízení precedenčnímu v~případě, že narazí na terminál, který patří do analýzy výrazů.
+Předání naopak, tedy precedenční prediktivnímu, se děje v~případě, že precedenční analyzátor potřebuje zkontrolovat, že je posloupnost terminálů u~volání funkce syntakticky v~pořádku.
+Volání funkce analyzují oba analyzátory.
+Samotná struktura volání funkce je zkontrolována prediktivním analyzátorem a~výrazy, které se vyskytují jako argumenty volání funkce, jsou zkontrolovány precedenčním analyzátorem.
 
-\begin{figure}\label{fig_schema_zmeny_parseru}
-    \caption{Výtažek z kódu}
-    \todo{tady bude vytazek z~kodu pro prepinani analyzatoru.}
-\end{figure}
+Díky možnosti neustálého zanořování je potřeba, aby analyzátory mezi sebou komunikovaly.
+To je realizováno pomocným terminálem \texttt{tFuncEnd}, který je vložen na zásobník pro syntaktickou analýzu hned za volání funkce.
+Tento proces nebere v~potaz, že mohou být další vnořené funkce či syntaktická chyba.
+Zkrátka vloží na zásobník \texttt{tFuncEnd} tam, kde je volání funkce ukončeno pravou závorkou \texttt{)}.
+Jakmile prediktivní analyzátor přečte tento terminální symbol, vloží na zásobník další pomocný terminál \texttt{tFuncConst}.
+Ten využívá precedenční analýza pro nahrazení volání funkce, o~které se stará prediktivní analýza.
+Pro implementaci precedenční analýzy bylo do čtvrté komponenty přidáno pravidlo
+\begin{center}
+    \texttt{EXPRESSION \textrightarrow{} functionConstant}.
+\end{center}
 
-Jedním z~nich je neterminál \texttt{Expression} na vrcholu zásobníku pro prediktivní analýzu.
-V~tomto případě je zřejmé, že musí být předáno řízení precedenční analýze, aby mohla být provedena analýza výrazu.
-Pokud precedenční analýza narazí na token \texttt{tFuncName}, reprezentující počátek volání funkce, musí opět předat řízení zpět prediktivní analýze.
+Aby precedenční analyzátor mohl s~terminálem \texttt{tFuncConst} pracovat, je nutné, aby se prediktivní analýza pro volání funkce volala až z~analýzy precedenční.
+Mějme například příkaz:
+\begin{lstlisting}[language=Koubp]
+    float num = 1.0 + foo(var);
+\end{lstlisting}
+V~tomto případě je vše očekávané.
+Precedenční analýza zavolá prediktivní analýzu, ta se postará o~volání funkce a~na zásobník vloží \texttt{tFuncConst}, který precedenční analýza použije v~rámci pravidla.
+Pokud bychom ale měli například toto samo o~sobě stojící volání funkce:
+\begin{lstlisting}[language=Koubp]
+    foo(var + convert_int(60.8));
+\end{lstlisting}
+pak analýza tohoto příkazu začne prediktivně, nicméně ihned vidí terminál \texttt{tFuncName}, který indikuje volání funkce, a~proto předá řízení precedenční analýze.
+Dále už analýza probíhá stejně, jako u~předchozího příkladu. 
+Výraz bude mít jediný operand bez operátoru, a~to \texttt{tFuncConst}.
 
-\begin{figure}[h]\label{fig_fcall_stridani}
-    \caption{Obrazek volani funkce a stridani analyzatoru}
-    \todo{Tady bude obrazek, kde bude napsany jednoduchy kod volani funkce, jeho reprezentace v~tokenech a navic vlozene pomocne tokeny, ktere parsery vyuzivaji.
-    Bude tam zobrazene, v~jakych mistech se provadi zmena analyz.}
-\end{figure}
+Zajímavou částí je předávání řízení prediktivní $\rightarrow$ precedenční analýza.
+Nutnou podmínkou je, aby na vrcholu zásobníku byl neterminál \texttt{nExpression}.
+Mohou nastat tři možnosti:
+\begin{enumerate}[label=\arabic*)]
+    \item Aktuálně není na vstupu terminál \texttt{tFuncName}, což znamená, že výraz určitě bude analyzovaný precedenčním analyzátorem a~může se předat řízení.
+    \item Pokud na vstupu je \texttt{tFuncName}, pak záleží, zda se analyzuje volání funkce, pro které byl prediktivní analyzátor zavolán.
+    To se pozná podle toho, jestli je \texttt{tFuncName} první takový terminál přečten. 
+    \begin{itemize}
+        \item Při prvním výskytu \texttt{tFuncName} víme, že aktuální volání funkce má analyzovat prediktivní analyzátor a~nebude se volat precedenční.
+        \item Jakýkoliv další výskyt \texttt{tFuncName} znamená, že jsme narazili na vnořené volání funkce a~předá se řízení precedenční analýze pro nový výraz.
+    \end{itemize}  
+\end{enumerate}
+\todo{pridat dva obrazky pro vnorene volani funkce, kde se bude volat precedencni analyza.}
+
+\subsection*{Implementace prediktivní analýzy}
+Prediktivní analyzátor pracuje primárně s~metodami \texttt{parseToken} a~\texttt{parseNonterminal}.
+Obě dvě metody korespondují s~algoritmem \ref{alg_prediktivni_sa}.
+Metoda \texttt{parseToken} se podívá, jestli aktuální terminál na zásobníku je stejný jako terminál na vstupu.
+Pokud ano, pak vyjme symbol ze zásobníku i~ze vstupní pásky a~pokračuje dál v~analýze vstupního řetězce.
+Speciální případ je pomocný symbol \texttt{tEnd}, který má stejný význam jako \texttt{\$} v~algoritmu \ref{alg_prediktivni_sa}.
+Když je i~na vrcholu zásobníku i~na vstupní pásce tento terminál, pak analýza končí úspěchem.
+
+Metoda \texttt{parseNonterminal}, pokud nepředává řízení precedenční analýze, se podívá do LL tabulky, která se indexuje pomocí vstupního terminálu a~neterminálu na vrcholu zásobníku.
+Při prázdném políčku tabulky analýza končí chybou, pro neprázdnou uspořádanou dvojici udělá následující kroky:
+\begin{enumerate}[label=\arabic*)]
+    \item Z~uspořádané dvojice si nejprve převezme číslo komponenty, ve které se pravidlo nachází.
+    \item Pomocí tovární metody \texttt{GrammarFactory::CreateGrammar(grammarNumber)} si vytvoří instanci dané komponenty.
+    \item Předá komponentě číslo pravidla a~komponenta vrátí reverzovanou pravou stranu pravidla.
+    \item Pokud pravá strana pravidla není rovna $\varepsilon$, pak se všechny symboly z~expandovaného řetězce vloží na zásobník.
+\end{enumerate}
+
+\subsection*{Implementace precedenční analýzy}
+Precedenční analyzátor pracuje se dvěma zásobníky.
+První zásobník je společný pro oba analyzátory, přičemž precedenční pouze vyjme neterminál \texttt{nExpression}, pokud analýza skončí úspěšně.
+Druhý je exkluzivně pro precedenční analyzátor a~simuluje nejpravější derivaci, respektive analýzu zdola nahoru dle algoritmu \ref{alg_precedencni_sa}.
+Označení \emph{zásobník} bude v~této kapitole označovat pouze precedenční zásobník, nebude-li explicitně řečeno \emph{společný zásobník}.
+
+Analýza výrazů začíná vložením pomocného terminálu \texttt{tExpEnd} na společný zásobník, což je implementováno pomocí procházení společného zásobníku a~přeskakování operátorů a~operandů.
+Terminál \texttt{tExpEnd} se vloží za první operand, který za sebou již nemá operátor.
+Dále se nalezne první terminál na zásobníku jednoduchým procházením zásobníku a~vrácením prvního výskytu terminálu.
+Analyzátor se podívá do precedenční tabulky a~najde akci, kterou má udělat, na základě vstupního terminálu a~prvního terminálu na zásobníku.
+V~precedenční tabulce se na políčkách mohou vyskytovat tyto symboly:
+\begin{enumerate}[label=\arabic*)]
+    \item '$=$': vloží vstupní terminál na zásobník,
+    \item '$<$': vloží na zásobník symbol $<$ a~poté vstupní terminál,
+    \item '$>$': najde první pravou stranu pravidla na zásobníku, zkontroluje platnost a~provede redukci,
+    \item '$\times$': ukončí analýzu syntaktickou chybou.
+\end{enumerate}
 
 \section{Lexikální analýza a nástroj Flex}
 Pro usnadnění práce byl lexikální analyzátor automaticky vygenerován nástrojem \emph{Flex}\footnote{Manuál k~programu k~dispozici na \href{https://westes.github.io/flex/manual/}{https://westes.github.io/flex/manual/}.} ze souboru s~lexémy popsanými regulárními výrazy.
 S~každým úspěšně analyzovaným lexémem následuje vložení tokenu do vstupní pásky pro syntaktickou analýzu.
 Znamená to tedy, že se nejdříve v~celém zdrojovém souboru ověří lexikální správnost, až poté správnost syntaktická. 
 Při konstrukci tokenu se inicializuje i~jeho datová část, do kterého patří datový typ a~samotná data.
-Data jsou inicializována i~pro tokeny, které žádná data v~programu nereprezentují\,--\, 
+
+Lexikální analýza není předmětem této práce, a~proto není detailně popsána.
+Hlavní důvod k~vygenerování lexikálního analyzátoru je lepší testovatelnost výsledného programu na reálných zdrojových kódech.
 
 \section{Abstraktní syntaktický strom}
+Ačkoliv se na abstraktní syntaktický strom (AST) nejčastěji nahlíží jako na binární strom, je implementován jako obecně $n$-ární strom.
+Jsem přesvědčen, že je to mnohem intuitivnější ke čtení výsledného stromu, který může být programem vygenerován.
+Pro snadnější pochopení implementace AST je vhodné si projít třídní hierarchii uzlů AST v~příloze. 
+\todo{doplnit tridni hierarchii do prilohy a ref tady}
+
+\subsection*{Tvorba AST v precedenční analýze}
+Tvorba AST pro precedenční analýzu pracuje se zásobníkem kontextů pro výrazy.
+Do toho při každé redukci vloží posledně vytvořený výraz, který se následovně může použít (a~nemusí) jako operand při dalších redukcích.
+
+Pro precedenční analýzu je tvorba AST jednodušší.
+Výrazy jsou totiž maximálně binární, navíc simulace tvorby derivačního stromu zdola nahoru je velmi přirozená.
+Má-li proběhnout redukce proměnných, konstant nebo \emph{konstant funkcí} (vzpomeňme si na pomocný terminál \texttt{tFuncConst} z~kapitoly \ref{kap_reseni_sa}), vytvoří se nový \texttt{Operand} a~vloží se na zásobník kontextů výrazů pro AST.
+Při redukci unárních či binárních výrazů, kde se již pracuje s~neterminály, se pokaždé vyjme výraz ze~zásobníku kontextů pro výrazy (dva pro binární výrazy) a~vytvoří se nový výraz, do kterého jsou všechny vyjmuté výrazy vloženy jako operandy.
+Operátor se pak přečte z~pravidla použitého pro redukci.
+
+Poslední výraz, který na zásobníku zůstane, je převzán prediktivní analýzou a~vložen do zbytku AST pro reprezentaci vstupního zdrojového kódu.
+
+\subsection*{Tvorba AST v prediktivní analýze}
+Prediktivní analýza spoléhá na dvě polymorfní metody, které jsou přepsány v~uzlech, které dědí od třídy \texttt{Statement}.
+Třídy pro reprezentaci výrazů v~AST tuto metodu řešit nemusí, protože si veškeré informace o~tokenech mohou převzít ze zásobníku, na kterém provádí redukci a~případné výrazy ze zásobníku volání výrazů.
+Tvorba AST pro prediktivní analýzu také pracuje se zásobníkem kontextů, významově je vrchol zásobníku aktuální blok kódu, případně konstrukce, ke které patří aktuálně zpracovávaný příkaz nebo výraz.
+
+Pro každou expanzi neterminálu, není-li neterminál expandován v~$\varepsilon$, se zavolá tovární metoda pro instanciaci uzlů AST, \texttt{ASTNodeFactory::CreateASTNode()}.
+Právě tato metoda se stará o~zahození přebytečných informací z~derivačního stromu, protože vytvoří instanci pouze pro ty neterminály, pro které to implementačně bylo definováno.
+Pokud neterminál má korespondující AST uzel, pak je pomocí polymorfní metody \texttt{ASTNode::LinkNode()} spojen se zbytkem stromu a~vložen na zásobník kontextů.
+Spojení se stromem proběhne pro aktuální vrchol zásobníku kontextů a~nově vytvořený uzel.
+
+Druhá polymorfní metoda \texttt{ASTNode::ProcessToken()} je zavolána pokaždé, je-li na vrcholu zásobníku terminál.
+Tato metoda se stará o~zachování dat v~AST ze vstupní pásky, kdy všechna relevantní data, která by byla potřeba pro sémantickou analýzu či generování kódu, jsou uložena do uzlů AST.
+Je volána pro aktuální vrchol zásobníku kontextů.
+
+Pro zachování logiky stromu musí být uzly ze zásobníku odstraňovány, aby se nově vytvořené uzly spojily s~relevantním existujícím uzlem ve stromu.
+Proto je vnesen nový neterminál \texttt{STOP}, který pouze značí konec kontextu pro daný neterminál, který je ze zásobníku kontextů vyjmut.
+Například pravidlo
+\begin{center}
+    \texttt{DECLOREXP \textrightarrow{} TYPE variable = EXPRESSION ;}
+\end{center}
+je změněno na 
+\begin{center}
+    \texttt{DECLOREXP \textrightarrow{} TYPE variable = EXPRESSION STOP ;},
+\end{center}
+čímž je jasně řečeno, že jakmile se úspěšně přiřadí levá i~pravá strana do uzlu AST pro deklaraci, má se vyjmout ze zásobníku a~další příkaz nebo výraz bude spojen s~rodičovským uzlem.
+
+\section{Výstupy programu}
+Implementovaný program má za úkol zjistit, zda vstupní řetězec je řetězcem generovaným jazykem Koubp.
+K~jednoduchému výstupu \texttt{true} nebo \texttt{false} je ale vhodné přidat další výstupy, které jednak potvrdí správnost implementace a~jednak dělají rozšiřitelnost programu jednodušší.
+V~případě kladného výstupu a~úspěšné analýzy řetězce program produkuje textový soubor, ve kterém je na každém řádku napsáno pravidlo, které za běhu programu použilo.
+Volitelný výstup je graf abstraktního syntaktického stromu ve formátu \emph{.dot}, ze kterého program \emph{dot}\footnote{Manuál k~programu k~dispozici na \href{https://linux.die.net/man/1/dot}{https://linux.die.net/man/1/dot}.} může vygenerovat vizualizaci orientovaného grafu ve formátu \emph{pdf}.
+
+Pro syntaktické chyby je implementován jednoduchý systém, který uschovává posledních sedm tokenů.
+Při syntaktické chybě je všechny vypíše na výstup (nebere ohledy na bílé znaky, vypíše je v~řadě za sebe), dále za ně vypíše následující tři tokeny na vstupní pásce (zbývají-li nějaké) a~aktuální vstupní token, u~kterého nastala chyba, označí červeným symbolem \textcolor{red}{$\wedge$} na novém řádku.
+
+\section{Build systém a spuštění programu}
 
 \chapter{Testování}
 

@@ -10,7 +10,6 @@
 #include "stack_item.hpp"
 #include "token.hpp"
 #include <filesystem>
-#include <fstream>
 #include <iostream>
 
 Logger* Logger::instance = nullptr;
@@ -61,8 +60,8 @@ void Logger::AddLeftSide(Symbol* leftSide)
 
 void Logger::AddRightSide(Rule& rightSide)
 {
-    for (auto symbol = rightSide.begin(); symbol != rightSide.end(); symbol++) {
-        this->rightSideRule.push_front((*symbol)->Clone());
+    for (auto & symbol : rightSide) {
+        this->rightSideRule.push_front(symbol->Clone());
     }
 }
 
@@ -76,7 +75,7 @@ void Logger::PrintRule()
     this->clearRule();
 }
 
-void Logger::PrintTokens()
+void Logger::PrintTokens() const
 {
     if (!this->enableDebugPrint) {
         return;
@@ -141,7 +140,7 @@ void Logger::PrintSyntaxError(const char* message)
 
     // Print error position
     std::cerr << "\n";
-    for (size_t i = 0; i < position; i++) {
+    for (size_t j = 0; j < position; j++) {
         std::cerr << " ";
     }
     std::cerr << this->red << "^" << this->reset << std::endl;
@@ -149,22 +148,19 @@ void Logger::PrintSyntaxError(const char* message)
 
 void Logger::PrintLexicalError(const char* message)
 {
-    std::string red = "\033[1;31m";
-    std::string reset = "\033[0m";
-    std::cerr << red << "Lexical error " << reset << message;
+    std::cerr << this->red << "Lexical error " << this->reset << message;
 }
 
 void Logger::PrintUsageError(const char* message)
 {
     std::string boldRed = "\033[1;31m";
-    std::string reset = "\033[0m";
     std::string underlined = "\033[4m";
     std::string bold = "\033[1m";
 
-    std::cerr << boldRed << "Usage error: " << reset << message
-              << "Usage: build/src/Parser " << underlined << "[-d]" << reset << " "
-              << underlined << "-f" << reset << " " << underlined << "<filename>\n"
-              << reset;
+    std::cerr << boldRed << "Usage error: " << this->reset << message
+              << "Usage: build/src/Parser " << underlined << "[-d]" << this->reset << " "
+              << underlined << "-f" << this->reset << " " << underlined << "<filename>\n"
+              << this->reset;
 }
 
 void Logger::clearRule()

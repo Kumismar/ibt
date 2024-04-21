@@ -36,7 +36,7 @@ public:
     void AddLeftSide(Symbol* leftSide);
     void AddRightSide(Rule& rightSide);
     void PrintRule();
-    void PrintTokens();
+    void PrintTokens() const;
     void AddTokenToRecents(Token& token);
     void PrintSyntaxError(const char* message);
     void PrintLexicalError(const char* message);

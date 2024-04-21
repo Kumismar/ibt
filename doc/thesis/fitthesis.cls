@@ -91,6 +91,9 @@
 \usepackage{enumitem}
 \usepackage[section]{algorithm}
 \usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{textcomp}
 
 \floatname{algorithm}{Algoritmus}
 
@@ -111,6 +114,23 @@
 \algdef{SE}[CASE]{Case}{EndCase}[1]{\algorithmiccase\ #1\ \textbf{:}}{\algorithmicend\ \algorithmiccase}
 \algtext*{EndSwitch}
 \algtext*{EndCase}
+
+\lstdefinelanguage{Koubp}{
+    keywords={if, while, for, return, elseif, else, function},
+    keywordstyle=\color{RedViolet}\bfseries,
+    morekeywords=[2]{int, float, string, bool},
+    keywordstyle=[2]\color{Blue},
+    morekeywords=[3]{print, readline, convert_int, convert_string, convert_float, convert_bool, file_read, file_write},
+    keywordstyle=[3]\color{BrickRed},
+    identifierstyle=\color{black},
+    sensitive=true,
+    comment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    commentstyle=\color{OliveGreen}\ttfamily,
+    stringstyle=\color{Sepia}\ttfamily,
+    morestring=[b]"
+}
+
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definice}
