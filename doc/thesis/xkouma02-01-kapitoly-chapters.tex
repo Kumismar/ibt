@@ -1699,7 +1699,7 @@ Klíčová slova jazyka jsou
     \texttt{if, while, for, return, elseif, else, function, int, float, string, bool}.
 \end{center}
 
-Identifikátory proměnných jsou posloupnosti alfanumerických znaků a~znak \textunderscore; identifikátor nesmí začínat číslicí.
+Identifikátory proměnných jsou posloupnosti alfanumerických znaků a~znak \texttt{\textunderscore}; identifikátor nesmí začínat číslicí.
 Regulárním výrazem zapsáno jako:
 \begin{center}
     \texttt{[a-zA-Z\textunderscore][a-zA-Z0-9\textunderscore]*}
@@ -2058,10 +2058,9 @@ Každý neterminál má pravidla pro expanzi pouze v~jedné komponentě, díky �
 Pomocí vstupního terminálu se poté v~komponentě zvolí pravidlo, které se použije pro expanzi.
 Tato indexace lze matematicky popsat zobrazením z~množiny neterminálů do podmnožiny přirozených čísel, které korespondují s~indexy komponent v~konkrétním gramatickém systému.
 V~tomto případě se jedná o~zobrazení
-\begin{align*}
-    N &\rightarrow \{i: P_i \in \Gamma\} \\
-    N &\rightarrow \{1, 2, 3, 4, 5, 6\}
-\end{align*}
+\begin{equation*}
+    N \rightarrow \{i: P_i \in \Gamma\}
+\end{equation*}
 které je definováno v~tabulce \ref{tab_zobrazeni_indexy}.
 \begin{table}[ht]
     \centering
@@ -2109,7 +2108,7 @@ Analyzátory jsou také reprezentovány třídami, společnou nadtřídu ale nem
 \subsection*{Práce s~komponentami}
 Všechny komponenty jsou využívány pouze prediktivním analyzátorem, mimo čtvrtou.
 Ačkoliv téma čtvrté komponenty je analýza výrazů, je využívána jak precedenčním, tak prediktivním analyzátorem.
-Důvod je zvolený postup prediktivní analýzy volání funkcí\,--\,o~samotné výrazy bez volání funkcí, tedy pouze výrazy s~konstantami, proměnnými a~podobně, se postará analýza precedenční.
+Důvod je zvolený postup prediktivní analýzy volání funkcí\,--\,o~samotné výrazy bez volání funkcí, tedy pouze výrazy s~konstantami a~proměnnými, se postará analýza precedenční, správnou posloupnost terminálů pro volání funkcí kontroluje analýza prediktivní.
 
 
 \subsection*{Předávání řízení prediktivní a precedenční analýzy}
@@ -2222,7 +2221,8 @@ Operátor se pak přečte z~pravidla použitého pro redukci.
 Poslední výraz, který na zásobníku zůstane, je převzán prediktivní analýzou a~vložen do zbytku AST pro reprezentaci vstupního zdrojového kódu.
 
 \subsection*{Tvorba AST v prediktivní analýze}
-Prediktivní analýza spoléhá na dvě polymorfní metody, které jsou přepsány v~uzlech, které dědí od třídy \texttt{Statement}.
+Prediktivní analýza také pracuje se zásobníkem kontextů, ale takovým, ve kterém se nenacházejí výrazy, pouze příkazy.
+Spoléhá na dvě polymorfní metody, které jsou přepsány v~uzlech, které dědí od třídy \texttt{Statement}.
 Třídy pro reprezentaci výrazů v~AST tuto metodu řešit nemusí, protože si veškeré informace o~tokenech mohou převzít ze zásobníku, na kterém provádí redukci a~případné výrazy ze zásobníku volání výrazů.
 Tvorba AST pro prediktivní analýzu také pracuje se zásobníkem kontextů, významově je vrchol zásobníku aktuální blok kódu, případně konstrukce, ke které patří aktuálně zpracovávaný příkaz nebo výraz.
 
