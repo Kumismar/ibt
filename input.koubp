@@ -1,14 +1,4 @@
-{
-    {
-        {
-            {
-                for (i;i;i) return;
-                {}
-                {
-                    print("how did we get here?");
-                    {}
-                }
-            }
-        }
-    }
-}
+if (vyraz)
+    prikaz();
+else if (vyraz)
+    prikaz();

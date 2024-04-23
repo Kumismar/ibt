@@ -119,7 +119,7 @@
     keywords={if, while, for, return, elseif, else, function},
     keywordstyle=\color{RedViolet}\bfseries,
     morekeywords=[2]{int, float, string, bool},
-    keywordstyle=[2]\color{Blue},
+    keywordstyle=[2]\color{RoyalBlue},
     morekeywords=[3]{print, readline, convert_int, convert_string, convert_float, convert_bool, file_read, file_write},
     keywordstyle=[3]\color{BrickRed},
     identifierstyle=\color{black},

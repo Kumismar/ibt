@@ -693,7 +693,6 @@ Dále existují jazyky přijímané RZA pouze vyprázdněním zásobníku, při�
 \end{example}
 
 \chapter{Gramatické systémy}\label{kap_GS}
-\todo{v cele kapitole refaktorovat pismenka dle konvence}
 Veškeré definice a znalosti použité v~této kapitole převzaty z~\cite{CDGS, PCGS, Handbook-Of-Formal-Languages-2}, není-li řečeno jinak.
 
 \section{Kooperující distribuované gramatické systémy}\label{kap_CDGS}
@@ -709,10 +708,9 @@ Spolupracují mezi sebou předáváním řízení derivace aktuálně zpracováv
 kde:
 \begin{itemize}
     \item $N$, $T$, a $S$ jsou definovány stejně jako v~definici \ref{def_bkg},
-    \item $P_i$ je konečná množina pravidel ve tvaru $A\rightarrow x$, kde pravidla jsou definována stejně jako v~definici \ref{def_bkg}, nazývaná \emph{komponentou} systému, $i \in \{1, \ldots, n\}$,
+    \item $P_i$ je konečná množina pravidel ve tvaru $A\rightarrow \alpha$, kde pravidla jsou definována stejně jako v~definici \ref{def_bkg}, nazývaná \emph{komponentou} systému, $i \in \{1, \ldots, n\}$,
     \item $i$-tá gramatika systému se zapisuje jako $G_i = (N,T,S,P_i)$
 \end{itemize}   
-Alternativní definice pro CDGS je $\Gamma = ((N, T, S, P_1), \ldots , (N, T, S, P_n))$.
 \end{definition}
 
 \begin{convention}
@@ -722,39 +720,39 @@ Alternativní definice pro CDGS je $\Gamma = ((N, T, S, P_1), \ldots , (N, T, S,
 \subsection*{Derivační krok v~CDGS}
 Notace derivačního kroku v~CDGS je
 \begin{center}
-    $x \prescript{}{i}{\Rightarrow}^{f} y$.
+    $\alpha \prescript{}{i}{\Rightarrow}^{f} \beta$.
 \end{center}
-Tento zápis znamená, že řetězec $x \in (N \cup T)^{*}$ derivuje řetězec $y \in (N \cup T)^{*}$ v~$i$-té komponentě za použití \emph{derivačního režimu} $f$.
+Tento zápis znamená, že řetězec $\alpha \in (N \cup T)^{*}$ derivuje řetězec $\beta \in (N \cup T)^{*}$ v~$i$-té komponentě za použití \emph{derivačního režimu} $f$.
 
 \subsubsection*{Derivační režimy}
 
 Prvním příkladem je režim $*$, který byl v~definici \ref{def_der_krok_refl_tranz} uveden pro bezkontextovou gramatiku a~princip v~CD gramatických systémech je podobný.
-Při použití tohoto derivačního režimu řetězec $x \in (N \cup T)^*$ derivuje řetězec $y \in (N \cup T)^*$ v~libovolném počtu kroků v~$i$-té komponentě, zapsáno $x \prescript{}{i}{\Rightarrow}^{*}y$.
+Při použití tohoto derivačního režimu řetězec $\alpha \in (N \cup T)^*$ derivuje řetězec $\beta \in (N \cup T)^*$ v~libovolném počtu kroků v~$i$-té komponentě, zapsáno $\alpha \prescript{}{i}{\Rightarrow}^{*} \beta$.
 Je možné předat řízení derivace jiné komponentě i~v~případě, že ve stejné komponentě lze s~derivací stejného řetězce pokračovat.
 
-Podobným příkladem je režim \emph{ukončovací}, který spočívá v~nutné derivaci řetězce v~dané komponentě, dokud je to možné. Značí se písmenem \emph{t}. Jsou dvě nutné podmínky, aby \emph{y} bylo derivovatelné z~\emph{x} v~komponentě $G_i$ režimem \emph{t}.
+Podobným příkladem je režim \emph{ukončovací}, který spočívá v~nutné derivaci řetězce v~dané komponentě, dokud je to možné. Značí se písmenem \emph{t}. Jsou dvě nutné podmínky, aby $\beta$ bylo derivovatelné z~$\alpha$ v~komponentě $G_i$ režimem \emph{t}.
 \begin{enumerate}
-    \item $x\; \prescript{}{i}{\Rightarrow}^{*}\; y$\,--\,v~dané komponentě lze posloupností derivačních kroků získat řetězec $y$ z~řetězce $x$,
-    \item $y\; \prescript{}{i}{\nRightarrow}\;\,z$ pro všechna $z \in (N \cup T)^{*}$\,--\,ve stejné komponentě nelze nalézt další pravidlo, které by derivovalo $y$.
+    \item $\alpha \prescript{}{i}{\Rightarrow}^{*} \beta$\,--\,v~dané komponentě lze posloupností derivačních kroků získat řetězec $\beta$ z~řetězce $\alpha$,
+    \item $\beta \prescript{}{i}{\nRightarrow}\; \gamma$ pro všechna $\gamma \in (N \cup T)^{*}$\,--\,ve stejné komponentě nelze nalézt další pravidlo, které by derivovalo $\beta$.
 \end{enumerate}
 Jinými slovy, pokud můžeme z~aktuálního řetězce v~aktuální komponentě odvodit řetězec nový, \emph{musí} se s~derivací v~této komponentě pokračovat. 
 
-Další derivační režimy:
+Další derivační režimy jsou například
 \begin{itemize}
-    \item alespoň \emph{k}~derivací, tedy $x\; \prescript{}{i}{\Rightarrow}^{\geq k}\ y$,
-    \item nejvíce \emph{k}~derivací, tedy $x\; \prescript{}{i}{\Rightarrow}^{\leq k}\ y$,
-    \item právě \emph{k}~derivací, tedy $x\; \prescript{}{i}{\Rightarrow}^{=k}\ y$,
+    \item alespoň \emph{k}~derivací, tedy $\alpha \prescript{}{i}{\Rightarrow}^{\geq k}\; \beta$,
+    \item nejvíce \emph{k}~derivací, tedy $\alpha \prescript{}{i}{\Rightarrow}^{\leq k}\; \beta$,
+    \item právě \emph{k}~derivací, tedy $\alpha \prescript{}{i}{\Rightarrow}^{=k}\; \beta$,
 \end{itemize}
 kde $k \in \mathbb{N} \cup \{0\}$ a $i$ symbolizuje $i$-tou komponentu gramatického systému.
 
-Derivačních režimů existuje mnohem více\dotaz{Zdroj?? - Mluvili jsme o~tom na konzultaci a říkáte to i v~záznamu přednášky TID. Stačil by asi klidně jen nějaký odkaz na výčet. }, nejsou ale pro tuto práci podstatné.
+Derivačních režimů existuje mnohem více\dotaz{Zdroj??}, nejsou ale pro tuto práci podstatné.
 Tyto režimy mohou být reprezentovány jako množina, což pomůže definovat další pojmy v~následující podkapitole o~generovaném jazyce.
 \begin{definition}\label{def_der_rezimy}
     Nechť $k\in \mathbb{N}$ a $*$, $t$ představují derivační režimy. \\
     Potom množina
-    \begin{center}
-        $D = \{*, t\} \cup \{\leq k, \geq k, =k\}$ 
-    \end{center}        
+    \begin{equation*}
+        D = \{*, t\} \cup \{\leq k, \geq k, =k\}
+    \end{equation*}        
     reprezentuje derivační režimy použitelné v~CD gramatických systémech.
 \end{definition}
 
@@ -763,9 +761,9 @@ Než bude definován samotný jazyk, je vhodné definovat pomocnou množinu, kte
 \begin{definition}\label{def_mozne_derivace}
     Nechť $\Gamma = (N, T, S, P_1, \ldots, P_n)$. \\  
     Potom 
-    \begin{center}
-        $F(G_j,u,f)=\{v:u_j\Rightarrow^{f}v\},$ $j \in \{1, \ldots, n\},$ $f\in D,$ $u\in (N \cup T)^{*}$
-    \end{center}        
+    \begin{equation*}
+        F(G_j,\beta,f)=\{\beta : \alpha_j\Rightarrow^{f}\beta\},\; j \in \{1, \ldots, n\},\; f\in D,\; u\in (N \cup T)^{*}
+    \end{equation*}        
     je množina všech řetězců $v$ derivovatelných z~$u$ v~$j$-té komponentě za použití derivačního režimu $f$.
 \end{definition}
 
@@ -773,14 +771,14 @@ Než bude definován samotný jazyk, je vhodné definovat pomocnou množinu, kte
     Nechť $\Gamma = (N, T, S, P_1, \ldots, P_n)$. \\  
     Jazyk generovaný systémem $\Gamma$ za derivačního režimu $f$ je 
     \begin{align*}
-         L_f(\Gamma) = \{&w \in T^*: \text{ existují } v_0, v_1,\ldots, v_m \text{ takové, že } v_k \in F(G_{j_{k}},v_{k-1}, f),\\
-         &k \in \{1, \ldots, m\},\;j_k \in \{1, \ldots, n\},\;v_0 = S,\;v_m = w \text{ pro } m \geq 1\}.
+         L_f(\Gamma) = \{&w \in T^*: \text{ existují } \alpha_0, \alpha_1,\ldots, \alpha_m \text{ takové, že } \alpha_k \in F(G_{j_{k}},\alpha_{k-1}, f),\\
+         &k \in \{1, \ldots, m\},\;j_k \in \{1, \ldots, n\},\; \alpha_0 = S,\;\alpha_m = w \text{ pro } m \geq 1\}.
     \end{align*}        
 \end{definition} 
 
-Výsledný řetězec $w$, který vznikl postupnou derivací startovacího symbolu $v_0$.
-Měl několik mezikroků, které jsou reprezentovány řetězci $v_1, \ldots, v_{m-1}$.
-Každý řetězec $v_k$, kde $k \in \{1, \ldots, m\}$ byl zderivován z~řetězce $v_{k-1}$ v~komponentě $G_{j_{k}}$, kde $j_k \in \{1, \ldots, n\}$, za derivačního režimu $f$.
+Výsledný řetězec $w$, který vznikl postupnou derivací startovacího symbolu $\alpha_0$.
+Měl několik mezikroků, které jsou reprezentovány řetězci $\alpha_1, \ldots, \alpha_{m-1}$.
+Každý řetězec $\alpha_k$, kde $k \in \{1, \ldots, m\}$ byl zderivován z~řetězce $\alpha_{k-1}$ v~komponentě $G_{j_{k}}$, kde $j_k \in \{1, \ldots, n\}$, za derivačního režimu $f$.
 
 \begin{example}
     Nechť $\Gamma = (\{S, A\}, \{a\}, S, P_1, P_2, P_3)$, kde $P_1 = \{S \rightarrow AA\}$, $P_2 = \{A \rightarrow S\}$, $P_3 = \{A \rightarrow a\}$.
@@ -855,8 +853,8 @@ Jediný rozdíl je v~použití derivačního režimu příslušné komponenty, k
     Nechť $\Gamma = (N, T, S, (P_1, f_1), \ldots, (P_n, f_n))$.\\
     Jazyk generovaný systémem $\Gamma$,
     \begin{align*}
-        L(\Gamma) = \{&w \in T^*: \text{existují } v_0, v_1,\ldots, v_n \text{ takové, že } v_k \in F(G_{j_k}, v_{k-1}, f_{j_k}),\\
-        &k \in \{1, \ldots, m\}, j_k \in \{1, \ldots, n\}, v_0 = S, v_m = w \text{ pro } m \geq 1\}.
+        L(\Gamma) = \{&w \in T^*: \text{existují } \alpha_0, \alpha_1,\ldots, \alpha_n \text{ takové, že } \alpha_k \in F(G_{j_k}, \alpha_{k-1}, f_{j_k}),\\
+        &k \in \{1, \ldots, m\}, j_k \in \{1, \ldots, n\}, \alpha_0 = S, \alpha_m = w \text{ pro } m \geq 1\}.
     \end{align*}
 \end{definition}
 
@@ -898,8 +896,8 @@ Komunikačních symbolů je stejné množství jako komponent v~PC gramatickém 
     \begin{itemize}
         \item $N, T$ jsou definovány stejně jako u~bezkontextových gramatik (\ref{def_bkg}),
         \item $K = \{Q_1, \ldots, Q_n\}$ je množina komunikačních symbolů ($N, K, T$ jsou navzájem disjunktní); index $i$ komunikačního symbolu $Q_i$ koresponduje s~indexem $i$-té komponenty,
-        \item $P_i, i \in \{1, \ldots, n\}$ je množina pravidel nazývané komponenty, stejně jako u~CD gramatických systémů (\ref{def_cdgs}),
-        \item $i$-tá gramatika systému je konstrukt $G_i = (N \cup K, T, S_i, P_i), i \in \{1, \ldots, n\}$.
+        \item $P_i,\; i \in \{1, \ldots, n\}$ je množina pravidel nazývané komponenty, stejně jako u~CD gramatických systémů (\ref{def_cdgs}),
+        \item $i$-tá gramatika systému je konstrukt $G_i = (N \cup K, T, S_i, P_i),\; i \in \{1, \ldots, n\}$.
     \end{itemize}
 \end{definition}
 
@@ -912,76 +910,75 @@ Pro označení paralelních komunikujících gramatických systémů bude dále 
 V~PC gramatických systémech existují dva druhy derivačního kroku, a~to \emph{g}-derivační krok a~\emph{c}-derivační krok.
 První zmíněný slouží k~přímé derivaci řetězce v~rámci jedné komponenty bez zásahu komponent jiných a~druhý slouží pro vzájemnou pomoc při derivaci řetězce. 
 PC gramatický systém \emph{vždy} preferuje c-derivační krok nad g-derivačním krokem.
-Ten se provede pokaždé, obsahuje-li alespoň jeden z~řetězců $x_i, i \in \{1, \ldots, n\}$ alespoň jeden komunikační symbol.
+Ten se provede pokaždé, obsahuje-li alespoň jeden z~řetězců $\alpha_i,\; i \in \{1, \ldots, n\}$ alespoň jeden komunikační symbol.
 
 Derivační kroky pracují nad \emph{konfigurací} PCGS.
 Následující definice převzata z~\cite{Various-communications-in-PC-grammar-systems}.
 \begin{definition}
     Nechť $\Gamma = (N, K, T, (S_1, P_1), \ldots, (S_n, P_n))$ je PC gramatický systém.
     Potom n-tice
-    \begin{center}
-        $(x_1, \ldots, x_n),$ $x_i \in (N \cup K \cup T)^*,$ $i \in \{1 \ldots, n\}$
-    \end{center}
+    \begin{equation*}
+        (\alpha_1, \ldots, \alpha_n),\; \alpha_i \in (N \cup K \cup T)^*,\; i \in \{1 \ldots, n\}
+    \end{equation*}
     se nazývá \emph{konfigurací} $\Gamma$. $(S_1, \ldots, S_n)$ je \emph{počáteční konfigurací} $\Gamma$.
 \end{definition}
-Nutná podmínka k~proběhnutí libovolného derivačního kroku je $x_1 \notin T^*$.
+Nutná podmínka k~proběhnutí libovolného derivačního kroku je $\alpha_1 \notin T^*$.
 Pokud tato situace nastane, už je vygenerována věta jazyka definovaného PCGS a~dále se s~kroky nepokračuje. 
 Více v~definici \ref{def_gener_jazyk_pcgs}.
 
 \subsubsection*{g-derivační krok}\label{kap_g_der_krok}
-Nechť $\Gamma = (N, K, T, (P_1, S_1), \ldots, (P_n, S_n))$ je PCGS a~$(x_1, \ldots x_n),$ $(y_1, \ldots, y_n)$ jsou konfigurace $\Gamma$.
+Nechť $\Gamma = (N, K, T, (P_1, S_1), \ldots, (P_n, S_n))$ je PCGS a~$(\alpha_1, \ldots \alpha_n),\; (\beta_1, \ldots, \beta_n)$ jsou konfigurace $\Gamma$.
 $\Gamma$ udělá g-derivační krok, formálně zapsáno
 \begin{center}
-    $(x_1, \ldots, x_n) \prescript{}{g}{\Rightarrow} (y_1, \ldots, y_n)$
+    $(\alpha_1, \ldots, \alpha_n) \prescript{}{g}{\Rightarrow} (\beta_1, \ldots, \beta_n)$
 \end{center}
-pokud $alph(x_i) \cap K = \emptyset$ a~zároveň:
+pokud $alph(\alpha_i) \cap K = \emptyset$ a~zároveň:
 \begin{itemize}
-    \item $x_i \Rightarrow y_i$ v~$G_i = (N, K, T, (S_i, P_i))$\,--\,$y_i$ je přímo derivován z~$x_i$ v~gramatice $G_i$ (komponentě $P_i$), nebo
-    \item $x_i = y_i \in T^*$\,--\,$x_i$ již je řetězcem terminálů
+    \item $\alpha_i \Rightarrow \beta_i$ v~$G_i = (N, K, T, (S_i, P_i))$\,--\,$\beta_i$ je přímo derivován z~$\alpha_i$ v~gramatice $G_i$ (komponentě $P_i$), nebo
+    \item $\alpha_i = \beta_i \in T^*$\,--\,$\alpha_i$ již je řetězcem terminálů
 \end{itemize}   
 pro všechna $i \in \{1, \ldots, n\}$.
 
-\subsection*{c-derivační krok}\label{kap_c_der_krok}
+\subsubsection*{c-derivační krok}\label{kap_c_der_krok}
 Někdy taky nazýván \emph{komunikační krok}. Tento koncept umožňuje gramatikám spolupracovat a~vzájemně si mezi sebou měnit vygenerované řetězce pomocí komunikačních symbolů.
 Algoritmus ukazující princip komunikačního kroku je následující:
 \begin{algorithm}[h]
     \caption{c-derivační krok v~PCGS}
     \label{alg_c_der_krok}
-    \todo{pouzit Input Output a NewLine}
     \begin{algorithmic}[1]
-        \State \textbf{Vstup:} konfigurace $(x_1, \ldots, x_n)$
-        \State \textbf{Výstup:} konfigurace $(y_1, \ldots, y_n)$
-        \State 
+        \Input{konfigurace $(\alpha_1, \ldots, \alpha_n)$}
+        \Output{konfigurace $(\beta_1, \ldots, \beta_n)$}
+        \NewLine
 
         \ForAll{$i \in \{1, \ldots, n\}$}
-            \State $z_i \gets x_i$
+            \State $\gamma_i \gets \alpha_i$
         \EndFor 
         \ForAll{$i \in \{1, \ldots, n\}$}
-            \If{$alph(x_i) \cap K \neq \emptyset$ \textbf{and} \textbf{foreach} $Q_j$ \textbf{in} $x_i$: $alph(x_j) \cap K = \emptyset$}
-                \ForAll{$Q_j$ \textbf{in} $x_i$} 
-                    \State $z_j \gets S_j$\Comment{vynecháno, pokud PCGS pracuje na nevracejícím se režimu}
-                    \State zaměň $Q_j$ za $x_j$ v~$x_i$
-                    \State $z_i \gets x_i$\Comment{$x_i =$ řetězec, který vznikl o~krok zpět} 
+            \If{$alph(\alpha_i) \cap K \neq \emptyset$ \textbf{and} \textbf{foreach} $Q_j$ \textbf{in} $\alpha_i$: $alph(\alpha_j) \cap K = \emptyset$}
+                \ForAll{$Q_j$ \textbf{in} $\alpha_i$} 
+                    \State $\gamma_j \gets S_j$\Comment{vynecháno, pokud PCGS pracuje na nevracejícím se režimu}
+                    \State zaměň $Q_j$ za $\alpha_j$ v~$\alpha_i$
+                    \State $\gamma_i \gets \alpha_i$\Comment{$\alpha_i =$ řetězec, který vznikl o~krok zpět} 
                 \EndFor
             \EndIf
         \EndFor
-        \State proveď $(x_1, \ldots, x_n) \prescript{}{c}{\Rightarrow} (y_1, \ldots, y_n)$ s~$y_i = z_i,\;i \in \{1, \ldots, n\}$ 
+        \State proveď $(\alpha_1, \ldots, \alpha_n) \prescript{}{c}{\Rightarrow} (\beta_1, \ldots, \beta_n)$ s~$\beta_i = \gamma_i,\;i \in \{1, \ldots, n\}$ 
     \end{algorithmic}
 \end{algorithm}
 
 \subsection*{Přímá derivace v~PCGS}
 \begin{definition}
-    Konfigurace $(x_1, \ldots, x_n)$ přímo derivuje konfiguraci $(y_1, \ldots, y_n)$, zapsáno
+    Konfigurace $(\alpha_1, \ldots, \alpha_n)$ přímo derivuje konfiguraci $(\beta_1, \ldots, \beta_n)$, zapsáno
     \begin{center}
-        $(x_1, \ldots, x_n) \Rightarrow (y_1, \ldots, y_n)$
+        $(\alpha_1, \ldots, \alpha_n) \Rightarrow (\beta_1, \ldots, \beta_n)$
     \end{center} 
     právě tehdy, když
     \begin{center}
-        $(x_1, \ldots, x_n)\ \prescript{}{g}{\Rightarrow}\ (y_1, \ldots, y_n)$
+        $(\alpha_1, \ldots, \alpha_n)\ \prescript{}{g}{\Rightarrow}\ (\beta_1, \ldots, \beta_n)$
     \end{center}
     nebo
     \begin{center}
-        $(x_1, \ldots, x_n)\ \prescript{}{c}{\Rightarrow}\ (y_1, \ldots, y_n)$.
+        $(\alpha_1, \ldots, \alpha_n)\ \prescript{}{c}{\Rightarrow}\ (\beta_1, \ldots, \beta_n)$.
     \end{center}
 \end{definition}
 
@@ -1001,7 +998,7 @@ Generování větné formy končí v~momentě, kdy první komponenta dosáhne ř
 Pokud PC gramatický systém pracuje na vracejícím se režimu, potom komponenty, které v~rámci komunikačního kroku poslaly svůj řetězec jiným komponentám, generují řetězec od svého axiomu.
 Při nevracejícím se režimu komponenty pokračují ve zpracovávání aktuálního řetězce.
 
-Tato skutečnost se projeví na samotném komunikačním kroku, u~kterého se vynechá přiřazení axiomu do řetězce $z_j$\,--\,neprovede se krok na řádku 10 algoritmu \ref{alg_c_der_krok}.
+Tato skutečnost se projeví na samotném komunikačním kroku, u~kterého se vynechá přiřazení axiomu do řetězce $\gamma_j$\,--\,neprovede se krok na řádku 10 algoritmu \ref{alg_c_der_krok}.
 
 \subsection*{Centralizované PCGS}
 Centralizované PC gramatické systémy mají tu vlastnost, že pouze první komponenta (nazývaná \emph{master}) systému může generovat komunikační symboly a~tím žádat ostatní komponenty o~řetězce.
@@ -1026,36 +1023,37 @@ V~prvním příkladu bude pouze demonstrován princip obou derivačních kroků 
     Nutná podmínka je, aby alespoň jeden z~řetězců v~aktuální konfiguraci obsahoval alespoň jeden komunikační symbol, což aktuálně není splněno.
     $\Gamma$ tedy udělá g-krok.
      \begin{equation*}
-    (S_1, S_2, S_3) \ \prescript{}{g}{\Rightarrow} \ (Q_3, a, b)
+    (S_1, S_2, S_3) \prescript{}{g}{\Rightarrow}  (Q_3, a, b)
      \end{equation*}
      Nyní je v~konfiguraci komunikační symbol, což indikuje, že bude následovat komunikační krok.
      Při postupu podle algoritmu~\ref{alg_c_der_krok} je postup následující:
      \begin{enumerate}
-        \item Zavedení pomocných řetězců $z_1 = Q_3$, $z_2 = a$, $z_3 = b$ podle řádků 4\,--\,6.
-        \item Kontrola, zda řetězec $x_i,$ $i \in \{1, \ldots, n\}$ z~původní konfigurace obsahuje komunikační symboly (podmínka $alph(x_i) \cap K \neq \emptyset$).
+        \item Zavedení pomocných řetězců $\gamma_1 = Q_3$, $\gamma_2 = a$, $\gamma_3 = b$ podle řádků 4\,--\,6.
+        \item Kontrola, zda řetězec $\alpha_i,\; i \in \{1, \ldots, n\}$ z~původní konfigurace obsahuje komunikační symboly (podmínka $alph(\alpha_i) \cap K \neq \emptyset$).
         \begin{itemize}[label=$\circ$]
-            \item V~tomto příkladu splňuje podmínku pouze řetězec $x_1$, který obsahuje $Q_3$.
+            \item V~tomto příkladu splňuje podmínku pouze řetězec $\alpha_1$, který obsahuje $Q_3$.
         \end{itemize}
-        \item Pokud $x_i$ obsahuje komunikační symboly $Q_j$, z~každého se přečte index $j$ a~proběhne kontrola, zda všechny $j$-té řetězce konfigurace ($x_j$) \emph{neobsahují} komunikační symboly.
-        Tato část koresponduje s~podmínkou \textbf{foreach} $Q_j$ \textbf{in} $x_i:$ $alph(x_i) \cap K = \emptyset$ na řádku~8.
+        \item Pokud $\alpha_i$ obsahuje komunikační symboly $Q_j$, z~každého se přečte index $j$ a~proběhne kontrola, zda všechny $j$-té řetězce konfigurace ($\alpha_j$) \emph{neobsahují} komunikační symboly.
+        Tato část koresponduje s~podmínkou \textbf{foreach} $Q_j$ \textbf{in} $\alpha_i:$ $alph(\alpha_i) \cap K = \emptyset$ na řádku~8.
         \begin{itemize}[label=$\circ$]
-            \item Řetězec $x_1$ obsahuje jeden komunikační symbol $Q_3$, jehož index odkazuje na řetězec $x_3$ z~aktuální konfigurace. Hodnota řetězce $x_3$ je $b$, ten žádné další komunikační symboly neobsahuje.
+            \item Řetězec $\alpha_1$ obsahuje jeden komunikační symbol $Q_3$, jehož index odkazuje na řetězec $\alpha_3$ z~aktuální konfigurace.
+            Hodnota řetězce $\alpha_3$ je $b$, ten žádné další komunikační symboly neobsahuje.
         \end{itemize}
-        \item Každý $Q_j$ v~$x_i$ se nahradí za $x_j$, pokud prošel podmínkou v~předchozím kroku.
-        Zároveň se $z_j$ nastaví na počáteční symbol $j$-té komponenty.
+        \item Každý $Q_j$ v~$\alpha_i$ se nahradí za $\alpha_j$, pokud prošel podmínkou v~předchozím kroku.
+        Zároveň se $\gamma_j$ nastaví na počáteční symbol $j$-té komponenty.
         Tyto kroky jsou v~algoritmu na řádcích 9\,--\,12.
         \begin{itemize}[label=$\circ$]
-            \item Komunikační symbol $Q_3$ bude v~$x_1$ nahrazen řetězcem $b$ z~$x_3$. Dále $x_3 \gets S_3$ a~$z_1 \gets x_1$.
-            Aktuálně $z_1 = b,$ $z_2 = a$, $z_3 = S_3$. 
+            \item Komunikační symbol $Q_3$ bude v~$\alpha_1$ nahrazen řetězcem $b$ z~$\alpha_3$. Dále $\alpha_3 \gets S_3$ a~$\gamma_1 \gets \alpha_1$.
+            Aktuálně $\gamma_1 = b,$ $\gamma_2 = a$, $\gamma_3 = S_3$. 
         \end{itemize}
-        \item Proveď $(x_1, \ldots, x_n) \ \prescript{}{c}{\Rightarrow} \ (y_1, \ldots, y_n)$, kde $y_i = z_i$ pro $i \in \{1, \ldots, n\}$.
+        \item Proveď $(\alpha_1, \ldots, \alpha_n) \ \prescript{}{c}{\Rightarrow} \ (\beta_1, \ldots, \beta_n)$, kde $\beta_i = \gamma_i$ pro $i \in \{1, \ldots, n\}$.
         \begin{itemize}[label=$\circ$]
-            \item Nová konfigurace $(y_1, y_2, y_3)$ bude stejná, jako pomocná konfigurace $(z_1, z_2, z_3)$, a~to $(b, a, S_3)$.
+            \item Nová konfigurace $(\beta_1, \beta_2, \beta_3)$ bude stejná, jako pomocná konfigurace $(\gamma_1, \gamma_2, \gamma_3)$, a~to $(b, a, S_3)$.
         \end{itemize}
     \end{enumerate}
     $\Gamma$ provede komunikační krok z~$(Q_3, a, b)$ do $(b, a, S_3)$.
     \begin{center}
-        $(Q_3, a, b) \ \prescript{}{c}{\Rightarrow} \ (b, a, S_3)$
+        $(Q_3, a, b) \prescript{}{c}{\Rightarrow} (b, a, S_3)$
     \end{center}
     Další kroky už $\Gamma$ provádět nebude, protože řetězec generovaný první komponentou je již řetězec terminálních symbolů.
     V~tomto příkladu byla použita sémantika vracejícího se PCGS, nicméně při použítí nevracejícího by jazyk vypadal stejně, jen výsledná konfigurace by se lišila v~řetězci $x_3$.
@@ -1091,7 +1089,7 @@ Ve druhém příkladu bude demonstrováno několik derivačních kroků a~bude s
     \begin{equation*}
         (a^nS_1', b^nS_2, c^nS_3) \Rightarrow (a^{n+3}Q_2, b^{n+1}S_2, c^{n+1}S_3)
     \end{equation*} 
-    Provedeme c-derivační krok a~zaměníme $Q_2$ za $x_2$, nový $x_2$ bude $S_2$, který je axiomem $G_2$.
+    Provedeme c-derivační krok a~zaměníme $Q_2$ za $\alpha_2$, nový $\alpha_2$ bude $S_2$, který je axiomem $G_2$.
     \begin{equation*}
         (a^{n+3}Q_2, b^{n+1}S_2, c^{n+1}S_3) \Rightarrow (a^{n+3}b^{n+1}S_2, S_2, c^{n+1}S_3)
     \end{equation*}
@@ -1099,7 +1097,7 @@ Ve druhém příkladu bude demonstrováno několik derivačních kroků a~bude s
     \begin{equation*}
         (a^{n+3}b^{n+1}S_2, S_2, c^{n+1}S_3) \Rightarrow (a^{n+3}b^{n+3}Q_3, bS_2, c^{n+2}S_3)
     \end{equation*}
-    Zaměníme $Q_3$ za $x_3$ nový $x_3$ bude $S_3$, který je axiomem $G_3$.
+    Zaměníme $Q_3$ za $\alpha_3$, nový $\alpha_3$ bude $S_3$, který je axiomem $G_3$.
     \begin{equation*}
         (a^{n+3}b^{n+3}Q_3, bS_2, c^{n+2}S_3) \Rightarrow (a^{n+3}b^{n+3}c^{n+2}S_3, bS_2, S_3)
     \end{equation*}
@@ -1107,7 +1105,7 @@ Ve druhém příkladu bude demonstrováno několik derivačních kroků a~bude s
     \begin{equation*}
         (a^{n+3}b^{n+3}c^{n+2}S_3, bS_2, S_3) \Rightarrow (a^{n+3}b^{n+3}c^{n+3}, bbS_2, cS_3)
     \end{equation*}
-     $x_1$ je aktuálně řetězec terminálů, tudíž na něj nelze aplikovat žádné další pravidlo a~neobsahuje komunikační symboly.
+     $\alpha_1$ je aktuálně řetězec terminálů, tudíž na něj nelze aplikovat žádné další pravidlo a~neobsahuje komunikační symboly.
      Je tedy generovaným jazykem pro $\Gamma$ ve vracejícím se režimu.
      Takto by vypadaly kroky pro nevracející se režim (konfigurace se začnou lišit od výskytu komunikačních symbolů):
      \begin{align*}
@@ -1146,9 +1144,8 @@ Než se začneme zabývat těmito dvěma druhy syntaktické analýzy, pojďme si
     \end{equation*}
 \end{definition}
 
-\dotaz{ciste typograficky, vadi zalomene rovnice?}
 \begin{definition}\label{def_sekvence_nejl_nejpr_der}
-    Nechť $G = (N, T, P, S)$ je BKG a~$\alpha_0, \alpha_1, \ldots, \alpha_n$ je sekvence, kde $\alpha_i \in (N \cup T)^*,$ $i \in \{1, \ldots, n\}$.\\
+    Nechť $G = (N, T, P, S)$ je BKG a~$\alpha_0, \alpha_1, \ldots, \alpha_n$ je sekvence řetězců, kde $\alpha_i \in (N \cup T)^*,$ $i \in \{1, \ldots, n\}$.\\
     Pokud $\alpha_{j-1}\; \prescript{}{\scriptstyle lm}{\Rightarrow}\; \alpha_j\; [r_j]$ v~$G$, kde $r_j \in R,\; j \in \{1, \ldots, n\}$, pak $G$ provede sekvenci nejlevějších derivačních kroků (\emph{nejlevější derivaci}) z~$\alpha_0$ do $\alpha_n$ podle $r_1, r_2, \ldots, r_n$, symbolicky zapsáno jako
     \begin{equation*}
         \alpha_0\; \prescript{}{\scriptstyle lm}{\Rightarrow}\; \alpha_n\; [r_1r_2\ldots r_n].
@@ -1170,35 +1167,12 @@ Aby tento model fungoval, musí $M$ obsahovat korespondující pravidla pro prav
 Pokud na vrcholu zásobníku je neterminál $A$, pak $M$ simuluje nejlevější derivační krok, který by udělala gramatika $G$ pomocí pravidla $r: A \rightarrow \alpha \in R$.
 Provede expanzi pravidla nahrazením neterminálu $A$ z~vrcholu zásobníku za $reversal(\alpha)$. 
 
-\begin{algorithm}[h]
-    \caption{Převod BKG na ZA}
-    \label{alg_bkg_na_za}
-    \todo{pouzit Input Output a NewLine}
-    \begin{algorithmic}[1]
-        \State \textbf{Vstup:} BKG $G = (N, T, P, S)$
-        \State \textbf{Výstup:} ZA $M = (Q, \Sigma, \Gamma, R, s, \#, F)$
-        \State 
-        \State $Q \gets \{s, f\}$
-        \State $\Sigma \gets T$
-        \State $\Gamma \gets N \cup T \cup \{\#\}$
-        \ForAll{$a \in \Sigma$}
-            \State přidej $sa \rightarrow as$ do $R$
-        \EndFor
-        \ForAll{$A \rightarrow \alpha \in R$}
-            \State přidej $\alpha s \rightarrow As$ do $R$
-        \EndFor
-        \State přidej $\#Ss \rightarrow f$ do $R$
-        \State $F \gets \{f\}$
-    \end{algorithmic}
-\end{algorithm}
-
-Algoritmus \ref{alg_bkg_na_za} uvádí konstrukci zásobníkového automatu.
-Implementace tohoto systému vyžaduje implementaci takového automatu pomocí nějaké variace zásobníku.
 Existují dvě metody, a~to \emph{prediktivní syntaktická analýza} a~\emph{rekurzívní sestup}.
 Více k~těmto metodám je psáno na konci této kapitoly.
+\todo{doladit uvod tady po smazani bkg na za algoritmu}
 
 \subsection*{Prediktivní množiny}
-Předpokládejme BKG $G$ a~příslušný ZA $M$ zkonstruovaný podle algoritmu \ref{alg_bkg_na_za}.
+Předpokládejme BKG $G$ a~příslušný ZA $M$.
 Dále předpokládejme, že existuje neterminál $A \in N$ takový, že pro něj existují dvě pravidla ve tvaru $A \rightarrow X\alpha$ a~$A \rightarrow Y\beta$.
 $A$ musí být v~dalším kroku přepsán za nový řetězec a~zároveň musí být deterministicky zvolené pravidlo, které se použije.
 
@@ -1223,11 +1197,10 @@ Jinými slovy, pokud aktuální řetězec je možné vymazat pomocí $\varepsilo
 \begin{algorithm}
     \caption{Množina $Empty(\alpha)$}
     \label{alg_mnozina_empty}
-    \todo{pouzit Input Output a NewLine}
     \begin{algorithmic}[1]
-        \State \textbf{Vstup:} BKG $G = (N, T, P, S)$
-        \State \textbf{Výstup:} $Empty(\alpha)$ pro každý symbol $\alpha \in N \cup T$
-        \State
+        \Input{BKG $G = (N, T, P, S)$}
+        \Output{$Empty(\alpha)$ pro každý symbol $\alpha \in N \cup T$}
+        \NewLine
         \ForAll{$a \in T$}
             \State $Empty(a) \gets \emptyset$
         \EndFor
@@ -1256,11 +1229,10 @@ Tento algoritmus pomůže při definici dalších množin, nicméně není k~tom
 \begin{algorithm}[h]
     \caption{Množina $Empty(X_1X_2\ldots X_n)$}
     \label{alg_mnozina_empty_vicn}
-    \todo{pouzit Input Output a NewLine}
     \begin{algorithmic}[1]
-        \State \textbf{Vstup:} BKG $G = (N, T, P, S)$ a $Empty(X)$ pro všechny symboly $X \in N \cup T$
-        \State \textbf{Výstup:} $Empty(X_1X_2\ldots X_n)$, kde $(X_1X_2\ldots X_n) \in (N \cup T)^+$
-        \State
+        \Input{BKG $G = (N, T, P, S)$ a $Empty(X)$ pro všechny symboly $X \in N \cup T$}
+        \Output{$Empty(X_1X_2\ldots X_n)$, kde $(X_1X_2\ldots X_n) \in (N \cup T)^+$}
+        \NewLine
         \If{$Empty(X_i) = \varepsilon$ \textbf{foreach} $i \in \{1, \ldots, n\}$}
             \State $Empty(X_1X_2\ldots X_n) \gets \{\varepsilon\}$
         \Else
@@ -1281,12 +1253,10 @@ Množina $First(\alpha)$ je výčet všech terminálů, kterými může začína
 \begin{algorithm}[h]
     \caption{Množina $First(\alpha)$}
     \label{alg_mnozina_first}
-    \todo{pouzit Input Output a NewLine}
-
     \begin{algorithmic}[1]
-        \State \textbf{Vstup:} $G = (N, T, P, S)$
-        \State \textbf{Výstup:} $First(\alpha)$ pro každé $\alpha \in (N \cup T)^*$
-        \State 
+        \Input{$G = (N, T, P, S)$}
+        \Output{$First(\alpha)$ pro každé $\alpha \in (N \cup T)^*$}
+        \NewLine
         \ForAll{$a \in T$}
             \State $First(a) \gets \{a\}$
         \EndFor
@@ -1763,7 +1733,7 @@ Blokový komentář může být na více řádků počínaje znaky \texttt{/*}, 
 
 \subsection*{Deklarace a definice funkcí}
 Jak bylo zmíněno v~úvodu této kapitoly, deklarované funkce musí být rovnou definovány.
-Jazyk Koubp nepodporuje \emph{přetěžování (overloading)}\footnote{\todo{vlozit odkaz na definici overloadingu}} funkcí.
+Jazyk Koubp nepodporuje \emph{přetěžování (overloading)}\footnote{Pro C++ například \href{https://learn.microsoft.com/en-us/cpp/cpp/function-overloading?view=msvc-170}{https://learn.microsoft.com/en-us/cpp/cpp/function-overloading?view=msvc-170}. V~ostatních kompilátorech, jako \texttt{gcc}/\texttt{g++} nebo \texttt{clang}/\texttt{clang++} budou principy minimálně velmi podobné. } funkcí.
 Definice funkce se skládá z~hlavičky za klíčovým slovem \texttt{function} a~těla funkce.
 V~hlavičce se definuje název funkce, návratový typ a~počet parametrů a~jejich datové typy.
 Schematicky vypadá následovně:
@@ -1778,9 +1748,17 @@ Parametry funkce jsou oddělené čárkami a~jejich struktura je:
 \end{center}
 Tělo funkce je pak neprázdná sekvence příkazů.
 Příklad definice funkce je:
-\begin{center}
-    \todo{doplnit definici funkce treba faktorial nebo neco jednoduchyho}
-\end{center}
+\begin{lstlisting}[language=Koubp]
+    function factorial(int number): int {
+    if (number < 0) {
+        return -1;
+    }
+    elseif (number <= 1) {
+        return 1;
+    }
+
+    return number * factorial(number - 1);
+\end{lstlisting}
 
 \subsection*{Příkazy}
 Jazyk Koubp podoruje obvyklé příkazy a~konstrukce jiných programovacích jazyků.
@@ -1817,12 +1795,14 @@ Jazyk Koubp podoruje obvyklé příkazy a~konstrukce jiných programovacích jaz
             prikaz;
     \end{lstlisting}
     \begin{figure}[ht]
-        \todo{pridat ast obrazek if-elseif}
+        \centering
+        \includegraphics[width=0.8\textwidth]{obrazky-figures/ast_if_elseif.pdf}
         \caption{Programem vygenerovaný AST pro konstrukci \texttt{if-elseif}}
         \label{fig_ast_elseif}
     \end{figure}
     \begin{figure}[ht]
-        \todo{pridat ast obrazek if-else if}
+        \centering
+        \includegraphics[width=0.8\textwidth]{obrazky-figures/ast_if_else_if.pdf}
         \caption{Programem vygenerovaný AST pro konstrukci \texttt{if-else if}}
         \label{fig_ast_else_if}
     \end{figure}
