@@ -1750,14 +1750,15 @@ Tělo funkce je pak neprázdná sekvence příkazů.
 Příklad definice funkce je:
 \begin{lstlisting}[language=Koubp]
     function factorial(int number): int {
-    if (number < 0) {
-        return -1;
-    }
-    elseif (number <= 1) {
-        return 1;
-    }
+        if (number < 0) {
+            return -1;
+        }
+        elseif (number <= 1) {
+            return 1;
+        }
 
-    return number * factorial(number - 1);
+        return number * factorial(number - 1);
+    }
 \end{lstlisting}
 
 \subsection*{Příkazy}
