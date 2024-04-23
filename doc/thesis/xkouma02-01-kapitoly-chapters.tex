@@ -12,13 +12,37 @@
 \chapter{Úvod}\label{kap_uvod}
 Jednou z~oblastí, kterou se zabývá teoretická informatika, je teorie formálních jazyků.
 Tato oblast využívá jednoduchých konceptů, jako jsou množiny, relace, symboly a~řetězce, k~popisu konceptů složitějších\,--\,například programovacích jazyků.
-Programovací jazyky jsou kompromisem mezi přirozenými a~strojovými jazyky.
-Jsou navrhnuty tak, aby jim rozuměl člověk a~zároveň bylo jednoduché je přeložit do jazyka, kterému rozumí počítače.
+Programovací jazyky jsou kompromisem mezi přirozenými a~strojovými jazyky, nicméně od posloupnosti nul a~jedniček, kterým počítač rozumí, mají daleko.
+Jsou ale navrhnuty tak, aby do nul a~jedniček byly algoritmicky přeložitelné a~zároveň poskytovaly takovou abstakci, která je člověku, respektive programátorovi, srozumitelná.  
 
-Jednu z~klíčových rolí při překladu sehrává syntaktická analýza.
-To je proces, který ověřuje správnost jednotlivých konstrukcí programovacího jazyka a~jejich pořadí.
-Přesněji řečeno zkontroluje, zda vstupní řetězec mohl být vygenerován modelem, který daný programovací jazyk popisuje. 
+Mezi kroky překladu se mimo jiné řadí lexikální, syntaktická a~sémantická analýza, generování mezikódu a~generování cílového kódu.
+Syntaktická analýza hraje v~procesu překladu klíčovou roli, ne-li nejdůležitější\,--\,moderní překladače dokonce často používají paradigma \emph{syntaxí řízeného překladu}.
+Je to proces, který ověřuje správnost posloupnosti jednotlivých symbolů řetězce, který má syntaktický analyzátor na vstupu.
+Přesněji řečeno zkontroluje, zda vstupní řetězec mohl být vygenerován modelem, který daný programovací jazyk popisuje.
 
+Nejčastěji používaný model pro popis jazyka je gramatika.
+Gramatiky jsou čtyř typů a~vytváří hierarchii generativní síly podle typu pravidel, které jsou v~nich použity.
+Tuto skutečnost popsal americký filozof a~lingvista Noam Chomsky v~roce 1956.
+Tato práce se zabývá pouze jedním typem gramatik, a~to jsou gramatiky bezkontextové, také nazývané gramatiky typu 2.
+Přesněji LL~gramatikami, které mají menší generativní sílu než bezkontextové, nicméně jazyky generované těmito modely mohou být přijímány relativně jednoduchými a~hlavně deterministickými konstrukcemi, jako je například deterministický zásobníkový automat.
+Díky tomu je tento typ gramatik v~praxi velmi rozšířený pro budování syntaktických analyzátorů.
+Dokonce existuje několik nástrojů, které syntaktické analyzátory automaticky generují z~LL gramatik napsaných ve speciální syntaxi.
+
+Velký trend teoretické informatiky na přelomu 20.~a~21.~století byl výzkum gramatických systémů.
+Bylo v~zájmu příjít na způsob popsání jazyka několika gramatikami, jejichž spolupráce vyústila ve větší generativní sílu systému oproti samostatným gramatikám stejného typu.
+Nakonec se uchytily především kooperující distribuované (CD) a~paralelní komunikující (PC) gramatické systémy.
+
+Tato práce se zabývá upravením principu syntaktické analýzy jazyka popsaného LL gramatikou pro CD gramatický systém.
+Cílem je navrhnout CD gramatický systém popisující ekvivalentní jazyk jako LL gramatika a~následně implementovat syntaktický analyzátor pomocí deterministického zásobníkového automatu, který tento jazyk přijímá.
+Pro návrh analyzátoru budou použity množiny $Empty$, $First$, $Follow$ a~$Predict$, které se standardně využívají k~návrhu LL tabulky, která je nedílnou součástí syntaktických analyzátorů.
+Pro výrazy bude využita precedenční analýza.  
+
+V~kapitole~\ref{kap_teorie} jsou popsány základní pojmy a~principy teorie formálních jazyků, které jsou prerekvizitou k~pochopení této práce.
+Kapitola~\ref{kap_GS} zavádí nové teoretické koncepty v~podobě gramatických systémů jako rozšíření klasických gramatik.
+Principy syntaktické analýzy jsou popsány v~kapitole~\ref{kap_teorie_sa}, která zároveň uvádí algoritmy pro sestavení potřebných množin a~tabulek, se kterými syntaktický analyzátor pracuje.
+Vlastní principy implementace systému na abstraktní úrovni jsou popsány v~kapitole \ref{kap_implementace}.
+Zároveň se zmiňuje o~implementačním jazyce, adresářové struktuře, sestavovacím systému a~podobně.
+Poslední kapitola pak pojednává o~testování implementovaného systému.
 
 \chapter{Základy teorie formálních jazyků}\label{kap_teorie}
 Základní přehled matematických znalostí potřebných k~pochopení této kapitoly (a~tím i~celé této práce) je popsán například v~\cite{meduna_zemek_2014}.
