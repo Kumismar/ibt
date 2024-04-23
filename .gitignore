@@ -49,6 +49,7 @@ cmake-build-debug/
 *.toc
 *.synctex.gz
 *.ptc
+*.tod
 
 # graph files
 *.dot
