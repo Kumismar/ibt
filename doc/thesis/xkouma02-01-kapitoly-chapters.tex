@@ -37,17 +37,16 @@ Cílem je navrhnout CD gramatický systém popisující ekvivalentní jazyk jako
 Pro návrh analyzátoru budou použity množiny $Empty$, $First$, $Follow$ a~$Predict$, které se standardně využívají k~návrhu LL tabulky, která je nedílnou součástí syntaktických analyzátorů.
 Pro výrazy bude využita precedenční analýza.  
 
-V~kapitole~\ref{kap_teorie} jsou popsány základní pojmy a~principy teorie formálních jazyků, které jsou prerekvizitou k~pochopení této práce.
+V~Kapitole~\ref{kap_teorie} jsou popsány základní pojmy a~principy teorie formálních jazyků, které jsou prerekvizitou k~pochopení této práce.
 Kapitola~\ref{kap_GS} zavádí nové teoretické koncepty v~podobě gramatických systémů jako rozšíření klasických gramatik.
-Principy syntaktické analýzy jsou popsány v~kapitole~\ref{kap_teorie_sa}, která zároveň uvádí algoritmy pro sestavení potřebných množin a~tabulek, se kterými syntaktický analyzátor pracuje.
-Vlastní principy implementace systému na abstraktní úrovni jsou popsány v~kapitole \ref{kap_implementace}.
+Principy syntaktické analýzy jsou popsány v~Kapitole~\ref{kap_teorie_sa}, která zároveň uvádí algoritmy pro sestavení potřebných množin a~tabulek, se kterými syntaktický analyzátor pracuje.
+Vlastní principy implementace systému na abstraktní úrovni jsou popsány v~Kapitole \ref{kap_implementace}.
 Zároveň se zmiňuje o~implementačním jazyce, adresářové struktuře, sestavovacím systému a~podobně.
 Poslední kapitola pak pojednává o~testování implementovaného systému.
 
 \chapter{Základy teorie formálních jazyků}\label{kap_teorie}
 Základní přehled matematických znalostí potřebných k~pochopení této kapitoly (a~tím i~celé této práce) je popsán například v~\cite{meduna_zemek_2014}.
-\dotaz{Tento dotaz je vlastně na všechny kapitoly - snažil jsem se občas něco vymyslet, občas něco opsat z literatury, ale pořád vůbec nemám tušení, jak kapitoly uvádět.
-Přijde mi to takové mdlé.}
+
 \section{Abeceda, řetězec a jazyk}\label{kap_abec_ret_jazyk}
 Definice v~této kapitole založeny na definicích z~\cite{hopcroft2006introduction, handbook1-zaklady, TIN-opora}.
 
@@ -219,7 +218,7 @@ Definice v~této kapitole založeny na definicích z~\cite{hopcroft2006introduct
 
 Informace pro tuto kapitolu byly převzaty z~\cite{TIN-opora}.
 
-V~kapitole \ref{kap_abec_ret_jazyk} byly ukázány obecné a~pouze základní principy jazyků.
+V~Kapitole \ref{kap_abec_ret_jazyk} byly ukázány obecné a~pouze základní principy jazyků.
 S~triviálními způsoby reprezentace jazyka, tedy například výčtem všech vět, si nevystačíme už jen díky tomu, že jazyky často bývají nekonečné.
 Gramatiky jsou jedním ze způsobů, a~to velmi elegantním, jak jazyky reprezentovat.
 
@@ -233,13 +232,13 @@ Nonterminální symboly slouží k~popisu syntaktických celků jazyka a~termin�
 \begin{convention}\label{conv_oznaceni_symbolu}
     V~kontextu práce s~gramatikami bude nadále používáno následující označení pro různé typy řetězců:
     \begin{itemize}
-        \item malá písmena ze začátku abecedy ($a,\: b,\: c,\ldots)$ budou reprezentovat terminály,
-        \item velká písmena ze začátku abecedy ($A,\: B,\: C,\ldots)$ budou vyhrazena pro neterminály,
+        \item malá písmena ze začátku abecedy ($a, b, c,\ldots)$ budou reprezentovat terminály,
+        \item velká písmena ze začátku abecedy ($A, B, C,\ldots)$ budou vyhrazena pro neterminály,
         \begin{itemize}[label=$\circ$]
             \item výjimkou je symbol $S$, který je často používán pro označení \emph{startovacího symbolu},
         \end{itemize}
-        \item malá písmena ze začátku řecké abecedy $(\alpha,\: \beta,\: \gamma,\ldots)$ budou označovat řetězce terminálů a~neterminálů,
-        \item malá písmena z~konce abecedy ($u,\: v,\: w,\ldots$) budou pro řetězce terminálů.
+        \item malá písmena ze začátku řecké abecedy $(\alpha, \beta, \gamma,\ldots)$ budou označovat řetězce terminálů a~neterminálů,
+        \item malá písmena z~konce abecedy ($u, v, w,\ldots$) budou pro řetězce terminálů.
     \end{itemize}
 \end{convention}
 
@@ -286,9 +285,9 @@ To znamená, že pokud lze přepsat řetězec $\lambda = \gamma \alpha \delta$ n
 
 \begin{figure}[ht]\label{fig_der_krok}
     \centering
+    \vspace*{0.5em}
     \includegraphics{obrazky-figures/derivacni_krok_bkg.eps}
     \caption{Ilustrace derivačního kroku za použití pravidla $\alpha \rightarrow \beta$.}
-    \todo{zmenit pismenka}
 \end{figure}
 
 \subsection*{Sekvence derivačních kroků}\label{kap_sekvence_der_kroku}
@@ -319,10 +318,10 @@ Informace k~následující kapitole převzaty z~\cite{TIN-opora}.
 Gramatiky se dělí do čtyř skupin podle tvaru přepisovacích pravidel.
 Označují se jako typ 0, typ 1, typ 2, typ 3, respektive neomezené gramatiky, kontextové gramatiky, bezkontextové gramatiky a~pravé lineární gramatiky.
 Tyto gramatiky generují příslušné jazyky $L_i,\; i \in \{0, 1, 2, 3\},$ $i$ je příslušné s~typem gramatiky.
-Platí $L_0 \subseteq L_1 \subseteq L_2 \subseteq L_3$.
+Platí $L_3 \subseteq L_2 \subseteq L_1 \subseteq L_0$.
 
 \subsection*{Neomezená gramatika}
-Gramatika typu 0 obsahuje pravidla v~nejobecnějším tvaru, shodným z~definice \ref{def_gramatika}.
+Gramatika typu 0 obsahuje pravidla v~nejobecnějším tvaru, shodným z~Definice \ref{def_gramatika}.
 \begin{equation*}
     \alpha \rightarrow \beta,\; \alpha \in (N \cup T)^*N(N \cup T)^*,\; \beta \in (N \cup T)^*
 \end{equation*}
@@ -356,7 +355,7 @@ Definujme tedy tento typ gramatiky podrobněji než ostatní typy.
 \begin{definition}\label{def_bkg}
     \emph{Bezkontextová gramatika} je čtveřice $G = (N, T, P, S)$, kde:
     \begin{itemize}
-        \item $N,\; T,\; S$ jsou definovány stejně jako v~definici \ref{def_gramatika}, 
+        \item $N,\; T,\; S$ jsou definovány stejně jako v~Definici \ref{def_gramatika}, 
         \item $P$ je množina přepisovacích pravidel ve tvaru $A \rightarrow \gamma $, $A \in N$ a $\gamma \in (N \cup T)^*$,
         \begin{itemize}[label=$\circ$]
             \item je tudíž podmnožinou kartézského součinu $P \subseteq  N \times (N \cup T)^*$. 
@@ -411,7 +410,6 @@ Definice související s~konečnými automaty převzaty z~\cite{meduna2023automa
         \begin{itemize}[label=$\circ$]
             \item je nazývána \emph{množinou pravidel} ve tvaru $qa \rightarrow p,\; q, p \in Q,\;a \in \Sigma \cup \{\varepsilon\}$.
             Jakákoli uspořádaná trojice $(q, a, p) \in R$ je pravidlem, zapsáno $qa \rightarrow p$.
-            \item Další možnost zápisu je zobrazení (\emph{přechodová funkce}) $R: Q \times \Sigma \rightarrow 2^Q$ \cite{TIN-opora}.
         \end{itemize}
         \item $s \in Q$ je počáteční stav automatu,
         \item $F \subseteq Q$ je konečná množina koncových stavů. 
@@ -443,7 +441,7 @@ Výpočetní krok znamená přechod z~jedné konfigurace do druhé za přečten�
     Je to binární relace na množině konfigurací\,--\,pokud $\beta\, \vdash_{\scriptscriptstyle M} \chi$, pak $(\beta, \chi) \in X_M \times X_M$.
     Pokud $a = \varepsilon$, není ze vstupní pásky přečten žádný symbol.
     
-    Symboly $\vdash_{\scriptscriptstyle M}^n, \vdash_{\scriptscriptstyle M}^+$ a~$\vdash_{\scriptscriptstyle M}^*$ nechť značí příslušně $n$-tou mocninu pro $n \geq 0$, tranzitivní a reflexivně-tranzitivní uzávěr relace $\vdash_{\scriptscriptstyle M}$ podobně jako u~derivačního kroku gramatik (\ref{def_derivacni_krok}), čímž reprezentují \emph{sekvenci přechodů} KA $M$.
+    Symboly $\vdash_{\scriptscriptstyle M}^n, \vdash_{\scriptscriptstyle M}^+$ a~$\vdash_{\scriptscriptstyle M}^*$ nechť značí příslušně $n$-tou mocninu pro $n \geq 0$, tranzitivní a reflexivně-tranzitivní uzávěr relace $\vdash_{\scriptscriptstyle M}$ podobně jako u~derivačního kroku gramatik v~Definici \ref{def_derivacni_krok}, čímž reprezentují \emph{sekvenci přechodů} KA $M$.
     Například pro konfigurace $\beta$ a~$\chi$ platí $\beta\; \vdash_{\scriptscriptstyle M}^+ \chi$ právě tehdy, když
     \begin{equation*}
         \beta = c_0 \vdash_{\scriptscriptstyle M} c_1 \vdash_{\scriptscriptstyle M} \ldots \vdash_{\scriptscriptstyle M} c_{n-1} \vdash_{\scriptscriptstyle M} c_{n} = \chi,
@@ -476,10 +474,56 @@ Výpočetní krok znamená přechod z~jedné konfigurace do druhé za přečten�
     Jinými slovy, z~jednoho stavu není možné přejít do několika stavů přečtením stejného symbolu.
 \end{definition}
 
-\todo{jendoduchy priklad KA i s prechodovym diagramem}
+Konečný automat může být reprezentován několika způsoby.
+Zřejmě může být definován výčtem dle Definice \ref{def_konecny_automat}, ale existují grafické i~výčtové způsoby, ze kterých je funkcionalita KA jednoduše čitelná na první pohled.
+Nejpopulárnější z~nich je tabulka přechodů (\emph{state table}) a~diagram přechodů (\emph{state diagram}).
+Obě dvě reprezentace budou ukázány v~následujícím příkladu z~\cite{meduna2023automata}.
+
+\begin{example}\label{example_ka}
+    Nechť $M = (Q, \Sigma, R, s, F)$ je KA, kde:
+    \begin{align*}
+        Q &= \{1, 2, 3, 4, 5\}, \\
+        \Sigma &= \{a, b\}, \\
+        R &= \{  1  \rightarrow 2, 1  \rightarrow 4,  2a \rightarrow 2, 2a \rightarrow 3, 3b \rightarrow 3, 4b \rightarrow 4, 4b \rightarrow 4 \} \\
+        s &= 1, \\
+        F &= \{3, 5\}.
+    \end{align*}
+    Stav 1 je počáteční a~stavy 3 a~5 jsou koncové.
+    Při pohledu na množinu přechodových pravidel může $M$ udělat buď přechod ze stavu 1 do stavu 2 nebo do stavu 3 za přečtení \emph{žádného} symbolu ze vstupní pásky, respektive za přečtení $\varepsilon$. 
+    Ve stavu 2 buď přečte symbol $a$ a~přejde do stavu 3, případně za přečtení $a$ může také zůstat ve stavu stejném.
+    Stav 3 je pak koncový a~v~něm $M$ přijme pouze případné další symboly $b$.
+    Ze stavu 4 se $M$ dostane do koncového stavu 5 za přečtení $b$, případně zůstat ve stejném stavu také za přečtení $b$.
+    
+    Jak bylo zmíněno, slovní popis a~definice se dají přepsat na přehlednější reprezentace, což ilustrují Tabulka \ref{tab_ka_tabulka_prechodu} a~Obrázek \ref{fig_ka_prechodovy_diagram}. 
+
+    Ze všech reprezentací je zřejmé, že KA $M$ určitě nebude deterministicky rozhodovat svoje kroky, což je nepoužitelné pro praxi.
+    Mnohem ideálnější je používat takové automaty, které pro konkrétní vstupní symbol v~konkrétním stavu udělají jeden konkrétní krok.
+    \begin{table}[ht]
+        \centering
+        \begin{tabu}to 0.33\textwidth{X[l]X[c]X[c]X[c]}
+            \toprule
+            Stav & $a$ & $b$ & $\varepsilon$ \\
+            \midrule
+            1 &&& $2, 4$ \\
+            2 & $2, 3$ && \\
+            3 && 3 & \\
+            4 && $4, 5$ & \\ 
+            5 &&& \\
+            \bottomrule
+        \end{tabu}
+        \caption{Přechodová tabulka KA $M$ z~Příkladu \ref{example_ka}.}
+        \label{tab_ka_tabulka_prechodu}
+    \end{table}
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.4\textwidth]{obrazky-figures/ka_diagram_prechodu.eps}
+        \caption{Přechodový diagram KA $M$ z~Příkladu \ref{example_ka}.}
+        \label{fig_ka_prechodovy_diagram}
+    \end{figure}
+\end{example}
 
 \section{Zásobníkový automat}\label{kap_zasobnikovy_automat}
-Zásobníkový automat je rozšíření konečného automatu, popsaného v~definici \ref{def_konecny_automat}, o~zásobník.
+Zásobníkový automat je rozšíření konečného automatu, popsaného v~Definici \ref{def_konecny_automat}, o~zásobník.
 Zásobník slouží jako paměťové médium, na které si automat může ukládat informace v~podobě symbolů zásobníkové abecedy.
 Následující definice převzaty z~\cite{meduna2023automata, TIN-opora}.
 \begin{definition}\label{def_zasobnikovy_automat}
@@ -489,7 +533,7 @@ Následující definice převzaty z~\cite{meduna2023automata, TIN-opora}.
     \end{center}
     kde:
     \begin{itemize}
-        \item $Q, \Sigma, s, F$ jsou definovány stejně jako v~definici \ref{def_konecny_automat},
+        \item $Q, \Sigma, s, F$ jsou definovány stejně jako v~Definici \ref{def_konecny_automat},
         \item $\Gamma$ je konečná zásobníková abeceda,
         \item $R$ je konečná relace $R \subseteq \Gamma \times Q \times (\Sigma \cup \{\varepsilon\}) \times \Gamma^* \times Q$ nazývána množinou pravidel ZA,
         \begin{itemize}[label=$\circ$]
@@ -521,7 +565,7 @@ Následující definice převzaty z~\cite{meduna2023automata, TIN-opora}.
 
 \begin{definition}\label{def_prechod_za}
     Nechť $M = (Q, \Sigma, \Gamma, R, s, S, F)$ je ZA.\\
-    Přechod ZA je binární relace definována nad množinou konfigurací (podobně jako v~definici \ref{def_prechod_ka}) v~podobě
+    Přechod ZA je binární relace definována nad množinou konfigurací (podobně jako v~Definici \ref{def_prechod_ka}) v~podobě
     \begin{equation*}
         \beta\; \vdash \chi,
     \end{equation*}
@@ -532,12 +576,12 @@ Následující definice převzaty z~\cite{meduna2023automata, TIN-opora}.
 \end{definition}
 Oproti klasickým KA se při přechodu musí pracovat se zásobníkem, ze kterého se vyjme symbol $A$, namísto něj se vloží symbol $w$.
 
-Automat $M$ přijímá řetězec právě tehdy, když $Ssw \vdash^* uf$ v~$M;$ $u \in \Gamma^*, f \in F$.
+Automat $M$ přijímá řetězec právě tehdy, když sekvencí přechodů dosáhne koncového stavu.
 \begin{definition}\label{def_jazyk_za}
     Nechť $M = (Q, \Sigma, \Gamma, R, s, S, F)$ je ZA.\\
     Jazyk přijímaný $M$ je
     \begin{equation*}
-        L(M) = \{w : w \in \Sigma^*,\; Ssw \vdash^* f,\; f \in F\}.
+        L(M) = \{w : w \in \Sigma^*,\; Ssw \vdash^* uf,\; u \in \Gamma^*,\; f \in F\}.
     \end{equation*}
 \end{definition}
 
@@ -571,8 +615,8 @@ Text a~definice v~této kapitole převzaty z~\cite{meduna2023automata, meduna_ze
     \end{center}
     kde:
     \begin{itemize}
-        \item $Q, \Sigma, s, S, F$ jsou definovány stejně jako u~klasických ZA (\ref{def_zasobnikovy_automat}),
-        \item $\Gamma$ je zásobníková abeceda, $\mathbb{N},\; Q,$ a~$\Gamma$ jsou navzájem disjunktní, $\Sigma \subseteq \Gamma$\dotaz{opravdu $\subseteq$ a ne $\subset$?}  a~$\Gamma \setminus \Sigma$ obsahuje speciální symbol $\#$ (\emph{spodní symbol}), který je považován za dno zásobníku, 
+        \item $Q, \Sigma, s, S, F$ jsou definovány stejně jako u~klasických ZA v~Definici \ref{def_zasobnikovy_automat},
+        \item $\Gamma$ je zásobníková abeceda, $\mathbb{N},\; Q,$ a~$\Gamma$ jsou navzájem disjunktní, $\Sigma \subseteq \Gamma$ a~$\Gamma \setminus \Sigma$ obsahuje speciální symbol $\#$ (\emph{spodní symbol}), který je považován za dno zásobníku, 
         \item $R$ je konečná relace
         \begin{alignat*}{-1}
              &(\mathbb{N} \times Q \,\times \,&& (\Gamma \setminus (\Sigma \cup \{\#\})) &&\times Q \times (\Gamma \setminus \{\#\})^+) \;\cup \\
@@ -585,7 +629,7 @@ Text a~definice v~této kapitole převzaty z~\cite{meduna2023automata, meduna_ze
                 mqA  &\rightarrow pv,\\
                 mq\# &\rightarrow pv\# \; \cite{meduna_rgd_pda}.
             \end{align*}
-            O~jejich použití a~rozdílech je psáno v~definici \ref{def_prechod_rza}.
+            O~jejich použití a~rozdílech je psáno v~Definici \ref{def_prechod_rza}.
         \end{itemize}
     \end{itemize}
 \end{definition}
@@ -630,7 +674,6 @@ Jediná změna od klasických ZA již byla zmíněna na začátku této kapitoly
     \end{equation*}
     právě tehdy, když $M$ udělá vyjmutí symbolu $\beta\, \prescript{}{p}{\vdash}\; \chi$ nebo expanzi symbolu $\beta\, \prescript{}{e}{\vdash}\; \chi$.
     Tranzitivní uzávěry $\prescript{}{p}{\vdash^+}, \prescript{}{e}{\vdash^+}$, reflexivně-tranzitivní uzávěry $\prescript{}{p}{\vdash^*}, \prescript{}{e}{\vdash^*}$ a~$n$-té mocniny $\prescript{}{p}{\vdash^n}, \prescript{}{e}{\vdash^n}$ jsou definovány standardně.
-    Alternativní definice přechodu je popsána v~\cite{TIN-opora}.
 \end{definition}
 \begin{figure}[ht]\label{fig_prechod_rza}
     \caption{Ilustrace p-přechodu a e-přechodu RZA}
@@ -680,7 +723,6 @@ Dále existují jazyky přijímané RZA pouze vyprázdněním zásobníku, při�
         (p, abbcc, AbA\#)\, \prescript{}{e}{\vdash}\; (q, abbcc, AbAc\#) \quad [2pA \rightarrow qAc]
     \end{equation*}
     Dále přijímání řetězce probíhá stejným způsobem jako v předešlých krocích.
-    \dotaz{Příklad v knize - přeskočení kroku z 5 na 6, z kroku 7 na 8 je psána expanze, ale nic se v konfiguraci nezměnilo - vysvětlím osobně}
     \begin{alignat*}{2}
         (q, abbcc, AbAc\#)\, &\prescript{}{e}{\vdash}\; (q, abbcc, abbAc\#) \quad && [1qA \rightarrow fab] \\
                              &\prescript{}{p}{\vdash}\; (f, bbcc, bbAc\#) \quad && \\
@@ -707,8 +749,8 @@ Spolupracují mezi sebou předáváním řízení derivace aktuálně zpracováv
 \end{center}
 kde:
 \begin{itemize}
-    \item $N$, $T$, a $S$ jsou definovány stejně jako v~definici \ref{def_bkg},
-    \item $P_i$ je konečná množina pravidel ve tvaru $A\rightarrow \alpha$, kde pravidla jsou definována stejně jako v~definici \ref{def_bkg}, nazývaná \emph{komponentou} systému, $i \in \{1, \ldots, n\}$,
+    \item $N$, $T$, a $S$ jsou definovány stejně jako v~Definici \ref{def_bkg},
+    \item $P_i$ je konečná množina pravidel ve tvaru $A\rightarrow \alpha$, kde pravidla jsou definována stejně jako v~Definici \ref{def_bkg}, nazývaná \emph{komponentou} systému, $i \in \{1, \ldots, n\}$,
     \item $i$-tá gramatika systému se zapisuje jako $G_i = (N,T,S,P_i)$
 \end{itemize}   
 \end{definition}
@@ -726,7 +768,7 @@ Tento zápis znamená, že řetězec $\alpha \in (N \cup T)^{*}$ derivuje řetě
 
 \subsubsection*{Derivační režimy}
 
-Prvním příkladem je režim $*$, který byl v~definici \ref{def_der_krok_refl_tranz} uveden pro bezkontextovou gramatiku a~princip v~CD gramatických systémech je podobný.
+Prvním příkladem je režim $*$, který byl v~Definici \ref{def_der_krok_refl_tranz} uveden pro bezkontextovou gramatiku a~princip v~CD gramatických systémech je podobný.
 Při použití tohoto derivačního režimu řetězec $\alpha \in (N \cup T)^*$ derivuje řetězec $\beta \in (N \cup T)^*$ v~libovolném počtu kroků v~$i$-té komponentě, zapsáno $\alpha \prescript{}{i}{\Rightarrow}^{*} \beta$.
 Je možné předat řízení derivace jiné komponentě i~v~případě, že ve stejné komponentě lze s~derivací stejného řetězce pokračovat.
 
@@ -744,8 +786,6 @@ Další derivační režimy jsou například
     \item právě \emph{k}~derivací, tedy $\alpha \prescript{}{i}{\Rightarrow}^{=k}\; \beta$,
 \end{itemize}
 kde $k \in \mathbb{N} \cup \{0\}$ a $i$ symbolizuje $i$-tou komponentu gramatického systému.
-
-Derivačních režimů existuje mnohem více\dotaz{Zdroj??}, nejsou ale pro tuto práci podstatné.
 Tyto režimy mohou být reprezentovány jako množina, což pomůže definovat další pojmy v~následující podkapitole o~generovaném jazyce.
 \begin{definition}\label{def_der_rezimy}
     Nechť $k\in \mathbb{N}$ a $*$, $t$ představují derivační režimy. \\
@@ -762,7 +802,7 @@ Než bude definován samotný jazyk, je vhodné definovat pomocnou množinu, kte
     Nechť $\Gamma = (N, T, S, P_1, \ldots, P_n)$. \\  
     Potom 
     \begin{equation*}
-        F(G_j,\beta,f)=\{\beta : \alpha_j\Rightarrow^{f}\beta\},\; j \in \{1, \ldots, n\},\; f\in D,\; u\in (N \cup T)^{*}
+        F(G_j,\beta,f)=\{\beta : \alpha \prescript{}{j}{\Rightarrow^{f}}\beta\},\; j \in \{1, \ldots, n\},\; f\in D,\; \alpha \in (N \cup T)^{*}
     \end{equation*}        
     je množina všech řetězců $v$ derivovatelných z~$u$ v~$j$-té komponentě za použití derivačního režimu $f$.
 \end{definition}
@@ -842,7 +882,7 @@ Hybridní CD gramatické systémy nabízí možnost definovat derivační režim
 \begin{definition}
     \emph{Hybridní CDGS} je n-tice $\Gamma = (N, T, S, (P_1, f_1), \ldots, (P_n, f_n))$, kde:
     \begin{itemize}
-        \item $N, T, P_i, S$ jsou definovány stejně jako v~klasických CDGS (\ref{def_cdgs}),
+        \item $N, T, P_i, S$ jsou definovány stejně jako v~klasických CDGS v~Definici \ref{def_cdgs},
         \item $f_i$ je derivační režim $i$-té komponenty, $f_i \in D$ pro všechna $i \in \{1, \ldots, n\}$.
     \end{itemize}
 \end{definition}
@@ -894,9 +934,9 @@ Komunikačních symbolů je stejné množství jako komponent v~PC gramatickém 
     \end{center}
     kde:
     \begin{itemize}
-        \item $N, T$ jsou definovány stejně jako u~bezkontextových gramatik (\ref{def_bkg}),
+        \item $N, T$ jsou definovány stejně jako u~bezkontextových gramatik v~Definici \ref{def_bkg},
         \item $K = \{Q_1, \ldots, Q_n\}$ je množina komunikačních symbolů ($N, K, T$ jsou navzájem disjunktní); index $i$ komunikačního symbolu $Q_i$ koresponduje s~indexem $i$-té komponenty,
-        \item $P_i,\; i \in \{1, \ldots, n\}$ je množina pravidel nazývané komponenty, stejně jako u~CD gramatických systémů (\ref{def_cdgs}),
+        \item $P_i,\; i \in \{1, \ldots, n\}$ je množina pravidel nazývané komponenty, stejně jako u~CD gramatických systémů v~Definici \ref{def_cdgs},
         \item $i$-tá gramatika systému je konstrukt $G_i = (N \cup K, T, S_i, P_i),\; i \in \{1, \ldots, n\}$.
     \end{itemize}
 \end{definition}
@@ -924,7 +964,7 @@ Následující definice převzata z~\cite{Various-communications-in-PC-grammar-s
 \end{definition}
 Nutná podmínka k~proběhnutí libovolného derivačního kroku je $\alpha_1 \notin T^*$.
 Pokud tato situace nastane, už je vygenerována věta jazyka definovaného PCGS a~dále se s~kroky nepokračuje. 
-Více v~definici \ref{def_gener_jazyk_pcgs}.
+Více v~Definici \ref{def_gener_jazyk_pcgs}.
 
 \subsubsection*{g-derivační krok}\label{kap_g_der_krok}
 Nechť $\Gamma = (N, K, T, (P_1, S_1), \ldots, (P_n, S_n))$ je PCGS a~$(\alpha_1, \ldots \alpha_n),\; (\beta_1, \ldots, \beta_n)$ jsou konfigurace $\Gamma$.
@@ -974,11 +1014,11 @@ Algoritmus ukazující princip komunikačního kroku je následující:
     \end{center} 
     právě tehdy, když
     \begin{center}
-        $(\alpha_1, \ldots, \alpha_n)\ \prescript{}{g}{\Rightarrow}\ (\beta_1, \ldots, \beta_n)$
+        $(\alpha_1, \ldots, \alpha_n) \prescript{}{g}{\Rightarrow}\, (\beta_1, \ldots, \beta_n)$
     \end{center}
     nebo
     \begin{center}
-        $(\alpha_1, \ldots, \alpha_n)\ \prescript{}{c}{\Rightarrow}\ (\beta_1, \ldots, \beta_n)$.
+        $(\alpha_1, \ldots, \alpha_n) \prescript{}{c}{\Rightarrow}\, (\beta_1, \ldots, \beta_n)$.
     \end{center}
 \end{definition}
 
@@ -998,7 +1038,7 @@ Generování větné formy končí v~momentě, kdy první komponenta dosáhne ř
 Pokud PC gramatický systém pracuje na vracejícím se režimu, potom komponenty, které v~rámci komunikačního kroku poslaly svůj řetězec jiným komponentám, generují řetězec od svého axiomu.
 Při nevracejícím se režimu komponenty pokračují ve zpracovávání aktuálního řetězce.
 
-Tato skutečnost se projeví na samotném komunikačním kroku, u~kterého se vynechá přiřazení axiomu do řetězce $\gamma_j$\,--\,neprovede se krok na řádku 10 algoritmu \ref{alg_c_der_krok}.
+Tato skutečnost se projeví na samotném komunikačním kroku, u~kterého se vynechá přiřazení axiomu do řetězce $\gamma_j$\,--\,neprovede se krok na řádku 10 Algoritmu \ref{alg_c_der_krok}.
 
 \subsection*{Centralizované PCGS}
 Centralizované PC gramatické systémy mají tu vlastnost, že pouze první komponenta (nazývaná \emph{master}) systému může generovat komunikační symboly a~tím žádat ostatní komponenty o~řetězce.
@@ -1023,10 +1063,10 @@ V~prvním příkladu bude pouze demonstrován princip obou derivačních kroků 
     Nutná podmínka je, aby alespoň jeden z~řetězců v~aktuální konfiguraci obsahoval alespoň jeden komunikační symbol, což aktuálně není splněno.
     $\Gamma$ tedy udělá g-krok.
      \begin{equation*}
-    (S_1, S_2, S_3) \prescript{}{g}{\Rightarrow}  (Q_3, a, b)
+    (S_1, S_2, S_3) \prescript{}{g}{\Rightarrow}\, (Q_3, a, b)
      \end{equation*}
      Nyní je v~konfiguraci komunikační symbol, což indikuje, že bude následovat komunikační krok.
-     Při postupu podle algoritmu~\ref{alg_c_der_krok} je postup následující:
+     Při postupu podle Algoritmu~\ref{alg_c_der_krok} je postup následující:
      \begin{enumerate}
         \item Zavedení pomocných řetězců $\gamma_1 = Q_3$, $\gamma_2 = a$, $\gamma_3 = b$ podle řádků 4\,--\,6.
         \item Kontrola, zda řetězec $\alpha_i,\; i \in \{1, \ldots, n\}$ z~původní konfigurace obsahuje komunikační symboly (podmínka $alph(\alpha_i) \cap K \neq \emptyset$).
@@ -1041,19 +1081,19 @@ V~prvním příkladu bude pouze demonstrován princip obou derivačních kroků 
         \end{itemize}
         \item Každý $Q_j$ v~$\alpha_i$ se nahradí za $\alpha_j$, pokud prošel podmínkou v~předchozím kroku.
         Zároveň se $\gamma_j$ nastaví na počáteční symbol $j$-té komponenty.
-        Tyto kroky jsou v~algoritmu na řádcích 9\,--\,12.
+        Tyto kroky jsou v~Algoritmu \ref{alg_c_der_krok} na řádcích 9\,--\,12.
         \begin{itemize}[label=$\circ$]
             \item Komunikační symbol $Q_3$ bude v~$\alpha_1$ nahrazen řetězcem $b$ z~$\alpha_3$. Dále $\alpha_3 \gets S_3$ a~$\gamma_1 \gets \alpha_1$.
             Aktuálně $\gamma_1 = b,$ $\gamma_2 = a$, $\gamma_3 = S_3$. 
         \end{itemize}
-        \item Proveď $(\alpha_1, \ldots, \alpha_n) \ \prescript{}{c}{\Rightarrow} \ (\beta_1, \ldots, \beta_n)$, kde $\beta_i = \gamma_i$ pro $i \in \{1, \ldots, n\}$.
+        \item Proveď $(\alpha_1, \ldots, \alpha_n) \prescript{}{c}{\Rightarrow}\, (\beta_1, \ldots, \beta_n)$, kde $\beta_i = \gamma_i$ pro $i \in \{1, \ldots, n\}$.
         \begin{itemize}[label=$\circ$]
             \item Nová konfigurace $(\beta_1, \beta_2, \beta_3)$ bude stejná, jako pomocná konfigurace $(\gamma_1, \gamma_2, \gamma_3)$, a~to $(b, a, S_3)$.
         \end{itemize}
     \end{enumerate}
     $\Gamma$ provede komunikační krok z~$(Q_3, a, b)$ do $(b, a, S_3)$.
     \begin{center}
-        $(Q_3, a, b) \prescript{}{c}{\Rightarrow} (b, a, S_3)$
+        $(Q_3, a, b) \prescript{}{c}{\Rightarrow}\, (b, a, S_3)$
     \end{center}
     Další kroky už $\Gamma$ provádět nebude, protože řetězec generovaný první komponentou je již řetězec terminálních symbolů.
     V~tomto příkladu byla použita sémantika vracejícího se PCGS, nicméně při použítí nevracejícího by jazyk vypadal stejně, jen výsledná konfigurace by se lišila v~řetězci $x_3$.
@@ -1128,7 +1168,7 @@ Celý proces překladu programů je podrobně popsán v~\cite{medunaElementsOfCo
 Syntax jazyka, ve kterém je napsán zdrojový kód, je nejčastěji popsána gramatikou (v~praxi nejčastěji bezkontextovou) jazyka s~konečnou množinou pravidel.
 Pomocí těchto pravidel analyzátor zkontroluje, že posloupnost \emph{tokenů}, které jsou na vstupu od lexikálního analyzátoru, je korektní, podle použitých pravidel v~gramatice.
 Při tomto procesu syntaktický analyzátor generuje \emph{derivační strom}, kde každý uzel a~jeho potomci reprezentují použité pravidlo.
-Tento proces může probíhat \emph{shora dolů}, čímž se zabývá kapitola \ref{kap_sa_shora_dolu}, případně \emph{zdola nahoru}, čímž se zabývá kapitola \ref{kap_sa_zdola_nahoru}.
+Tento proces může probíhat \emph{shora dolů}, čímž se zabývá Kapitola \ref{kap_sa_shora_dolu}, případně \emph{zdola nahoru}, čímž se zabývá Kapitola \ref{kap_sa_zdola_nahoru}.
 Tyto názvy jsou odvozeny od směru tvorby derivačního stromu, kdy analýza shora dolů postupuje od kořene k~listům, analýza zdola nahoru naopak.
 
 Než se začneme zabývat těmito dvěma druhy syntaktické analýzy, pojďme si definovat pojmy \emph{nejlevější a nejpravější derivace} a~jejich sekvence.
@@ -1224,7 +1264,7 @@ Nakonec se algoritmus znovu dívá na všechny řetězce $\alpha$ a~jejich množ
 Jsou to takové neterminály $A$, které mají množinu $Empty(A)$ neprázdnou, v~druhém případě se množina $Empty(A)$ již nezmění.
 
 V~následujícím algoritmu si představíme množinu $Empty(X_1X_2\ldots X_n)$.
-Z~výše psaného textu vyplývá, je třeba tuto možnost řešit výhradně pro neterminály, proto budeme v~algoritmu označovat symboly, pro které se konstruuje množina $Empty(X)$ jako neterminály podle konvence \ref{conv_oznaceni_symbolu}.
+Z~výše psaného textu vyplývá, je třeba tuto možnost řešit výhradně pro neterminály, proto budeme v~algoritmu označovat symboly, pro které se konstruuje množina $Empty(X)$ jako neterminály podle Konvence \ref{conv_oznaceni_symbolu}.
 Tento algoritmus pomůže při definici dalších množin, nicméně není k~tomu nutný. 
 \begin{algorithm}[h]
     \caption{Množina $Empty(X_1X_2\ldots X_n)$}
@@ -1331,7 +1371,7 @@ K~definici množin $Follow(A)$ se používá pomocný symbol \$, který reprezen
     \end{algorithmic}
 \end{algorithm}
 
-Z~uvedené definice \ref{def_mnozina_follow} a~algoritmu \ref{alg_mnozina_follow} vyplývá, že v~množině $Follow(A)$ se mohou vyskytovat:
+Z~uvedené Definice \ref{def_mnozina_follow} a~Algoritmu \ref{alg_mnozina_follow} vyplývá, že v~množině $Follow(A)$ se mohou vyskytovat:
 \begin{enumerate}
     \item terminální symboly vyskytující se za neterminálem $A$ v~libovolném zderivovaném řetězci,
     \item symbol ukončující vstupní řetězec, pokud za neterminálem $A$ již nebudou žádné další neterminály. 
@@ -1426,8 +1466,7 @@ Následující příklad převzat z~\cite{medunaElementsOfCompDesign}.
 \begin{example}
     Nechť $G = (N, T, P, S)$ je LL gramatika a~nechť má sestavené množiny $Predict(p)$ pro každé $p \in P$.\\
     Pravidla a~jejich množiny $Predict$ nechť jsou definovány následovně: 
-    \newpage
-    \begin{table}[h]
+    \begin{table}[ht]
         \centering
         \begin{tabularx}{0.4\textwidth}{p{0.23\textwidth}p{0.17\textwidth}}
             \toprule
@@ -1447,6 +1486,7 @@ Následující příklad převzat z~\cite{medunaElementsOfCompDesign}.
         \caption{Pravidla $G$ a jejich množiny $Predict$.}
         \label{tab_rules_predict}
     \end{table}
+    
     Nechť symbol $\times$ reprezentuje prázdné políčko LL tabulky.
     LL tabulka pro pravidla a~jejich $Predict$ množiny z~tabulky \ref{tab_rules_predict}, zkonstruována podle výše popsané metody, vypadá takto:
     \begin{table}[h]
@@ -1476,7 +1516,7 @@ Součástí této práce je implementace explicitního zásobníkového automatu
 Výhodou implementace prediktivní analýzy s~LL tabulkou je jediná implementace algoritmu.
 V~případě změny pravidel v~gramatice je nutné pouze změnit LL tabulku, odkud automat odebírá pravidla, která má použít.
 Oproti tomu v~rekurzívním sestupu je nutné měnit celé funkce.
-Algoritmus prediktivní syntaktické analýzy je popsán v~algoritmu \ref{alg_prediktivni_sa}.
+Algoritmus prediktivní syntaktické analýzy je popsán v~Algoritmu \ref{alg_prediktivni_sa}.
 \begin{algorithm}[ht]
     \caption{Prediktivní syntaktická analýza založená na LL tabulce}
     \label{alg_prediktivni_sa}
@@ -1484,31 +1524,35 @@ Algoritmus prediktivní syntaktické analýzy je popsán v~algoritmu \ref{alg_pr
         \Input{LL tabulka pro $G = (N, T, P, S)$, řetězec $x \in T^*$}
         \Output{Levý rozbor pro $x$, pokud $x \in L(G)$, jinak chyba.}
         \NewLine
-        \State \texttt{push(\$)} \textbf{and} \texttt{push(S)}
+        \State \texttt{stack.push(\$)} \textbf{and} \texttt{stack.push(S)}
         \Repeat
             \State $X \gets$ \texttt{stack.top()}
             \State $a \gets$ aktuální token ze vstupního řetězce
-            \If{$X = \$$}
-                \If{$a = \$$}
-                    \State úspěch
-                \Else 
-                    \State chyba
-                \EndIf
-            \ElsIf{$X \in T$}
-                \If{$X = a$}
-                    \State \texttt{stack.pop(X)}
-                    \State $a \gets$ nový token ze vstupního řetězce
-                \Else
-                    \State chyba
-                \EndIf
-            \ElsIf{$X \in N$}
-                \If{$r: X \rightarrow \alpha \in LL\;table[X, a]$}
-                    \State \texttt{stack.pop(X)}
-                    \State \texttt{stack.top()} $\gets reversal(\alpha)$
-                \Else
-                    \State chyba
-                \EndIf
-                \EndIf
+            \Switch{$X$}
+                \Case{\$}
+                    \If{$a = \$$}
+                        \State úspěch
+                    \Else 
+                        \State chyba
+                    \EndIf
+                \EndCase
+                \Case{$X \in T$}
+                    \If{$X = a$}
+                        \State \texttt{stack.pop(X)}
+                        \State $a \gets$ nový token ze vstupního řetězce
+                    \Else
+                        \State chyba
+                    \EndIf
+                \EndCase
+                \Case{$X \in N$}
+                    \If{$r: X \rightarrow \alpha \in LL\;table[X, a]$}
+                        \State \texttt{stack.pop(X)}
+                        \State \texttt{stack.top()} $\gets reversal(\alpha)$
+                    \Else
+                        \State chyba
+                    \EndIf
+                \EndCase
+            \EndSwitch                
         \Until{úspěch \textbf{or} chyba}
     \end{algorithmic}
 \end{algorithm}
@@ -1536,12 +1580,13 @@ Než bude ukázán algoritmus pro precedenční analýzu, je třeba zadefinovat 
     Nechť $G = (N, T, P, S)$.\\
     Precedenční syntaktický analyzátor pracující na základě $G$ používá tyto operace pro práci se zásobníkem:
     \begin{itemize}
-        \item $SHIFT(<)$ přesune řetězec $\gamma = <a,\; a \in T$ na vrchol zásobníku a~přečte další symbol ze vstupu,
+        \item $SHIFT(<)$ přesune řetězec $<a,\; a \in T$ na vrchol zásobníku a~přečte další symbol ze vstupu,
         \item $SHIFT(=)$ přesune vstupní symbol $a \in T$ na vrchol zásobníku a~přečte další symbol ze vstupu,
         \item $REDUCE(A \rightarrow \alpha)$, kde $A \in N,\; \alpha = a\beta,\; a \in T,\; \beta \in (N \cup T)^*$ nahradí řetězec $\alpha$ za $A$ na vrcholu zásobníku.
     \end{itemize}
 \end{definition}
-Informace k~algoritmu čerpány z~\cite{medunaElementsOfCompDesign,meduna2017sa-zdola-nahoru}, inspirace zápisu čerpána z~\cite{kunda2022}.
+Funkcionalita precedenčního analyzátoru demonstrována na Algoritmu \ref{alg_precedencni_sa}.
+Informace k tomuto algoritmu čerpány z~\cite{medunaElementsOfCompDesign,meduna2017sa-zdola-nahoru}, inspirace zápisu čerpána z~\cite{kunda2022}.
 \begin{algorithm}[h]
     \caption{Precedenční syntaktický analyzátor}
     \label{alg_precedencni_sa}
@@ -1590,7 +1635,7 @@ Pokud je v~tabulce na políčku $>$, pak proběhne operace $REDUCE$, při které
 Když tabulka vrátí symbol $\times$, nastává chyba. 
 Při symbolu \checkmark analýza končí úspěšně.
 
-Na následujícím příkladu z~\cite{medunaElementsOfCompDesign} je ukázán princip fungování algoritmu \ref{alg_precedencni_sa}.
+Na následujícím příkladu z~\cite{medunaElementsOfCompDesign} je ukázán princip fungování Algoritmu \ref{alg_precedencni_sa}.
 \begin{example}
     Nechť $G = (N, T, P, S)$ je BKG a~nechť množina $R$ obsahuje tato pravidla:
     \begin{align*}
@@ -1619,7 +1664,7 @@ Na následujícím příkladu z~\cite{medunaElementsOfCompDesign} je ukázán pr
 
     Nechť vstupní řetězec je $i \wedge (i \vee i)\$$.
     \todo{obrazek dvou moznych derivacnich stromu}
-    Analýza toho řetězce je znázorněna v~tabulce \ref{tab_priklad_precedencni}.
+    Analýza toho řetězce je znázorněna v~Tabulce \ref{tab_priklad_precedencni}.
     \begin{table}[h]
         \centering
         \begin{tabularx}{0.85\textwidth}{p{0.24\textwidth}rrp{0.27\textwidth}}
@@ -1642,7 +1687,7 @@ Na následujícím příkladu z~\cite{medunaElementsOfCompDesign} je ukázán pr
             $\underline{\$}C$                  & $[\$, \$] \rightarrow \; \text{\checkmark}$ & $\underline{\$} $                   & úspěch \\
             \bottomrule
         \end{tabularx}
-        \caption{Demonstrace algoritmu \ref{alg_precedencni_sa}.}
+        \caption{Demonstrace Algoritmu \ref{alg_precedencni_sa}.}
         \label{tab_priklad_precedencni}
     \end{table}
 \end{example}    
@@ -2035,7 +2080,7 @@ Nechť symboly $\lfloor$ a~$\rceil$ ohraničují možnosti terminálů, které s
         \end{aligned}
 \end{equation*}
 
-Pátá komponenta pojednává o~bloku kódu, který byl vysvětlen v~úvodu kapitoly \ref{kap_prijimany_jazyk}.
+Pátá komponenta pojednává o~bloku kódu, který byl vysvětlen v~úvodu Kapitoly \ref{kap_prijimany_jazyk}.
 Důvod pro použití samostatné komponenty pro tuto konstrukci, a~ne znovupoužití neterminálu \texttt{STATEMENT\textunderscore LIST}, je explicitní zakázání zanořování definic funkcí.
 V~této konstrukci se tedy mohou vyskytovat libovolné příkazy a~jejich sekvence, nesmí se tam objevit definice funkce. 
 \begin{equation*}
@@ -2064,8 +2109,6 @@ V~této konstrukci se tedy mohou vyskytovat libovolné příkazy a~jejich sekven
 Všimněme si, že mezi neterminály \texttt{STATEMENT} a~\texttt{CODEBLOCK} teoreticky může nastat situace, kdy se tyto dva neterminály budou vzájemně derivovat donekonečna, přičemž oba budou čekat na jinou derivaci druhého a~nastane \emph{deadlock}.
 Tato situace je vyřešená implementačně\,--\,neterminál \texttt{STATEMENT} bude derivovat neterminál \texttt{CODEBLOCK} jen a~pouze tehdy, bude-li na vstupu terminál \texttt{\{}.
 
-\dotaz{samotne komponenty patri do prilohy nebo je mam nechat tady?}
-
 \subsection*{Indexace neterminálů a LL tabulka}
 Každému neterminálu z~množiny $N$ v~$\Gamma$ je přiřazen index, který odkazuje na různé komponenty $P_i \in \Gamma,\; i \in \{1, \ldots, 6\}$.
 Každý neterminál má pravidla pro expanzi pouze v~jedné komponentě, díky čemuž je možné deterministicky zvolit komponentu, které se bude předávat řízení syntaktické analýzy.
@@ -2075,7 +2118,7 @@ V~tomto případě se jedná o~zobrazení
 \begin{equation*}
     N \rightarrow \{i: P_i \in \Gamma\}
 \end{equation*}
-které je definováno v~tabulce \ref{tab_zobrazeni_indexy}.
+které je definováno v~Tabulce \ref{tab_zobrazeni_indexy}.
 \begin{table}[ht]
     \centering
     \begin{tabularx}{0.5\textwidth}{Xc}
@@ -2109,9 +2152,6 @@ Samotná tabulka je sestavena pomocí množin \emph{Empty($\alpha$)}, \emph{Firs
 První tři množiny se vytvoří standardním způsobem pro každý terminál a~neterminál.
 Množina \emph{Predict($A \rightarrow \alpha$)} se sestavuje pro každé pravidlo, stejně jako u~LL gramatik, reprezentované uspořádanou dvojicí.
 Prediktivní množiny a~LL tabulka pro GS $\Gamma$ popisující jazyk Koubp jsou v~příloze. \todo{ref priloha, vlozeni prilohy}
-
-\dotaz{Tato část mi přijde hodně hodně stručná -- rád bych k ní napsal něco víc, ale nevím, co by sem ještě mohlo patřit.
-Budu ještě potřebovat pomoci s~formalizací této části.}
 
 \section{Návrh řešení syntaktického analyzátoru}\label{kap_reseni_sa}
 Implementace syntaktické analýzy je silně objektově orientována, veškeré datové struktury jsou reprezentovány třídami.
@@ -2177,7 +2217,7 @@ Prediktivní analyzátor pracuje primárně s~metodami \texttt{parseToken} a~\te
 Obě dvě metody korespondují s~algoritmem \ref{alg_prediktivni_sa}.
 Metoda \texttt{parseToken} se podívá, jestli aktuální terminál na zásobníku je stejný jako terminál na vstupu.
 Pokud ano, pak vyjme symbol ze zásobníku i~ze vstupní pásky a~pokračuje dál v~analýze vstupního řetězce.
-Speciální případ je pomocný symbol \texttt{tEnd}, který má stejný význam jako \texttt{\$} v~algoritmu \ref{alg_prediktivni_sa}.
+Speciální případ je pomocný symbol \texttt{tEnd}, který má stejný význam jako \texttt{\$} v~Algoritmu \ref{alg_prediktivni_sa}.
 Když je i~na vrcholu zásobníku i~na vstupní pásce tento terminál, pak analýza končí úspěchem.
 
 Metoda \texttt{parseNonterminal}, pokud nepředává řízení precedenční analýze, se podívá do LL tabulky, která se indexuje pomocí vstupního terminálu a~neterminálu na vrcholu zásobníku.
@@ -2192,7 +2232,7 @@ Při prázdném políčku tabulky analýza končí chybou, pro neprázdnou uspo�
 \subsection*{Implementace precedenční analýzy}
 Precedenční analyzátor pracuje se dvěma zásobníky.
 První zásobník je společný pro oba analyzátory, přičemž precedenční pouze vyjme neterminál \texttt{nExpression}, pokud analýza skončí úspěšně.
-Druhý je exkluzivně pro precedenční analyzátor a~simuluje nejpravější derivaci, respektive analýzu zdola nahoru dle algoritmu \ref{alg_precedencni_sa}.
+Druhý je exkluzivně pro precedenční analyzátor a~simuluje nejpravější derivaci, respektive analýzu zdola nahoru dle Algoritmu \ref{alg_precedencni_sa}.
 Označení \emph{zásobník} bude v~této kapitole označovat pouze precedenční zásobník, nebude-li explicitně řečeno \emph{společný zásobník}.
 
 Analýza výrazů začíná vložením pomocného terminálu \texttt{tExpEnd} na společný zásobník, což je implementováno pomocí procházení společného zásobníku a~přeskakování operátorů a~operandů.
@@ -2228,7 +2268,7 @@ Do toho při každé redukci vloží posledně vytvořený výraz, který se ná
 
 Pro precedenční analýzu je tvorba AST jednodušší.
 Výrazy jsou totiž maximálně binární, navíc simulace tvorby derivačního stromu zdola nahoru je velmi přirozená.
-Má-li proběhnout redukce proměnných, konstant nebo \emph{konstant funkcí} (vzpomeňme si na pomocný terminál \texttt{tFuncConst} z~kapitoly \ref{kap_reseni_sa}), vytvoří se nový \texttt{Operand} a~vloží se na zásobník kontextů výrazů pro AST.
+Má-li proběhnout redukce proměnných, konstant nebo \emph{konstant funkcí} (vzpomeňme si na pomocný terminál \texttt{tFuncConst} z~Kapitoly \ref{kap_reseni_sa}), vytvoří se nový \texttt{Operand} a~vloží se na zásobník kontextů výrazů pro AST.
 Při redukci unárních či binárních výrazů, kde se již pracuje s~neterminály, se pokaždé vyjme výraz ze~zásobníku kontextů pro výrazy (dva pro binární výrazy) a~vytvoří se nový výraz, do kterého jsou všechny vyjmuté výrazy vloženy jako operandy.
 Operátor se pak přečte z~pravidla použitého pro redukci.
 

@@ -94,6 +94,7 @@
 \usepackage{listings}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{textcomp}
+\usepackage{tabu}
 
 \floatname{algorithm}{Algoritmus}
 
@@ -143,6 +144,8 @@
 \theoremstyle{definition}
 \newtheorem{example}{Příklad}
 \numberwithin{example}{section}
+
+\counterwithin{figure}{section}
 
 \binoppenalty 9999
 \relpenalty 9999
