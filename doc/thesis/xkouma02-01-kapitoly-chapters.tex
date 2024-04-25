@@ -484,7 +484,7 @@ Obě dvě reprezentace budou ukázány v~následujícím příkladu z~\cite{medu
     \begin{align*}
         Q &= \{1, 2, 3, 4, 5\}, \\
         \Sigma &= \{a, b\}, \\
-        R &= \{  1  \rightarrow 2, 1  \rightarrow 4,  2a \rightarrow 2, 2a \rightarrow 3, 3b \rightarrow 3, 4b \rightarrow 4, 4b \rightarrow 4 \} \\
+        R &= \{  1  \rightarrow 2, 1  \rightarrow 4,  2a \rightarrow 2, 2a \rightarrow 3, 3b \rightarrow 3, 4b \rightarrow 4, 4b \rightarrow 5\} \\
         s &= 1, \\
         F &= \{3, 5\}.
     \end{align*}
@@ -588,7 +588,7 @@ Automat $M$ přijímá řetězec právě tehdy, když sekvencí přechodů dosá
 \begin{example}\label{example_za}
     Nechť $M = (\{s, f\}, \{a, b\}, \{S, a\}, R, s, S, \{f\})$ je ZA a 
     \begin{equation*}
-        R = \{Ssa \rightarrow as,\; asas \rightarrow aas,\; asb \rightarrow f,\; afb \rightarrow f\}.
+        R = \{Ssa \rightarrow as,\; asa \rightarrow aas,\; asb \rightarrow f,\; afb \rightarrow f\}.
     \end{equation*}
     Počáteční konfigurace nechť je $(S, s, aaabbb)$.
     Přechody $M$ budou vypadat následovně:
@@ -600,7 +600,15 @@ Automat $M$ přijímá řetězec právě tehdy, když sekvencí přechodů dosá
                        &\vdash (a, f, b) \quad      && [afb \rightarrow f] \\
                        &\vdash (\varepsilon, f, \varepsilon) \quad && [afb \rightarrow f]
     \end{alignat*}
-    \todo{Jestli bude cas - pridat prechodovy diagram}
+    Je dobré dodat, že zásobníkové automaty, podobně jako konečné automaty, mohou být také reprezentovány graficky.
+    Díky komplikaci zásobníkem se používá především přechodový diagram.
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.4\textwidth]{obrazky-figures/za_diagram_prechodu.eps}
+        \caption{Diagram přechodů ZA $M$ z~příkladu \ref{example_za}.}
+        \label{fig_diagram_prechodu_za}
+    \end{figure}
+    Z~výčtu pravidel, přechodového diagramu a~kroků přijímání řetězce je vidět, že přijímaný jazyk ZA $M$ je $a^nb^n,\; n \geq 1$.
 \end{example}
 
 \subsection*{Rozšířený zásobníkový automat}\label{kap_rozsireny_ZA}
@@ -675,9 +683,20 @@ Jediná změna od klasických ZA již byla zmíněna na začátku této kapitoly
     právě tehdy, když $M$ udělá vyjmutí symbolu $\beta\, \prescript{}{p}{\vdash}\; \chi$ nebo expanzi symbolu $\beta\, \prescript{}{e}{\vdash}\; \chi$.
     Tranzitivní uzávěry $\prescript{}{p}{\vdash^+}, \prescript{}{e}{\vdash^+}$, reflexivně-tranzitivní uzávěry $\prescript{}{p}{\vdash^*}, \prescript{}{e}{\vdash^*}$ a~$n$-té mocniny $\prescript{}{p}{\vdash^n}, \prescript{}{e}{\vdash^n}$ jsou definovány standardně.
 \end{definition}
-\begin{figure}[ht]\label{fig_prechod_rza}
-    \caption{Ilustrace p-přechodu a e-přechodu RZA}
-    \todo{pridat obrazek}
+Ilustrace obou typů přechodů jsou zobrazeny na obrázcích \ref{fig_p-prechod_rza} a~\ref{fig_e-prechod_rza}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{obrazky-figures/rza_pop.eps}
+    \caption{Ilustrace p-přechodu RZA (inspirace čerpána v~\cite{meduna_rgd_pda}).}
+    \label{fig_p-prechod_rza}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{obrazky-figures/rza_expanze.eps}
+    \caption{Ilustrace e-přechodu RZA (inspirace čerpána v~\cite{meduna_rgd_pda}).}
+    \label{fig_e-prechod_rza}
 \end{figure}
 
 Pokud existuje $n \in \mathbb{N}$ takové, že pro všechna pravidla $M$ platí, že jejich hloubka je maximálně rovna $n$, pak říkáme, že $M$ je hloubky maximálně $n$, zapsáno $\prescript{}{n}{M}$.
