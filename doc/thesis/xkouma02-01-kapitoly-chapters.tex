@@ -1307,9 +1307,15 @@ Množina $First(\alpha)$ je výčet všech terminálů, kterými může začína
     \begin{equation*}
         First(\alpha) = \{a: a \in T,\; \alpha \Rightarrow^* a\beta,\; \beta \in (N \cup T)^*\}.
     \end{equation*} 
-    \todo{ilustrujici obrazek (podobny jako v ifj prezentaci 7)}
 \end{definition}
-\begin{algorithm}[h]
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.4\textwidth]{obrazky-figures/first.eps}
+    \caption{Ilustrace významu množiny \emph{First($\alpha$)} dle \cite{meduna2017sa-shora-dolu}.}
+    \label{fig_mnozina_first}
+\end{figure}
+
+\begin{algorithm}[ht]
     \caption{Množina $First(\alpha)$}
     \label{alg_mnozina_first}
     \begin{algorithmic}[1]
