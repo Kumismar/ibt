@@ -1214,21 +1214,22 @@ Než se začneme zabývat těmito dvěma druhy syntaktické analýzy, pojďme si
         \alpha_0\; \prescript{}{\scriptstyle rm}{\Rightarrow}\; \alpha_n\; [r_1r_2\ldots r_n].
     \end{equation*}
 \end{definition}
-\todo{jestli zbude cas, napsat vlastnimi slovy, inspirace v \cite{medunaElementsOfCompDesign}, strana 83}
+
+
 
 
 \section{Syntaktická analýza shora dolů}\label{kap_sa_shora_dolu}
 Uvažujme BKG $G$.
 Syntaktický analyzátor pracující shora dolů pro $G$ je reprezentován zásobníkovým automatem $M$, který je ekvivalentní k~$G$.
 $M$ na svém zásobníku simuluje nejlevější derivace a~tvorbu derivačního stromu pro řetězce generované gramatikou $G$.
-Aby tento model fungoval, musí $M$ obsahovat korespondující pravidla pro pravidla $G$ a~navíc mít pomocné pravidlo pro mazání terminálních symbolů z~vrchou zásobníku, pokud přečte stejný symbol ze vstupní pásky.
+Aby tento model fungoval, musí $M$ obsahovat korespondující pravidla pro pravidla $G$ a~navíc mít pomocná pravidla pro mazání terminálních symbolů z~vrcholu zásobníku, pokud přečte stejný symbol ze vstupní pásky.
+Princip těchto pomocných pravidel je vlastně stejný, jako \emph{p-přechody} RZA, znázorněn je na Obrázku \ref{fig_p-prechod_rza}.
 
 Pokud na vrcholu zásobníku je neterminál $A$, pak $M$ simuluje nejlevější derivační krok, který by udělala gramatika $G$ pomocí pravidla $r: A \rightarrow \alpha \in R$.
 Provede expanzi pravidla nahrazením neterminálu $A$ z~vrcholu zásobníku za $reversal(\alpha)$. 
 
-Existují dvě metody, a~to \emph{prediktivní syntaktická analýza} a~\emph{rekurzívní sestup}.
+Existují dvě metody syntaktické analýzy shora dolů, a~to \emph{prediktivní syntaktická analýza} a~\emph{rekurzívní sestup}.
 Více k~těmto metodám je psáno na konci této kapitoly.
-\todo{doladit uvod tady po smazani bkg na za algoritmu}
 
 \subsection*{Prediktivní množiny}
 Předpokládejme BKG $G$ a~příslušný ZA $M$.
@@ -1251,9 +1252,9 @@ Jinými slovy, pokud aktuální řetězec je možné vymazat pomocí $\varepsilo
         1) & \quad Empty(\alpha) = \{\varepsilon\} \text{ pokud } \alpha \Rightarrow^* \varepsilon, \\
         2) & \quad Empty(\alpha) = \emptyset \text{ jinak}.
     \end{align*}
-    \todo{nejaky obrazecek by to chtelo}
 \end{definition}
-\begin{algorithm}
+
+\begin{algorithm}[ht]
     \caption{Množina $Empty(\alpha)$}
     \label{alg_mnozina_empty}
     \begin{algorithmic}[1]
@@ -1263,6 +1264,16 @@ Jinými slovy, pokud aktuální řetězec je možné vymazat pomocí $\varepsilo
         \ForAll{$a \in T$}
             \State $Empty(a) \gets \emptyset$
         \EndFor
+        \algstore{Empty}
+    \end{algorithmic}
+\end{algorithm}
+\addtocounter{algorithm}{-1}
+Na začátku výpočtu množin $Empty(\alpha)$ je pro každý terminál nastavena tato množina na prázdnou, protože z~terminálů nikdy prázdný řetězec nedostaneme.
+
+\begin{algorithm}[ht]
+    \begin{algorithmic}[1]
+        \caption{Množina $Empty(\alpha)$ (pokračování)}
+        \algrestore{Empty}
         \ForAll{$A \in N$} 
             \If{$A \rightarrow \varepsilon \in P$}
                 \State $Empty(A) \gets \{\varepsilon\}$
@@ -1277,14 +1288,23 @@ Jinými slovy, pokud aktuální řetězec je možné vymazat pomocí $\varepsilo
         \EndWhile
     \end{algorithmic}
 \end{algorithm}
-Na začátku výpočtu množin $Empty(\alpha)$ je pro každý terminál nastavena tato množina na prázdnou, protože z~terminálů nikdy prázdný řetězec nedostaneme.
+
 Dále, pokud je možné přímo derivovat prázdný řetězec z~aktuálního neterminálu $A$, pak je zřejmé, že neterminál $A$ bude vymazán, pokud pravidlo pro prázdný řetězec bude použito.
 Nakonec se algoritmus znovu dívá na všechny řetězce $\alpha$ a~jejich množiny $Empty(\alpha)$, které dále mohou být měněny.
 Jsou to takové neterminály $A$, které mají množinu $Empty(A)$ neprázdnou, v~druhém případě se množina $Empty(A)$ již nezmění.
+Grafická ilustrace slovního popisu popisu a~Algoritmu \ref{alg_mnozina_empty} je zobrazena na Obrázku \ref{fig_mnozina_empty}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.35\textwidth]{obrazky-figures/empty.eps}
+    \caption{Ilustrace tvorby množiny \emph{Empty($\alpha$)} dle \cite{meduna2017sa-shora-dolu}.}
+    \label{fig_mnozina_empty}
+\end{figure}
 
 V~následujícím algoritmu si představíme množinu $Empty(X_1X_2\ldots X_n)$.
-Z~výše psaného textu vyplývá, je třeba tuto možnost řešit výhradně pro neterminály, proto budeme v~algoritmu označovat symboly, pro které se konstruuje množina $Empty(X)$ jako neterminály podle Konvence \ref{conv_oznaceni_symbolu}.
-Tento algoritmus pomůže při definici dalších množin, nicméně není k~tomu nutný. 
+Tento algoritmus pomůže při definici dalších prediktivních množin.
+Pracuje především s~neterminály, pro terminály nemá smysl jej představovat.
+Pokud sekvence $X_1X_2\ldots X_n$ může být v~konečném počtu kroků přepsána na $\varepsilon$, pak $Empty(X_1X_2\ldots X_n) = \{\varepsilon\}$.
 \begin{algorithm}[h]
     \caption{Množina $Empty(X_1X_2\ldots X_n)$}
     \label{alg_mnozina_empty_vicn}
@@ -1308,12 +1328,8 @@ Množina $First(\alpha)$ je výčet všech terminálů, kterými může začína
         First(\alpha) = \{a: a \in T,\; \alpha \Rightarrow^* a\beta,\; \beta \in (N \cup T)^*\}.
     \end{equation*} 
 \end{definition}
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.4\textwidth]{obrazky-figures/first.eps}
-    \caption{Ilustrace významu množiny \emph{First($\alpha$)} dle \cite{meduna2017sa-shora-dolu}.}
-    \label{fig_mnozina_first}
-\end{figure}
+Ilustrace tvorby množiny \emph{First($\alpha$)} je na Obrázku \ref{fig_mnozina_first}.
+Tento obrázek pracuje s~jednodušší variantou, a~to řetězcem terminálů, ve kterém se $X_i,\; i \in \{1, \ldots, n-1\}$ nepřepíše na~$\varepsilon$.
 
 \begin{algorithm}[ht]
     \caption{Množina $First(\alpha)$}
@@ -1345,7 +1361,9 @@ Ve druhém kroku algoritmu nastavíme $First(A)$ na prázdnou množinu, bude se 
     \item terminály z~množiny $First(\alpha_1)$, ať už se jedná o~terminál či neterminál,
     \item terminály z~množiny $First(\alpha_k)$, pokud řetězec neterminálů $X_1X_2\ldots X_{k-1}$ může být vymazán, respektive $Empty(X_1X_2\ldots X_{k-1}) = \varepsilon$.  
 \end{enumerate}
-Pro snadnější definici množiny $Follow(A)$ si uveďme algoritmus množiny $First(\alpha)$ pro neprázdné řetězce.
+
+Pro snadnější definici množiny $Follow(A)$ existuje algoritmus tvorby množiny \emph{First($\alpha$)} pro libovolné neprázdné řetězce.
+Je zapsán v~Algoritmu \ref{alg_mnozina_first_vicn}.
 \begin{algorithm}
     \caption{Množina $First(\alpha_1\alpha_2\ldots\alpha_n)$}
     \label{alg_mnozina_first_vicn}
@@ -1354,6 +1372,16 @@ Pro snadnější definici množiny $Follow(A)$ si uveďme algoritmus množiny $F
         \Output{množiny $First(\alpha_1\alpha_2\ldots\alpha_n)$, kde ($\alpha_1\alpha_2\ldots \alpha_n) \in (N \cup T)^+$}
         \NewLine
         \State $First(\alpha_1\alpha_2\ldots \alpha_n) \gets First(\alpha_1)$
+        \algstore{First_vicn}
+    \end{algorithmic}
+\end{algorithm}
+\addtocounter{algorithm}{-1}
+V~prvním kroku se nastaví $First(\alpha_1\alpha_2\ldots \alpha_n)$ na $First(\alpha_1)$, protože řetězec derivovatelný z~$\alpha_1\alpha_2,\ldots,\alpha_n$ bude prvním symbolem z~řetězce derivovatelného z~$\alpha_1$.
+
+\begin{algorithm}[h]
+    \caption{Množina $First(\alpha_1\alpha_2\ldots\alpha_n)$ (pokračování)}
+    \begin{algorithmic}[1]
+        \algrestore{First_vicn}
         \While{je možné měnit nějakou množinu $First(\alpha_1\alpha_2\ldots\alpha_{k-1}\alpha_k\ldots\alpha_n)$}
             \If{$Empty(\alpha_1\alpha_2\ldots\alpha_{k-1}) = \varepsilon$}
                 \State $First(\alpha_1\alpha_2\ldots\alpha_n) \gets First(\alpha_1\alpha_2\ldots\alpha_n) \cup First(\alpha_k)$
@@ -1361,8 +1389,16 @@ Pro snadnější definici množiny $Follow(A)$ si uveďme algoritmus množiny $F
         \EndWhile
     \end{algorithmic}
 \end{algorithm}
+Při dalších krocích se do původní množiny sekvence $\alpha_1\alpha_2\ldots\alpha_n$ přidávají symboly z~$First(\alpha_k)$, pokud řetězec $\alpha_1\alpha_2\ldots\alpha_{k-1} \Rightarrow^* \varepsilon,\; k \in \{1,\ldots,n\}$.
 
-Další velmi podstatnou množinou, kterou syntaktický analyzátor potřebuje, je množina $Follow(A)$.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.35\textwidth]{obrazky-figures/first.eps}
+    \caption{Ilustrace významu množiny \emph{First($\alpha$)} dle \cite{meduna2017sa-shora-dolu}.}
+    \label{fig_mnozina_first}
+\end{figure}
+
+Další velmi důležitou množinou, kterou syntaktický analyzátor potřebuje, je množina $Follow(A)$.
 Ta určuje, jaké symboly se mohou vyskytovat za neterminálem $A$.
 Nutnost této znalosti vyplývá z~možnosti přepsat neterminály, pro které platí $Empty(A) = \{\varepsilon\}$, na prázdný řetězec.
 Kdyby analyzátor tuto množinu neměl k~dispozici, neměl by v těchto případech jak zjistit, zda je aktuální symbol na vstupu korektní nebo ne.
@@ -1450,19 +1486,27 @@ Myšlenka faktorizace je vytknutí stejné sekvence terminálů, která je spole
 Z~nového neterminálu dále vznikají nová pravidla.
 Například, mějme tato pravidla:
 \begin{align*}
-    A &\rightarrow a\alpha_1\\
-    A &\rightarrow a\alpha_2\\
+    A &\rightarrow \alpha a_1\\
+    A &\rightarrow \alpha a_2\\
       &\vdotswithin{\rightarrow} \\
-    A &\rightarrow a\alpha_n
+    A &\rightarrow \alpha a_3
 \end{align*}
-Terminál $a$ se může vytknout a~místo $\alpha_1, \alpha_2, \ldots, \alpha_n$ se vloží nový neterminál $B$, ze kterého se dále generují $\alpha_1, \alpha_2, \ldots, \alpha_n$.
+Sekvence symbolů se může vytknout a~místo $a_1, a_2, \ldots, a_n$ se vloží nový neterminál $B$, ze kterého se dále generují $a_1, a_2, \ldots, a_n$.
+Graficky je tato úprava ukázána na Obrázku \ref{fig_faktorizace}.
 \begin{align*}
-    A &\rightarrow aB\\
-    B &\rightarrow \alpha_1\\
-    B &\rightarrow \alpha_2\\
-      &\vdotswithin{\rightarrow}\\
-    B &\rightarrow \alpha_n
+    A &\rightarrow \alpha A'\\
+    A' &\rightarrow a_1\\
+    A' &\rightarrow a_2\\
+       &\vdotswithin{\rightarrow}\\
+    A' &\rightarrow a_3
 \end{align*}
+
+\begin{figure}
+    \centering
+    \includegraphics{obrazky-figures/faktorizace.eps}
+    \caption{Grafické znázornění úpravy pravidel pomocí faktorizace dle \cite{meduna2017sa-shora-dolu}.}
+    \label{fig_faktorizace}
+\end{figure}
 
 Levá rekurze je případ, kdy stejný neterminál, jako je na levé straně pravidla, je zároveň nejlevějším symbolem řetězce na pravé straně pravidla, například:
 \begin{align*}
@@ -1475,7 +1519,15 @@ Tato pravidla se dají přepsat do tvaru:
     B &\rightarrow \alpha B\\
     B &\rightarrow \varepsilon
 \end{align*}
-\todo{opet by to chtelo nejaky obrazky}
+
+Graficky znázorněný význam odstranění levé rekurze je na Obrázku \ref{fig_leva_rekurze}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{obrazky-figures/leva_rekurze.eps}
+    \caption{Grafické zobrazení významu odstranění levé rekurze dle \cite{meduna2017sa-shora-dolu}.}
+    \label{fig_leva_rekurze}
+\end{figure}
 
 \subsection*{LL tabulka a její konstrukce}
 \emph{LL tabulka} je abstrakcí k~množinám $Predict(p)$ jednotlivých pravidel LL gramatiky $G = (N, T, P, S)$.

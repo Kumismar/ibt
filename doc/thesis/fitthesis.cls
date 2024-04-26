@@ -95,6 +95,7 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{textcomp}
 \usepackage{tabu}
+\usepackage{lipsum}
 
 \floatname{algorithm}{Algoritmus}
 
