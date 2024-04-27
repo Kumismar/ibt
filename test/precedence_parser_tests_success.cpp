@@ -31,7 +31,7 @@ protected:
         }
         inputTape.clear();
         delete this->parser;
-        AST::GetInstance()->Cleanup();
+        AST::Cleanup();
     }
 };
 

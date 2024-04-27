@@ -155,7 +155,6 @@ void Logger::PrintUsageError(const char* message)
 {
     std::string boldRed = "\033[1;31m";
     std::string underlined = "\033[4m";
-    std::string bold = "\033[1m";
 
     std::cerr << boldRed << "Usage error: " << this->reset << message
               << "Usage: build/src/Parser " << underlined << "[-d]" << this->reset << " "

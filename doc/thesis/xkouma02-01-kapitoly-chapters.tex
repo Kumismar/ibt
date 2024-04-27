@@ -1215,9 +1215,6 @@ Než se začneme zabývat těmito dvěma druhy syntaktické analýzy, pojďme si
     \end{equation*}
 \end{definition}
 
-
-
-
 \section{Syntaktická analýza shora dolů}\label{kap_sa_shora_dolu}
 Uvažujme BKG $G$.
 Syntaktický analyzátor pracující shora dolů pro $G$ je reprezentován zásobníkovým automatem $M$, který je ekvivalentní k~$G$.
@@ -1435,7 +1432,7 @@ K~definici množin $Follow(A)$ se používá pomocný symbol \$, který reprezen
 Z~uvedené Definice \ref{def_mnozina_follow} a~Algoritmu \ref{alg_mnozina_follow} vyplývá, že v~množině $Follow(A)$ se mohou vyskytovat:
 \begin{enumerate}
     \item terminální symboly vyskytující se za neterminálem $A$ v~libovolném zderivovaném řetězci,
-    \item symbol ukončující vstupní řetězec, pokud za neterminálem $A$ již nebudou žádné další neterminály. 
+    \item symbol ukončující vstupní řetězec \$, pokud za neterminálem $A$ již nebudou žádné další neterminály. 
 \end{enumerate}
 
 Množina $Follow(A)$ byla poslední množina, která byla třeba definovat, abychom mohli definovat množinu $Predict(A \rightarrow \alpha)$, ze které se poté může zkonstruovat \emph{LL tabulka}.
@@ -1711,68 +1708,12 @@ Pokud je v~tabulce na políčku $>$, pak proběhne operace $REDUCE$, při které
 \end{enumerate}
 Když tabulka vrátí symbol $\times$, nastává chyba. 
 Při symbolu \checkmark analýza končí úspěšně.
-
-Na následujícím příkladu z~\cite{medunaElementsOfCompDesign} je ukázán princip fungování Algoritmu \ref{alg_precedencni_sa}.
-\begin{example}
-    Nechť $G = (N, T, P, S)$ je BKG a~nechť množina $R$ obsahuje tato pravidla:
-    \begin{align*}
-        1: C &\rightarrow C \vee C \\
-        2: C &\rightarrow C \wedge C \\
-        3: C &\rightarrow (C) \\
-        4: C &\rightarrow i
-    \end{align*}
-    A~předpokládejme precedenční tabulku s~těmito hodnotami:
-    \begin{table}[h]
-        \centering
-        \begin{tabularx}{0.34\textwidth}{X|XXXXXX}
-            \hline 
-            & $\wedge$ & $\vee$ & $i$ & $($ & $)$ & \$ \\
-            \hline
-            $\wedge$ & $>$ & $>$ & $<$ & $<$ & $>$ & $>$ \\
-            $\vee$ & $<$ & $>$ & $<$ & $<$ & $>$ & $>$ \\
-            $i$ & $>$ & $>$ & $\times$ & $\times$ & $>$ & $>$ \\
-            $($ & $<$ & $<$ & $<$ & $<$ & $=$ & $>$ \\
-            $)$ & $>$ & $>$ & $\times$ & $\times$ & $>$ & $>$ \\
-            \$ & $<$ & $<$ & $<$ & $<$ & $\times$ & \checkmark \\
-            \hline 
-        \end{tabularx}
-        \caption{Precedenční tabulka pro pravidla $G$.}
-    \end{table}
-
-    Nechť vstupní řetězec je $i \wedge (i \vee i)\$$.
-    \todo{obrazek dvou moznych derivacnich stromu}
-    Analýza toho řetězce je znázorněna v~Tabulce \ref{tab_priklad_precedencni}.
-    \begin{table}[h]
-        \centering
-        \begin{tabularx}{0.85\textwidth}{p{0.24\textwidth}rrp{0.27\textwidth}}
-            \toprule
-            \textbf{Zásobník} & \textbf{Precedence} & \textbf{Vstup} & \textbf{Akce} \\
-            \midrule
-            $\underline{\$}$                   & $[\$, i] \rightarrow \; <$                  & $\underline{i} \wedge (i \vee i)\$$ & $SHIFT(<)$ \\
-            $\$<\underline{i}$                 & $[i, \wedge] \rightarrow \; >$              & $\underline{\wedge} (i \vee i)\$$   & $REDUCE(C \rightarrow i)$ \\
-            $\underline{\$}C$                  & $[\$ ,\wedge] \rightarrow \; <$             & $\underline{\wedge} (i \vee i)\$$  & $SHIFT(<)$ \\
-            $\$<C\underline{\wedge}$           & $[\wedge, (] \rightarrow \; <$              & $\underline{(}i \vee i)\$$          & $SHIFT(<)$ \\
-            $\$<C\wedge<\underline{(} $        & $[(, i] \rightarrow \; < $                  & $\underline{i} \vee i) \$ $         & $SHIFT(<) $ \\
-            $\$<C\wedge<(<\underline{i} $      & $[i, \vee] \rightarrow \; > $               & $\underline{\vee} i)\$ $            & $REDUCE(C \rightarrow i) $ \\
-            $\$<C\wedge<\underline{(}C $       & $[(, \vee] \rightarrow \; < $               & $\underline{\vee} i)\$ $            & $SHIFT(<)$ \\
-            $\$<C\wedge<(<C\underline{\vee}$   & $[\vee, i] \rightarrow \; <  $              & $\underline{i})\$ $                 & $SHIFT(<)$ \\
-            $\$<C\wedge<(<C\vee<\underline{i}$ & $[i, )] \rightarrow \; > $                  & $\underline{)}\$ $                  & $REDUCE(C \rightarrow i)$ \\
-            $\$<C\wedge<(<C\underline{\vee}C$  & $[\vee, )] \rightarrow \; > $               & $\underline{)}\$ $                  & $REDUCE(C \rightarrow C \vee C)$ \\
-            $\$<C\wedge<\underline{(}C$        & $[(, )] \rightarrow \; = $                  & $\underline{)}\$ $                  & $SHIFT(=)$ \\
-            $\$<C\wedge<(C\underline{)}$       & $[), \$] \rightarrow \; > $                 & $\underline{\$} $                   & $REDUCE(C \rightarrow (C))$ \\
-            $\$<C\underline{\wedge} C$         & $[\wedge, \$] \rightarrow \; > $            & $\underline{\$} $                   & $REDUCE(C \rightarrow C \wedge C)$ \\
-            $\underline{\$}C$                  & $[\$, \$] \rightarrow \; \text{\checkmark}$ & $\underline{\$} $                   & úspěch \\
-            \bottomrule
-        \end{tabularx}
-        \caption{Demonstrace Algoritmu \ref{alg_precedencni_sa}.}
-        \label{tab_priklad_precedencni}
-    \end{table}
-\end{example}    
-\todo{obrazek derivacniho stromu}
+V~Příkladu \ref{example_prec_sa} čerpaného z~\cite{medunaElementsOfCompDesign} a~zjednodušeného, je ukázán princip fungování Algoritmu~\ref{alg_precedencni_sa}.
+Je ukázán na konci této kapitoly, nejdříve je nutné popsat konstrukci precedenční tabulky.
 
 \subsection*{Konstrukce precedenční tabulky}
 Doposud nebylo zmíněno, co znamenají položky precedenční tabulky pro analýzu výrazů.
-Znaménka $<$, a~$>$ se interpretují jako priorita operátotů.
+Znaménka $<$ a~$>$ se interpretují jako priorita operátotů.
 Mějme dva operátory, například $\odot$ a~$\bigtriangleup$.
 Pokud $\odot < \bigtriangleup$, pak $\bigtriangleup$ má vyšší prioritu, a~v~algoritmu to znamená, že pravá strana pravidla obsahující operátor $\bigtriangleup$ bude redukována dříve než pravá strana obsahující operátor $\odot$ a~naopak.
 Pravidla pro tvorbu tabulky jsou pak následující \cite{medunaElementsOfCompDesign,meduna2017sa-zdola-nahoru}:
@@ -1795,10 +1736,68 @@ Pravidla pro tvorbu tabulky jsou pak následující \cite{medunaElementsOfCompDe
     Dále platí $\$ \text{ \checkmark } \$$.
     \item Zbytek tabulky je vyplněn symbolem $\times$.
 \end{enumerate}
+Všimněme si pomocného symbolu \$, který slouží jako ukončovač řetězce podobně jako u~syntaktické analýzy shora dolů, poprvé byl zmíněn v~Definici \ref{def_mnozina_follow}.
 
-Precedenční analýza nedokáže pracovat s~$\varepsilon$-pravidly a~pravidly se stejnou pravou stranou pro jiné neterminály.
-V~praxi se tedy většinou používá výhradně pro analýzu výrazů.
-Často se kombinuje s~analýzou shora dolů (ať už prediktivní analýzou či rekurzívním sestupem), kdy analýza shora dolů kontroluje vstupní řetězec mimo výrazy a~pro výrazy předává řízení analýze precedenční.
+\begin{example}\label{example_prec_sa}
+    Nechť $G = (N, T, P, S)$ je BKG a~nechť množina $R$ obsahuje tato pravidla:
+    \begin{align*}
+        1: C &\rightarrow C \vee C, \\
+        2: C &\rightarrow C \wedge C, \\
+        3: C &\rightarrow i.
+    \end{align*}
+    Také předpokládejme precedenční tabulku ukázanou v~Tabulce \ref{tab_prec_tabulka} a~nechť vstupní řetězec je $i \wedge i \vee i\$$.
+    \begin{table}[h]
+        \centering
+        \begin{tabularx}{0.25\textwidth}{X|XXXX}
+            \hline 
+            & $\wedge$ & $\vee$ & $i$ & \$ \\
+            \hline
+            $\wedge$ & $>$ & $>$ & $<$ & $>$ \\
+            $\vee$ & $<$ & $>$ & $<$ & $>$ \\
+            $i$ & $>$ & $>$ & $\times$  & $>$ \\
+            \$ & $<$ & $<$ & $<$ & \checkmark \\
+            \hline 
+        \end{tabularx}
+        \caption{Precedenční tabulka pro pravidla $G$.}
+        \label{tab_prec_tabulka}
+    \end{table}
+    Pokud bychom neznali precedenční tabulku, mohly by vzniknout dva derivační stromy, které jsou ukázány na Obrázku \ref{fig_dva_der_stromy}.
+    Průběh analýzy tohoto řetězce je znázorněn v~Tabulce \ref{tab_priklad_precedencni}.
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.5\textwidth]{obrazky-figures/dva_derivacni_stromy.eps}
+        \caption{Dva možné derivační stromy při neznalosti precedence operátorů pro vstupní řetězec $i \wedge i \vee i\$$.}
+        \label{fig_dva_der_stromy}
+    \end{figure}
+
+    \begin{table}[ht]
+        \centering
+        \begin{tabularx}{0.88\textwidth}{p{0.24\textwidth}rrp{0.27\textwidth}}
+            \toprule
+            \textbf{Zásobník} & \textbf{Precedence} & \textbf{Vstup} & \textbf{Akce} \\
+            \midrule
+            $\underline{\$}$                   & $[\$, i] \rightarrow \; <$                  & $\underline{i} \wedge i \vee i\$$ & $SHIFT(<)$ \\
+            $\$<\underline{i}$                 & $[i, \wedge] \rightarrow \; >$              & $\underline{\wedge} i \vee i\$$   & $REDUCE(C \rightarrow i)$ \\
+            $\underline{\$}C$                  & $[\$ ,\wedge] \rightarrow \; <$             & $\underline{\wedge} i \vee i\$$  & $SHIFT(<)$ \\
+            $\$<C\underline{\wedge}$           & $[\wedge, i] \rightarrow \; <$              & $\underline{i} \vee i\$$          & $SHIFT(<)$ \\
+            $\$<C\wedge<\underline{i} $        & $[i, \vee] \rightarrow \; > $               & $\underline{\vee}i\$ $            & $REDUCE(C \rightarrow i) $ \\
+            $\$<C\underline{\wedge}C$          & $[\wedge, \vee] \rightarrow \; >$           & $\underline{\vee}i$                &$REDUCE(C \rightarrow C \wedge C)$ \\
+            $\underline{\$}C$                  & $[\$, \vee] \rightarrow \; <  $             & $\underline{\vee}i\$ $                 & $SHIFT(<)$ \\
+            $\$<C\underline{\vee}$             & $[\vee, i] \rightarrow \; < $               & $\underline{i}\$ $                  & $SHIFT(<)$ \\
+            $\$<C\vee\underline{i}$            & $[i, \$] \rightarrow \; > $                 & $\underline{\$} $                  & $REDUCE(C \rightarrow i)$ \\
+            $\$<C\underline{\vee} C$           & $[\vee, \$] \rightarrow \; > $              & $\underline{\$} $                   & $REDUCE(C \rightarrow C \vee C)$ \\
+            $\underline{\$}C$                  & $[\$, \$] \rightarrow \text{\checkmark}$    & $\underline{\$} $                   & úspěch \\
+            \bottomrule
+        \end{tabularx}
+        \caption{Demonstrace precedenční analýzy popsané v~Algoritmu~\ref{alg_precedencni_sa}.}
+        \label{tab_priklad_precedencni}
+    \end{table}
+\end{example}  
+
+Precedenční analýza nedokáže pracovat s~$\varepsilon$-pravidly a~pravidly se stejnou pravou stranou pro jiné neterminály díky hledání pravých stran pravidel na zásobníku.
+V~praxi se tedy většinou používá výhradně pro analýzu výrazů, které jsou reprezentovány například neterminálem \texttt{EXPRESSION} a~žádný jiný neterminál se jimi nezabývá.
+Pro efektivní analýzu komplexnějších jazyků se často kombinuje precedenční analýza s~analýzou shora dolů.
+Analýza shora dolů se stará o~kontrolu vstupního řetězce mimo výrazy (analyzuje podmíněné příkazy, cykly a~podobně) a~pro výrazy předává řízení analýze precedenční.
 
 \chapter{Implementace syntaktického analyzátoru pro jazyk Koubp}\label{kap_implementace}
 
@@ -2075,7 +2074,7 @@ Jsou to funkce
 \end{itemize}
 Funkce \texttt{strlen()} vrací délku řetězce, který je dán jako parametr a~\texttt{substring()} vrátí podřetězec řetězce \texttt{s} od indexu \texttt{i} po index \texttt{j}.
 
-\section{Gramatický systém definujíci syntax jazyka Koubp}
+\section{Gramatický systém definujíci syntax jazyka Koubp}\label{kap_cdgs_koubp}
 Gramatický systém popisující syntax jazyka Koubp je CD gramatický systém.
 Formálně zapsáno, je to devítice $\Gamma = (N, T, S, P_1, P_2, P_3, P_4, P_6, P_6)$, kde:
 \begin{align*}
@@ -2287,7 +2286,14 @@ Mohou nastat tři možnosti:
         \item Jakýkoliv další výskyt \texttt{tFuncName} znamená, že jsme narazili na vnořené volání funkce a~předá se řízení precedenční analýze pro nový výraz.
     \end{itemize}  
 \end{enumerate}
-\todo{pridat dva obrazky pro vnorene volani funkce, kde se bude volat precedencni analyza.}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{obrazky-figures/volani_funkce.eps}
+    \caption{Ukázka volání funkce a~předávání řízení jednotlivých analyzátorů s~rozsahem analýzy, kdy na vstupní pásce jsou již vloženy pomocné terminály pro analýzu volání funkce.
+    Plná čára zobrazuje rozsah prediktivní analýzy, přerušovaná čára rozsah precedenční. }
+    \label{hovno}
+\end{figure}
 
 \subsection*{Implementace prediktivní analýzy}
 Prediktivní analyzátor pracuje primárně s~metodami \texttt{parseToken} a~\texttt{parseNonterminal}.
@@ -2310,7 +2316,7 @@ Při prázdném políčku tabulky analýza končí chybou, pro neprázdnou uspo�
 Precedenční analyzátor pracuje se dvěma zásobníky.
 První zásobník je společný pro oba analyzátory, přičemž precedenční pouze vyjme neterminál \texttt{nExpression}, pokud analýza skončí úspěšně.
 Druhý je exkluzivně pro precedenční analyzátor a~simuluje nejpravější derivaci, respektive analýzu zdola nahoru dle Algoritmu \ref{alg_precedencni_sa}.
-Označení \emph{zásobník} bude v~této kapitole označovat pouze precedenční zásobník, nebude-li explicitně řečeno \emph{společný zásobník}.
+Označení \emph{zásobník} bude v~této podkapitole označovat pouze precedenční zásobník, nebude-li explicitně řečeno \emph{společný zásobník}.
 
 Analýza výrazů začíná vložením pomocného terminálu \texttt{tExpEnd} na společný zásobník, což je implementováno pomocí procházení společného zásobníku a~přeskakování operátorů a~operandů.
 Terminál \texttt{tExpEnd} se vloží za první operand, který za sebou již nemá operátor.
@@ -2387,8 +2393,89 @@ Volitelný výstup je graf abstraktního syntaktického stromu ve formátu \emph
 Pro syntaktické chyby je implementován jednoduchý systém, který uschovává posledních sedm tokenů.
 Při syntaktické chybě je všechny vypíše na výstup (nebere ohledy na bílé znaky, vypíše je v~řadě za sebe), dále za ně vypíše následující tři tokeny na vstupní pásce (zbývají-li nějaké) a~aktuální vstupní token, u~kterého nastala chyba, označí červeným symbolem \textcolor{red}{$\wedge$} na novém řádku.
 
-\section{Build systém a spuštění programu}
+\section{Jazyk, sestavovací systém a spuštění programu}
+Překladač je implementován v~jazyce C++ ve standardu C++20, je naprogramován pro UNIXové operační systémy jako konzolová aplikace. \todo{pak dopsat kde vsude je to vyzkouseny a s jakyma prekladacama}
+Pro plnou funkcionalitu je nutné mít na systému nainstalován překladač C++ a~nástroje \texttt{Make}, \texttt{CMake}, \texttt{Flex} a~\texttt{dot}.
 
-\chapter{Testování}
+Sestavovací systém je CMake, což je nástroj pro generování souborů, které poté zařizují překlad programu.
+Protože práce v~příkazové řádce s~tímto nástrojem není nejrychlejší, vytvořil jsem pro jednodušší ovládání v~kořenovém adresáři \texttt{Makefile}.
+Tam lze nalézt několik cílů, které se dají spustit:
+\begin{itemize}
+    \item \texttt{all}\,--\,přeloží program a~vytvoří spustitelný soubor \texttt{Parser} pomocí zavolání systému CMake.
+    Před tímto krokem nástroj Flex vygeneruje nový lexikální analyzátor ze souboru \texttt{lex.l} do \texttt{lex.yy.cc}, který je také zahrnut do překladu. 
+    Dále přeloží zdrojové soubory pro jednotkové testy a~vytvoří z~nich také spustitelný soubor \texttt{ParserTest}.
+    \item \texttt{run}\,--\,podívá se, zda je k~dispozici spustitelný soubor \texttt{Parser}. Pokud ano, spustí jej s~parametry, které se přímo v~\texttt{Makefile} dají upravit.
+    \item \texttt{runtest}\,--\,spustí přeložený \texttt{ParserTest} pro jednotkové testy a~následně testy pro analýzu zdrojových souborů. Pokud není, hlásí chybu.
+    Následně spustí skript \texttt{test.sh} pro testy analýzy zdrojových souborů.
+    \item \texttt{tree}\,--\,pokud je přítomný soubor \emph{.dot} vygenerovaný programem \texttt{Parser}, vytvoří z~něj \emph{.pdf} soubor s~abstraktním syntaktickým stromem.
+    \item \texttt{valgrind}\,--\,spustí program \texttt{valgrind} na přeloženém programu \texttt{Parser}. Vygeneruje v~kořenovém adresáři soubor \emph{valgrind.log} s~informacemi o~správě paměti programu.
+    \item \texttt{thesis}\,--\,přeloží \LaTeX ové zdrojové soubory této práce a~vygeneruje ji ve formátu \emph{.pdf}. 
+    \item \texttt{clean}\,--\,vyčistí všechny nepotřebné soubory po sestavování programu či této práce.
+\end{itemize}
+
+Program \texttt{Parser} podporuje tři přepínače, a~to \texttt{-d}, \texttt{-t} a~\texttt{-f}.
+Přepínač \texttt{-d} byl určen pro vývoj aplikace, do konzole se vypisovaly různé užitečné informace, které se hodily k~opravě problémů.
+Přepínač \texttt{-t} povolí výpis stromu do \emph{.dot} souboru, pokud je přítomen.
+Nakonec přepínač \texttt{-f} je jediný povinný a~má povinný parametr \texttt{FILENAME}, který specifikuje název souboru, ze kterého se vezme zdrojový kód pro analýzu.
+Není podporován vstup ze standardního vstupu.
+Výchozí \texttt{Makefile} je nastaven na generování stromu a~vstup ze souboru \texttt{input.koubp}.
+Přepínače se samozřejmě mohou libovolně měnit.
+
+\section{Testování}
+Program \texttt{Parser} je testován jednotkovými testy a~testy chování.
+
+\subsection*{Jednotkové testy}
+
+Jednotkové testy testují samostatné příkazy a~výrazy.
+Z~příkazů testují pouze velmi jednoduché a~základní konstrukce, protože pokročilejší testy jsou zdrojové kódy, které jsou napsány v~jiných souborech.
+Výrazy jsou testovány od jednoduchých jednoproměnných až po velmi složité graduálně.
+V~obou případech jsou testovány syntakticky jak korektní, tak nekorektní případy.
+
+Pro jednotkové testování byl použit testovací framework \emph{googletest}\footnote{Návod například na \href{http://google.github.io/googletest/}{http://google.github.io/googletest/}.}, který je asi nejznámějším testovacím nástrojem pro C++.
+Uživatel nemusí řešit stahování tohoto frameworku, je zahrnut v~procesu překladu díky možnosti stáhnout a~nainstalovat pomocné nástroje přes \texttt{CMake}.
+Tudíž stačí přeložit program příkazem \texttt{make} a~následně spustit testy příkazem \texttt{make runtest}.
+
+Jednotkové testy se nachází v~souborech:
+\begin{itemize}
+    \item \texttt{precedence\textunderscore parser\textunderscore tests\textunderscore success.cpp},
+    \item \texttt{precedence\textunderscore parser\textunderscore tests\textunderscore fail.cpp},
+    \item \texttt{predictive\textunderscore parser\textunderscore tests\textunderscore success.cpp},
+    \item \texttt{predictive\textunderscore parser\textunderscore tests\textunderscore fail.cpp},
+\end{itemize}
+které se jsou ve složce \texttt{test/} v~kořenovém adresáři projektu.
+Tyto soubory dohromady dávají 100 jednotkových testů pro oba analyzátory.
+
+\subsection*{Testy chování}
+Tyto testy zkoumají, jestli program \texttt{Parser} vrací očekávanou návratovou hodnotu po spuštění analýzy různých zdrojových kódů.
+Zdrojové kódy, na kterých je program testován, se nachází ve složce \texttt{test/koubp\textunderscore files/}.
+Tato složka je rozdělena na další tři podsložky, kde jsou různé typy zdrojových kódů, a~to jednoduché algoritmy v~podsložce \texttt{simple\textunderscore algorithms/}, dále kódy se syntaktickou chybou v~\texttt{syntax\textunderscore error\textunderscore files/} a~kódy s~krajními případy v~\texttt{extreme\textunderscore cases/}.
+
+Pro každý soubor v~těchto podsložkách je korespondující \emph{.rc} (\emph{return code}) soubor.
+Skript \texttt{test.sh}, který program spouští, porovnává návratový kód programu spuštěného s~testovacím souborem s~očekávaným návratovým kódem, který je napsaný v~příslušném \emph{.rc} souboru.
 
 \chapter{Závěr}
+Cílem této práce bylo zkoumat různé gramatické systémy a~navrhnout nový, pro který se následně implementuje syntaktický analyzátor.
+Byl navrhnut CD gramatický systém, který má stejnou generativní sílu jako LL gramatika a~popisuje jazyk, který byl nazván Koubp.
+Pro tento gramatický systém byl vytvořen syntaktický analyzátor, který pracuje podobně jako běžný analyzátor LL gramatik.
+Úprava pro CD gramatický systém spočívala v~představení upravené LL tabulky, která místo čísla pravidel obsahuje uspořádané dvojice, které obsahují číslo komponenty systému a~číslo pravidla v~komponentě.
+Díky této úpravě bylo třeba indexovat neterminály čísly komponent.
+
+Cíl byl splněn a~výsledkem je funkční syntaktický analyzátor, který přijímá zdrojové kódy v~jazyce Koubp a~dává výstup v~podobě pravda/nepravda a~generuje posloupnost pravidel, která byla pro analýzu použita.
+Bylo implementováno rozšíření zadání v~podobě tvorby abstraktního syntaktického stromu.
+
+Práce byla zahájena úvodem do formálních jazyků, kde byly vysvětleny všechny potřebné teoretické koncepty pro pochopení této práce i~s~doprovodnými příklady.
+Jedná se o~Kapitolu \ref{kap_teorie}.
+Poté proběhlo seznámení s~teorií gramatických systémů v~Kapitole \ref{kap_GS}.
+Kapitola \ref{kap_teorie_sa} pojednává o~základních konceptech syntaktické analýzy, jako je prediktivní a~precedenční syntaktická analýza a~datové struktury s~nimi spojeny.
+Dále byl navržen CD gramatický systém popisující jazyk Koubp, který je popsán v~Kapitole \ref{kap_cdgs_koubp}, a~pro něj implementovaný syntaktický analyzátor v~jazyce C++.
+Tato implementace byla otestována několika desítkami jednotkových testů a~testy chování, které zkoušely rozsáhlejší zdrojové kódy, čímž je splněn bod 5 zadání této práce.
+
+Na práci je možné pokračovat různými způsoby.
+CD gramatické systémy mohou mít větší generativní sílu než bezkontextové gramatiky, pokud jsou jejich komponenty bezkontextové a~vhodně použité.
+Případně je možnost změnit typ systému a~použít týmové CD gramatické systémy, PC gramatické systémy a~jiné.
+Je taky možné přidat další komponenty do již existujícího systému, případně upravit pravidla existujících komponent, a~tím rozšířit jazyk Koubp o~různé nové vlastnosti či rysy.
+Nebo například určit jiný derivační režim tohoto gramatického systému a~příslušně upravit syntaktickou analýzu.
+Také se může doimplementovat tabulka symbolů, sémantická analýza, generování mezikódu a~jeho interpret, případně různé jiné části překladače, kterými se tato práce nezabývala.
+
+Na tuto práci bych rád navázal prací diplomovou.
+V~té bych hlouběji zkoumal použitelné gramatické systémy a~jejich metody syntaktické analýzy.

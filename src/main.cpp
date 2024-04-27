@@ -46,7 +46,7 @@ void Cleanup()
     }
 }
 
-void Lex(std::string& filename)
+    void Lex(std::string& filename)
 {
     namespace fs = std::filesystem;
 
