@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-16 13:28
+ * @ Modified time: 2024-04-28 21:47
  */
 
 #include "analysis_success.hpp"
@@ -19,7 +19,7 @@
 #include "lex.yy.h"
 #include "lexical_error.hpp"
 #include "logger.hpp"
-#include "predictive.hpp"
+#include "predictive_parser.hpp"
 #include "syntax_error.hpp"
 #include "token.hpp"
 #include <cstdio>
@@ -46,7 +46,7 @@ void Cleanup()
     }
 }
 
-    void Lex(std::string& filename)
+void Lex(std::string& filename)
 {
     namespace fs = std::filesystem;
 
@@ -103,13 +103,13 @@ int main(int argc, char** argv)
 {
     AnalysisStack stackos;
     int retCode = 0;
-    PredictiveParser* predParser = new PredictiveParser(stackos);
+    PredictiveParser predParser(stackos);
 
     try {
         std::string filename = ProcessArguments(argc, argv);
         Lex(filename);
-        predParser->InitSyntaxAnalysis();
-        predParser->Parse(false);
+        predParser.InitSyntaxAnalysis();
+        predParser.Parse(false);
     }
     catch (SyntaxAnalysisSuccess const& e) {
         AST::GetInstance()->PrintTree();
@@ -122,11 +122,11 @@ int main(int argc, char** argv)
     }
     catch (LexicalError const& e) {
         Logger::GetInstance()->PrintLexicalError(e.what());
-        return 2;
+        retCode = 2;
     }
     catch (CLArgumentsError const& e) {
         Logger::GetInstance()->PrintUsageError(e.what());
-        return 3;
+        retCode = 3;
     }
     catch (InternalError const& e) {
         std::cerr << "Internal error: " << e.what() << std::endl;
@@ -145,8 +145,7 @@ int main(int argc, char** argv)
         retCode = -1;
     }
 
-    predParser->ClearStack();
-    delete predParser;
+    predParser.ClearStack();
     Cleanup();
     return retCode;
 }

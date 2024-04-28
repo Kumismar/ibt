@@ -2,10 +2,10 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-18 08:57
+ * @ Modified time: 2024-04-28 22:55
  */
 
-#include "predictive.hpp"
+#include "predictive_parser.hpp"
 #include "analysis_success.hpp"
 #include "ast.hpp"
 #include "ast_node.hpp"
@@ -17,8 +17,9 @@
 #include "ll_table.hpp"
 #include "logger.hpp"
 #include "nonterminal.hpp"
-#include "precedence.hpp"
+#include "precedence_parser.hpp"
 #include "stack_item.hpp"
+#include "symbol_handler.hpp"
 #include "syntax_error.hpp"
 #include "table_index.hpp"
 #include "token.hpp"
@@ -43,17 +44,7 @@ void PredictiveParser::Parse(bool parseFunction)
 
     while (true) {
         this->stackTop = this->pushdown.front();
-        if (inputTape.empty()) {
-            throw SyntaxError("Missing token(s).\n");
-        }
-        this->inputToken = inputTape.front();
-
-        if (*this->inputToken == tFuncEnd) {
-            delete this->inputToken;
-            inputTape.pop_front();
-            inputTape.push_front(new Token(tFuncConst));
-            throw FunctionParsed();
-        }
+        this->handleSpecialCases();
 
         switch (this->stackTop->GetSymbolType()) {
             case Nonterminal_t: {
@@ -70,18 +61,6 @@ void PredictiveParser::Parse(bool parseFunction)
     }
 }
 
-bool PredictiveParser::returnedEpsilon(Rule& expandedRule)
-{
-    Symbol* front = expandedRule.front();
-    if (expandedRule.size() == 1 && front->GetSymbolType() == Token_t) {
-        Token* t = dynamic_cast<Token*>(front);
-        if (t == nullptr) {
-            throw InternalError("Dynamic cast to Token* failed, real type: " + std::string(typeid(front).name()) + "\n");
-        }
-        return *t == tEps;
-    }
-    return false;
-}
 
 void PredictiveParser::InitSyntaxAnalysis()
 {
@@ -121,20 +100,7 @@ void PredictiveParser::parseNonterminal()
         bool newFuncNameFound = *this->inputToken == tFuncName && !this->firstFuncName;
 
         if (notParsingFunctionCall || newFuncNameFound) {
-            PrecedenceParser* precedenceParser = new PrecedenceParser(this->pushdown);
-            try {
-                precedenceParser->Parse();
-                // After precedence parsing, link the expression to the current node.
-                ast->GetCurrentContext()->LinkNode(ast->GetExpressionContext(), *stackNT);
-                ast->PopExpressionContext();
-                delete stackNT;
-                delete precedenceParser;
-            }
-            catch (ExceptionBase const& e) {
-                delete stackNT;
-                delete precedenceParser;
-                throw;
-            }
+            this->parseExpression(stackNT);
             return;
         }
     }
@@ -142,36 +108,8 @@ void PredictiveParser::parseNonterminal()
     LLTableIndex tableItem = (*this->table)[*stackNT][*this->inputToken];
     // Rule exists -> pop old nonterminal, expand it and push new string to the stack
     if (tableItem != LLTableIndex({ 0, 0 })) {
-        Logger* logger = Logger::GetInstance();
-        logger->AddLeftSide(this->stackTop);
-
-        // If parsing function call, do not pop Expression from stack, Precedence parser is in charge of it.
-        if (!(this->parsingFunction && *stackNT == nExpression)) {
-            delete this->stackTop;
-            this->pushdown.pop_front();
-        }
-
-        Grammar* grammar = GrammarFactory::CreateGrammar(tableItem.grammarNumber);
-        Rule expandedRule = grammar->Expand(tableItem.ruleNumber);
-        logger->AddRightSide(expandedRule);
-
-        // If right side is not epsilon, it will be pushed and ASTNode will be created.
-        if (!this->returnedEpsilon(expandedRule)) {
-            ASTNode* node = ASTNodeFactory::CreateASTNode(*stackNT, *this->inputToken);
-            // If nonterminal doesnt have corresponding AST node, nullptr is returned.
-            if (node != nullptr) {
-                ast->GetCurrentContext()->LinkNode(node, *stackNT);
-                ast->PushContext(node);
-            }
-
-            // Push the expanded rule to the stack.
-            for (Symbol* item: expandedRule) {
-                this->pushdown.push_front(item->Clone());
-            }
-        }
-
-        logger->PrintRule();
-        delete grammar;
+        SymbolHandler handler(this->pushdown);
+        handler.Expand(this->parsingFunction, tableItem);
     }
     else {
         throw SyntaxError("Invalid token.\n");
@@ -193,17 +131,11 @@ void PredictiveParser::parseToken()
 
     // Case T:
     if (*stackToken == *this->inputToken) {
-        if (*stackToken == tFuncName) {
+        if (*this->inputToken == tFuncName) {
             this->firstFuncName = false;
         }
-        // AST nodes gradually add information to themselves based on tokens parsed.
-        AST::GetInstance()->GetCurrentContext()->ProcessToken(*this->inputToken);
-        Logger::GetInstance()->AddTokenToRecents(*this->inputToken);
-
-        delete this->inputToken;
-        delete this->pushdown.front();
-        this->pushdown.pop_front();
-        inputTape.pop_front();
+        SymbolHandler handler(this->pushdown);
+        handler.Pop();
     }
     else {
         throw SyntaxError("Unexpected token, expected: " + stackToken->GetTypeString() + "\n");
@@ -228,5 +160,38 @@ void PredictiveParser::parseEnd()
     }
     else {
         throw SyntaxError("Invalid token.\n");
+    }
+}
+
+void PredictiveParser::parseExpression(Nonterminal* stackNT)
+{
+    AST* ast = AST::GetInstance();
+    PrecedenceParser precedenceParser(this->pushdown);
+    try {
+        precedenceParser.Parse();
+        // After precedence parsing, link the expression to the current node.
+        ast->GetCurrentContext()->LinkNode(ast->GetExpressionContext(), *stackNT);
+        ast->PopExpressionContext();
+        delete stackNT;
+    }
+    catch (ExceptionBase const& e) {
+        delete stackNT;
+        throw;
+    }
+    return;
+}
+
+void PredictiveParser::handleSpecialCases()
+{
+    if (inputTape.empty()) {
+        throw SyntaxError("Missing token(s).\n");
+    }
+    this->inputToken = inputTape.front();
+
+    if (*this->inputToken == tFuncEnd) {
+        delete this->inputToken;
+        inputTape.pop_front();
+        inputTape.push_front(new Token(tFuncConst));
+        throw FunctionParsed();
     }
 }

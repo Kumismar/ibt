@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-08 11:10
+ * @ Modified time: 2024-04-28 19:03
  */
 
 #pragma once
@@ -102,6 +102,7 @@ public:
     TokenType GetTokenType() const;
     void SetTokenType(TokenType type);
     void SetData(DataType dtype);
+    void SetData(DataType dtype, Value value);
     std::string GetTypeString() const override;
     std::string GetDataString() const;
     unsigned int GetLineNo() const;

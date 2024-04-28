@@ -2,14 +2,13 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-15 19:43
+ * @ Modified time: 2024-04-28 21:54
  */
 
 #pragma once
 
-#include "logger.hpp"
 #include "precedence_table.hpp"
-#include "predictive.hpp"
+#include "predictive_parser.hpp"
 #include "token.hpp"
 
 
@@ -21,24 +20,12 @@ private:
     Token* inputToken = nullptr;
     PrecedenceTable* table = nullptr;
 
-    Token* findFirstTokenInStack();
-    void findFirstRule(Rule& emptyRule);
     bool parseIsSuccessful();
-    void insertExpressionEnd();
-    void pushPrecedence();
     void clearStack();
-    void insertFunctionEnd();
-    void reduce();
     void cleanUpAfterParsing();
-    void push();
     void initPrecedenceParsing();
-    void skipFunctionCall(InputTape::iterator& token);
-    void skipOperand(InputTape::iterator& token);
-    void skipOperandInParentheses(InputTape::iterator& token);
-    bool isOperator(Token& token);
     void parseFunction();
-    void makeASTNode(Rule& rule);
-    bool isUnaryExpression(Rule& rule);
+    void handleSpecialCases();
 
 public:
     ~PrecedenceParser();

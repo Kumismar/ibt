@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-08 11:20
+ * @ Modified time: 2024-04-28 19:04
  */
 
 #include "token.hpp"
@@ -108,6 +108,13 @@ void Token::SetData(DataType dtype)
         case None:
             break;
     }
+}
+
+void Token::SetData(DataType dtype, Value value)
+{
+    this->lineno = 0;
+    this->data.type = dtype;
+    this->data.value = value;
 }
 
 std::string Token::GetTypeString() const

@@ -11,7 +11,6 @@
 #include "token.hpp"
 
 typedef std::list<Symbol*> AnalysisStack;
-typedef std::list<Symbol*> Rule;
 
 class PrecedenceParser;
 
@@ -25,11 +24,12 @@ private:
     bool parsingFunction = false;
     bool firstFuncName = false;
 
-    bool returnedEpsilon(Rule& expandedRule);
     void parseNonterminal();
     void parseToken();
     void parseEnd();
-    void parseExpression();
+    void parseExpression(Nonterminal* nt);
+    void handleSpecialCases();
+    void parseTerminal(Token& t);
 
 public:
     ~PredictiveParser();
