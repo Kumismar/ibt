@@ -9,7 +9,7 @@
 
 #include "ast.hpp"
 #include "nonterminal.hpp"
-#include "precedence.hpp"
+#include "precedence_parser.hpp"
 #include "syntax_error.hpp"
 #include "token.hpp"
 

@@ -8,7 +8,7 @@
 #include <gtest/gtest.h>
 
 #include "ast.hpp"
-#include "predictive.hpp"
+#include "predictive_parser.hpp"
 #include "syntax_error.hpp"
 #include "token.hpp"
 

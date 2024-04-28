@@ -15,11 +15,10 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(googletest)
 
-add_executable(ParserTest
-    precedence_parser_tests_success.cpp
-    precedence_parser_tests_fail.cpp
-    predictive_parser_tests_success.cpp
-    predictive_parser_tests_fail.cpp
+add_executable(ParserTest)
+
+add_subdirectory(
+    ${CMAKE_CURRENT_SOURCE_DIR}/unit_tests
 )
 
 target_include_directories(ParserTest PRIVATE 
