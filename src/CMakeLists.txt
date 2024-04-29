@@ -50,11 +50,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${project_dir}/build)
 target_compile_options(ParserLibrary PRIVATE
     -Wall
     -Wextra
+    -pedantic
     -std=c++20
 )
 
 target_compile_options(Parser PRIVATE
     -Wall
     -Wextra
+    -pedantic
     -std=c++20
 )

@@ -2194,7 +2194,7 @@ V~tomto případě se jedná o~zobrazení
 \begin{equation*}
     N \rightarrow \{i: P_i \in \Gamma\}
 \end{equation*}
-které je definováno v~Tabulce \ref{tab_zobrazeni_indexy}.
+které je pro jednotlivé neterminály definováno v~Tabulce \ref{tab_zobrazeni_indexy}.
 \begin{table}[ht]
     \centering
     \begin{tabularx}{0.5\textwidth}{Xc}
@@ -2231,9 +2231,13 @@ Prediktivní množiny a~LL tabulka pro GS $\Gamma$ popisující jazyk Koubp jsou
 
 \section{Návrh řešení syntaktického analyzátoru}\label{kap_reseni_sa}
 Implementace syntaktické analýzy je silně objektově orientována, veškeré datové struktury jsou reprezentovány třídami.
-Třídy reprezentující neterminály a~terminály mají společnou nadtřídu, díky čemuž je možné je ukládat do jednoho zásobníku za použití polymorfismu.
+Třídy reprezentující neterminály a~terminály mají společnou nadtřídu, díky čemuž je možné je ukládat do jednoho zásobníku.
 Jednu nadtřídu mají také gramatiky, jednotlivé instance jsou poté konstruovány pomocí tovární metody.
 Analyzátory jsou také reprezentovány třídami, společnou nadtřídu ale nemají.
+
+Kromě níže zmíněných principů figurují v~programu pomocné třídy pro prediktivní i~precedenční syntaktickou analýzu.
+Nejsou podrobně popsány, protože se zaměřím především na principy, které jsou těmito třídami implementovány.
+Podrobnosti lze najít přímo v~kódu, případně v~příloze \todo{ref priloha} je ukázán třídní diagram, který obsahuje nejdůležitější třídy, se kterými se v~implementaci syntaktické analýzy pracuje.
 
 \subsection*{Práce s~komponentami}
 Všechny komponenty jsou využívány pouze prediktivním analyzátorem, mimo čtvrtou.
@@ -2297,7 +2301,7 @@ Mohou nastat tři možnosti:
 
 \subsection*{Implementace prediktivní analýzy}
 Prediktivní analyzátor pracuje primárně s~metodami \texttt{parseToken} a~\texttt{parseNonterminal}.
-Obě dvě metody korespondují s~algoritmem \ref{alg_prediktivni_sa}.
+Obě dvě metody korespondují s~Algoritmem \ref{alg_prediktivni_sa}.
 Metoda \texttt{parseToken} se podívá, jestli aktuální terminál na zásobníku je stejný jako terminál na vstupu.
 Pokud ano, pak vyjme symbol ze zásobníku i~ze vstupní pásky a~pokračuje dál v~analýze vstupního řetězce.
 Speciální případ je pomocný symbol \texttt{tEnd}, který má stejný význam jako \texttt{\$} v~Algoritmu \ref{alg_prediktivni_sa}.
@@ -2385,73 +2389,78 @@ je změněno na
 čímž je jasně řečeno, že jakmile se úspěšně přiřadí levá i~pravá strana do uzlu AST pro deklaraci, má se vyjmout ze zásobníku a~další příkaz nebo výraz bude spojen s~rodičovským uzlem.
 
 \section{Výstupy programu}
-Implementovaný program má za úkol zjistit, zda vstupní řetězec je řetězcem generovaným jazykem Koubp.
+Implementovaný program analyzuje, zda vstupní řetězec je řetězcem jazyka Koubp.
 K~jednoduchému výstupu \texttt{true} nebo \texttt{false} je ale vhodné přidat další výstupy, které jednak potvrdí správnost implementace a~jednak dělají rozšiřitelnost programu jednodušší.
-V~případě kladného výstupu a~úspěšné analýzy řetězce program produkuje textový soubor, ve kterém je na každém řádku napsáno pravidlo, které za běhu programu použilo.
+V~případě úspěšné analýzy řetězce program produkuje textový soubor, který obsahuje pravidla každého kroku, ať už expanze či vyjmutí symbolů, obou analyzátorů.
 Volitelný výstup je graf abstraktního syntaktického stromu ve formátu \emph{.dot}, ze kterého program \emph{dot}\footnote{Manuál k~programu k~dispozici na \href{https://linux.die.net/man/1/dot}{https://linux.die.net/man/1/dot}.} může vygenerovat vizualizaci orientovaného grafu ve formátu \emph{pdf}.
 
-Pro syntaktické chyby je implementován jednoduchý systém, který uschovává posledních sedm tokenů.
-Při syntaktické chybě je všechny vypíše na výstup (nebere ohledy na bílé znaky, vypíše je v~řadě za sebe), dále za ně vypíše následující tři tokeny na vstupní pásce (zbývají-li nějaké) a~aktuální vstupní token, u~kterého nastala chyba, označí červeným symbolem \textcolor{red}{$\wedge$} na novém řádku.
+Pro výpis syntaktických chyb je implementován systém, který uschovává sedm posledních terminálů.
+Nastane-li k~chybě, všechny tyto uložené terminály jsou vypsány na standardní chybový výstup, za ně vypíše následující tři terminály na vstupní pásce (nebere ohledy na bílé znaky, vypíše je v~řadě za sebe), pokud nějaké zbývají.
+Aktuální vstupní token, u~kterého nastala chyba, označí červeným symbolem \textcolor{red}{$\wedge$} na novém řádku.
 
 \section{Jazyk, sestavovací systém a spuštění programu}
-Překladač je implementován v~jazyce C++ ve standardu C++20, je naprogramován pro UNIXové operační systémy jako konzolová aplikace. \todo{pak dopsat kde vsude je to vyzkouseny a s jakyma prekladacama}
-Pro plnou funkcionalitu je nutné mít na systému nainstalován překladač C++ a~nástroje \texttt{Make}, \texttt{CMake}, \texttt{Flex} a~\texttt{dot}.
+Překladač je implementován v~jazyce C++ a~pro překlad byl použit standard C++20 společně s~přepínači \texttt{-Wall} a~\texttt{-Wextra} a~\texttt{-pedantic}.
+\todo{doplnit co jsem suppressnul}
+Je naprogramován pro UNIXové operační systémy jako konzolová aplikace. \todo{pak dopsat kde vsude je to vyzkouseny a s jakyma prekladacama}
+Pro přeložení a~plnou funkcionalitu programu se všemi výstupy je nutné mít na systému nainstalován překladač C++ a~nástroje \texttt{Make}, \texttt{CMake} a~\texttt{dot}.
+Dále byl při implementaci použit nástroj \texttt{valgrind} pro analýzu správy paměti a~nástroj \texttt{Flex} pro generování lexikálního analyzátoru.
 
 Sestavovací systém je CMake, což je nástroj pro generování souborů, které poté zařizují překlad programu.
+Byly vyzkoušeny varianty s~překladovými systémy \texttt{Ninja} a~\texttt{Make}.
 Protože práce v~příkazové řádce s~tímto nástrojem není nejrychlejší, vytvořil jsem pro jednodušší ovládání v~kořenovém adresáři \texttt{Makefile}.
 Tam lze nalézt několik cílů, které se dají spustit:
 \begin{itemize}
-    \item \texttt{all}\,--\,přeloží program a~vytvoří spustitelný soubor \texttt{Parser} pomocí zavolání systému CMake.
-    Před tímto krokem nástroj Flex vygeneruje nový lexikální analyzátor ze souboru \texttt{lex.l} do \texttt{lex.yy.cc}, který je také zahrnut do překladu. 
-    Dále přeloží zdrojové soubory pro jednotkové testy a~vytvoří z~nich také spustitelný soubor \texttt{ParserTest}.
+    \item \texttt{all}\,--\,přeloží program a~vytvoří spustitelný soubor \texttt{Parser} pomocí invokace systému CMake.
+    Dále přeloží zdrojové soubory pro jednotkové testy a~vytvoří z~nich spustitelný soubor \texttt{ParserTest}.
     \item \texttt{run}\,--\,podívá se, zda je k~dispozici spustitelný soubor \texttt{Parser}. Pokud ano, spustí jej s~parametry, které se přímo v~\texttt{Makefile} dají upravit.
-    \item \texttt{runtest}\,--\,spustí přeložený \texttt{ParserTest} pro jednotkové testy a~následně testy pro analýzu zdrojových souborů. Pokud není, hlásí chybu.
-    Následně spustí skript \texttt{test.sh} pro testy analýzy zdrojových souborů.
-    \item \texttt{tree}\,--\,pokud je přítomný soubor \emph{.dot} vygenerovaný programem \texttt{Parser}, vytvoří z~něj \emph{.pdf} soubor s~abstraktním syntaktickým stromem.
+    Jinak hlásí chybu.
+    \item \texttt{runtest}\,--\,spustí program \texttt{ParserTest} pro jednotkové testy a~následně skript \texttt{test.sh} popisující testy chování.
+    Pokud spustitelný soubor \texttt{ParserTest} neexistuje, hlásí chybu.
+    \item \texttt{tree}\,--\,je-li soubor \emph{.dot} vygenerovaný programem \texttt{Parser} v~kořenovém adresáři projektu, vytvoří z~něj soubor \emph{.pdf} s~abstraktním syntaktickým stromem.
     \item \texttt{valgrind}\,--\,spustí program \texttt{valgrind} na přeloženém programu \texttt{Parser}. Vygeneruje v~kořenovém adresáři soubor \emph{valgrind.log} s~informacemi o~správě paměti programu.
+    \item \texttt{valgrind\textunderscore test}\,--\,spustí program \texttt{valgrind} na programu \texttt{ParserTest}.
     \item \texttt{thesis}\,--\,přeloží \LaTeX ové zdrojové soubory této práce a~vygeneruje ji ve formátu \emph{.pdf}. 
-    \item \texttt{clean}\,--\,vyčistí všechny nepotřebné soubory po sestavování programu či této práce.
+    Pro tuto akci je nutné mít lokálně stáhnuté balíčky pro práci se systémem \LaTeX.
+    \item \texttt{clean}\,--\,vyčistí všechny nepotřebné soubory po sestavování programu či této práce ve formátu \emph{.pdf}.
 \end{itemize}
 
 Program \texttt{Parser} podporuje tři přepínače, a~to \texttt{-d}, \texttt{-t} a~\texttt{-f}.
-Přepínač \texttt{-d} byl určen pro vývoj aplikace, do konzole se vypisovaly různé užitečné informace, které se hodily k~opravě problémů.
-Přepínač \texttt{-t} povolí výpis stromu do \emph{.dot} souboru, pokud je přítomen.
-Nakonec přepínač \texttt{-f} je jediný povinný a~má povinný parametr \texttt{FILENAME}, který specifikuje název souboru, ze kterého se vezme zdrojový kód pro analýzu.
-Není podporován vstup ze standardního vstupu.
-Výchozí \texttt{Makefile} je nastaven na generování stromu a~vstup ze souboru \texttt{input.koubp}.
-Přepínače se samozřejmě mohou libovolně měnit.
+Přepínač \texttt{-d} byl určen pro vývoj aplikace, zajišťoval výpis různých informací o~stavu programu na standardní výstup, nicméně ve finálním programu je stále podporován.
+Přepínač \texttt{-t} povolí vygenerování struktury abstraktního syntaktického stromu do \emph{.dot} souboru.
+Přepínač \texttt{-f} je jediný povinný a~má povinný parametr \texttt{FILENAME}, který specifikuje název souboru se zdrojovým kódem, který je programem analyzován.
+Není podporován vstup zdrojového kódu ze standardního vstupu.
+Výchozí \texttt{Makefile} je nastaven na generování stromu a~vstup ze souboru \texttt{input.koubp}, implicitně je tedy program spouštěn tímto způsobem:
+\begin{center}
+    \texttt{./build/src/Parser -f input.koubp -t}
+\end{center}
+Přepínače pro spuštění programu se dají v~\texttt{Makefile} libovolně měnit.
+
 
 \section{Testování}
 Program \texttt{Parser} je testován jednotkovými testy a~testy chování.
+Pro jednotkové testování byl použit testovací framework \emph{googletest}\footnote{Návod například na \href{http://google.github.io/googletest/}{http://google.github.io/googletest/}.}, který je asi nejznámějším testovacím nástrojem pro C++.
+Uživatel nemusí řešit stahování tohoto frameworku, jeho instalace je zahrnuta v~sestavování programu, což \texttt{CMake} umožňuje.
+Stačí tedy přeložit program příkazem \texttt{make} a~následně spustit testy příkazem \texttt{make runtest} v~kořenovém adresáři projektu.
+
+Stejným příkazem se zároveň spouští testy chování, respektive skript \texttt{test.sh}.
+Skript \texttt{test.sh} spouští program \texttt{Parser} a~na vstup přivádí zdrojové soubory v~jazyce Koubp.
+Poté se kontroluje návratový kód programu a~porovnává se s~očekávaným návratovým kódem, který je definován v příslušném souboru se stejným názvem, avšak s~příponou \emph{.koubp.rc} (\emph{return code}) místo \emph{.koubp}.
 
 \subsection*{Jednotkové testy}
+Jednotkové testy existují pro třídy důležité pro syntaktickou analýzu a~generování abstraktního syntaktického stromu.
+Nejprve testují metody pomocných tříd analyzátorů, například korektní provedení redukcí, expanzí, hledání terminálů a~pravidel a~podobně.
+Pro abstraktní syntaktický strom je testována korektní instanciace různých druhů uzlů a~jejich vzájemné propojování.
 
-Jednotkové testy testují samostatné příkazy a~výrazy.
-Z~příkazů testují pouze velmi jednoduché a~základní konstrukce, protože pokročilejší testy jsou zdrojové kódy, které jsou napsány v~jiných souborech.
-Výrazy jsou testovány od jednoduchých jednoproměnných až po velmi složité graduálně.
+Dále jsou testovány samotné analyzátory s~příkazy a~výrazy na jejich vstupu.
+Z~příkazů testují pouze velmi jednoduché a~základní konstrukce jako sekvence terminálů, pokročilejší testy jsou zdrojové kódy v~jazyce Koubp, které jsou součástí testů chování.
+Výrazy jsou testovány od jednoduchých jednoproměnných až po velmi složité graduálně, také pouze jako sekvence terminálů.
 V~obou případech jsou testovány syntakticky jak korektní, tak nekorektní případy.
-
-Pro jednotkové testování byl použit testovací framework \emph{googletest}\footnote{Návod například na \href{http://google.github.io/googletest/}{http://google.github.io/googletest/}.}, který je asi nejznámějším testovacím nástrojem pro C++.
-Uživatel nemusí řešit stahování tohoto frameworku, je zahrnut v~procesu překladu díky možnosti stáhnout a~nainstalovat pomocné nástroje přes \texttt{CMake}.
-Tudíž stačí přeložit program příkazem \texttt{make} a~následně spustit testy příkazem \texttt{make runtest}.
-
-Jednotkové testy se nachází v~souborech:
-\begin{itemize}
-    \item \texttt{precedence\textunderscore parser\textunderscore tests\textunderscore success.cpp},
-    \item \texttt{precedence\textunderscore parser\textunderscore tests\textunderscore fail.cpp},
-    \item \texttt{predictive\textunderscore parser\textunderscore tests\textunderscore success.cpp},
-    \item \texttt{predictive\textunderscore parser\textunderscore tests\textunderscore fail.cpp},
-\end{itemize}
-které se jsou ve složce \texttt{test/} v~kořenovém adresáři projektu.
-Tyto soubory dohromady dávají 100 jednotkových testů pro oba analyzátory.
 
 \subsection*{Testy chování}
 Tyto testy zkoumají, jestli program \texttt{Parser} vrací očekávanou návratovou hodnotu po spuštění analýzy různých zdrojových kódů.
 Zdrojové kódy, na kterých je program testován, se nachází ve složce \texttt{test/koubp\textunderscore files/}.
-Tato složka je rozdělena na další tři podsložky, kde jsou různé typy zdrojových kódů, a~to jednoduché algoritmy v~podsložce \texttt{simple\textunderscore algorithms/}, dále kódy se syntaktickou chybou v~\texttt{syntax\textunderscore error\textunderscore files/} a~kódy s~krajními případy v~\texttt{extreme\textunderscore cases/}.
-
-Pro každý soubor v~těchto podsložkách je korespondující \emph{.rc} (\emph{return code}) soubor.
-Skript \texttt{test.sh}, který program spouští, porovnává návratový kód programu spuštěného s~testovacím souborem s~očekávaným návratovým kódem, který je napsaný v~příslušném \emph{.rc} souboru.
+Tato složka je rozdělena na další tři podsložky: jednoduché algoritmy v podsložce \texttt{simple\textunderscore algorithms/}, kódy se syntaktickými chybami v~\texttt{syntax\textunderscore error\textunderscore files/} a~syntakticky korektní, ale trochu obskurní až ezoterické kódy v~\texttt{extreme\textunderscore cases/}.
+Všechny složky obsahují zdrojové kódy s~různými návratovými hodnotami.
 
 \chapter{Závěr}
 Cílem této práce bylo zkoumat různé gramatické systémy a~navrhnout nový, pro který se následně implementuje syntaktický analyzátor.
