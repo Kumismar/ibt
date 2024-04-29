@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-29 12:00
+ * @ Modified time: 2024-04-29 14:19
  */
 
 #include "predictive_parser.hpp"
@@ -173,10 +173,10 @@ void PredictiveParser::parseExpression(Nonterminal* stackNT)
         precedenceParser.Parse();
         // After precedence parsing, link the expression to the current node.
         ASTNode* context = ast->GetCurrentContext();
-        if (context != nullptr) {
+        if (context != nullptr) { // nullptr only in case of unit tests
             context->LinkNode(ast->GetExpressionContext(), *stackNT);
+            ast->PopExpressionContext();
         }
-        ast->PopExpressionContext();
     }
     catch (ExceptionBase const& e) {
         delete stackNT;

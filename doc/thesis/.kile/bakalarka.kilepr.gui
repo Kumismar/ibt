@@ -1,0 +1,16 @@
+[General]
+kile_livePreviewEnabled=true
+kile_livePreviewStatusUserSpecified=false
+kile_livePreviewTool=LivePreview-PDFLaTeX
+lastDocument=bakalarka.tex
+
+[item:bakalarka.kilepr]
+open=false
+order=-1
+
+[item:bakalarka.tex]
+open=true
+order=0
+
+[view-settings,view=0,item:bakalarka.tex]
+Dynamic Word Wrap=false
