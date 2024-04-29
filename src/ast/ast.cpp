@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-16 13:29
+ * @ Modified time: 2024-04-29 11:56
  */
 
 #include "ast.hpp"
@@ -29,6 +29,11 @@ AST::~AST()
         this->root = nullptr;
     }
 
+    while (!this->exprContext.empty()) {
+        delete this->exprContext.top();
+        AST::instance->exprContext.pop();
+    }
+
     if (this->file == nullptr) {
         return;
     }
@@ -38,6 +43,10 @@ AST::~AST()
 
 ASTNode* AST::GetCurrentContext()
 {
+    if (this->turnedOff) {
+        return nullptr;
+    }
+
     if (this->nodeContext.empty()) {
         return nullptr;
     }
@@ -46,6 +55,10 @@ ASTNode* AST::GetCurrentContext()
 
 Expression* AST::GetExpressionContext()
 {
+    if (this->turnedOff) {
+        return nullptr;
+    }
+
     if (this->exprContext.empty()) {
         throw InternalError("AST::GetExpressionContext stack empty\n");
     }
@@ -55,32 +68,52 @@ Expression* AST::GetExpressionContext()
 
 void AST::PopContext()
 {
+    if (this->turnedOff) {
+        return;
+    }
+
     this->nodeContext.pop();
 }
 
 void AST::PushContext(ASTNode* node)
 {
+    if (this->turnedOff) {
+        return;
+    }
+
     this->nodeContext.push(node);
 }
 
 void AST::PopExpressionContext()
 {
+    if (this->turnedOff) {
+        return;
+    }
+
     this->exprContext.pop();
 }
 
 void AST::PushExpressionContext(Expression* exp)
 {
+    if (this->turnedOff) {
+        return;
+    }
+
     this->exprContext.push(exp);
 }
 
 void AST::SetTreeFlag()
 {
+    if (this->turnedOff) {
+        return;
+    }
+
     this->printTreeFlag = true;
 }
 
 void AST::PrintTree()
 {
-    if (!this->printTreeFlag) {
+    if (!this->printTreeFlag || this->turnedOff) {
         return;
     }
 
@@ -114,4 +147,14 @@ void AST::Cleanup()
     }
     delete AST::instance;
     AST::instance = nullptr;
+}
+
+void AST::TurnOff()
+{
+    this->turnedOff = true;
+}
+
+bool AST::IsTurnedOff()
+{
+    return this->turnedOff;
 }

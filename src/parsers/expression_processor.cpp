@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-28 21:20
- * @ Modified time: 2024-04-28 21:50
+ * @ Modified time: 2024-04-29 10:36
  */
 
 #include "expression_processor.hpp"
@@ -24,13 +24,12 @@ ExpressionProcessor::ExpressionProcessor(AnalysisStack& stack)
 void ExpressionProcessor::Reduce()
 {
     Logger* logger = Logger::GetInstance();
-    Grammar4* grammar = new Grammar4();
+    Grammar4 grammar;
     Rule tmpRule;
-    PatternFinder* finder = new PatternFinder();
-    finder->FindFirstRule(this->stack, tmpRule);
-    delete finder;
+    PatternFinder finder;
+    finder.FindFirstRule(this->stack, tmpRule);
 
-    if (grammar->IsRule(tmpRule)) {
+    if (grammar.IsRule(tmpRule)) {
         logger->AddRightSide(tmpRule);
 
         ASTNodeFactory factory;
@@ -53,13 +52,11 @@ void ExpressionProcessor::Reduce()
         for (Symbol* item: tmpRule) {
             delete item;
         }
-        delete grammar;
     }
     else {
         for (Symbol* item: tmpRule) {
             delete item;
         }
-        delete grammar;
         throw SyntaxError("Invalid token.\n");
     }
 }

@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-28 22:55
+ * @ Modified time: 2024-04-29 12:00
  */
 
 #include "predictive_parser.hpp"
@@ -101,6 +101,7 @@ void PredictiveParser::parseNonterminal()
 
         if (notParsingFunctionCall || newFuncNameFound) {
             this->parseExpression(stackNT);
+            delete stackNT;
             return;
         }
     }
@@ -112,6 +113,7 @@ void PredictiveParser::parseNonterminal()
         handler.Expand(this->parsingFunction, tableItem);
     }
     else {
+        delete stackNT;
         throw SyntaxError("Invalid token.\n");
     }
     delete stackNT;
@@ -170,9 +172,11 @@ void PredictiveParser::parseExpression(Nonterminal* stackNT)
     try {
         precedenceParser.Parse();
         // After precedence parsing, link the expression to the current node.
-        ast->GetCurrentContext()->LinkNode(ast->GetExpressionContext(), *stackNT);
+        ASTNode* context = ast->GetCurrentContext();
+        if (context != nullptr) {
+            context->LinkNode(ast->GetExpressionContext(), *stackNT);
+        }
         ast->PopExpressionContext();
-        delete stackNT;
     }
     catch (ExceptionBase const& e) {
         delete stackNT;

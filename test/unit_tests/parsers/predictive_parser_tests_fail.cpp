@@ -2,12 +2,13 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-02 12:42
- * @ Modified time: 2024-04-15 14:48
+ * @ Modified time: 2024-04-29 12:36
  */
 
 #include <gtest/gtest.h>
 
 #include "ast.hpp"
+#include "logger.hpp"
 #include "predictive_parser.hpp"
 #include "syntax_error.hpp"
 #include "token.hpp"
@@ -22,6 +23,8 @@ protected:
     {
         this->parser = new PredictiveParser(stack);
         this->parser->InitSyntaxAnalysis();
+        AST::GetInstance()->TurnOff();
+        Logger::GetInstance()->TurnOff();
     }
 
     void TearDown() override
@@ -32,7 +35,8 @@ protected:
         }
         inputTape.clear();
         delete this->parser;
-        AST::GetInstance()->Cleanup();
+        AST::Cleanup();
+        Logger::Cleanup();
     }
 };
 

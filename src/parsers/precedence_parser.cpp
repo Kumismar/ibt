@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-28 21:54
+ * @ Modified time: 2024-04-29 12:09
  */
 
 #include "precedence_parser.hpp"
@@ -28,6 +28,8 @@ PrecedenceParser::PrecedenceParser(AnalysisStack& stack)
 PrecedenceParser::~PrecedenceParser()
 {
     delete this->table;
+
+    this->clearStack(); // affects only in unit tests
 }
 
 void PrecedenceParser::Parse()
@@ -125,19 +127,22 @@ void PrecedenceParser::parseFunction()
 
     try {
         endInsertor.InsertFunctionEnd();
-        FunctionCall* tmp = new FunctionCall();
-        AST::GetInstance()->PushContext(tmp);
+        if (!AST::GetInstance()->IsTurnedOff()) {
+            FunctionCall* tmp = new FunctionCall();
+            AST::GetInstance()->PushContext(tmp);
+        }
         predParser.Parse(true);
     }
     catch (FunctionParsed const& e) {
         ASTNode* context = AST::GetInstance()->GetCurrentContext();
-        FunctionCall* parsedFuncCall = dynamic_cast<FunctionCall*>(context);
-        if (parsedFuncCall == nullptr) {
-            throw InternalError("PrecedenceParser::parseFunction current context isnt fCall after fCall parsing, real type:" + std::string(typeid(*context).name()));
+        if (context != nullptr) { // unit tests only
+            FunctionCall* parsedFuncCall = dynamic_cast<FunctionCall*>(context);
+            if (parsedFuncCall == nullptr) {
+                throw InternalError("PrecedenceParser::parseFunction current context isnt fCall after fCall parsing, real type:" + std::string(typeid(*context).name()));
+            }
+            AST::GetInstance()->PushExpressionContext(parsedFuncCall);
+            AST::GetInstance()->PopContext();
         }
-
-        AST::GetInstance()->PushExpressionContext(parsedFuncCall);
-        AST::GetInstance()->PopContext();
         this->inputToken = inputTape.front();
     }
 }

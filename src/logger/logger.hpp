@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-04 10:27
+ * @ Modified time: 2024-04-29 09:31
  */
 
 #pragma once
@@ -24,6 +24,7 @@ private:
     Symbol* leftSideRule = nullptr;
     Rule rightSideRule;
     bool enableDebugPrint = false;
+    bool turnedOff = false;
     Logger();
     ~Logger();
 
@@ -42,4 +43,5 @@ public:
     void PrintLexicalError(const char* message);
     void PrintUsageError(const char* message);
     void EnableDebugPrint();
+    void TurnOff();
 };

@@ -18,6 +18,10 @@ valgrind:
 	@[ -f build/src/Parser ] || echo "executable not built yet; 'make' first"
 	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=valgrind.log ./build/src/Parser -f input.koubp
 
+valgrind_test:
+	@[ -f build/test/ParserTest ] || echo "executable not built yet; 'make' first"
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=valgrind_test.log ./build/test/ParserTest
+
 thesis:
 	@cd doc/thesis && make
 

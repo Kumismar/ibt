@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-28 21:56
- * @ Modified time: 2024-04-28 23:00
+ * @ Modified time: 2024-04-29 10:59
  */
 
 #include "symbol_handler.hpp"
@@ -52,7 +52,10 @@ void SymbolHandler::Pop()
     Token* inputToken = inputTape.front();
 
     // AST nodes gradually add information to themselves based on tokens parsed.
-    AST::GetInstance()->GetCurrentContext()->ProcessToken(*inputToken);
+    ASTNode* context = AST::GetInstance()->GetCurrentContext();
+    if (context != nullptr) {
+        context->ProcessToken(*inputToken);
+    }
     Logger::GetInstance()->AddTokenToRecents(*inputToken);
 
     delete inputTape.front();
@@ -80,9 +83,10 @@ void SymbolHandler::pushRule(Rule& expandedRule, Nonterminal* stackNT)
     // If right side is not epsilon, it will be pushed and ASTNode will be created.
     if (!this->returnedEpsilon(expandedRule)) {
         ASTNode* node = ASTNodeFactory::CreateASTNode(*stackNT, *inputTape.front());
+        ASTNode* context = ast->GetCurrentContext();
         // If nonterminal doesnt have corresponding AST node, nullptr is returned.
-        if (node != nullptr) {
-            ast->GetCurrentContext()->LinkNode(node, *stackNT);
+        if (node != nullptr && context != nullptr /* unit tests only */) {
+            context->LinkNode(node, *stackNT);
             ast->PushContext(node);
         }
 

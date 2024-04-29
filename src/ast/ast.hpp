@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 10:26
- * @ Modified time: 2024-04-16 12:43
+ * @ Modified time: 2024-04-29 11:46
  */
 
 
@@ -22,6 +22,7 @@ private:
     std::stack<Expression*> exprContext;
     std::ofstream* file = nullptr;
     bool printTreeFlag = false;
+    bool turnedOff = false;
 
 public:
     AST();
@@ -37,4 +38,6 @@ public:
     void PrintTree();
     static AST* GetInstance();
     static void Cleanup();
+    void TurnOff();
+    bool IsTurnedOff();
 };

@@ -4,5 +4,9 @@
 # Modified time: 2024-04-28 18:26
 
 add_subdirectory(parsers)
-add_subdirectory(aux_classes)
+add_subdirectory(parser_aux_classes)
 add_subdirectory(ast)
+
+target_sources(ParserTest PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+)

@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-28 18:35
- * @ Modified time: 2024-04-28 19:29
+ * @ Modified time: 2024-04-29 11:52
  */
 
 #include "ast.hpp"
@@ -10,6 +10,7 @@
 #include "binary_expression.hpp"
 #include "constant.hpp"
 #include "grammar.hpp"
+#include "logger.hpp"
 #include "token.hpp"
 #include "unary_expression.hpp"
 #include "variable.hpp"
@@ -21,10 +22,13 @@ class ASTNodeFactoryTests : public ::testing::Test
 protected:
     Rule rule;
     ASTNodeFactory* factory;
+    Expression* expr = nullptr;
 
     void SetUp() override
     {
         this->factory = new ASTNodeFactory();
+        Logger::GetInstance()->TurnOff();
+        this->expr = nullptr;
     }
 
     void TearDown() override
@@ -37,10 +41,15 @@ protected:
             }
         }
         AST::Cleanup();
+        Logger::Cleanup();
+
+        if (this->expr != nullptr) {
+            delete this->expr;
+        }
     }
 
     Token* sampleToken(TokenType type = tConst, DataType dType = Int, Value value = (Value)(0));
-    void createNodeAndPushOperand(Token* t);
+    void createExpressionNodeAndPushOperand(Token* t);
 };
 
 Token* ASTNodeFactoryTests::sampleToken(TokenType type, DataType dType, Value value)
@@ -51,13 +60,13 @@ Token* ASTNodeFactoryTests::sampleToken(TokenType type, DataType dType, Value va
     return token;
 }
 
-void ASTNodeFactoryTests::createNodeAndPushOperand(Token* t)
+void ASTNodeFactoryTests::createExpressionNodeAndPushOperand(Token* t)
 {
     this->rule = {
         t
     };
-    Expression* expr = this->factory->CreateASTNode(rule);
-    if (expr != nullptr) {
+    this->expr = this->factory->CreateASTNode(rule);
+    if (this->expr != nullptr) {
         AST::GetInstance()->PushExpressionContext(expr);
         return;
     }
@@ -69,7 +78,7 @@ TEST_F(ASTNodeFactoryTests, CreateConstant)
     this->rule = {
         this->sampleToken()
     };
-    Expression* expr = this->factory->CreateASTNode(this->rule);
+    this->expr = this->factory->CreateASTNode(this->rule);
     EXPECT_EQ(typeid(Constant), typeid(*expr));
 }
 
@@ -78,31 +87,31 @@ TEST_F(ASTNodeFactoryTests, CreateVariable)
     this->rule = {
         this->sampleToken(tVariable)
     };
-    Expression* expr = this->factory->CreateASTNode(this->rule);
+    this->expr = this->factory->CreateASTNode(this->rule);
     EXPECT_EQ(typeid(Variable), typeid(*expr));
 }
 
 TEST_F(ASTNodeFactoryTests, CreateUnaryExpression)
 {
     Token* constant = this->sampleToken(tConst);
-    this->createNodeAndPushOperand(constant);
+    this->createExpressionNodeAndPushOperand(constant);
 
     Token* unMinus = this->sampleToken(tUnMinus);
     this->rule = {
         unMinus,
         constant
     };
-    Expression* expr = this->factory->CreateASTNode(this->rule);
+    this->expr = this->factory->CreateASTNode(this->rule);
     EXPECT_EQ(typeid(UnaryExpression), typeid(*expr));
 }
 
 TEST_F(ASTNodeFactoryTests, CreateBinaryExpression)
 {
     Token* constant1 = this->sampleToken(tConst);
-    this->createNodeAndPushOperand(constant1);
+    this->createExpressionNodeAndPushOperand(constant1);
 
     Token* constant2 = this->sampleToken(tConst);
-    this->createNodeAndPushOperand(constant2);
+    this->createExpressionNodeAndPushOperand(constant2);
 
     Token* plus = this->sampleToken(tPlus);
     this->rule = {
@@ -110,6 +119,6 @@ TEST_F(ASTNodeFactoryTests, CreateBinaryExpression)
         plus,
         constant2
     };
-    Expression* expr = this->factory->CreateASTNode(this->rule);
+    this->expr = this->factory->CreateASTNode(this->rule);
     EXPECT_EQ(typeid(BinaryExpression), typeid(*expr));
 }

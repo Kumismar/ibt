@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-07 14:28
- * @ Modified time: 2024-04-28 19:28
+ * @ Modified time: 2024-04-29 11:53
  */
 
 #include "ast_node_factory.hpp"
@@ -26,6 +26,10 @@
 
 ASTNode* ASTNodeFactory::CreateASTNode(Nonterminal& nt, Token& t)
 {
+    if (AST::GetInstance()->IsTurnedOff()) {
+        return nullptr;
+    }
+
     switch (nt.GetNonterminalType()) {
         case nStatement: {
             switch (t.GetTokenType()) {
@@ -85,6 +89,10 @@ ASTNode* ASTNodeFactory::CreateASTNode(Nonterminal& nt, Token& t)
 Expression* ASTNodeFactory::CreateASTNode(Rule& rule)
 {
     //right side is either variable, const or funcConst
+    if (AST::GetInstance()->IsTurnedOff()) {
+        return nullptr;
+    }
+
     if (rule.size() == 1) {
         return this->createOperand(rule);
     }

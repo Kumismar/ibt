@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-15 19:13
+ * @ Modified time: 2024-04-29 09:35
  */
 
 #include "logger.hpp"
@@ -42,7 +42,9 @@ void Logger::Cleanup()
         }
         Logger::instance->recentTokens.clear();
     }
+
     delete Logger::instance;
+    Logger::instance = nullptr;
 }
 
 Logger* Logger::GetInstance()
@@ -55,18 +57,29 @@ Logger* Logger::GetInstance()
 
 void Logger::AddLeftSide(Symbol* leftSide)
 {
+    if (this->turnedOff) {
+        return;
+    }
     this->leftSideRule = leftSide->Clone();
 }
 
 void Logger::AddRightSide(Rule& rightSide)
 {
-    for (auto & symbol : rightSide) {
+    if (this->turnedOff) {
+        return;
+    }
+
+    for (auto& symbol: rightSide) {
         this->rightSideRule.push_front(symbol->Clone());
     }
 }
 
 void Logger::PrintRule()
 {
+    if (this->turnedOff) {
+        return;
+    }
+
     this->file << this->leftSideRule->GetTypeString() << " -> ";
     for (const Symbol* item: this->rightSideRule) {
         this->file << item->GetTypeString() << " ";
@@ -77,7 +90,7 @@ void Logger::PrintRule()
 
 void Logger::PrintTokens() const
 {
-    if (!this->enableDebugPrint) {
+    if (!this->enableDebugPrint || this->turnedOff) {
         return;
     }
 
@@ -96,6 +109,10 @@ void Logger::PrintTokens() const
 
 void Logger::AddTokenToRecents(Token& token)
 {
+    if (this->turnedOff) {
+        return;
+    }
+
     if (token == tFuncConst) {
         return;
     }
@@ -109,6 +126,10 @@ void Logger::AddTokenToRecents(Token& token)
 
 void Logger::PrintSyntaxError(const char* message)
 {
+    if (this->turnedOff) {
+        return;
+    }
+
     if (this->recentTokens.empty()) {
         std::cerr << this->red << "File is empty!" << this->reset << std::endl;
         return;
@@ -148,11 +169,19 @@ void Logger::PrintSyntaxError(const char* message)
 
 void Logger::PrintLexicalError(const char* message)
 {
+    if (this->turnedOff) {
+        return;
+    }
+
     std::cerr << this->red << "Lexical error " << this->reset << message;
 }
 
 void Logger::PrintUsageError(const char* message)
 {
+    if (this->turnedOff) {
+        return;
+    }
+
     std::string boldRed = "\033[1;31m";
     std::string underlined = "\033[4m";
 
@@ -164,6 +193,10 @@ void Logger::PrintUsageError(const char* message)
 
 void Logger::clearRule()
 {
+    if (this->turnedOff) {
+        return;
+    }
+
     delete this->leftSideRule;
     this->leftSideRule = nullptr;
     for (const Symbol* item: this->rightSideRule) {
@@ -175,4 +208,9 @@ void Logger::clearRule()
 void Logger::EnableDebugPrint()
 {
     this->enableDebugPrint = true;
+}
+
+void Logger::TurnOff()
+{
+    this->turnedOff = true;
 }

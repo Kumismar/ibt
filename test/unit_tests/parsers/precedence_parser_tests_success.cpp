@@ -2,12 +2,13 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-02 14:54
- * @ Modified time: 2024-04-15 14:48
+ * @ Modified time: 2024-04-29 12:36
  */
 
 #include <gtest/gtest.h>
 
 #include "ast.hpp"
+#include "logger.hpp"
 #include "nonterminal.hpp"
 #include "precedence_parser.hpp"
 #include "token.hpp"
@@ -22,6 +23,8 @@ protected:
     {
         this->parser = new PrecedenceParser(this->stack);
         this->stack.push_front(new Nonterminal(nExpression));
+        AST::GetInstance()->TurnOff();
+        Logger::GetInstance()->TurnOff();
     }
 
     void TearDown() override
@@ -32,6 +35,7 @@ protected:
         inputTape.clear();
         delete this->parser;
         AST::Cleanup();
+        Logger::Cleanup();
     }
 };
 
