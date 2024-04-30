@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-29 12:09
+ * @ Modified time: 2024-04-30 13:54
  */
 
 #include "precedence_parser.hpp"
@@ -45,8 +45,8 @@ void PrecedenceParser::Parse()
             break; // while
         }
 
-        PatternFinder finder;
-        Token* firstToken = finder.FindFirstTokenInStack(this->analysisPushdown);
+        PatternFinder finder(this->analysisPushdown);
+        Token* firstToken = finder.FindFirstToken();
 
         ExpressionProcessor handler(this->analysisPushdown);
         switch ((*this->table)[*firstToken][*this->inputToken]) {

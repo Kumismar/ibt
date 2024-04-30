@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-28 18:31
- * @ Modified time: 2024-04-29 12:36
+ * @ Modified time: 2024-04-30 13:58
  */
 
 #include "ast.hpp"
@@ -26,7 +26,7 @@ protected:
 
     void SetUp() override
     {
-        finder = new PatternFinder();
+        finder = new PatternFinder(this->stack);
         AST::GetInstance()->TurnOff();
         Logger::GetInstance()->TurnOff();
     }
@@ -53,7 +53,7 @@ TEST_F(PatternFinderTests, FindFirstTokenInStackOneToken)
     this->stack = {
         new Token(tConst),
     };
-    Token* token = finder->FindFirstTokenInStack(this->stack);
+    Token* token = finder->FindFirstToken();
     EXPECT_EQ(token->GetTokenType(), tConst);
 }
 
@@ -64,7 +64,7 @@ TEST_F(PatternFinderTests, FindFirstTokenInStackMultipleTokens)
         new Token(tVariable),
         new Token(tExpEnd),
     };
-    Token* token = finder->FindFirstTokenInStack(this->stack);
+    Token* token = finder->FindFirstToken();
     EXPECT_EQ(token->GetTokenType(), tConst);
 }
 
@@ -75,7 +75,7 @@ TEST_F(PatternFinderTests, FindFirstTokenInStackNoToken)
         new Nonterminal(nExpression),
         new Nonterminal(nExpression)
     };
-    EXPECT_THROW(finder->FindFirstTokenInStack(this->stack), InternalError);
+    EXPECT_THROW(finder->FindFirstToken(), InternalError);
 }
 
 TEST_F(PatternFinderTests, FindFirstTokenInStackTokenBetweenNonterminals)
@@ -85,7 +85,7 @@ TEST_F(PatternFinderTests, FindFirstTokenInStackTokenBetweenNonterminals)
         new Token(tConst),
         new Nonterminal(nExpression)
     };
-    Token* token = finder->FindFirstTokenInStack(this->stack);
+    Token* token = finder->FindFirstToken();
     EXPECT_EQ(token->GetTokenType(), tConst);
 }
 
@@ -97,7 +97,7 @@ TEST_F(PatternFinderTests, FindFirstRuleOneConstant)
         new Token(tExpEnd),
     };
 
-    finder->FindFirstRule(this->stack, this->rule);
+    finder->FindFirstRule(this->rule);
     this->expected = {
         new Token(tConst),
     };
@@ -115,7 +115,7 @@ TEST_F(PatternFinderTests, FindFirstRuleMultipleConstants)
         new Token(tExpEnd),
     };
 
-    finder->FindFirstRule(this->stack, this->rule);
+    finder->FindFirstRule(this->rule);
     this->expected = {
         new Token(tConst),
         new Token(tVariable),
@@ -133,7 +133,7 @@ TEST_F(PatternFinderTests, FindFirstRuleNonterminal)
         new Token(tExpEnd),
     };
 
-    finder->FindFirstRule(this->stack, this->rule);
+    finder->FindFirstRule(this->rule);
     this->expected = {
         new Nonterminal(nExpression),
     };
@@ -151,7 +151,7 @@ TEST_F(PatternFinderTests, FindFirstRuleMultipleNonterminals)
         new Token(tExpEnd),
     };
 
-    finder->FindFirstRule(this->stack, this->rule);
+    finder->FindFirstRule(this->rule);
     this->expected = {
         new Nonterminal(nExpression),
         new Nonterminal(nExpression),
@@ -173,7 +173,7 @@ TEST_F(PatternFinderTests, FindFirstRuleMixed)
         new Token(tExpEnd),
     };
 
-    finder->FindFirstRule(this->stack, this->rule);
+    finder->FindFirstRule(this->rule);
     this->expected = {
         new Nonterminal(nExpression),
         new Token(tConst),
@@ -197,7 +197,7 @@ TEST_F(PatternFinderTests, FindFirstRuleMixed2)
         new Token(tExpEnd),
     };
 
-    finder->FindFirstRule(this->stack, this->rule);
+    finder->FindFirstRule(this->rule);
     this->expected = {
         new Token(tConst),
         new Nonterminal(nExpression),

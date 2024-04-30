@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-29 09:31
+ * @ Modified time: 2024-04-30 00:53
  */
 
 #pragma once
@@ -17,6 +17,7 @@ class Logger
 private:
     std::string red = "\033[1;31m";
     std::string reset = "\033[0m";
+    std::string underlined = "\033[4m";
 
     static Logger* instance;
     std::list<Token*> recentTokens;
@@ -41,7 +42,8 @@ public:
     void AddTokenToRecents(Token& token);
     void PrintSyntaxError(const char* message);
     void PrintLexicalError(const char* message);
-    void PrintUsageError(const char* message);
+    void PrintUsageError();
     void EnableDebugPrint();
     void TurnOff();
+    void PrintHelp();
 };

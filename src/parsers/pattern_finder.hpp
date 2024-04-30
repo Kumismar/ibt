@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-28 16:10
- * @ Modified time: 2024-04-28 16:21
+ * @ Modified time: 2024-04-30 13:54
  */
 
 #pragma once
@@ -13,7 +13,11 @@
 
 class PatternFinder
 {
+private:
+    AnalysisStack& stack;
+
 public:
-    Token* FindFirstTokenInStack(AnalysisStack& stack);
-    void FindFirstRule(AnalysisStack& stack, Rule& emptyRule);
+    PatternFinder(AnalysisStack& stack);
+    Token* FindFirstToken();
+    void FindFirstRule(Rule& emptyRule);
 };

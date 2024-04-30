@@ -96,6 +96,7 @@
 \usepackage{textcomp}
 \usepackage{tabu}
 \usepackage{lipsum}
+\usepackage{rotating}
 
 \floatname{algorithm}{Algoritmus}
 

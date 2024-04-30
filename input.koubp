@@ -1,4 +1,3 @@
-if (vyraz)
-    prikaz();
-else if (vyraz)
-    prikaz();
+
+
+float input = do_something(var, f(1) + 2) + 20.0*d;

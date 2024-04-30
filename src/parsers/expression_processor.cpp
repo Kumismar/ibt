@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-28 21:20
- * @ Modified time: 2024-04-29 10:36
+ * @ Modified time: 2024-04-30 13:55
  */
 
 #include "expression_processor.hpp"
@@ -26,8 +26,8 @@ void ExpressionProcessor::Reduce()
     Logger* logger = Logger::GetInstance();
     Grammar4 grammar;
     Rule tmpRule;
-    PatternFinder finder;
-    finder.FindFirstRule(this->stack, tmpRule);
+    PatternFinder finder(this->stack);
+    finder.FindFirstRule(tmpRule);
 
     if (grammar.IsRule(tmpRule)) {
         logger->AddRightSide(tmpRule);

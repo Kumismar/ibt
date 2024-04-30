@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-29 09:35
+ * @ Modified time: 2024-04-30 13:19
  */
 
 #include "logger.hpp"
@@ -176,19 +176,18 @@ void Logger::PrintLexicalError(const char* message)
     std::cerr << this->red << "Lexical error " << this->reset << message;
 }
 
-void Logger::PrintUsageError(const char* message)
+void Logger::PrintUsageError()
 {
     if (this->turnedOff) {
         return;
     }
 
     std::string boldRed = "\033[1;31m";
-    std::string underlined = "\033[4m";
 
-    std::cerr << boldRed << "Usage error: " << this->reset << message
-              << "Usage: build/src/Parser " << underlined << "[-d]" << this->reset << " "
-              << underlined << "-f" << this->reset << " " << underlined << "<filename>\n"
+    std::cerr << "Usage: build/src/Parser " << this->underlined << "[-d] [-t] [-h]" << this->reset << " "
+              << this->underlined << "-f" << this->reset << " " << this->underlined << "<filename>\n"
               << this->reset;
+    this->PrintHelp();
 }
 
 void Logger::clearRule()
@@ -213,4 +212,13 @@ void Logger::EnableDebugPrint()
 void Logger::TurnOff()
 {
     this->turnedOff = true;
+}
+
+void Logger::PrintHelp()
+{
+    std::cout << "Options:\n"
+              << "\t" << this->underlined << "-d" << this->reset << "  Enable debug print - print program state to stdout (used in development)\n"
+              << "\t" << this->underlined << "-t" << this->reset << "  Print AST\n"
+              << "\t" << this->underlined << "-h" << this->reset << "  Print this help message\n"
+              << "\t" << this->underlined << "-f FILENAME" << this->reset << "  Specify input file\n";
 }

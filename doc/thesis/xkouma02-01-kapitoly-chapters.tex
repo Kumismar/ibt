@@ -1892,7 +1892,7 @@ Jazyk Koubp podoruje obvyklé příkazy a~konstrukce jiných programovacích jaz
         \text{\texttt{<jméno proměnné> }} &\text{\texttt{= <hodnota>}}        
     \end{align*}
     \item \emph{Větvení}\,--\,podmíněný příkaz podporuje klíčová slova \texttt{if}, \texttt{elseif}, \texttt{else}.
-    Ačkoliv je možnost používat přímo klíčové slovo \texttt{elseif}, jazyk Koubp podporuje i~sekvenci \texttt{else if}, jejichž sémantický rozdíl je patrně vidět na obrázcích \ref{fig_ast_elseif} a~\ref{fig_ast_else_if}.
+    Ačkoliv je možnost používat přímo klíčové slovo \texttt{elseif}, jazyk Koubp podporuje i~sekvenci \texttt{else if}, jejichž sémantický rozdíl je patrně vidět v~příloze této práce na obrázcích \ref{fig_ast_elseif} a~\ref{fig_ast_else_if}.
     Syntaxe je následující:
     \begin{lstlisting}[language=Koubp]
         if (vyraz) {
@@ -1916,18 +1916,7 @@ Jazyk Koubp podoruje obvyklé příkazy a~konstrukce jiných programovacích jaz
         else
             prikaz;
     \end{lstlisting}
-    \begin{figure}[ht]
-        \centering
-        \includegraphics[width=0.8\textwidth]{obrazky-figures/ast_if_elseif.pdf}
-        \caption{Programem vygenerovaný AST pro konstrukci \texttt{if-elseif}}
-        \label{fig_ast_elseif}
-    \end{figure}
-    \begin{figure}[ht]
-        \centering
-        \includegraphics[width=0.8\textwidth]{obrazky-figures/ast_if_else_if.pdf}
-        \caption{Programem vygenerovaný AST pro konstrukci \texttt{if-else if}}
-        \label{fig_ast_else_if}
-    \end{figure}
+
     \item \emph{Cyklus while}\,--\,Vykonává se sekvence příkazů (nebo příkaz) tak dlouho, dokud \emph{výraz} není vyhodnocen jako pravda.
     \begin{lstlisting}[language=Koubp]
         while (vyraz) {
@@ -2237,7 +2226,7 @@ Analyzátory jsou také reprezentovány třídami, společnou nadtřídu ale nem
 
 Kromě níže zmíněných principů figurují v~programu pomocné třídy pro prediktivní i~precedenční syntaktickou analýzu.
 Nejsou podrobně popsány, protože se zaměřím především na principy, které jsou těmito třídami implementovány.
-Podrobnosti lze najít přímo v~kódu, případně v~příloze \todo{ref priloha} je ukázán třídní diagram, který obsahuje nejdůležitější třídy, se kterými se v~implementaci syntaktické analýzy pracuje.
+Podrobnosti lze najít přímo v~kódu, případně v~Příloze \ref{kap_priloha_b} je ukázán třídní diagram, který obsahuje nejdůležitější třídy, se kterými se v~implementaci syntaktické analýzy pracuje.
 
 \subsection*{Práce s~komponentami}
 Všechny komponenty jsou využívány pouze prediktivním analyzátorem, mimo čtvrtou.
@@ -2346,8 +2335,7 @@ Hlavní důvod k~vygenerování lexikálního analyzátoru je lepší testovatel
 \section{Abstraktní syntaktický strom}
 Ačkoliv se na abstraktní syntaktický strom (AST) nejčastěji nahlíží jako na binární strom, je implementován jako obecně $n$-ární strom.
 Jsem přesvědčen, že je to mnohem intuitivnější ke čtení výsledného stromu, který může být programem vygenerován.
-Pro snadnější pochopení implementace AST je vhodné si projít třídní hierarchii uzlů AST v~příloze. 
-\todo{doplnit tridni hierarchii do prilohy a ref tady}
+Pro snadnější pochopení implementace AST je vhodné si projít třídní hierarchii uzlů AST v~Příloze \ref{kap_priloha_c}.
 
 \subsection*{Tvorba AST v precedenční analýze}
 Tvorba AST pro precedenční analýzu pracuje se zásobníkem kontextů pro výrazy.

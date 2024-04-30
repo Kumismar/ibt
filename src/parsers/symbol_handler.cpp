@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-28 21:56
- * @ Modified time: 2024-04-29 10:59
+ * @ Modified time: 2024-04-30 15:06
  */
 
 #include "symbol_handler.hpp"
@@ -21,7 +21,7 @@ SymbolHandler::SymbolHandler(AnalysisStack& pushdown)
 {
 }
 
-void SymbolHandler::Expand(bool parsingFunction, LLTableIndex tableItem)
+void SymbolHandler::Expand(bool parsingFunction, LLTableIndex& tableItem)
 {
     Logger* logger = Logger::GetInstance();
     Symbol* stackTop = this->stack.front();
@@ -37,10 +37,10 @@ void SymbolHandler::Expand(bool parsingFunction, LLTableIndex tableItem)
 
     // Get grammar based on grammar number in table item and push expanded nonterminal to stack.
     Grammar* grammar = GrammarFactory::CreateGrammar(tableItem.grammarNumber);
-    Rule expandedNonterminal = grammar->Expand(tableItem.ruleNumber);
-    this->pushRule(expandedNonterminal, stackNT);
+    this->rule = grammar->Expand(tableItem.ruleNumber);
+    this->pushRule(stackNT);
 
-    logger->AddRightSide(expandedNonterminal);
+    logger->AddRightSide(this->rule);
     logger->PrintRule();
 
     delete grammar;
@@ -64,10 +64,10 @@ void SymbolHandler::Pop()
     this->stack.pop_front();
 }
 
-bool SymbolHandler::returnedEpsilon(Rule& expandedRule)
+bool SymbolHandler::returnedEpsilon()
 {
-    Symbol* front = expandedRule.front();
-    if (expandedRule.size() == 1 && front->GetSymbolType() == Token_t) {
+    Symbol* front = this->rule.front();
+    if (this->rule.size() == 1 && front->GetSymbolType() == Token_t) {
         Token* t = dynamic_cast<Token*>(front);
         if (t == nullptr) {
             throw InternalError("Dynamic cast to Token* failed, real type: " + std::string(typeid(front).name()) + "\n");
@@ -77,11 +77,11 @@ bool SymbolHandler::returnedEpsilon(Rule& expandedRule)
     return false;
 }
 
-void SymbolHandler::pushRule(Rule& expandedRule, Nonterminal* stackNT)
+void SymbolHandler::pushRule(Nonterminal* stackNT)
 {
     AST* ast = AST::GetInstance();
     // If right side is not epsilon, it will be pushed and ASTNode will be created.
-    if (!this->returnedEpsilon(expandedRule)) {
+    if (!this->returnedEpsilon()) {
         ASTNode* node = ASTNodeFactory::CreateASTNode(*stackNT, *inputTape.front());
         ASTNode* context = ast->GetCurrentContext();
         // If nonterminal doesnt have corresponding AST node, nullptr is returned.
@@ -91,7 +91,7 @@ void SymbolHandler::pushRule(Rule& expandedRule, Nonterminal* stackNT)
         }
 
         // Push the expanded rule to the stack.
-        for (Symbol* item: expandedRule) {
+        for (Symbol* item: this->rule) {
             this->stack.push_front(item->Clone());
         }
     }

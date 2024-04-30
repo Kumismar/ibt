@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-28 21:47
+ * @ Modified time: 2024-04-30 00:56
  */
 
 #include "analysis_success.hpp"
@@ -15,6 +15,7 @@
 #include "grammar_4.hpp"
 #include "grammar_5.hpp"
 #include "grammar_6.hpp"
+#include "help.hpp"
 #include "internal_error.hpp"
 #include "lex.yy.h"
 #include "lexical_error.hpp"
@@ -70,7 +71,7 @@ std::string ProcessArguments(int argc, char** argv)
     int opt;
     bool fileOption = false;
 
-    while ((opt = getopt(argc, argv, "df:t")) != -1) {
+    while ((opt = getopt(argc, argv, "df:th")) != -1) {
         switch (opt) {
             case 'd': {
                 Logger::GetInstance()->EnableDebugPrint();
@@ -85,9 +86,11 @@ std::string ProcessArguments(int argc, char** argv)
                 AST::GetInstance()->SetTreeFlag();
                 break;
             }
+            case 'h': {
+                throw Help();
+            }
             default: {
-                std::string error = std::string("Invalid argument: '") + char(opt) + "'.\n";
-                throw CLArgumentsError(error.c_str());
+                throw CLArgumentsError("Invalid argument.\n");
             }
         }
     }
@@ -116,6 +119,10 @@ int main(int argc, char** argv)
         std::cout << "Parsing successful." << std::endl;
         retCode = 0;
     }
+    catch (Help const& e) {
+        Logger::GetInstance()->PrintHelp();
+        retCode = 0;
+    }
     catch (SyntaxError const& e) {
         Logger::GetInstance()->PrintSyntaxError(e.what());
         retCode = 1;
@@ -125,7 +132,7 @@ int main(int argc, char** argv)
         retCode = 2;
     }
     catch (CLArgumentsError const& e) {
-        Logger::GetInstance()->PrintUsageError(e.what());
+        Logger::GetInstance()->PrintUsageError();
         retCode = 3;
     }
     catch (InternalError const& e) {

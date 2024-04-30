@@ -2,17 +2,22 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-28 16:10
- * @ Modified time: 2024-04-28 16:21
+ * @ Modified time: 2024-04-30 13:57
  */
 
 #include "pattern_finder.hpp"
 #include "internal_error.hpp"
 #include "precedence_symbol.hpp"
 
-Token* PatternFinder::FindFirstTokenInStack(AnalysisStack& stack)
+PatternFinder::PatternFinder(AnalysisStack& stack)
+    : stack(stack)
+{
+}
+
+Token* PatternFinder::FindFirstToken()
 {
     Symbol* tmpExp = nullptr;
-    for (auto symb: stack) {
+    for (auto symb: this->stack) {
         if (symb->GetSymbolType() == Token_t) {
             tmpExp = symb;
             break;
@@ -27,10 +32,10 @@ Token* PatternFinder::FindFirstTokenInStack(AnalysisStack& stack)
     return toReturn;
 }
 
-void PatternFinder::FindFirstRule(AnalysisStack& stack, Rule& emptyRule)
+void PatternFinder::FindFirstRule(Rule& emptyRule)
 {
     // push to list until stack.top is precedence symbol '<' or '$'
-    for (auto symb: stack) {
+    for (auto symb: this->stack) {
         switch (symb->GetSymbolType()) {
             case PrecSymbol_t: {
                 PrecedenceSymbol* tmpSymbol = dynamic_cast<PrecedenceSymbol*>(symb);
@@ -74,7 +79,7 @@ void PatternFinder::FindFirstRule(AnalysisStack& stack, Rule& emptyRule)
             }
         }
 
-        if (stack.empty()) {
+        if (this->stack.empty()) {
             throw InternalError("ExpStack empty when finding first rule");
         }
     }
