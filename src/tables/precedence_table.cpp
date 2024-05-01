@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-18 16:06
+ * @ Modified time: 2024-05-01 18:37
  */
 
 #include "precedence_table.hpp"
@@ -32,6 +32,12 @@ const std::vector<std::vector<char>> PrecedenceTable::precTable = {
     { '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', 'x', '>', 'x', '>', 'x', '>' }, // i
     { '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '<', '>', 'x', '>', '<', '<' } // un-
 };
+
+PrecRowAccessor::PrecRowAccessor(const std::vector<char>& r)
+    : row(r)
+{
+}
+
 
 char PrecRowAccessor::operator[](const Token& t)
 {

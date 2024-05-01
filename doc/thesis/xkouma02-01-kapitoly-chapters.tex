@@ -2398,8 +2398,10 @@ Byly vyzkoušeny varianty s~překladovými systémy \texttt{Ninja} a~\texttt{Mak
 Protože práce v~příkazové řádce s~tímto nástrojem není nejrychlejší, vytvořil jsem pro jednodušší ovládání v~kořenovém adresáři \texttt{Makefile}.
 Tam lze nalézt několik cílů, které se dají spustit:
 \begin{itemize}
-    \item \texttt{all}\,--\,přeloží program a~vytvoří spustitelný soubor \texttt{Parser} pomocí invokace systému CMake.
+    \item \texttt{all}\,--\,přeloží program a~vytvoří spustitelný soubor \texttt{Parser} pomocí invokace systému CMake
     Dále přeloží zdrojové soubory pro jednotkové testy a~vytvoří z~nich spustitelný soubor \texttt{ParserTest}.
+    \item \texttt{gcc}\,--\,přeloží program pomocí překladače z~rodiny \texttt{gcc}.
+    \item \texttt{clang}\,--\,přeloží program pomocí překladače z~rodiny \texttt{clang}.
     \item \texttt{run}\,--\,podívá se, zda je k~dispozici spustitelný soubor \texttt{Parser}. Pokud ano, spustí jej s~parametry, které se přímo v~\texttt{Makefile} dají upravit.
     Jinak hlásí chybu.
     \item \texttt{runtest}\,--\,spustí program \texttt{ParserTest} pro jednotkové testy a~následně skript \texttt{test.sh} popisující testy chování.
@@ -2427,7 +2429,7 @@ Přepínače pro spuštění programu se dají v~\texttt{Makefile} libovolně m�
 \section{Testování}
 Program \texttt{Parser} je testován jednotkovými testy a~testy chování.
 Pro jednotkové testování byl použit testovací framework \emph{googletest}\footnote{Návod například na \href{http://google.github.io/googletest/}{http://google.github.io/googletest/}.}, který je asi nejznámějším testovacím nástrojem pro C++.
-Uživatel nemusí řešit stahování tohoto frameworku, jeho instalace je zahrnuta v~sestavování programu, což \texttt{CMake} umožňuje.
+Uživatel nemusí řešit stahování tohoto frameworku, jeho instalace je zahrnuta v~sestavování programu.
 Stačí tedy přeložit program příkazem \texttt{make} a~následně spustit testy příkazem \texttt{make runtest} v~kořenovém adresáři projektu.
 
 Stejným příkazem se zároveň spouští testy chování, respektive skript \texttt{test.sh}.
@@ -2447,7 +2449,7 @@ V~obou případech jsou testovány syntakticky jak korektní, tak nekorektní p�
 \subsection*{Testy chování}
 Tyto testy zkoumají, jestli program \texttt{Parser} vrací očekávanou návratovou hodnotu po spuštění analýzy různých zdrojových kódů.
 Zdrojové kódy, na kterých je program testován, se nachází ve složce \texttt{test/koubp\textunderscore files/}.
-Tato složka je rozdělena na další tři podsložky: jednoduché algoritmy v podsložce \texttt{simple\textunderscore algorithms/}, kódy se syntaktickými chybami v~\texttt{syntax\textunderscore error\textunderscore files/} a~syntakticky korektní, ale trochu obskurní až ezoterické kódy v~\texttt{extreme\textunderscore cases/}.
+Tato složka je rozdělena na další tři podsložky: základní konstrukce jazyka v~\texttt{basic\textunderscore constructs}, jednoduché algoritmy v~podsložce \texttt{simple\textunderscore algorithms/}, kódy se syntaktickými chybami v~\texttt{syntax\textunderscore error\textunderscore files/} a~syntakticky korektní, ale trochu obskurní až ezoterické kódy v~\texttt{extreme\textunderscore cases/}.
 Všechny složky obsahují zdrojové kódy s~různými návratovými hodnotami.
 
 \chapter{Závěr}
