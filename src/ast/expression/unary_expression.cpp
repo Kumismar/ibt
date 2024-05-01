@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-16 11:45
- * @ Modified time: 2024-04-16 13:22
+ * @ Modified time: 2024-05-01 12:10
  */
 
 #include "unary_expression.hpp"
@@ -20,6 +20,16 @@ UnaryExpression::~UnaryExpression()
 {
     delete this->operand;
     delete this->optr;
+}
+
+Operator* UnaryExpression::GetOperator() const
+{
+    return this->optr;
+}
+
+Expression* UnaryExpression::GetOperand() const
+{
+    return this->operand;
 }
 
 void UnaryExpression::PrintTree(std::ofstream& file, int& id, int parentId)

@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 18:10
- * @ Modified time: 2024-04-16 13:05
+ * @ Modified time: 2024-05-01 11:26
  */
 
 #pragma once
@@ -16,7 +16,6 @@ class FunctionCall : public Operand
 {
 private:
     std::string name;
-    Expression* currentArg = nullptr;
     std::vector<Expression*> arguments;
 
 public:

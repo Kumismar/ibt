@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-18 09:41
+ * @ Modified time: 2024-05-01 10:54
  */
 
 #include "grammar_2.hpp"
@@ -17,7 +17,7 @@ const std::vector<Rule> Grammar2::rightSideRules = {
     { new Nonterminal(nDeclOrExpr), new Token(tSemi) },
     { new Nonterminal(nCodeBlock) },
     { new Token(tReturn), new Nonterminal(nReturnExp), new Token(tSemi), new Nonterminal(nStop) },
-    { new Token(tSemi), new Nonterminal(nStop) },
+    { new Token(tSemi) },
     { new Token(tElseif), new Token(tLPar), new Nonterminal(nExpression), new Token(tRPar), new Nonterminal(nCodeBlock), new Nonterminal(nIf2), new Nonterminal(nStop) },
     { new Token(tElse), new Nonterminal(nCodeBlock) },
     { new Token(tEps) },

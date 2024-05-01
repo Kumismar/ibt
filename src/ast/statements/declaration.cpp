@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-16 13:02
+ * @ Modified time: 2024-05-01 12:42
  */
 
 #include "declaration.hpp"
@@ -26,6 +26,16 @@ Declaration::~Declaration()
     if (this->right != nullptr) {
         delete this->right;
     }
+}
+
+Operand* Declaration::GetLeft() const
+{
+    return this->left;
+}
+
+Expression* Declaration::GetRight() const
+{
+    return this->right;
 }
 
 void Declaration::PrintTree(std::ofstream& file, int& id, int parentId)

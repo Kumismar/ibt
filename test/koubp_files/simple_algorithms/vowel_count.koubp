@@ -1,3 +1,10 @@
+/**
+ * @ Author: Ondřej Koumar
+ * @ Email: xkouma02@stud.fit.vutbr.cz
+ * @ Create Time: 2024-04-02 12:31
+ * @ Modified time: 2024-05-01 11:04
+ */
+
 print("Enter a string to count the number of vowels:\n");
 string input_str = readline();
 int vowel_count = 0;

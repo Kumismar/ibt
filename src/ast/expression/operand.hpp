@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 11:23
- * @ Modified time: 2024-04-15 20:39
+ * @ Modified time: 2024-05-01 12:38
  */
 
 #pragma once
@@ -24,6 +24,11 @@ protected:
     TokenData data;
 
 public:
+    OperandType GetType() const
+    {
+        return type;
+    }
+
     virtual ~Operand()
     {
     }

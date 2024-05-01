@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-16 13:08
+ * @ Modified time: 2024-05-01 12:21
  */
 
 #include "binary_expression.hpp"
@@ -26,6 +26,16 @@ BinaryExpression::~BinaryExpression()
     delete this->left;
     delete this->optr;
     delete this->right;
+}
+
+Expression* BinaryExpression::GetLeft() const
+{
+    return this->left;
+}
+
+Expression* BinaryExpression::GetRight() const
+{
+    return this->right;
 }
 
 void BinaryExpression::PrintTree(std::ofstream& file, int& id, int parentId)

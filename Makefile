@@ -1,6 +1,11 @@
 all:
-	@ cd src/lex && flex -o lex.yy.cc lex.l
 	@[ -d build/ ] || mkdir build/ && cd build/ && cmake .. -G "Unix Makefiles" && cmake --build . -j10
+
+gcc:
+	@[ -d build/ ] || mkdir build/ && cd build/ && CC=gcc CXX=g++ cmake .. -G "Unix Makefiles" && cmake --build . -j10
+
+clang:
+	@[ -d build/ ] || mkdir build/ && cd build/ && CC=clang CXX=clang++ cmake .. -G "Unix Makefiles" && cmake --build . -j10
 
 run:
 	@[ -f build/src/Parser ] || echo "executable not build yet; 'make' first"

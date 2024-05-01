@@ -29,16 +29,13 @@ target_include_directories(ParserTest PRIVATE
     ${project_dir}/src/exceptions
     ${project_dir}/src/tables
     ${project_dir}/src/types
+    ${CMAKE_CURRENT_SOURCE_DIR}/unit_tests
 )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${project_dir}/build)
 
 target_link_libraries(ParserTest PRIVATE
     ParserLibrary gtest
-)
-
-target_compile_options(ParserTest PRIVATE
-    -fno-inline -fno-omit-frame-pointer
 )
 
 include(GoogleTest)

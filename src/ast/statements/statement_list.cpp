@@ -2,10 +2,9 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-07 16:18
- * @ Modified time: 2024-04-16 15:36
+ * @ Modified time: 2024-05-01 12:55
  */
 
-#pragma once
 
 #include "statement_list.hpp"
 #include "expression.hpp"
@@ -92,4 +91,9 @@ void StatementList::LinkNode(ASTNode* node, Nonterminal& nt)
         tmp->data.statement = tmpStmt;
     }
     this->statements.push_back(tmp);
+}
+
+std::vector<StatementOrExpression*> StatementList::GetStatements() const
+{
+    return this->statements;
 }
