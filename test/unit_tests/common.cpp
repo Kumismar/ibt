@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-29 09:16
- * @ Modified time: 2024-05-01 13:14
+ * @ Modified time: 2024-05-02 22:08
  */
 
 
@@ -63,14 +63,14 @@ void createOperandAndPush(Token* t)
 
 Expression* createUnaryExpression(TokenType type)
 {
-    UnaryExpression* expr = new UnaryExpression(tPlus);
+    UnaryExpression* expr = new UnaryExpression(type);
     AST::GetInstance()->PushExpressionContext(expr);
     return AST::GetInstance()->GetExpressionContext();
 }
 
 Expression* createBinaryExpression(TokenType type)
 {
-    BinaryExpression* expr = new BinaryExpression(tPlus);
+    BinaryExpression* expr = new BinaryExpression(type);
     AST::GetInstance()->PushExpressionContext(expr);
     return AST::GetInstance()->GetExpressionContext();
 }

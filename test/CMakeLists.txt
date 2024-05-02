@@ -38,5 +38,12 @@ target_link_libraries(ParserTest PRIVATE
     ParserLibrary gtest
 )
 
+target_compile_options(ParserTest PRIVATE
+    -Wall
+    -Wextra
+    -pedantic
+    -std=c++20
+)
+
 include(GoogleTest)
 gtest_discover_tests(ParserTest)
