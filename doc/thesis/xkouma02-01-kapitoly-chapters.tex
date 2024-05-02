@@ -6,14 +6,11 @@
 %\documentclass[../projekt.tex]{subfiles}
 %\begin{document}
 
-\listofdotazy
-\listoftodos
-
 \chapter{Úvod}\label{kap_uvod}
 Jednou z~oblastí, kterou se zabývá teoretická informatika, je teorie formálních jazyků.
 Tato oblast využívá jednoduchých konceptů, jako jsou množiny, relace, symboly a~řetězce, k~popisu konceptů složitějších\,--\,například programovacích jazyků.
 Programovací jazyky jsou kompromisem mezi přirozenými a~strojovými jazyky, nicméně od posloupnosti nul a~jedniček, kterým počítač rozumí, mají daleko.
-Jsou ale navrhnuty tak, aby do nul a~jedniček byly algoritmicky přeložitelné a~zároveň poskytovaly takovou abstakci, která je člověku, respektive programátorovi, srozumitelná.  
+Jsou ale navrhnuty tak, aby do nul a~jedniček byly algoritmicky přeložitelné a~zároveň poskytovaly takovou abstrakci, která je člověku, respektive programátorovi, srozumitelná.  
 
 Mezi kroky překladu se mimo jiné řadí lexikální, syntaktická a~sémantická analýza, generování mezikódu a~generování cílového kódu.
 Syntaktická analýza hraje v~procesu překladu klíčovou roli, ne-li nejdůležitější\,--\,moderní překladače dokonce často používají paradigma \emph{syntaxí řízeného překladu}.
@@ -29,7 +26,7 @@ Díky tomu je tento typ gramatik v~praxi velmi rozšířený pro budování synt
 Dokonce existuje několik nástrojů, které syntaktické analyzátory automaticky generují z~LL gramatik napsaných ve speciální syntaxi.
 
 Velký trend teoretické informatiky na přelomu 20.~a~21.~století byl výzkum gramatických systémů.
-Bylo v~zájmu příjít na způsob popsání jazyka několika gramatikami, jejichž spolupráce vyústila ve větší generativní sílu systému oproti samostatným gramatikám stejného typu.
+Bylo v~zájmu přijít na způsob popsání jazyka několika gramatikami, jejichž spolupráce vyústila ve větší generativní sílu systému oproti samostatným gramatikám stejného typu.
 Nakonec se uchytily především kooperující distribuované (CD) a~paralelní komunikující (PC) gramatické systémy.
 
 Tato práce se zabývá upravením principu syntaktické analýzy jazyka popsaného LL gramatikou pro CD gramatický systém.
@@ -613,7 +610,7 @@ Automat $M$ přijímá řetězec právě tehdy, když sekvencí přechodů dosá
 
 \subsection*{Rozšířený zásobníkový automat}\label{kap_rozsireny_ZA}
 Rozšířené zásobníkové automaty reprezentují přirozené rozšíření klasických ZA, které na zásobníku mohou pracovat pouze s~jeho vrcholem.
-Rozšířené zásobníkové automaty mohou provádět expanzi symbolů na zásobníku v~libovolné hloubce, jinak pracují indenticky.
+Rozšířené zásobníkové automaty mohou provádět expanzi symbolů na zásobníku v~libovolné hloubce, jinak pracují identicky.
 Text a~definice v~této kapitole převzaty z~\cite{meduna2023automata, meduna_zemek_2014}, není-li řečeno jinak.
 
 \begin{definition}\label{def_rza}
@@ -648,7 +645,7 @@ Text a~definice v~této kapitole převzaty z~\cite{meduna2023automata, meduna_ze
 
 Přechody RZA pracují, stejně jako přechody ZA, nad konfiguracemi.
 Konfigurace jsou podobné těm u~klasických ZA, nicméně stav zásobníku musí končit symbolem $\#$ a~zbytek řetězce na zásobníku jej nesmí obsahovat. 
-\begin{definition}\label{def_konfigurace_za}
+\begin{definition}\label{def_konfigurace_rza}
     Nechť $M = (Q, \Sigma, \Gamma, R, s, S, F)$ je RZA.\\
     Konfigurací RZA nazveme trojici
     \begin{equation*}
@@ -657,7 +654,7 @@ Konfigurace jsou podobné těm u~klasických ZA, nicméně stav zásobníku mus�
     Nechť $X_M$ reprezentuje množinu všech konfigurací RZA $M$.
 \end{definition}
 
-Další podobnost je práce s~řetězci abedecedy $\Sigma$ a~s~pravidly při přechodech. 
+Další podobnost je práce s~řetězci abecedy $\Sigma$ a~s~pravidly při přechodech. 
 Jediná změna od klasických ZA již byla zmíněna na začátku této kapitoly\,--\,při přechodech se na vrcholu zásobníku mohou měnit celé řetězce.
 
 \begin{definition}\label{def_prechod_rza}
@@ -887,7 +884,7 @@ kde:
     \end{itemize}
     \item $x$ je stupeň gramatického systému:
     \begin{itemize}[label=$\circ$]
-        \item $n, n \geq 1$\,--\,gramatický systém může obsashovat maximálně $n$~komponent,
+        \item $n, n \geq 1$\,--\,gramatický systém může obsahovat maximálně $n$~komponent,
         \item $\infty$\,--\,gramatický systém nemá omezen počet komponent,
     \end{itemize}
     \item $f$ je derivační režim, $f \in D$.
@@ -1115,7 +1112,7 @@ V~prvním příkladu bude pouze demonstrován princip obou derivačních kroků 
         $(Q_3, a, b) \prescript{}{c}{\Rightarrow}\, (b, a, S_3)$
     \end{center}
     Další kroky už $\Gamma$ provádět nebude, protože řetězec generovaný první komponentou je již řetězec terminálních symbolů.
-    V~tomto příkladu byla použita sémantika vracejícího se PCGS, nicméně při použítí nevracejícího by jazyk vypadal stejně, jen výsledná konfigurace by se lišila v~řetězci $x_3$.
+    V~tomto příkladu byla použita sémantika vracejícího se PCGS, nicméně při použití nevracejícího by jazyk vypadal stejně, jen výsledná konfigurace by se lišila v~řetězci $x_3$.
     \begin{equation*}
         L(\Gamma)_r = L(\Gamma)_{nr} = \{b\}
     \end{equation*}
@@ -1225,7 +1222,7 @@ Princip těchto pomocných pravidel je vlastně stejný, jako \emph{p-přechody}
 Pokud na vrcholu zásobníku je neterminál $A$, pak $M$ simuluje nejlevější derivační krok, který by udělala gramatika $G$ pomocí pravidla $r: A \rightarrow \alpha \in R$.
 Provede expanzi pravidla nahrazením neterminálu $A$ z~vrcholu zásobníku za $reversal(\alpha)$. 
 
-Existují dvě metody syntaktické analýzy shora dolů, a~to \emph{prediktivní syntaktická analýza} a~\emph{rekurzívní sestup}.
+Existují dvě metody syntaktické analýzy shora dolů, a~to \emph{prediktivní syntaktická analýza} a~\emph{rekurzivní sestup}.
 Více k~těmto metodám je psáno na konci této kapitoly.
 
 \subsection*{Prediktivní množiny}
@@ -1532,7 +1529,7 @@ Graficky znázorněný význam odstranění levé rekurze je na Obrázku \ref{fi
 Samotné položky tabulky jsou čísla pravidel, která byla přidělena funkcí mapující dvojici $(A, a),\; a \in T \cup \{\$\},\; A \in N$ na 
 \begin{itemize}
     \item pravidlo, respektive symbol reprezentující konkrétní pravidlo,
-    \item symbol vyjadřující neexistenci pravidla pro danou dvojici; v~tomto případě syntaktická analýza zahlašuje chybu.
+    \item symbol vyjadřující neexistenci pravidla pro danou dvojici; v~tomto případě syntaktická analýza hlásí chybu.
 \end{itemize}
 Jinak řečeno, nechť $\alpha(A, a)$ reprezentuje políčko v~LL tabulce a~nechť $p: A \rightarrow X_1X_2\ldots X_n \in P$.
 Pokud $a \in First(X_1)$, pak $\alpha(A, a) = p$, jinak nastává chyba.
@@ -1582,14 +1579,14 @@ Následující příklad převzat z~\cite{medunaElementsOfCompDesign}.
 \end{example}
 
 \subsection*{Prediktivní syntaktická analýza}
-\emph{Prediktivní syntaktická analýza} a~\emph{rekurzívní sestup} jsou dvě metody, pomocí kterých lze implementovat syntaktický analyzátor.
+\emph{Prediktivní syntaktická analýza} a~\emph{rekurzivní sestup} jsou dvě metody, pomocí kterých lze implementovat syntaktický analyzátor.
 Jak je zmíněno na začátku této kapitoly, je potřeba nějakým způsobem provádět analýzu pomocí zásobníkového automatu.
-Při použití prediktivní analýzy je nutné tento zásobník implementovat explicitně, rekurzívní sestup si zásobník tvoří v~pozadí automaticky díky volání funkcí pro každý neterminál.
-Součástí této práce je implementace explicitního zásobníkového automatu, proto nebude rekurzívní sestup podrobně popsán; této metodě se detailně věnuje autor v~\cite{medunaElementsOfCompDesign}.
+Při použití prediktivní analýzy je nutné tento zásobník implementovat explicitně, rekurzivní sestup si zásobník tvoří v~pozadí automaticky díky volání funkcí pro každý neterminál.
+Součástí této práce je implementace explicitního zásobníkového automatu, proto nebude rekurzivní sestup podrobně popsán; této metodě se detailně věnuje autor v~\cite{medunaElementsOfCompDesign}.
 
 Výhodou implementace prediktivní analýzy s~LL tabulkou je jediná implementace algoritmu.
 V~případě změny pravidel v~gramatice je nutné pouze změnit LL tabulku, odkud automat odebírá pravidla, která má použít.
-Oproti tomu v~rekurzívním sestupu je nutné měnit celé funkce.
+Oproti tomu v~rekurzivním sestupu je nutné měnit celé funkce.
 Algoritmus prediktivní syntaktické analýzy je popsán v~Algoritmu \ref{alg_prediktivni_sa}.
 \begin{algorithm}[ht]
     \caption{Prediktivní syntaktická analýza založená na LL tabulce}
@@ -1713,7 +1710,7 @@ Je ukázán na konci této kapitoly, nejdříve je nutné popsat konstrukci prec
 
 \subsection*{Konstrukce precedenční tabulky}
 Doposud nebylo zmíněno, co znamenají položky precedenční tabulky pro analýzu výrazů.
-Znaménka $<$ a~$>$ se interpretují jako priorita operátotů.
+Znaménka $<$ a~$>$ se interpretují jako priorita operátorů.
 Mějme dva operátory, například $\odot$ a~$\bigtriangleup$.
 Pokud $\odot < \bigtriangleup$, pak $\bigtriangleup$ má vyšší prioritu, a~v~algoritmu to znamená, že pravá strana pravidla obsahující operátor $\bigtriangleup$ bude redukována dříve než pravá strana obsahující operátor $\odot$ a~naopak.
 Pravidla pro tvorbu tabulky jsou pak následující \cite{medunaElementsOfCompDesign,meduna2017sa-zdola-nahoru}:
@@ -1805,7 +1802,6 @@ Analýza shora dolů se stará o~kontrolu vstupního řetězce mimo výrazy (ana
 
 Jazyk \emph{Koubp} je založený na jazyce IFJ22, který je podmnožinou jazyka PHP 8, jenž byl specifikován v~rámci zadání projektu do předmětu Formální jazyky a překladače v~akademickém roce 2022/2023.
 V~této kapitole jsou popsány především syntaktické konstrukty jazyka Koubp a~není podrobně popsána sémantika příkazů, protože sémantická analýza není předmětem této práce.
-\dotaz{je mozne citovat zadani projektu? pokud ano, jak se k nemu dostat?}
 
 \subsection*{Obecné vlastnosti}
 Jazyk Koubp je strukturovaný jazyk.
@@ -2020,7 +2016,7 @@ Pro zapsání jiných typů než řetězce je možné použít funkce pro typovo
 Například v~následujícím příkladu
 \begin{lstlisting}[language=Koubp]
     float cislo = 42.37;
-    print("$cislo\n");
+    print("$cislo$\n");
     print(convert_string(cislo)."\n");
 \end{lstlisting}
 se v~obou případech vypíše na standardní výstup stejný řetězec.
@@ -2063,7 +2059,7 @@ Jsou to funkce
 \end{itemize}
 Funkce \texttt{strlen()} vrací délku řetězce, který je dán jako parametr a~\texttt{substring()} vrátí podřetězec řetězce \texttt{s} od indexu \texttt{i} po index \texttt{j}.
 
-\section{Gramatický systém definujíci syntax jazyka Koubp}\label{kap_cdgs_koubp}
+\section{Gramatický systém definující syntax jazyka Koubp}\label{kap_cdgs_koubp}
 Gramatický systém popisující syntax jazyka Koubp je CD gramatický systém.
 Formálně zapsáno, je to devítice $\Gamma = (N, T, S, P_1, P_2, P_3, P_4, P_6, P_6)$, kde:
 \begin{align*}
@@ -2081,8 +2077,6 @@ Formálně zapsáno, je to devítice $\Gamma = (N, T, S, P_1, P_2, P_3, P_4, P_6
         \end{aligned}\\
     S & = \texttt{PROGRAM}
 \end{align*}
-
-
 
 Komponenty systému jsou navrhnuty tak, aby každá z~nich tvořila ucelenou část jazyka Koubp.
 První komponenta popisuje strukturu programu\,--\,sekvence příkazů a~definic funkcí.
@@ -2216,7 +2210,7 @@ LL tabulka syntaktického analyzátoru obsahuje kromě obvyklých čísel pravid
 Samotná tabulka je sestavena pomocí množin \emph{Empty($\alpha$)}, \emph{First($\alpha$)}, \emph{Follow(A)} a~\emph{Predict($A \rightarrow \alpha$)}.
 První tři množiny se vytvoří standardním způsobem pro každý terminál a~neterminál.
 Množina \emph{Predict($A \rightarrow \alpha$)} se sestavuje pro každé pravidlo, stejně jako u~LL gramatik, reprezentované uspořádanou dvojicí.
-Prediktivní množiny a~LL tabulka pro GS $\Gamma$ popisující jazyk Koubp jsou v~příloze. \todo{ref priloha, vlozeni prilohy}
+Prediktivní množiny a~LL tabulka pro GS $\Gamma$ popisující jazyk Koubp jsou v~příloze.
 
 \section{Návrh řešení syntaktického analyzátoru}\label{kap_reseni_sa}
 Implementace syntaktické analýzy je silně objektově orientována, veškeré datové struktury jsou reprezentovány třídami.
@@ -2380,7 +2374,7 @@ je změněno na
 Implementovaný program analyzuje, zda vstupní řetězec je řetězcem jazyka Koubp.
 K~jednoduchému výstupu \texttt{true} nebo \texttt{false} je ale vhodné přidat další výstupy, které jednak potvrdí správnost implementace a~jednak dělají rozšiřitelnost programu jednodušší.
 V~případě úspěšné analýzy řetězce program produkuje textový soubor, který obsahuje pravidla každého kroku, ať už expanze či vyjmutí symbolů, obou analyzátorů.
-Volitelný výstup je graf abstraktního syntaktického stromu ve formátu \emph{.dot}, ze kterého program \emph{dot}\footnote{Manuál k~programu k~dispozici na \href{https://linux.die.net/man/1/dot}{https://linux.die.net/man/1/dot}.} může vygenerovat vizualizaci orientovaného grafu ve formátu \emph{pdf}.
+Volitelný výstup je graf abstraktního syntaktického stromu ve formátu \emph{.dot}, ze kterého program \emph{dot}\footnote{Manuál k~programu k~dispozici na \href{https://linux.die.net/man/1/dot}{https://linux.die.net/man/1/dot}.} může vygenerovat vizualizaci orientovaného grafu ve formátu \emph{.pdf}.
 
 Pro výpis syntaktických chyb je implementován systém, který uschovává sedm posledních terminálů.
 Nastane-li k~chybě, všechny tyto uložené terminály jsou vypsány na standardní chybový výstup, za ně vypíše následující tři terminály na vstupní pásce (nebere ohledy na bílé znaky, vypíše je v~řadě za sebe), pokud nějaké zbývají.
@@ -2388,8 +2382,7 @@ Aktuální vstupní token, u~kterého nastala chyba, označí červeným symbole
 
 \section{Jazyk, sestavovací systém a spuštění programu}
 Překladač je implementován v~jazyce C++ a~pro překlad byl použit standard C++20 společně s~přepínači \texttt{-Wall} a~\texttt{-Wextra} a~\texttt{-pedantic}.
-\todo{doplnit co jsem suppressnul}
-Je naprogramován pro UNIXové operační systémy jako konzolová aplikace. \todo{pak dopsat kde vsude je to vyzkouseny a s jakyma prekladacama}
+Je naprogramován pro UNIXové operační systémy jako konzolová aplikace.
 Pro přeložení a~plnou funkcionalitu programu se všemi výstupy je nutné mít na systému nainstalován překladač C++ a~nástroje \texttt{Make}, \texttt{CMake} a~\texttt{dot}.
 Dále byl při implementaci použit nástroj \texttt{valgrind} pro analýzu správy paměti a~nástroj \texttt{Flex} pro generování lexikálního analyzátoru.
 
@@ -2411,7 +2404,7 @@ Tam lze nalézt několik cílů, které se dají spustit:
     \item \texttt{valgrind\textunderscore test}\,--\,spustí program \texttt{valgrind} na programu \texttt{ParserTest}.
     \item \texttt{thesis}\,--\,přeloží \LaTeX ové zdrojové soubory této práce a~vygeneruje ji ve formátu \emph{.pdf}. 
     Pro tuto akci je nutné mít lokálně stáhnuté balíčky pro práci se systémem \LaTeX.
-    \item \texttt{clean}\,--\,vyčistí všechny nepotřebné soubory po sestavování programu či této práce ve formátu \emph{.pdf}.
+    \item \texttt{clean}\,--\,vyčistí všechny nepotřebné soubory po sestavování programu či této práce.
 \end{itemize}
 
 Program \texttt{Parser} podporuje tři přepínače, a~to \texttt{-d}, \texttt{-t} a~\texttt{-f}.

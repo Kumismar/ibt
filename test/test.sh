@@ -5,11 +5,11 @@
 # @ Create Time: 2024-03-30 18:15
 # @ Modified time: 2024-03-30 19:57
 
-red="\e[31m"
-green="\e[32m"
-reset="\e[0m"
-bold="\e[1m"
-yellow="\e[33m"
+red="\033[31m"
+green="\033[32m"
+reset="\033[0m"
+bold="\033[1m"
+yellow="\033[33m"
 current_dir="$(dirname "$0")"
 executable="../build/src/Parser"
 

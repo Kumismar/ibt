@@ -1,3 +1,8 @@
+# @ Author: Ondřej Koumar
+# @ Email: xkouma02@stud.fit.vutbr.cz
+# @ Create Time: 2024-04-02 12:31
+# @ Modified time: 2024-05-02 20:15
+
 import os
 nonterminals = [
     "program      ",

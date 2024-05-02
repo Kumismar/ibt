@@ -1,5 +1,8 @@
-# Author: Ondřej Koumar
-# Date: 2024-03-18
+# @ Author: Ondřej Koumar
+# @ Email: xkouma02@stud.fit.vutbr.cz
+# @ Create Time: 2024-05-02 19:28
+
+
 
 target_sources(ParserLibrary PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/predictive_parser.cpp

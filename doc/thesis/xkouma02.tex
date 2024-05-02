@@ -20,6 +20,8 @@
 % \documentclass[]{fitthesis} % bez zadání - pro začátek práce, aby nebyl problém s překladem
 %\documentclass[english]{fitthesis} % without assignment - for the work start to avoid compilation problem
 \documentclass[zadani]{fitthesis} % odevzdani do IS VUT a/nebo tisk s barevnými odkazy - odkazy jsou barevné
+
+
 %\documentclass[english,zadani]{fitthesis} % for submission to the IS VUT and/or print with color links - links are color
 %\documentclass[zadani,print]{fitthesis} % pro černobílý tisk - odkazy jsou černé
 %\documentclass[english,zadani,print]{fitthesis} % for the black and white print - links are black
@@ -45,6 +47,81 @@
 % Basic packages are at the bottom of template file fitthesis.cls
 % zde můžeme vložit vlastní balíčky / you can place own packages here
 
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{lipsum}
+\usepackage[czech,slovak,english]{babel}
+\usepackage[utf8]{inputenc} %kodovani / encoding
+\usepackage{cmap}
+\usepackage[T1]{fontenc}
+\usepackage{url}
+\usepackage{ragged2e}
+\usepackage{color}
+\usepackage{etoolbox}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage[section]{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{textcomp}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{lipsum}
+\usepackage{rotating}
+
+\floatname{algorithm}{Algoritmus}
+
+\counterwithin{table}{section}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+
+\algnewcommand\algorithmicinput{\textbf{Vstup:}}
+\algnewcommand\Input{\item[\algorithmicinput]}
+\algnewcommand\algorithmicoutput{\textbf{Výstup:}}
+\algnewcommand\Output{\item[\algorithmicoutput]}
+\algnewcommand\algorithmicspace{\textbf{}}
+\algnewcommand\NewLine{\item[\algorithmicspace]}
+
+\algnewcommand\algorithmicswitch{\textbf{switch}}
+\algnewcommand\algorithmiccase{\textbf{case}}
+
+\algdef{SE}[SWITCH]{Switch}{EndSwitch}[1]{\algorithmicswitch\ #1\ \textbf{:}}{\algorithmicend\ \algorithmicswitch}
+\algdef{SE}[CASE]{Case}{EndCase}[1]{\algorithmiccase\ #1\ \textbf{:}}{\algorithmicend\ \algorithmiccase}
+\algtext*{EndSwitch}
+\algtext*{EndCase}
+
+\lstdefinelanguage{Koubp}{
+	keywords={if, while, for, return, elseif, else, function},
+	keywordstyle=\color{RedViolet}\bfseries,
+	morekeywords=[2]{int, float, string, bool},
+	keywordstyle=[2]\color{RoyalBlue},
+	morekeywords=[3]{print, readline, convert_int, convert_string, convert_float, convert_bool, file_read, file_write},
+	keywordstyle=[3]\color{BrickRed},
+	identifierstyle=\color{black},
+	sensitive=true,
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	commentstyle=\color{OliveGreen}\ttfamily,
+	stringstyle=\color{Sepia}\ttfamily,
+	morestring=[b]"
+}
+
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definice}
+\numberwithin{definition}{section}
+
+\theoremstyle{definition}
+\newtheorem{convention}{Konvence}
+\numberwithin{convention}{section}
+
+\theoremstyle{definition}
+\newtheorem{example}{Příklad}
+\numberwithin{example}{section}
+
+\counterwithin{figure}{section}
 
 % Pro seznam zkratek lze využít balíček Glossaries - nutno odkomentovat i níže a při kompilaci z konzoly i v Makefile (plnou verzi pro Perl, nebo lite)
 % The Glossaries package can be used for the list of abbreviations - it is necessary to uncomment also below. When compiling from the console also in the Makefile (full version for Perl or lite)

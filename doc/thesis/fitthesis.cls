@@ -98,57 +98,6 @@
 \usepackage{lipsum}
 \usepackage{rotating}
 
-\floatname{algorithm}{Algoritmus}
-
-\counterwithin{table}{section}
-\renewcommand{\thetable}{\thesection.\arabic{table}}
-
-\algnewcommand\algorithmicinput{\textbf{Vstup:}}
-\algnewcommand\Input{\item[\algorithmicinput]}
-\algnewcommand\algorithmicoutput{\textbf{Výstup:}}
-\algnewcommand\Output{\item[\algorithmicoutput]}
-\algnewcommand\algorithmicspace{\textbf{}}
-\algnewcommand\NewLine{\item[\algorithmicspace]}
-
-\algnewcommand\algorithmicswitch{\textbf{switch}}
-\algnewcommand\algorithmiccase{\textbf{case}}
-
-\algdef{SE}[SWITCH]{Switch}{EndSwitch}[1]{\algorithmicswitch\ #1\ \textbf{:}}{\algorithmicend\ \algorithmicswitch}
-\algdef{SE}[CASE]{Case}{EndCase}[1]{\algorithmiccase\ #1\ \textbf{:}}{\algorithmicend\ \algorithmiccase}
-\algtext*{EndSwitch}
-\algtext*{EndCase}
-
-\lstdefinelanguage{Koubp}{
-    keywords={if, while, for, return, elseif, else, function},
-    keywordstyle=\color{RedViolet}\bfseries,
-    morekeywords=[2]{int, float, string, bool},
-    keywordstyle=[2]\color{RoyalBlue},
-    morekeywords=[3]{print, readline, convert_int, convert_string, convert_float, convert_bool, file_read, file_write},
-    keywordstyle=[3]\color{BrickRed},
-    identifierstyle=\color{black},
-    sensitive=true,
-    comment=[l]{//},
-    morecomment=[s]{/*}{*/},
-    commentstyle=\color{OliveGreen}\ttfamily,
-    stringstyle=\color{Sepia}\ttfamily,
-    morestring=[b]"
-}
-
-
-\theoremstyle{definition}
-\newtheorem{definition}{Definice}
-\numberwithin{definition}{section}
-
-\theoremstyle{definition}
-\newtheorem{convention}{Konvence}
-\numberwithin{convention}{section}
-
-\theoremstyle{definition}
-\newtheorem{example}{Příklad}
-\numberwithin{example}{section}
-
-\counterwithin{figure}{section}
-
 \binoppenalty 9999
 \relpenalty 9999
 
