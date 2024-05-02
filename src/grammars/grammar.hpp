@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-05-02 10:28
+ * @ Modified time: 2024-05-02 10:34
  */
 
 #pragma once
@@ -21,9 +21,7 @@ public:
     /**
      * @brief A virtual destructor for Grammar.
      */
-    virtual ~Grammar()
-    {
-    }
+    virtual ~Grammar() = default;
 
     /**
      * @brief Expands left side of the rule to right side of the rule.
