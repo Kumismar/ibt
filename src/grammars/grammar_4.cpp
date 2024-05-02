@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-03 12:08
+ * @ Modified time: 2024-05-02 10:21
  */
 
 #include "grammar_4.hpp"
@@ -38,6 +38,10 @@ const std::vector<Rule> Grammar4::rightSideRules = {
     // A special rule for function call - this is pushed into inputTape as temporary token for precedence parser
     { new Token(tFuncConst) }
 };
+
+Grammar4::~Grammar4()
+{
+}
 
 Rule Grammar4::Expand(unsigned ruleNumber)
 {

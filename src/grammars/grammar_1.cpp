@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-07 20:34
+ * @ Modified time: 2024-05-02 10:26
  */
 
 #include "grammar_1.hpp"
@@ -17,6 +17,10 @@ const std::vector<Rule> Grammar1::rightSideRules = {
     { new Nonterminal(nFunctionDef), new Nonterminal(nStatementList) },
     { new Token(tEps) }
 };
+
+Grammar1::~Grammar1()
+{
+}
 
 Rule Grammar1::Expand(unsigned ruleNumber)
 {

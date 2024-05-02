@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-03 12:08
+ * @ Modified time: 2024-05-02 10:24
  */
 
 #include "grammar_6.hpp"
@@ -19,6 +19,9 @@ const std::vector<Rule> Grammar6::rightSideRules = {
     { new Token(tBool) }
 };
 
+Grammar6::~Grammar6()
+{
+}
 
 Rule Grammar6::Expand(unsigned ruleNumber)
 {

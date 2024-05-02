@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-05-01 10:54
+ * @ Modified time: 2024-05-02 10:13
  */
 
 #include "grammar_2.hpp"
@@ -26,6 +26,10 @@ const std::vector<Rule> Grammar2::rightSideRules = {
     { new Nonterminal(nExpression) },
     { new Token(tEps) },
 };
+
+Grammar2::~Grammar2()
+{
+}
 
 Rule Grammar2::Expand(unsigned ruleNumber)
 {
