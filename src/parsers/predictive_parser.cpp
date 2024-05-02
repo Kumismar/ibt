@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-29 14:19
+ * @ Modified time: 2024-05-02 20:05
  */
 
 #include "predictive_parser.hpp"
@@ -86,6 +86,7 @@ void PredictiveParser::parseNonterminal()
         throw InternalError("Dynamic cast to Nonterminal* failed, real type:" + std::string(typeid(*this->stackTop).name()) + "\n");
     }
 
+    // nStop => end of ASTNode context
     if (stackNT->GetNonterminalType() == nStop) {
         ast->PopContext();
         delete this->stackTop;
