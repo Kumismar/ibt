@@ -37,10 +37,10 @@ void SymbolHandler::Expand(bool parsingFunction, LLTableIndex& tableItem)
 
     // Get grammar based on grammar number in table item and push expanded nonterminal to stack.
     Grammar* grammar = GrammarFactory::CreateGrammar(tableItem.grammarNumber);
-    this->rule = grammar->Expand(tableItem.ruleNumber);
+    this->expandedRightSide = grammar->Expand(tableItem.ruleNumber);
     this->pushRule(stackNT);
 
-    logger->AddRightSide(this->rule);
+    logger->AddRightSide(this->expandedRightSide);
     logger->PrintRule();
 
     delete grammar;
@@ -66,8 +66,8 @@ void SymbolHandler::Pop()
 
 bool SymbolHandler::returnedEpsilon()
 {
-    Symbol* front = this->rule.front();
-    if (this->rule.size() == 1 && front->GetSymbolType() == Token_t) {
+    Symbol* front = this->expandedRightSide.front();
+    if (this->expandedRightSide.size() == 1 && front->GetSymbolType() == Token_t) {
         Token* t = dynamic_cast<Token*>(front);
         if (t == nullptr) {
             throw InternalError("Dynamic cast to Token* failed, real type: " + std::string(typeid(front).name()) + "\n");
@@ -91,7 +91,7 @@ void SymbolHandler::pushRule(Nonterminal* stackNT)
         }
 
         // Push the expanded rule to the stack.
-        for (Symbol* item: this->rule) {
+        for (Symbol* item: this->expandedRightSide) {
             this->stack.push_front(item->Clone());
         }
     }

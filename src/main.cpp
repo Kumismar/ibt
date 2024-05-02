@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-30 00:56
+ * @ Modified time: 2024-05-02 14:50
  */
 
 #include "analysis_success.hpp"
@@ -28,6 +28,9 @@
 #include <iostream>
 #include <unistd.h>
 
+/**
+ * @brief Performs memory cleanup after program run.
+ */
 void Cleanup()
 {
     Grammar1::Cleanup();
@@ -47,6 +50,11 @@ void Cleanup()
     }
 }
 
+/**
+ * @brief Calls generated lexer to tokenize the input file.
+ * 
+ * @param filename Name of the input file. 
+ */
 void Lex(std::string& filename)
 {
     namespace fs = std::filesystem;
@@ -65,6 +73,13 @@ void Lex(std::string& filename)
     Logger::GetInstance()->PrintInputTape();
 }
 
+/**
+ * @brief Processes command line arguments.
+ * 
+ * @param argc Number of arguments.
+ * @param argv Array of arguments.
+ * @return Name of the input file.
+ */
 std::string ProcessArguments(int argc, char** argv)
 {
     std::string filename;
