@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-18 19:12
- * @ Modified time: 2024-04-30 13:19
+ * @ Modified time: 2024-05-02 10:05
  */
 
 #include "logger.hpp"
@@ -69,7 +69,7 @@ void Logger::AddRightSide(Rule& rightSide)
         return;
     }
 
-    for (auto& symbol: rightSide) {
+    for (auto symbol: rightSide) {
         this->rightSideRule.push_front(symbol->Clone());
     }
 }
@@ -88,19 +88,19 @@ void Logger::PrintRule()
     this->clearRule();
 }
 
-void Logger::PrintTokens() const
+void Logger::PrintInputTape() const
 {
     if (!this->enableDebugPrint || this->turnedOff) {
         return;
     }
 
     size_t maxTypeLength = 0;
-    for (const auto& token: inputTape) {
+    for (const auto token: inputTape) {
         maxTypeLength = std::max(maxTypeLength, token->GetTypeString().size());
     }
 
     // Print tokens with fixed-width columns
-    for (const auto& token: inputTape) {
+    for (const auto token: inputTape) {
         std::cout << "type: " << std::setw(maxTypeLength) << token->GetTypeString()
                   << "\tdata: " << token->GetDataString().c_str() << "\n";
     }
@@ -140,7 +140,7 @@ void Logger::PrintSyntaxError(const char* message)
 
     // Get position of the error
     size_t position = 0;
-    for (const auto& token: this->recentTokens) {
+    for (const auto token: this->recentTokens) {
         position += token->GetDataString().size() + 1; // for space between tokens
     }
 
@@ -151,7 +151,7 @@ void Logger::PrintSyntaxError(const char* message)
 
     // Print max three more tokens from input tape
     int i = 0;
-    for (const auto& token: inputTape) {
+    for (const auto token: inputTape) {
         if (i >= 3) {
             break;
         }
@@ -181,8 +181,6 @@ void Logger::PrintUsageError()
     if (this->turnedOff) {
         return;
     }
-
-    std::string boldRed = "\033[1;31m";
 
     std::cerr << "Usage: build/src/Parser " << this->underlined << "[-d] [-t] [-h]" << this->reset << " "
               << this->underlined << "-f" << this->reset << " " << this->underlined << "<filename>\n"
