@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-05 10:05
- * @ Modified time: 2024-04-17 17:02
+ * @ Modified time: 2024-05-03 11:13
  */
 
 #include "function_definition.hpp"
@@ -27,13 +27,16 @@ void Parameter::PrintTree(std::ofstream& file, int& id, int parentId)
     file << "node" << parentId << " -> node" << currentId << ";\n";
     file << "node" << currentId << " [label=\"Parameter\"];\n";
 
-    file << "node" << currentId << " -> node" << ++currentId << ";\n";
+    int paramId = currentId;
+    int nameId = ++currentId;
+    file << "node" << paramId << " -> node" << nameId << ";\n";
     id++;
-    file << "node" << currentId << " [label=\"Name: " << this->name << "\"];\n";
+    file << "node" << nameId << " [label=\"Name: " << this->name << "\"];\n";
 
-    file << "node" << currentId << " -> node" << ++currentId << ";\n";
+    int typeId = ++currentId;
+    file << "node" << paramId << " -> node" << typeId << ";\n";
     id++;
-    file << "node" << currentId << " [label=\"Type: " << this->typeToString(this->type) << "\"];\n";
+    file << "node" << typeId << " [label=\"Type: " << this->typeToString(this->type) << "\"];\n";
 }
 
 FunctionDefinition::FunctionDefinition()
@@ -69,18 +72,20 @@ void FunctionDefinition::PrintTree(std::ofstream& file, int& id, int parentId)
     file << "node" << currentId << " [label=\"FunctionDefinition\"];\n";
 
     int functionId = currentId;
-    file << "node" << currentId << "-> node" << ++currentId << ";\n";
+    int functionNameId = ++currentId;
+    file << "node" << functionId << "-> node" << functionNameId << ";\n";
     id++;
-    file << "node" << currentId << " [label=\"Name: " << this->name << "\"];\n";
+    file << "node" << functionNameId << " [label=\"Name: " << this->name << "\"];\n";
 
     for (auto param: this->params) {
         param->PrintTree(file, id, functionId);
     }
 
     currentId = id++;
-    file << "node" << functionId << "-> node" << ++currentId << ";\n";
+    int returnTypeId = ++currentId;
+    file << "node" << functionId << "-> node" << returnTypeId << ";\n";
     id++;
-    file << "node" << currentId << " [label=\"ReturnType: " << this->typeToString(this->returnType) << "\"];\n";
+    file << "node" << returnTypeId << " [label=\"ReturnType: " << this->typeToString(this->returnType) << "\"];\n";
     this->body->PrintTree(file, id, functionId);
 }
 

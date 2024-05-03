@@ -53,7 +53,6 @@ target_compile_options(ParserLibrary PRIVATE
     -pedantic
     -std=c++20
     -Wno-unused-parameter
-    -Wno-sequence-point
 )
 
 target_compile_options(Parser PRIVATE

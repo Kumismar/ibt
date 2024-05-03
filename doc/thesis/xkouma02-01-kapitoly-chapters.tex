@@ -2381,8 +2381,25 @@ Nastane-li k~chybě, všechny tyto uložené terminály jsou vypsány na standar
 Aktuální vstupní token, u~kterého nastala chyba, označí červeným symbolem \textcolor{red}{$\wedge$} na novém řádku.
 
 \section{Jazyk, sestavovací systém a spuštění programu}
-Překladač je implementován v~jazyce C++ a~pro překlad byl použit standard C++20 společně s~přepínači \texttt{-Wall} a~\texttt{-Wextra} a~\texttt{-pedantic}.
-Je naprogramován pro UNIXové operační systémy jako konzolová aplikace.
+Překladač je implementován v~jazyce C++ a~pro překlad byl použit standard C++20 společně s~přepínači \texttt{-Wall} a~\texttt{-Wextra}, \texttt{-pedantic} a~\texttt{-Wno-unused-parameter}.
+Poslední zmíněný musí být specifikován, protože třída \texttt{ASTNode} deklaruje čistě polymorfní metody \texttt{ProcessToken} a~\texttt{LinkNode}, které pracují s~parametry.
+Tyto metody jsou přepsány ve všech třídách, které dědí od \texttt{Statement} a~také třídou  \texttt{StatementList}.
+Pro třídy dědící od \texttt{Expression} jsou tyto metody nepodstatné kromě třídy \texttt{FunctionCall}, díky čemuž je potřeba, aby i~třída \texttt{Expression} tuto metodu dědila.
+Protože ne všechny třídy tyto metody přepisují, překladače generují varování, které je třeba 
+potlačit.
+
+Syntaktický analyzátor je naprogramován pro UNIXové operační systémy jako konzolová aplikace.
+Přeložení programu a~spuštění testů proběhlo na těchto operačních systémech s~těmito překladači:
+\begin{itemize}
+	\item Fedora 40 KDE, překladače \texttt{gcc} verze 14.0.1 a~\texttt{clang} verze 18.1.1,
+	\item Apple Sonoma 14.4.1 s~překladačem \texttt{Apple clang} verze 1500.3.9.4\,--\,za vyzkoušení děkuji Ondřeji Lukáškovi,
+	\item Linuxové distribuce na WSL (\emph{Windows Subsystem for Linux\footnote{Podrobně se o~WSL píše například na \href{https://learn.microsoft.com/en-us/windows/wsl/about}{https://learn.microsoft.com/en-us/windows/wsl/about}.}}):
+	\begin{itemize}[label=$\circ$]
+		\item Ubuntu 22.04 s~\texttt{gcc} verze 11.4.0\,--\,za vyzkoušení děkuji Adamu Malysákovi,
+		\item Debian 11 
+	\end{itemize}
+	\item Školní server Merlin\,--\,CentOS 7 za použití překladače \texttt{gcc} verze 10.5; překladač \texttt{clang} generuje chybu, protože nedokáže najít standardní knihovny \texttt{<cstddef>} a~\texttt{<string>}.
+\end{itemize}
 Pro přeložení a~plnou funkcionalitu programu se všemi výstupy je nutné mít na systému nainstalován překladač C++ a~nástroje \texttt{Make}, \texttt{CMake} a~\texttt{dot}.
 Dále byl při implementaci použit nástroj \texttt{valgrind} pro analýzu správy paměti a~nástroj \texttt{Flex} pro generování lexikálního analyzátoru.
 
