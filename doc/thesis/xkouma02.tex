@@ -74,8 +74,8 @@
 
 \floatname{algorithm}{Algoritmus}
 
-\counterwithin{table}{section}
-\renewcommand{\thetable}{\thesection.\arabic{table}}
+\counterwithin{table}{chapter}
+\counterwithin{algorithm}{chapter}
 
 \algnewcommand\algorithmicinput{\textbf{Vstup:}}
 \algnewcommand\Input{\item[\algorithmicinput]}
@@ -111,17 +111,17 @@
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definice}
-\numberwithin{definition}{section}
+\numberwithin{definition}{chapter}
 
 \theoremstyle{definition}
 \newtheorem{convention}{Konvence}
-\numberwithin{convention}{section}
+\numberwithin{convention}{chapter}
 
 \theoremstyle{definition}
 \newtheorem{example}{Příklad}
-\numberwithin{example}{section}
+\numberwithin{example}{chapter}
 
-\counterwithin{figure}{section}
+\counterwithin{figure}{chapter}
 
 % Pro seznam zkratek lze využít balíček Glossaries - nutno odkomentovat i níže a při kompilaci z konzoly i v Makefile (plnou verzi pro Perl, nebo lite)
 % The Glossaries package can be used for the list of abbreviations - it is necessary to uncomment also below. When compiling from the console also in the Makefile (full version for Perl or lite)

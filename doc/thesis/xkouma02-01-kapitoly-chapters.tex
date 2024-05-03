@@ -942,7 +942,7 @@ Paralelní komunikující (\emph{parallel communicating})\,--\,PC gramatický sy
 Komunikační symboly slouží ke komunikaci na vyžádání.
 Kdykoliv se vyskytnou ve větné formě libovolné komponenty, proběhne \emph{komunikační krok} (také nazýván \emph{c-derivační krok}).
 
-Komunikačních symbolů je stejné množství jako komponent v~PC gramatickém systému, $\{Q_1, \ldots, Q_n\}$, kde index symbolu $Q_i$ odkazuje na komponentu $P_i$ \cite{PCGS-chapter2}.
+Komunikačních symbolů je stejné množství jako komponent v~PC gramatickém systému, $\{Q_1, \ldots, Q_n\}$, kde index symbolu $Q_i$ odkazuje na komponentu $P_i$ \cite{Handbook-Of-Formal-Languages-2}.
 \begin{definition}
     Paralelní komunikující gramatický systém stupně $n, n \geq 1$ je $(n+3)$-tice
     \begin{center}
@@ -1769,7 +1769,7 @@ Všimněme si pomocného symbolu \$, který slouží jako ukončovač řetězce 
 
     \begin{table}[ht]
         \centering
-        \begin{tabularx}{0.88\textwidth}{p{0.24\textwidth}rrp{0.27\textwidth}}
+        \begin{tabularx}{0.86\textwidth}{p{0.24\textwidth}rrp{0.27\textwidth}}
             \toprule
             \textbf{Zásobník} & \textbf{Precedence} & \textbf{Vstup} & \textbf{Akce} \\
             \midrule
@@ -1850,7 +1850,7 @@ Blokový komentář může být na více řádků počínaje znaky \texttt{/*}, 
 
 \subsection*{Deklarace a definice funkcí}
 Jak bylo zmíněno v~úvodu této kapitoly, deklarované funkce musí být rovnou definovány.
-Jazyk Koubp nepodporuje \emph{přetěžování (overloading)}\footnote{Pro C++ například \href{https://learn.microsoft.com/en-us/cpp/cpp/function-overloading?view=msvc-170}{https://learn.microsoft.com/en-us/cpp/cpp/function-overloading?view=msvc-170}. V~ostatních kompilátorech, jako \texttt{gcc}/\texttt{g++} nebo \texttt{clang}/\texttt{clang++} budou principy minimálně velmi podobné. } funkcí.
+Jazyk Koubp nepodporuje \emph{přetěžování (overloading)}\footnote{Pro C++ například \href{https://learn.microsoft.com/en-us/cpp/cpp/function-overloading?view=msvc-170}{https://learn.microsoft.com/en-us/cpp/cpp/function-overloading?view=msvc-170}. V~ostatních kompilátorech, jako \texttt{gcc}/\texttt{g++} nebo \texttt{clang}/\texttt{clang++} jsou principy minimálně velmi podobné. } funkcí.
 Definice funkce se skládá z~hlavičky za klíčovým slovem \texttt{function} a~těla funkce.
 V~hlavičce se definuje název funkce, návratový typ a~počet parametrů a~jejich datové typy.
 Schematicky vypadá následovně:
@@ -2393,12 +2393,12 @@ Přeložení programu a~spuštění testů proběhlo na těchto operačních sys
 \begin{itemize}
 	\item Fedora 40 KDE, překladače \texttt{gcc} verze 14.0.1 a~\texttt{clang} verze 18.1.1,
 	\item Apple Sonoma 14.4.1 s~překladačem \texttt{Apple clang} verze 1500.3.9.4\,--\,za vyzkoušení děkuji Ondřeji Lukáškovi,
-	\item Linuxové distribuce na WSL (\emph{Windows Subsystem for Linux\footnote{Podrobně se o~WSL píše například na \href{https://learn.microsoft.com/en-us/windows/wsl/about}{https://learn.microsoft.com/en-us/windows/wsl/about}.}}):
+	\item linuxové distribuce na WSL (\emph{Windows Subsystem for Linux\footnote{Podrobně se o~WSL píše například na \href{https://learn.microsoft.com/en-us/windows/wsl/about}{https://learn.microsoft.com/en-us/windows/wsl/about}.}}):
 	\begin{itemize}[label=$\circ$]
 		\item Ubuntu 22.04 s~\texttt{gcc} verze 11.4.0\,--\,za vyzkoušení děkuji Adamu Malysákovi,
-		\item Debian 11 
+		\item Debian 12 a~\texttt{gcc} 12.2.0, \texttt{clang} 14.0.6,
 	\end{itemize}
-	\item Školní server Merlin\,--\,CentOS 7 za použití překladače \texttt{gcc} verze 10.5; překladač \texttt{clang} generuje chybu, protože nedokáže najít standardní knihovny \texttt{<cstddef>} a~\texttt{<string>}.
+	\item školní server Merlin\,--\,CentOS 7 za použití překladače \texttt{gcc} verze 10.5; překladač \texttt{clang} generuje chybu, protože nedokáže najít standardní knihovny \texttt{<cstddef>} a~\texttt{<string>}.
 \end{itemize}
 Pro přeložení a~plnou funkcionalitu programu se všemi výstupy je nutné mít na systému nainstalován překladač C++ a~nástroje \texttt{Make}, \texttt{CMake} a~\texttt{dot}.
 Dále byl při implementaci použit nástroj \texttt{valgrind} pro analýzu správy paměti a~nástroj \texttt{Flex} pro generování lexikálního analyzátoru.
