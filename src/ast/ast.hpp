@@ -2,7 +2,7 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-04-03 10:26
- * @ Modified time: 2024-05-02 20:24
+ * @ Modified time: 2024-05-04 09:21
  */
 
 
@@ -71,16 +71,68 @@ private:
     ~AST();
 
 public:
+    /**
+     * @brief Get a pointer to current context node in which the AST is being built.
+     * @return The pointer to the current context node.
+     */
     ASTNode* GetCurrentContext();
+
+    /**
+     * @brief Get a pointer to current expression context node in which the AST is being built.
+     * @return The pointer to the current expression context node.
+     */
     Expression* GetExpressionContext();
+
+    /**
+     * @brief Pop the current context node from the stack.
+     */
     void PopContext();
+
+    /**
+     * @brief Push a new context node to the stack.
+     * @param node The node to be pushed.
+     */
     void PushContext(ASTNode* node);
+
+    /**
+     * @brief Pop the current expression context node from the stack.
+     */
     void PopExpressionContext();
+
+    /**
+     * @brief Push a new expression context node to the stack.
+     * @param exp The expression node to be pushed.
+     */
     void PushExpressionContext(Expression* exp);
+
+    /**
+     * @brief Sets tree printing flag to true if "-t" option was used.
+     */
     void SetTreeFlag();
+
+    /**
+     * @brief Traverse the AST and make a .dot file out of it.
+     */
     void PrintTree();
+
+    /**
+     * @brief Get an AST singleton instance.
+     */
     static AST* GetInstance();
+
+    /**
+     * @brief Clean all the resources used by the AST.
+     */
     static void Cleanup();
+
+    /**
+     * @brief Turn off the AST.
+     */
     void TurnOff();
+
+    /**
+     * @brief Check if the AST is turned off.
+     * @return True if the AST is turned off, false otherwise.
+     */
     bool IsTurnedOff();
 };

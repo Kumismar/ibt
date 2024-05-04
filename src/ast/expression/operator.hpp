@@ -8,6 +8,10 @@
 #pragma once
 
 #include "token.hpp"
+
+/**
+ * @brief An enumeration for the type of the operator.
+ */
 typedef enum operatorType
 {
     Plus,
@@ -29,13 +33,33 @@ typedef enum operatorType
     ExpInParentheses
 } OperatorType;
 
+/**
+ * @brief A class representing an operator in the AST.
+ */
 class Operator
 {
 private:
+    /**
+     * @brief Type of the operator.
+     */
     OperatorType type;
 
 public:
-    OperatorType GetType() const;
+    /**
+     * @brief A constructor.
+     * @param t The token type of the operator.
+     */
     Operator(TokenType t);
+
+    /**
+     * @brief Get the operator type.
+     * @return The operator type.
+     */
+    OperatorType GetType() const;
+
+    /**
+     * @brief Get the operator precedence.
+     * @return The operator precedence.
+     */
     void PrintTree(std::ofstream& file, int& id, int parentId);
 };

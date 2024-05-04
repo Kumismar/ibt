@@ -9,6 +9,10 @@
 
 #include "expression.hpp"
 #include "token.hpp"
+
+/**
+ * @brief An enumeration for the type of the operand.
+ */
 typedef enum operandType
 {
     Constant_t,
@@ -16,20 +20,34 @@ typedef enum operandType
     FunctionCall_t
 } OperandType;
 
-
+/**
+ * @brief A class representing an operand in the AST.
+ */
 class Operand : public Expression
 {
 protected:
+    /**
+     * @brief Type of the operand.
+     */
     OperandType type;
+
+    /**
+     * @brief Data of the operand taken from token.
+     */
     TokenData data;
 
 public:
+    /**
+     * @brief Get the operand type.
+     * @return The operand type.
+     */
     OperandType GetType() const
     {
         return type;
     }
 
-    virtual ~Operand()
-    {
-    }
+    /**
+     * @brief A destructor.
+     */
+    ~Operand() override = default;
 };

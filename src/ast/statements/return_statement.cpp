@@ -18,9 +18,7 @@ ReturnStatement::ReturnStatement()
 
 ReturnStatement::~ReturnStatement()
 {
-    if (this->expr != nullptr) {
-        delete this->expr;
-    }
+    delete this->expr;
 }
 
 void ReturnStatement::PrintTree(std::ofstream& file, int& id, int parentId)
@@ -36,7 +34,6 @@ void ReturnStatement::PrintTree(std::ofstream& file, int& id, int parentId)
 
 void ReturnStatement::ProcessToken(Token& token)
 {
-    return;
 }
 
 void ReturnStatement::LinkNode(ASTNode* node, Nonterminal& nt)

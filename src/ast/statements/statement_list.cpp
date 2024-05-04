@@ -44,8 +44,11 @@ void StatementList::PrintTree(std::ofstream& file, int& id, int parentId)
         if (item->type == Statement_t) {
             item->data.statement->PrintTree(file, id, currentId);
         }
-        else {
+        else if (item->type == Expression_t) {
             item->data.expression->PrintTree(file, id, currentId);
+        }
+        else {
+            item->data.statementList->PrintTree(file, id, currentId);
         }
     }
 }
@@ -91,9 +94,4 @@ void StatementList::LinkNode(ASTNode* node, Nonterminal& nt)
         tmp->data.statement = tmpStmt;
     }
     this->statements.push_back(tmp);
-}
-
-std::vector<StatementOrExpression*> StatementList::GetStatements() const
-{
-    return this->statements;
 }

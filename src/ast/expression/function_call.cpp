@@ -8,6 +8,11 @@
 #include "function_call.hpp"
 #include "internal_error.hpp"
 
+FunctionCall::FunctionCall()
+{
+    this->type = FunctionCall_t;
+}
+
 FunctionCall::~FunctionCall()
 {
     if (!this->arguments.empty()) {
@@ -44,3 +49,4 @@ void FunctionCall::LinkNode(ASTNode* node, Nonterminal& nt)
         this->arguments.push_back(tmp);
     }
 }
+

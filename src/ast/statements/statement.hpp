@@ -10,6 +10,9 @@
 #include "ast_node.hpp"
 #include "nonterminal.hpp"
 
+/**
+ * @brief An enum representing type of the statement.
+ */
 typedef enum statementType
 {
     FuncDef_s,
@@ -19,18 +22,38 @@ typedef enum statementType
     Elseif_s,
     While_s,
     For_s,
-    Semicolon_s,
-    Expression_s,
-    CodeBlock_s
 } StatementType;
 
+/**
+ * @brief An abstract class representing a statement in the AST.
+ */
 class Statement : public ASTNode
 {
 protected:
+    /**
+     * @brief The type of the statement.
+     */
     StatementType type;
 
 public:
-    virtual ~Statement() override = default;
-    virtual void ProcessToken(Token& t) override = 0;
-    virtual void LinkNode(ASTNode* node, Nonterminal& nt) override = 0;
+    /**
+     * @brief A virtual destructor.
+     */
+    ~Statement() override = default;
+
+    /**
+     * @brief Processes a token.
+     * @details This method is called on current AST context.
+     * The AST nodes gradually add information to themselves.
+     * @param t The token to process.
+     */
+    void ProcessToken(Token& t) override = 0;
+
+    /**
+     * @brief Links a node to the current context based on type of nonterminal.
+     * @param node The node to link.
+     * @param nt Nonterminal used to determine if the node will be linked.
+     * Is used to dynamically cast the node to the correct type.
+     */
+    void LinkNode(ASTNode* node, Nonterminal& nt) override = 0;
 };

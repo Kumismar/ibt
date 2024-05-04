@@ -125,7 +125,7 @@ void FunctionDefinition::LinkNode(ASTNode* node, Nonterminal& nt)
     }
 }
 
-bool FunctionDefinition::isType(const Token& token) const
+bool FunctionDefinition::isType(const Token& token)
 {
     return (token == tInt || token == tFloat || token == tString || token == tBool);
 }
@@ -155,7 +155,7 @@ void FunctionDefinition::setReturnType(const Token& token)
     }
 }
 
-std::string Parameter::typeToString(TokenType t) const
+std::string Parameter::typeToString(TokenType t)
 {
     switch (t) {
         case tInt: {
@@ -176,7 +176,7 @@ std::string Parameter::typeToString(TokenType t) const
     }
 }
 
-std::string FunctionDefinition::typeToString(DataType t) const
+std::string FunctionDefinition::typeToString(DataType t)
 {
     switch (t) {
         case Int: {

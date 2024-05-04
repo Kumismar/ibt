@@ -11,6 +11,9 @@
 #include "statement.hpp"
 #include "statement_list.hpp"
 
+/**
+ * @brief A class representing a while loop in the AST.
+ */
 class WhileLoop : public Statement
 {
 private:

@@ -19,7 +19,7 @@ private:
     std::vector<Expression*> arguments;
 
 public:
-    FunctionCall() = default;
+    FunctionCall();
     ~FunctionCall() override;
     void PrintTree(std::ofstream& file, int& id, int parentId) override;
     void ProcessToken(Token& token) override;
