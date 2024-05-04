@@ -13,6 +13,7 @@
 
 Constant::Constant(Token& t)
 {
+    this->nodeType = Expression_n;
     this->type = Constant_t;
     this->data.type = t.GetDataType();
     if (this->data.type == String) {
@@ -49,12 +50,4 @@ void Constant::PrintTree(std::ofstream& file, int& id, int parentId)
         file << this->data.value.boolVal;
     }
     file << "\"];\n";
-}
-
-void Constant::ProcessToken(Token& token)
-{
-}
-
-void Constant::LinkNode(ASTNode* node, Nonterminal& nt)
-{
 }

@@ -15,6 +15,7 @@
 Declaration::Declaration()
 {
     this->type = Declaration_s;
+    this->nodeType = Statement_n;
 }
 
 Declaration::~Declaration()

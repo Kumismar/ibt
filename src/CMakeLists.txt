@@ -60,4 +60,5 @@ target_compile_options(Parser PRIVATE
     -Wextra
     -pedantic
     -std=c++20
+    -Wno-unused-parameter
 )

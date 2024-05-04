@@ -10,13 +10,14 @@
 
 FunctionCall::FunctionCall()
 {
+    this->nodeType = Expression_n;
     this->type = FunctionCall_t;
 }
 
 FunctionCall::~FunctionCall()
 {
     if (!this->arguments.empty()) {
-        for (auto arg: this->arguments) {
+        for (Expression* arg: this->arguments) {
             delete arg;
         }
     }
@@ -28,7 +29,7 @@ void FunctionCall::PrintTree(std::ofstream& file, int& id, int parentId)
     file << "node" << parentId << " -> node" << currentId << ";\n";
     file << "node" << currentId << " [label=\"FunctionCall: " << this->name << "\"];\n";
 
-    for (auto arg: this->arguments) {
+    for (Expression* arg: this->arguments) {
         arg->PrintTree(file, id, currentId);
     }
 }

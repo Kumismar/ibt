@@ -11,6 +11,7 @@
 
 Variable::Variable(Token& token)
 {
+    this->nodeType = Expression_n;
     this->type = Variable_t;
     this->data.type = token.GetDataType();
     if (this->data.type == String) {
@@ -25,11 +26,3 @@ void Variable::PrintTree(std::ofstream& file, int& id, int parentId)
     file << "node" << parentId << " -> node" << currentId << ";\n";
     file << "node" << currentId << " [label=\"Variable: " << this->name << "\"];\n";
 }
-
-void Variable::ProcessToken(Token& token)
-{
-    }
-
-void Variable::LinkNode(ASTNode* node, Nonterminal& nt)
-{
-    }

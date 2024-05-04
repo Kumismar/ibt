@@ -12,6 +12,7 @@
 
 BinaryExpression::BinaryExpression(TokenType t)
 {
+    this->nodeType = Expression_n;
     AST* ast = AST::GetInstance();
     this->expressionType = Binary;
     this->right = ast->GetExpressionContext();
@@ -47,12 +48,4 @@ void BinaryExpression::PrintTree(std::ofstream& file, int& id, int parentId)
     this->left->PrintTree(file, id, currentId);
     this->optr->PrintTree(file, id, currentId);
     this->right->PrintTree(file, id, currentId);
-}
-
-void BinaryExpression::ProcessToken(Token& token)
-{
-}
-
-void BinaryExpression::LinkNode(ASTNode* node, Nonterminal& nt)
-{
 }

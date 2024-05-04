@@ -43,6 +43,7 @@ target_compile_options(ParserTest PRIVATE
     -Wextra
     -pedantic
     -std=c++20
+    -Wno-unused-parameter
 )
 
 include(GoogleTest)

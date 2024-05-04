@@ -18,6 +18,7 @@ ForLoop::ForLoop()
     this->type = For_s;
     this->init = new Initialization();
     this->init->type = NoType;
+    this->nodeType = Statement_n;
 }
 
 ForLoop::~ForLoop()

@@ -10,6 +10,7 @@
 
 UnaryExpression::UnaryExpression(TokenType t)
 {
+    this->nodeType = Expression_n;
     this->expressionType = Unary;
     this->operand = AST::GetInstance()->GetExpressionContext();
     AST::GetInstance()->PopExpressionContext();
@@ -53,11 +54,3 @@ void UnaryExpression::PrintTree(std::ofstream& file, int& id, int parentId)
     this->optr->PrintTree(file, id, currentId);
     this->operand->PrintTree(file, id, currentId);
 }
-
-void UnaryExpression::ProcessToken(Token& token)
-{
-    }
-
-void UnaryExpression::LinkNode(ASTNode* node, Nonterminal& nt)
-{
-    }
