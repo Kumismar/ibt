@@ -19,17 +19,10 @@ IfStatement::IfStatement()
 
 IfStatement::~IfStatement()
 {
-    if (this->condition != nullptr) {
-        delete this->condition;
-    }
+    delete this->condition;
+    delete this->elseBody;
+    delete this->ifBody;
 
-    if (this->elseBody != nullptr) {
-        delete this->elseBody;
-    }
-
-    if (this->ifBody != nullptr) {
-        delete this->ifBody;
-    }
 
     if (!this->elseifs.empty()) {
         for (auto elseif: this->elseifs) {
@@ -70,7 +63,7 @@ void IfStatement::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     switch (nt.GetNonterminalType()) {
         case nCodeBlock: {
-            StatementList* tmp = dynamic_cast<StatementList*>(node);
+            auto* tmp = dynamic_cast<StatementList*>(node);
             if (tmp == nullptr) {
                 throw InternalError("IfStatement::LinkNode (case nCodeBlock) invalid type: " + std::string(typeid(*node).name()));
             }
@@ -84,7 +77,7 @@ void IfStatement::LinkNode(ASTNode* node, Nonterminal& nt)
             break;
         }
         case nIf2: {
-            ElseifStatement* tmp = dynamic_cast<ElseifStatement*>(node);
+            auto* tmp = dynamic_cast<ElseifStatement*>(node);
             if (tmp == nullptr) {
                 throw InternalError("IfStatement::LinkNode (case nIf2) invalid type: " + std::string(typeid(*node).name()));
             }
@@ -93,7 +86,7 @@ void IfStatement::LinkNode(ASTNode* node, Nonterminal& nt)
             break;
         }
         case nExpression: {
-            Expression* tmp = dynamic_cast<Expression*>(node);
+            auto* tmp = dynamic_cast<Expression*>(node);
             if (tmp == nullptr) {
                 throw InternalError("IfStatement::LinkNode (case nExpression) invalid type: " + std::string(typeid(*node).name()));
             }

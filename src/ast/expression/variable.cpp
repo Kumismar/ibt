@@ -28,10 +28,8 @@ void Variable::PrintTree(std::ofstream& file, int& id, int parentId)
 
 void Variable::ProcessToken(Token& token)
 {
-    return;
-}
+    }
 
 void Variable::LinkNode(ASTNode* node, Nonterminal& nt)
 {
-    return;
-}
+    }

@@ -128,7 +128,7 @@ void PrecedenceParser::parseFunction()
     try {
         endInsertor.InsertFunctionEnd();
         if (!AST::GetInstance()->IsTurnedOff()) {
-            FunctionCall* tmp = new FunctionCall();
+            auto* tmp = new FunctionCall();
             AST::GetInstance()->PushContext(tmp);
         }
         predParser.Parse(true);
@@ -136,7 +136,7 @@ void PrecedenceParser::parseFunction()
     catch (FunctionParsed const& e) {
         ASTNode* context = AST::GetInstance()->GetCurrentContext();
         if (context != nullptr) { // unit tests only
-            FunctionCall* parsedFuncCall = dynamic_cast<FunctionCall*>(context);
+            auto* parsedFuncCall = dynamic_cast<FunctionCall*>(context);
             if (parsedFuncCall == nullptr) {
                 throw InternalError("PrecedenceParser::parseFunction current context isnt fCall after fCall parsing, real type:" + std::string(typeid(*context).name()));
             }

@@ -9,13 +9,10 @@
 #include "analysis_success.hpp"
 #include "ast.hpp"
 #include "ast_node.hpp"
-#include "ast_node_factory.hpp"
 #include "exception_base.hpp"
 #include "function_parsed.hpp"
-#include "grammar_factory.hpp"
 #include "internal_error.hpp"
 #include "ll_table.hpp"
-#include "logger.hpp"
 #include "nonterminal.hpp"
 #include "precedence_parser.hpp"
 #include "stack_item.hpp"
@@ -81,7 +78,7 @@ void PredictiveParser::ClearStack()
 void PredictiveParser::parseNonterminal()
 {
     AST* ast = AST::GetInstance();
-    Nonterminal* stackNT = dynamic_cast<Nonterminal*>(this->stackTop->Clone());
+    auto* stackNT = dynamic_cast<Nonterminal*>(this->stackTop->Clone());
     if (stackNT == nullptr) {
         throw InternalError("Dynamic cast to Nonterminal* failed, real type:" + std::string(typeid(*this->stackTop).name()) + "\n");
     }
@@ -122,7 +119,7 @@ void PredictiveParser::parseNonterminal()
 
 void PredictiveParser::parseToken()
 {
-    Token* stackToken = dynamic_cast<Token*>(this->stackTop);
+    auto* stackToken = dynamic_cast<Token*>(this->stackTop);
     if (stackToken == nullptr) {
         throw InternalError("Dynamic cast to Token* failed, real type:" + std::string(typeid(*this->stackTop).name()) + "\n");
     }
@@ -183,8 +180,7 @@ void PredictiveParser::parseExpression(Nonterminal* stackNT)
         delete stackNT;
         throw;
     }
-    return;
-}
+    }
 
 void PredictiveParser::handleSpecialCases()
 {

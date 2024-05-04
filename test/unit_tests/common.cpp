@@ -10,7 +10,6 @@
 #include "ast.hpp"
 #include "ast_node_factory.hpp"
 #include "binary_expression.hpp"
-#include "declaration.hpp"
 #include "grammar.hpp"
 #include "unary_expression.hpp"
 #include <cassert>
@@ -42,8 +41,7 @@ void cleanRule(Rule& rule)
 
 Token* sampleToken(TokenType type, DataType dType, Value value)
 {
-    Token* token = new Token();
-    token->SetTokenType(type);
+    auto* token = new Token(type);
     token->SetData(dType, value);
     return token;
 }
@@ -58,19 +56,18 @@ void createOperandAndPush(Token* t)
     assert(expr != nullptr);
 
     AST::GetInstance()->PushExpressionContext(expr);
-    return;
 }
 
 Expression* createUnaryExpression(TokenType type)
 {
-    UnaryExpression* expr = new UnaryExpression(type);
+    auto* expr = new UnaryExpression(type);
     AST::GetInstance()->PushExpressionContext(expr);
     return AST::GetInstance()->GetExpressionContext();
 }
 
 Expression* createBinaryExpression(TokenType type)
 {
-    BinaryExpression* expr = new BinaryExpression(type);
+    auto* expr = new BinaryExpression(type);
     AST::GetInstance()->PushExpressionContext(expr);
     return AST::GetInstance()->GetExpressionContext();
 }

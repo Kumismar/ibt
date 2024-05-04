@@ -55,14 +55,13 @@ void StatementList::PrintTree(std::ofstream& file, int& id, int parentId)
 
 void StatementList::ProcessToken(Token& token)
 {
-    return;
-}
+    }
 
 void StatementList::LinkNode(ASTNode* node, Nonterminal& nt)
 {
-    StatementOrExpression* tmp = new StatementOrExpression();
+    auto* tmp = new StatementOrExpression();
     if (nt.GetNonterminalType() == nExpression) {
-        Expression* tmpNode = dynamic_cast<Expression*>(node);
+        auto* tmpNode = dynamic_cast<Expression*>(node);
         if (tmpNode == nullptr) {
             throw InternalError("StatementList::LinkNode (case nExpression) invalid type: " + std::string(typeid(*node).name()));
         }
@@ -76,7 +75,7 @@ void StatementList::LinkNode(ASTNode* node, Nonterminal& nt)
         return;
     }
     else if (nt.GetNonterminalType() == nCodeBlock) {
-        StatementList* tmpStmtList = dynamic_cast<StatementList*>(node);
+        auto* tmpStmtList = dynamic_cast<StatementList*>(node);
         if (tmpStmtList == nullptr) {
             throw InternalError("StatementList::LinkNode (case nCodeBlock) invalid type: " + std::string(typeid(*node).name()));
         }
@@ -85,7 +84,7 @@ void StatementList::LinkNode(ASTNode* node, Nonterminal& nt)
         tmp->data.statementList = tmpStmtList;
     }
     else {
-        Statement* tmpStmt = dynamic_cast<Statement*>(node);
+        auto* tmpStmt = dynamic_cast<Statement*>(node);
         if (tmpStmt == nullptr) {
             throw InternalError("StatementList::LinkNode (case nStatement) invalid type: " + std::string(typeid(*node).name()));
         }

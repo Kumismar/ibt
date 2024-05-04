@@ -11,6 +11,7 @@
 #include "token.hpp"
 #include <filesystem>
 #include <iostream>
+#include <ranges>
 
 Logger* Logger::instance = nullptr;
 
@@ -101,7 +102,7 @@ void Logger::PrintInputTape() const
 
     // Print tokens with fixed-width columns
     for (const auto token: inputTape) {
-        std::cout << "type: " << std::setw(maxTypeLength) << token->GetTypeString()
+        std::cout << "type: " << std::setw(static_cast<int>(maxTypeLength)) << token->GetTypeString()
                   << "\tdata: " << token->GetDataString().c_str() << "\n";
     }
     std::cout << std::endl;
@@ -140,18 +141,18 @@ void Logger::PrintSyntaxError(const char* message)
 
     // Get position of the error
     size_t position = 0;
-    for (const auto token: this->recentTokens) {
+    for (const Token* token: this->recentTokens) {
         position += token->GetDataString().size() + 1; // for space between tokens
     }
 
     // Print recent tokens
-    for (auto it = this->recentTokens.rbegin(); it != this->recentTokens.rend(); it++) {
-        std::cerr << (*it)->GetDataString() << " ";
+    for (const Token* recentToken : std::ranges::reverse_view(this->recentTokens)) {
+        std::cerr << recentToken->GetDataString() << " ";
     }
 
     // Print max three more tokens from input tape
     int i = 0;
-    for (const auto token: inputTape) {
+    for (const Token* token: inputTape) {
         if (i >= 3) {
             break;
         }
@@ -190,14 +191,10 @@ void Logger::PrintUsageError()
 
 void Logger::clearRule()
 {
-    if (this->turnedOff) {
-        return;
-    }
-
     delete this->leftSideRule;
     this->leftSideRule = nullptr;
-    for (const Symbol* item: this->rightSideRule) {
-        delete item;
+    for (const Symbol* symbol: this->rightSideRule) {
+        delete symbol;
     }
     this->rightSideRule.clear();
 }

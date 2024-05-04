@@ -25,7 +25,7 @@ void SymbolHandler::Expand(bool parsingFunction, LLTableIndex& tableItem)
 {
     Logger* logger = Logger::GetInstance();
     Symbol* stackTop = this->stack.front();
-    Nonterminal* stackNT = dynamic_cast<Nonterminal*>(stackTop->Clone());
+    auto* stackNT = dynamic_cast<Nonterminal*>(stackTop->Clone());
 
     logger->AddLeftSide(stackTop);
 
@@ -68,7 +68,7 @@ bool SymbolHandler::returnedEpsilon()
 {
     Symbol* front = this->expandedRightSide.front();
     if (this->expandedRightSide.size() == 1 && front->GetSymbolType() == Token_t) {
-        Token* t = dynamic_cast<Token*>(front);
+        auto* t = dynamic_cast<Token*>(front);
         if (t == nullptr) {
             throw InternalError("Dynamic cast to Token* failed, real type: " + std::string(typeid(front).name()) + "\n");
         }

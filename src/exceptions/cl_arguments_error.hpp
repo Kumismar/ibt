@@ -20,7 +20,7 @@ public:
      * 
      * @param message Message that will be shown when the exception is thrown.
      */
-    CLArgumentsError(const char* message)
+    explicit CLArgumentsError(const char* message)
         : ExceptionBase(message)
     {
     }

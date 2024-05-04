@@ -15,7 +15,7 @@ private:
     /**
      * @brief Skips tokens representing function call in input tape.
      */
-    void skipFunctionCall(InputTape::iterator& tokenIter) const;
+    static void skipFunctionCall(InputTape::iterator& tokenIter) ;
 
     /**
      * @brief Skips tokens representing expression operand in input tape.
@@ -25,7 +25,7 @@ private:
     /**
      * @brief Skips tokens representing expression operand in parentheses in input tape.
      */
-    void skipOperandInParentheses(InputTape::iterator& tokenIter) const;
+    static void skipOperandInParentheses(InputTape::iterator& tokenIter) ;
 
     /**
      * @brief Determines if the token is an operator
@@ -33,7 +33,7 @@ private:
      *
      * @param token Token to be checked.
      */
-    bool isOperator(Token& token) const;
+    static bool isOperator(Token& token) ;
 
 public:
     /**
@@ -44,5 +44,5 @@ public:
     /**
      * @brief Goes through the input tape and inserts auxiliary token at the end of currently parsed function call.
      */
-    void InsertFunctionEnd() const;
+    static void InsertFunctionEnd() ;
 };

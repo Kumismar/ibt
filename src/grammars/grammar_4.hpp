@@ -41,7 +41,7 @@ public:
      * @param stackRule Rule to be checked.
      * @return True if the rule is a part of the grammar, false otherwise.
      */
-    bool IsRule(Rule& stackRule);
+    static bool IsRule(Rule& stackRule);
 
     /**
      * @brief Cleans up all the memory allocated by the grammar.

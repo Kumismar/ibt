@@ -10,8 +10,6 @@
 #include "token.hpp"
 #include <vector>
 
-#define ROWSIZE 19
-
 /**
  * @brief Item selector in precedence table row.
  */

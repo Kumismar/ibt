@@ -39,7 +39,7 @@ void ReturnStatement::ProcessToken(Token& token)
 void ReturnStatement::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     if (nt.GetNonterminalType() == nExpression) {
-        Expression* tmp = dynamic_cast<Expression*>(node);
+        auto* tmp = dynamic_cast<Expression*>(node);
         if (tmp == nullptr) {
             throw InternalError("ReturnStatement::LinkNode (case nExpression) invalid type: " + std::string(typeid(*node).name()));
         }

@@ -53,10 +53,8 @@ void Constant::PrintTree(std::ofstream& file, int& id, int parentId)
 
 void Constant::ProcessToken(Token& token)
 {
-    return;
 }
 
 void Constant::LinkNode(ASTNode* node, Nonterminal& nt)
 {
-    return;
 }

@@ -113,7 +113,7 @@ bool ASTNodeFactory::isUnaryExpression(Rule& rule)
         return true;
     }
 
-    Token* tmp = dynamic_cast<Token*>(rule.front());
+    auto* tmp = dynamic_cast<Token*>(rule.front());
     if (tmp != nullptr) {
         return (*tmp == tLPar);
     }
@@ -123,17 +123,17 @@ bool ASTNodeFactory::isUnaryExpression(Rule& rule)
 Expression* ASTNodeFactory::createOperand(Rule& rule)
 {
     Symbol* tmpSymb = rule.front();
-    Token* operandToken = dynamic_cast<Token*>(tmpSymb);
+    auto* operandToken = dynamic_cast<Token*>(tmpSymb);
     if (operandToken == nullptr) {
         throw InternalError("ASTNodeFactory::createOperand operand is not Token*, real type:" + std::string(typeid(*tmpSymb).name()) + "\n");
     }
 
     if (*operandToken == tVariable) {
-        Variable* tmpVar = new Variable(*operandToken);
+        auto* tmpVar = new Variable(*operandToken);
         return tmpVar;
     }
     else if (*operandToken == tConst) {
-        Constant* tmpConst = new Constant(*operandToken);
+        auto* tmpConst = new Constant(*operandToken);
         return tmpConst;
     }
     else if (*operandToken == tFuncConst) {
@@ -148,7 +148,7 @@ Expression* ASTNodeFactory::createOperand(Rule& rule)
 Expression* ASTNodeFactory::createUnaryExpression(Rule& rule)
 {
     Symbol* tmpSymb = *rule.begin();
-    Token* optr = dynamic_cast<Token*>(tmpSymb);
+    auto* optr = dynamic_cast<Token*>(tmpSymb);
     if (optr == nullptr) {
         throw InternalError("ASTNodeFactory::createUnaryExpression optr is not Token*, real type:" + std::string(typeid(*tmpSymb).name()) + "\n");
     }
@@ -161,16 +161,16 @@ Expression* ASTNodeFactory::createBinaryExpression(Rule& rule)
 {
     Token* possibleLPar = dynamic_cast<Token*>(*rule.begin());
     if (possibleLPar != nullptr && *possibleLPar == tLPar) {
-        UnaryExpression* tmpExp = new UnaryExpression(tLPar);
+        auto* tmpExp = new UnaryExpression(tLPar);
         return tmpExp;
     }
 
     Symbol* tmpSymb = *std::next(rule.begin());
-    Token* optr = dynamic_cast<Token*>(tmpSymb);
+    auto* optr = dynamic_cast<Token*>(tmpSymb);
     if (optr == nullptr) {
         throw InternalError("ASTNodeFactory::createBinaryExpression optr is not Token*, real type:" + std::string(typeid(*tmpSymb).name()) + "\n");
     }
 
-    BinaryExpression* tmpExp = new BinaryExpression(optr->GetTokenType());
+    auto* tmpExp = new BinaryExpression(optr->GetTokenType());
     return tmpExp;
 }

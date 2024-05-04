@@ -87,7 +87,7 @@ public:
      * 
      * @param stack The automaton pushdown.
      */
-    PredictiveParser(AnalysisStack& stack);
+    explicit PredictiveParser(AnalysisStack& stack);
 
     /**
      * @brief Predictive parser destructor.

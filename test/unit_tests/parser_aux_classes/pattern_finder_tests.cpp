@@ -12,7 +12,6 @@
 #include "nonterminal.hpp"
 #include "pattern_finder.hpp"
 #include "precedence_symbol.hpp"
-#include "predictive_parser.hpp"
 #include "token.hpp"
 #include <gtest/gtest.h>
 

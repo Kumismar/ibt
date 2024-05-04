@@ -42,7 +42,7 @@ void ExpressionProcessor::Reduce()
             delete this->stack.front();
             this->stack.pop_front();
         }
-        Nonterminal* toPush = new Nonterminal(nExpression);
+        auto* toPush = new Nonterminal(nExpression);
         this->stack.push_front(toPush);
 
 

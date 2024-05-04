@@ -21,28 +21,28 @@ private:
      * @param rule The rule to create the operand from.
      * @return The created operand.
      */
-    Expression* createOperand(Rule& rule);
+    static Expression* createOperand(Rule& rule);
 
     /**
      * @brief Creates a unary expression AST node.
      * @param rule The rule to create the unary expression from.
      * @return The created unary expression.
      */
-    Expression* createUnaryExpression(Rule& rule);
+    static Expression* createUnaryExpression(Rule& rule);
 
     /**
      * @brief Creates a binary expression AST node.
      * @param rule The rule to create the binary expression from.
      * @return The created binary expression.
      */
-    Expression* createBinaryExpression(Rule& rule);
+    static Expression* createBinaryExpression(Rule& rule);
 
     /**
      * @brief Checks if given rule is an unary expression.
      * @param rule The rule to check.
      * @return True if the rule is an unary expression, false otherwise.
      */
-    bool isUnaryExpression(Rule& rule);
+    static bool isUnaryExpression(Rule& rule);
 
 public:
     /**

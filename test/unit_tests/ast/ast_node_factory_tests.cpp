@@ -10,19 +10,17 @@
 #include "binary_expression.hpp"
 #include "common.hpp"
 #include "constant.hpp"
-#include "grammar.hpp"
 #include "logger.hpp"
 #include "token.hpp"
 #include "unary_expression.hpp"
 #include "variable.hpp"
-#include <cassert>
 #include <gtest/gtest.h>
 
 class ASTNodeFactoryTests : public ::testing::Test
 {
 protected:
     Rule rule;
-    ASTNodeFactory* factory;
+    ASTNodeFactory* factory = nullptr;
     Expression* expr = nullptr;
 
     void SetUp() override
@@ -44,9 +42,8 @@ protected:
         AST::Cleanup();
         Logger::Cleanup();
 
-        if (this->expr != nullptr) {
             delete this->expr;
-        }
+
     }
 };
 

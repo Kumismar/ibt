@@ -84,7 +84,7 @@ public:
      * 
      * @param stack The main parsing automaton pushdown.
      */
-    PrecedenceParser(AnalysisStack& stack);
+    explicit PrecedenceParser(AnalysisStack& stack);
 
     /**
      * @brief Parse the input tape using precedence parsing.

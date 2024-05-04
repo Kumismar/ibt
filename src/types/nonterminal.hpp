@@ -43,13 +43,13 @@ private:
     /**
      * @brief Type of the nonterminal.
      */
-    const NonterminalType ntType;
+    NonterminalType ntType;
 
 public:
     /**
      * @brief Nonterminal constructor using type.
      */
-    Nonterminal(const NonterminalType t);
+    explicit Nonterminal(NonterminalType t);
 
     /**
      * @brief Nonterminal copy constructor.

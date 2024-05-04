@@ -23,7 +23,7 @@ private:
     static std::string typeToString(TokenType t) ;
 
 public:
-    void SetType(const TokenType type);
+    void SetType(TokenType type);
     void SetName(const std::string& name);
     void PrintTree(std::ofstream& file, int& id, int parentId);
 };

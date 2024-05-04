@@ -51,10 +51,8 @@ void BinaryExpression::PrintTree(std::ofstream& file, int& id, int parentId)
 
 void BinaryExpression::ProcessToken(Token& token)
 {
-    return;
 }
 
 void BinaryExpression::LinkNode(ASTNode* node, Nonterminal& nt)
 {
-    return;
 }

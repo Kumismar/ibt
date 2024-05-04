@@ -20,7 +20,7 @@ public:
      * @brief Create Constant and set node type.
      * @param t Token of the constant.
      */
-    Constant(Token& t);
+    explicit Constant(Token& t);
 
     /**
      * @brief A destructor.

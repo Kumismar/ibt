@@ -41,5 +41,5 @@ LLTableIndex LLRowAccessor::operator[](const Token& t) const
 
 LLRowAccessor LLTable::operator[](const Nonterminal& nt) const
 {
-    return LLRowAccessor(LLTable::table[static_cast<unsigned>(nt.GetNonterminalType())]);
+    return {LLTable::table[static_cast<unsigned>(nt.GetNonterminalType())]};
 }

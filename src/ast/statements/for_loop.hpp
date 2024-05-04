@@ -85,7 +85,7 @@ private:
      * @brief Checks if the next token is a type.
      * @return True if the next token is a type, false otherwise.
      */
-    bool nextIsType();
+    static bool nextIsType();
 
 public:
     /**

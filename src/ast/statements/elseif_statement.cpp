@@ -18,13 +18,8 @@ ElseifStatement::ElseifStatement()
 
 ElseifStatement::~ElseifStatement()
 {
-    if (this->condition != nullptr) {
-        delete this->condition;
-    }
-
-    if (this->body != nullptr) {
-        delete this->body;
-    }
+    delete this->condition;
+    delete this->body;
 }
 
 void ElseifStatement::PrintTree(std::ofstream& file, int& id, int parentId)
@@ -39,14 +34,13 @@ void ElseifStatement::PrintTree(std::ofstream& file, int& id, int parentId)
 
 void ElseifStatement::ProcessToken(Token& token)
 {
-    return;
 }
 
 void ElseifStatement::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     switch (nt.GetNonterminalType()) {
         case nExpression: {
-            Expression* tmp = dynamic_cast<Expression*>(node);
+            auto* tmp = dynamic_cast<Expression*>(node);
             if (tmp == nullptr) {
                 throw InternalError("ElseifStatement::LinkNode (case nExpression) invalid type: " + std::string(typeid(*node).name()));
             }
@@ -55,7 +49,7 @@ void ElseifStatement::LinkNode(ASTNode* node, Nonterminal& nt)
             break;
         }
         case nCodeBlock: {
-            StatementList* tmp = dynamic_cast<StatementList*>(node);
+            auto* tmp = dynamic_cast<StatementList*>(node);
             if (tmp == nullptr) {
                 throw InternalError("ElseifStatement::LinkNode (case nCodeBlock) invalid type: " + std::string(typeid(*node).name()));
             }

@@ -42,7 +42,7 @@ void FunctionCall::ProcessToken(Token& token)
 void FunctionCall::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     if (nt == nExpression) {
-        Expression* tmp = dynamic_cast<Expression*>(node);
+        auto* tmp = dynamic_cast<Expression*>(node);
         if (tmp == nullptr) {
             throw InternalError("FunctionCall::LinkNode case nExpression node isnt expression, real type:" + std::string(typeid(*node).name()));
         }

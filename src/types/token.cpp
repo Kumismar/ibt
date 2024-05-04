@@ -2,23 +2,15 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-04-28 19:04
+ * @ Modified time: 2024-05-04 15:12
  */
 
 #include "token.hpp"
 #include "internal_error.hpp"
-#include "lex.yy.h"
 #include "stack_item.hpp"
 #include <string>
 
 InputTape inputTape;
-
-Token::Token()
-{
-    this->data.type = None;
-    this->symbType = Token_t;
-    this->lineno = yyget_lineno();
-}
 
 Token::Token(const TokenType t)
     : type(t)
@@ -251,8 +243,7 @@ Value Token::GetData() const
 void Token::AddToken(TokenType ttype, DataType dtype)
 {
     extern TokenType previousToken;
-    Token* token = new Token();
-    token->SetTokenType(ttype);
+    auto* token = new Token(ttype);
     token->SetData(dtype);
     inputTape.push_back(token);
     previousToken = ttype;

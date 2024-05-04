@@ -37,7 +37,7 @@ public:
      * @brief Create BinaryExpression and set expression type.
      * @param t Token type of the operator.
      */
-    BinaryExpression(TokenType t);
+    explicit BinaryExpression(TokenType t);
 
     /**
      * @brief A destructor.

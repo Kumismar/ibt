@@ -154,7 +154,7 @@ void AST::TurnOff()
     this->turnedOff = true;
 }
 
-bool AST::IsTurnedOff()
+bool AST::IsTurnedOff() const
 {
     return this->turnedOff;
 }

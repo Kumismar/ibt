@@ -47,8 +47,8 @@ char PrecRowAccessor::operator[](const Token& t)
 
 PrecRowAccessor PrecedenceTable::operator[](const Token& t) const
 {
-    unsigned rowIndex = this->MapTokenToIndex(t);
-    return PrecRowAccessor(PrecedenceTable::precTable[rowIndex]);
+    unsigned rowIndex = PrecedenceTable::MapTokenToIndex(t);
+    return {PrecedenceTable::precTable[rowIndex]};
 }
 
 unsigned PrecedenceTable::MapTokenToIndex(const Token& t)

@@ -24,7 +24,7 @@ Token* PatternFinder::FindFirstToken()
         }
     }
 
-    Token* toReturn = dynamic_cast<Token*>(tmpExp);
+    auto* toReturn = dynamic_cast<Token*>(tmpExp);
     if (toReturn == nullptr) {
         throw InternalError("First token in stack is not token.\n");
     }
@@ -38,7 +38,7 @@ void PatternFinder::FindFirstRule(Rule& emptyRule)
     for (auto symb: this->stack) {
         switch (symb->GetSymbolType()) {
             case PrecSymbol_t: {
-                PrecedenceSymbol* tmpSymbol = dynamic_cast<PrecedenceSymbol*>(symb);
+                auto* tmpSymbol = dynamic_cast<PrecedenceSymbol*>(symb);
                 if (tmpSymbol == nullptr) {
                     throw InternalError("PatternFinder::FindFirstRule: Dynamic cast to PrecedenceSymbol* failed - real type:" + std::string(typeid(*symb).name()));
                 }
@@ -52,7 +52,7 @@ void PatternFinder::FindFirstRule(Rule& emptyRule)
                 }
             }
             case Token_t: {
-                Token* tmpToken = dynamic_cast<Token*>(symb);
+                auto* tmpToken = dynamic_cast<Token*>(symb);
                 if (tmpToken == nullptr) {
                     throw InternalError("PatternFinder::FindFirstRule: Dynamic cast to Token* failed - real type:" + std::string(typeid(*symb).name()));
                 }
@@ -67,7 +67,7 @@ void PatternFinder::FindFirstRule(Rule& emptyRule)
             }
             case Nonterminal_t: {
                 // implies for nonterminals as well
-                Nonterminal* tmpNT = dynamic_cast<Nonterminal*>(symb);
+                auto* tmpNT = dynamic_cast<Nonterminal*>(symb);
                 if (tmpNT == nullptr) {
                     throw InternalError("PatternFinder::FindFirstRule: Dynamic cast to Nonterminal* failed - real type:" + std::string(typeid(*symb).name()));
                 }

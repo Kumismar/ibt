@@ -32,13 +32,13 @@ private:
     /**
      * @brief Type of the symbol.
      */
-    PrecedenceType precType;
+    PrecedenceType precType = PrecedenceType::Invalid;
 
 public:
     /**
      * @brief PrecedenceSymbol constructor using type.
      */
-    PrecedenceSymbol(const PrecedenceType type);
+    explicit PrecedenceSymbol(PrecedenceType type);
 
     /**
      * @brief PrecedenceSymbol copy constructor.

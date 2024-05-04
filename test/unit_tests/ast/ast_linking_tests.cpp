@@ -6,16 +6,13 @@
  */
 
 #include "ast.hpp"
-#include "ast_node.hpp"
 #include "ast_node_factory.hpp"
 #include "binary_expression.hpp"
 #include "common.hpp"
 #include "expression.hpp"
 #include "logger.hpp"
-#include "statement_list.hpp"
 #include "token.hpp"
 #include "unary_expression.hpp"
-#include <cassert>
 #include <gtest/gtest.h>
 #include <vector>
 
@@ -23,8 +20,8 @@
 class ASTLinkingTests : public ::testing::Test
 {
 protected:
-    ASTNodeFactory* factory;
-    AST* ast;
+    ASTNodeFactory* factory = nullptr;
+    AST* ast = nullptr;
     Rule rule;
     std::vector<Token*> tokens;
 
@@ -59,7 +56,7 @@ TEST_F(ASTLinkingTests, LinkUnaryExpression)
     Expression* operand = this->ast->GetExpressionContext();
 
     Expression* context = createUnaryExpression(tPlus);
-    UnaryExpression* uExpr = dynamic_cast<UnaryExpression*>(context);
+    auto* uExpr = dynamic_cast<UnaryExpression*>(context);
 
     ASSERT_NE(uExpr, nullptr);
     EXPECT_EQ(uExpr->GetOperand(), operand);
@@ -78,7 +75,7 @@ TEST_F(ASTLinkingTests, LinkBinaryExpression)
     Expression* operand2 = this->ast->GetExpressionContext();
 
     Expression* context = createBinaryExpression(tPlus);
-    BinaryExpression* bExpr = dynamic_cast<BinaryExpression*>(context);
+    auto* bExpr = dynamic_cast<BinaryExpression*>(context);
 
     ASSERT_NE(bExpr, nullptr);
     EXPECT_EQ(bExpr->GetLeft(), operand1);

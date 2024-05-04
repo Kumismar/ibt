@@ -32,18 +32,12 @@ public:
      * @brief Create UnaryExpression and set node type.
      * @param t Token type of the operator.
      */
-    UnaryExpression(TokenType t);
+    explicit UnaryExpression(TokenType t);
 
     /**
      * @brief A destructor.
      */
     ~UnaryExpression() override;
-
-    /**
-     * @brief Get the operator of the unary expression.
-     * @return The operator of the unary expression.
-     */
-    Operator* GetOperator() const;
 
     /**
      * @brief Get the operand of the unary expression.

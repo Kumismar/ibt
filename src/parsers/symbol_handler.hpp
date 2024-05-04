@@ -46,7 +46,7 @@ public:
      * 
      * @param stack The automaton stack.
      */
-    SymbolHandler(AnalysisStack& stack);
+    explicit SymbolHandler(AnalysisStack& stack);
 
     /**
      * @brief Expands the topmost nonterminal on automaton stack based on the LL table entry.

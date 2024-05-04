@@ -33,7 +33,7 @@ public:
      * 
      * @param stack The automaton stack.
      */
-    ExpressionProcessor(AnalysisStack& stack);
+    explicit ExpressionProcessor(AnalysisStack& stack);
 
     /**
      * @brief Reduces the expression on the automaton stack if there is a rule to reduce.

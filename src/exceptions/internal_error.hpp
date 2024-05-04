@@ -17,7 +17,7 @@
 class InternalError : public ExceptionBase
 {
 public:
-    InternalError(const std::string message)
+    explicit InternalError(const std::string& message)
         : ExceptionBase(message)
     {
     }

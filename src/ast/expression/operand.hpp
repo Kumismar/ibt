@@ -38,15 +38,6 @@ protected:
 
 public:
     /**
-     * @brief Get the operand type.
-     * @return The operand type.
-     */
-    OperandType GetType() const
-    {
-        return type;
-    }
-
-    /**
      * @brief A destructor.
      */
     ~Operand() override = default;

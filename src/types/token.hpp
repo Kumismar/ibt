@@ -2,11 +2,12 @@
  * @ Author: Ondřej Koumar
  * @ Email: xkouma02@stud.fit.vutbr.cz
  * @ Create Time: 2024-03-22 22:14
- * @ Modified time: 2024-05-02 14:44
+ * @ Modified time: 2024-05-04 15:14
  */
 
 #pragma once
 
+#include "lex.yy.h"
 #include "stack_item.hpp"
 #include <list>
 #include <string>
@@ -116,9 +117,6 @@ private:
     unsigned int lineno;
 
 public:
-    // TODO: Remove this constructor and all the refactor all the usages to type constructor
-    Token();
-
     /**
      * @brief Token copy constructor.
      */
@@ -127,7 +125,7 @@ public:
     /**
      * @brief Token constructor that sets its type without data.
      */
-    Token(const TokenType type);
+    explicit Token(TokenType type);
 
     /**
      * @brief Token destructor overriding Symbol destructor. Safely deletes token data.

@@ -134,5 +134,5 @@ public:
      * @brief Check if the AST is turned off.
      * @return True if the AST is turned off, false otherwise.
      */
-    bool IsTurnedOff();
+    bool IsTurnedOff() const;
 };

@@ -312,12 +312,10 @@ extern int yylex (void);
 
 /* yy_get_previous_state - get the state just before the EOB char was reached */
 
-#undef YY_NEW_FILE
 #undef YY_FLUSH_BUFFER
 #undef yy_set_bol
 #undef yy_new_buffer
 #undef yy_set_interactive
-#undef YY_DO_BEFORE_ACTION
 
 #ifdef YY_DECL_IS_OURS
 #undef YY_DECL_IS_OURS

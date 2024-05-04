@@ -31,7 +31,7 @@ void EndInsertor::InsertExpressionEnd() const
     inputTape.insert(token, new Token(tExpEnd));
 }
 
-void EndInsertor::InsertFunctionEnd() const
+void EndInsertor::InsertFunctionEnd()
 {
     // go through inputTape and insert tFuncEnd after the first right parenthesis matched with left parenthesis
     int counter = 0;
@@ -80,7 +80,7 @@ void EndInsertor::skipOperand(InputTape::iterator& token) const
     }
 }
 
-void EndInsertor::skipFunctionCall(InputTape::iterator& token) const
+void EndInsertor::skipFunctionCall(InputTape::iterator& token)
 {
     int counter = 0;
 
@@ -103,7 +103,7 @@ void EndInsertor::skipFunctionCall(InputTape::iterator& token) const
     }
 }
 
-void EndInsertor::skipOperandInParentheses(InputTape::iterator& token) const
+void EndInsertor::skipOperandInParentheses(InputTape::iterator& token)
 {
     int counter = 0;
     while (token != inputTape.end()) {
@@ -127,7 +127,7 @@ void EndInsertor::skipOperandInParentheses(InputTape::iterator& token) const
     }
 }
 
-bool EndInsertor::isOperator(Token& token) const
+bool EndInsertor::isOperator(Token& token)
 {
     return (token == tPlus || token == tMinus || token == tMul || token == tDiv || token == tConcat ||
             token == tAnd || token == tOr ||

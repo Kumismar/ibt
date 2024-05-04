@@ -22,11 +22,6 @@ UnaryExpression::~UnaryExpression()
     delete this->optr;
 }
 
-Operator* UnaryExpression::GetOperator() const
-{
-    return this->optr;
-}
-
 Expression* UnaryExpression::GetOperand() const
 {
     return this->operand;
@@ -61,10 +56,8 @@ void UnaryExpression::PrintTree(std::ofstream& file, int& id, int parentId)
 
 void UnaryExpression::ProcessToken(Token& token)
 {
-    return;
-}
+    }
 
 void UnaryExpression::LinkNode(ASTNode* node, Nonterminal& nt)
 {
-    return;
-}
+    }

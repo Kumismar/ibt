@@ -11,7 +11,6 @@
 #include "precedence_symbol.hpp"
 #include "token.hpp"
 #include <string>
-#include <typeinfo>
 
 bool Symbol::operator==(const Symbol& other) const
 {
@@ -20,18 +19,18 @@ bool Symbol::operator==(const Symbol& other) const
     }
 
     if (this->symbType == Nonterminal_t) {
-        const Nonterminal* tmpThis = dynamic_cast<const Nonterminal*>(this);
-        const Nonterminal* tmpOther = dynamic_cast<const Nonterminal*>(&other);
+        const auto* tmpThis = dynamic_cast<const Nonterminal*>(this);
+        const auto* tmpOther = dynamic_cast<const Nonterminal*>(&other);
         return (*tmpThis == *tmpOther);
     }
     else if (this->symbType == Token_t) {
-        const Token* tmpThis = dynamic_cast<const Token*>(this);
-        const Token* tmpOther = dynamic_cast<const Token*>(&other);
+        const auto* tmpThis = dynamic_cast<const Token*>(this);
+        const auto* tmpOther = dynamic_cast<const Token*>(&other);
         return (*tmpThis == *tmpOther);
     }
     else if (this->symbType == PrecSymbol_t) {
-        const PrecedenceSymbol* tmpThis = dynamic_cast<const PrecedenceSymbol*>(this);
-        const PrecedenceSymbol* tmpOther = dynamic_cast<const PrecedenceSymbol*>(&other);
+        const auto* tmpThis = dynamic_cast<const PrecedenceSymbol*>(this);
+        const auto* tmpOther = dynamic_cast<const PrecedenceSymbol*>(&other);
         return (*tmpThis == *tmpOther);
     }
     else {

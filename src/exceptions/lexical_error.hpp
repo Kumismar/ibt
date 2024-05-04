@@ -20,7 +20,7 @@ public:
      * 
      * @param message Message that will be shown when the exception is thrown.
      */
-    LexicalError(const std::string& message)
+    explicit LexicalError(const std::string& message)
         : ExceptionBase(message)
     {
     }

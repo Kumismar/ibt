@@ -23,7 +23,7 @@ private:
 
 public:
     /**
-     * @brief A virtual destructor for ExceptionBase.
+     * @brief A constructor for ExceptionBase.
      */
     ExceptionBase() = default;
 
@@ -32,7 +32,7 @@ public:
      * 
      * @param m Message that will be shown when the exception is thrown.
      */
-    ExceptionBase(const std::string& m);
+    explicit ExceptionBase(const std::string& m);
 
     /**
      * @brief Returns the message that will be shown when the exception is thrown.

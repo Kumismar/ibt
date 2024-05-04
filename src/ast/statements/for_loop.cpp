@@ -30,17 +30,9 @@ ForLoop::~ForLoop()
     }
     delete this->init;
 
-    if (this->condition != nullptr) {
-        delete this->condition;
-    }
-
-    if (this->endExpr != nullptr) {
-        delete this->endExpr;
-    }
-
-    if (this->body != nullptr) {
-        delete this->body;
-    }
+    delete this->condition;
+    delete this->endExpr;
+    delete this->body;
 }
 
 void ForLoop::PrintTree(std::ofstream& file, int& id, int parentId)
@@ -63,14 +55,13 @@ void ForLoop::PrintTree(std::ofstream& file, int& id, int parentId)
 
 void ForLoop::ProcessToken(Token& token)
 {
-    return;
-}
+    }
 
 void ForLoop::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     switch (nt.GetNonterminalType()) {
         case nCodeBlock: {
-            StatementList* tmp = dynamic_cast<StatementList*>(node);
+            auto* tmp = dynamic_cast<StatementList*>(node);
             if (tmp == nullptr) {
                 throw InternalError("ForLoop::LinkNode (case nCodeBlock) invalid type: " + std::string(typeid(*node).name()));
             }
@@ -79,7 +70,7 @@ void ForLoop::LinkNode(ASTNode* node, Nonterminal& nt)
             break;
         }
         case nExpression: {
-            Expression* tmp = dynamic_cast<Expression*>(node);
+            auto* tmp = dynamic_cast<Expression*>(node);
             if (tmp == nullptr) {
                 throw InternalError("ForLoop::LinkNode (case nStatement) invalid type: " + std::string(typeid(*node).name()));
             }
@@ -104,7 +95,7 @@ void ForLoop::LinkNode(ASTNode* node, Nonterminal& nt)
                 return;
             }
 
-            Declaration* tmp = dynamic_cast<Declaration*>(node);
+            auto* tmp = dynamic_cast<Declaration*>(node);
             if (tmp == nullptr) {
                 throw InternalError("ForLoop::LinkNode (case nDeclOrExp) invalid type: " + std::string(typeid(*node).name()));
             }

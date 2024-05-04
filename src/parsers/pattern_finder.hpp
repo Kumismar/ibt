@@ -28,7 +28,7 @@ public:
      * 
      * @param stack The automaton pushdown.
      */
-    PatternFinder(AnalysisStack& stack);
+    explicit PatternFinder(AnalysisStack& stack);
 
     /**
      * @brief Searches for topmost token on the automaton pushdown.

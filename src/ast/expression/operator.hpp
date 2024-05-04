@@ -49,7 +49,7 @@ public:
      * @brief A constructor.
      * @param t The token type of the operator.
      */
-    Operator(TokenType t);
+    explicit Operator(TokenType t);
 
     /**
      * @brief Get the operator type.

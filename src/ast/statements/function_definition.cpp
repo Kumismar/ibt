@@ -11,14 +11,14 @@
 #include "statement.hpp"
 #include "token.hpp"
 
-void Parameter::SetType(const TokenType type)
+void Parameter::SetType(const TokenType t)
 {
-    this->type = type;
+    this->type = t;
 }
 
-void Parameter::SetName(const std::string& name)
+void Parameter::SetName(const std::string& n)
 {
-    this->name = name;
+    this->name = n;
 }
 
 void Parameter::PrintTree(std::ofstream& file, int& id, int parentId)
@@ -36,13 +36,14 @@ void Parameter::PrintTree(std::ofstream& file, int& id, int parentId)
     int typeId = ++currentId;
     file << "node" << paramId << " -> node" << typeId << ";\n";
     id++;
-    file << "node" << typeId << " [label=\"Type: " << this->typeToString(this->type) << "\"];\n";
+    file << "node" << typeId << " [label=\"Type: " << Parameter::typeToString(this->type) << "\"];\n";
 }
 
 FunctionDefinition::FunctionDefinition()
 {
     this->nodeType = FuncDef_n;
     this->type = FuncDef_s;
+    this->returnType = DataType::None;
 }
 
 FunctionDefinition::~FunctionDefinition()
@@ -58,11 +59,7 @@ FunctionDefinition::~FunctionDefinition()
         }
         this->params.clear();
     }
-
-
-    if (this->body != nullptr) {
-        delete this->body;
-    }
+    delete this->body;
 }
 
 void FunctionDefinition::PrintTree(std::ofstream& file, int& id, int parentId)
@@ -85,13 +82,13 @@ void FunctionDefinition::PrintTree(std::ofstream& file, int& id, int parentId)
     int returnTypeId = ++currentId;
     file << "node" << functionId << "-> node" << returnTypeId << ";\n";
     id++;
-    file << "node" << returnTypeId << " [label=\"ReturnType: " << this->typeToString(this->returnType) << "\"];\n";
+    file << "node" << returnTypeId << " [label=\"ReturnType: " << FunctionDefinition::typeToString(this->returnType) << "\"];\n";
     this->body->PrintTree(file, id, functionId);
 }
 
 void FunctionDefinition::ProcessToken(Token& token)
 {
-    if (this->isType(token)) {
+    if (FunctionDefinition::isType(token)) {
         if (**std::next(inputTape.begin()) == tLCurl) { // next token is '{'
             this->setReturnType(token);
         }
@@ -116,7 +113,7 @@ void FunctionDefinition::ProcessToken(Token& token)
 void FunctionDefinition::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     if (nt.GetNonterminalType() == nStatements) {
-        StatementList* tmp = dynamic_cast<StatementList*>(node);
+        auto* tmp = dynamic_cast<StatementList*>(node);
         if (tmp == nullptr) {
             throw InternalError("FunctionDefiniton::LinkNode (case nCodeBlock) invalid type: " + std::string(typeid(*node).name()));
         }

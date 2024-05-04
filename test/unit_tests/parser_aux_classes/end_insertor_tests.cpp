@@ -14,7 +14,7 @@
 class EndInsertorTests : public ::testing::Test
 {
 protected:
-    EndInsertor* endInsertor;
+    EndInsertor* endInsertor = nullptr;
 
     void SetUp() override
     {

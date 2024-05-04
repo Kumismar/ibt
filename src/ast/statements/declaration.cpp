@@ -19,13 +19,8 @@ Declaration::Declaration()
 
 Declaration::~Declaration()
 {
-    if (this->left != nullptr) {
-        delete this->left;
-    }
-
-    if (this->right != nullptr) {
-        delete this->right;
-    }
+    delete this->left;
+    delete this->right;
 }
 
 Operand* Declaration::GetLeft() const
@@ -65,7 +60,7 @@ void Declaration::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     switch (nt.GetNonterminalType()) {
         case nExpression: {
-            Expression* tmp = dynamic_cast<Expression*>(node);
+            auto* tmp = dynamic_cast<Expression*>(node);
             if (tmp == nullptr) {
                 throw InternalError("Declaration::LinkNode (case nExpression) invalid type: " + std::string(typeid(*node).name()));
             }

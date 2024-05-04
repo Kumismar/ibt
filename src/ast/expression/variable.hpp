@@ -26,7 +26,7 @@ public:
      * @brief Create Variable and set node type.
      * @param token Token with the variable name.
      */
-    Variable(Token& token);
+    explicit Variable(Token& token);
 
     /**
      * @brief A destructor.

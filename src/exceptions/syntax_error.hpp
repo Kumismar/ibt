@@ -20,7 +20,7 @@ public:
      * 
      * @param message Message that will be shown when the exception is thrown.
      */
-    SyntaxError(const std::string& message)
+    explicit SyntaxError(const std::string& message)
         : ExceptionBase(message)
     {
     }
