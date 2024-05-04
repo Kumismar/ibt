@@ -11,30 +11,10 @@
 #include "nonterminal.hpp"
 
 /**
- * @brief An enum representing type of the statement.
- */
-typedef enum statementType
-{
-    FuncDef_s,
-    Declaration_s,
-    Return_s,
-    If_s,
-    Elseif_s,
-    While_s,
-    For_s,
-} StatementType;
-
-/**
  * @brief An abstract class representing a statement in the AST.
  */
 class Statement : public ASTNode
 {
-protected:
-    /**
-     * @brief The type of the statement.
-     */
-    StatementType type;
-
 public:
     /**
      * @brief A virtual destructor.

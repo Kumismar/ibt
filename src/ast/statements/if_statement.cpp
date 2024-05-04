@@ -14,7 +14,6 @@
 
 IfStatement::IfStatement()
 {
-    this->type = If_s;
     this->nodeType = Statement_n;
 }
 

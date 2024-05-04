@@ -12,7 +12,6 @@
 
 WhileLoop::WhileLoop()
 {
-    this->type = While_s;
     this->nodeType = Statement_n;
 }
 

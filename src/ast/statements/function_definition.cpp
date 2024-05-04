@@ -42,7 +42,6 @@ void Parameter::PrintTree(std::ofstream& file, int& id, int parentId)
 FunctionDefinition::FunctionDefinition()
 {
     this->nodeType = FuncDef_n;
-    this->type = FuncDef_s;
     this->returnType = DataType::None;
 }
 

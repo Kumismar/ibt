@@ -13,7 +13,6 @@
 
 ReturnStatement::ReturnStatement()
 {
-    this->type = Return_s;
     this->nodeType = Statement_n;
 }
 

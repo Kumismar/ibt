@@ -13,7 +13,6 @@
 
 ElseifStatement::ElseifStatement()
 {
-    this->type = Elseif_s;
     this->nodeType = Statement_n;
 }
 
