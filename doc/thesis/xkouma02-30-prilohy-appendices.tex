@@ -9,7 +9,7 @@
 
 \chapter{Příklady zdrojových kódů v~jazyce Koubp a~jejich AST reprezentace}
 
-\section{Příkaz if-elseif}
+\subsection*{Příkaz if-elseif}
 \begin{lstlisting}[language=Koubp]
     if (vyraz)
         prikaz();
@@ -23,46 +23,40 @@
     \label{fig_ast_elseif}
 \end{figure}
 
-\section{Příkaz if-else if}
+\subsection*{Příkaz if-else if}
 \begin{lstlisting}[language=Koubp]
     if (vyraz)
         prikaz();
     else if(vyraz)
-        prikaz();
+        prikaz(do_something(bar) + var);
 \end{lstlisting}
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{obrazky-figures/ast_if_else_if.pdf}
-    \caption{Programem vygenerovaný AST pro konstrukci \texttt{if-else if}}
+    \caption{Vygenerovaný AST pro jednoduchou konstrukci \texttt{if-else if}.}
     \label{fig_ast_else_if}
 \end{figure}
 
 \newpage
 
-\section{For cyklus}
+\subsection*{Cyklus While}
 
 \begin{lstlisting}[language=Koubp]
-	for (int i = 0; i < 2; i = i + 1) {}
+	while (i > 0) {
+		do_something(foo(bar(1 + (2 * 3))) + baz() / 3);
+	}
 \end{lstlisting}
 
-\vspace{11em}
-
-\begin{figure}[h]
+\begin{figure}[h!]
 	\centering
-	\begin{sideways}
-		\begin{minipage}{\linewidth}
-			\includegraphics[width=1.3\textwidth, keepaspectratio]{obrazky-figures/tree_for.pdf}
-			\vspace{1em}
-		\end{minipage}
-	\end{sideways}
-	\caption{Programem vygenerovaný AST pro cyklus \texttt{for}. Pro lepší čitelnost obrázek otočen o~90°.}
-	\label{fig_ast_cyklus_for}
+	\includegraphics[width=\textwidth]{obrazky-figures/ast_while_loop.pdf}
+	\caption{Příklad jednoduchého cyklu \texttt{while}, vygenerovaného programem, s~jedním voláním funkce uvnitř těla.}
+	\label{fig_ast_while_loop}
 \end{figure}
 
-
-
 \newpage
-\section{Deklarace a přiřazení}
+
+\subsection*{Deklarace a přiřazení}
 
 \begin{lstlisting}[language=Koubp]
     float input = do_something(var, f(1) + 2) + 20.0*d;
@@ -87,7 +81,9 @@ Další pomocné třídy, jako například LL tabulka nebo precedenční tabulka
 \end{figure}
 
 \chapter{Třídní hierarchie uzlů AST} \label{kap_priloha_c}
-Pro větší přehlednost je hierarchie rozdělena do tří obrázků. Tyto diagramy jsou úmyslně zjednodušené, zaměřují se pouze na vzájemnou dědičnost mezi třídami; opomíjí kompoziční vztahy a~další detaily, jako například jiné a~ne tak podstatné třídy, použité enumerátory a~podobně. Jejich hlavním účelem je ilustrovat strukturu hierarchie uzlů AST.
+Pro větší přehlednost je hierarchie rozdělena do tří obrázků.
+Tyto diagramy jsou úmyslně zjednodušené, zaměřují se pouze na vzájemnou dědičnost mezi třídami; opomíjí kompoziční vztahy a~další detaily, jako například jiné a~ne tak podstatné třídy, použité enumerátory a~podobně.
+Jejich hlavním účelem je ilustrovat strukturu hierarchie uzlů AST.
 
 První obrázek (Obrázek \ref{fig_hierarchie_astnode}) ukazuje třídu \texttt{ASTNode} a~třídy, které z~ní přímo dědí.
 \begin{figure}[h]
@@ -107,7 +103,8 @@ Druhý obrázek (Obrázek \ref{fig_hierarchie_expression}) prezentuje hierarchii
 \end{figure}
 \newpage
 
-Třetí diagram na Obrázku \ref{fig_hierarchie_statement} zobrazuje různé druhy příkazů ve zdrojovém kódu pomocí tříd. Podobně jako u~předchozích diagramů, tento diagram se soustředí na hierarchii těchto tříd a~vynechává zbytečné detaily.
+Třetí diagram na Obrázku \ref{fig_hierarchie_statement} zobrazuje různé druhy příkazů ve zdrojovém kódu pomocí tříd.
+Podobně jako u~předchozích diagramů, tento diagram se soustředí na hierarchii těchto tříd a~vynechává zbytečné detaily.
 \begin{figure}[h!]
 		\centering
 		\includegraphics[height=0.88\textheight]{obrazky-figures/statement_hierarchy.eps}
