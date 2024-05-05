@@ -9,15 +9,15 @@
 #include "syntax_error.hpp"
 #include "token.hpp"
 
-void EndInsertor::InsertExpressionEnd() const
+void EndInsertor::InsertExpressionEnd()
 {
     auto token = inputTape.begin();
     while (token != inputTape.end()) {
         // skip operand
-        this->skipOperand(token);
+        EndInsertor::skipOperand(token);
 
         // if the operand was the last one, insert expEnd behind
-        if (!this->isOperator(**token)) {
+        if (!EndInsertor::isOperator(**token)) {
             break;
         }
         // skip operator
@@ -50,7 +50,7 @@ void EndInsertor::InsertFunctionEnd()
     }
 }
 
-void EndInsertor::skipOperand(InputTape::iterator& token) const
+void EndInsertor::skipOperand(InputTape::iterator& token)
 {
     // skip unary operators
     while (**token == tUnMinus || **token == tExcl) {
@@ -61,12 +61,12 @@ void EndInsertor::skipOperand(InputTape::iterator& token) const
     }
 
     if (**token == tLPar) {
-        this->skipOperandInParentheses(token);
+        EndInsertor::skipOperandInParentheses(token);
         return;
     }
 
     if (**token == tFuncName) {
-        this->skipFunctionCall(token);
+        EndInsertor::skipFunctionCall(token);
         return;
     }
 

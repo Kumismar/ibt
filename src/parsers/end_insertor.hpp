@@ -20,7 +20,7 @@ private:
     /**
      * @brief Skips tokens representing expression operand in input tape.
      */
-    void skipOperand(InputTape::iterator& tokenIter) const;
+    static void skipOperand(InputTape::iterator& tokenIter) ;
 
     /**
      * @brief Skips tokens representing expression operand in parentheses in input tape.
@@ -39,7 +39,7 @@ public:
     /**
      * @brief Goes through the input tape and inserts auxiliary token at the end of currently parsed expression.
      */
-    void InsertExpressionEnd() const;
+    static void InsertExpressionEnd() ;
 
     /**
      * @brief Goes through the input tape and inserts auxiliary token at the end of currently parsed function call.
