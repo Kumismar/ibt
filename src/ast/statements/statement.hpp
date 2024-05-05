@@ -27,7 +27,7 @@ public:
      * The AST nodes gradually add information to themselves.
      * @param t The token to process.
      */
-    void ProcessToken(Token& t) override = 0;
+    void ProcessToken(Token& t) override {}
 
     /**
      * @brief Links a node to the current context based on type of nonterminal.
@@ -35,5 +35,5 @@ public:
      * @param nt Nonterminal used to determine if the node will be linked.
      * Is used to dynamically cast the node to the correct type.
      */
-    void LinkNode(ASTNode* node, Nonterminal& nt) override = 0;
+    void LinkNode(ASTNode* node, Nonterminal& nt) override {}
 };
