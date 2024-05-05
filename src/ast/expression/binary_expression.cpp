@@ -14,7 +14,6 @@ BinaryExpression::BinaryExpression(TokenType t)
 {
     this->nodeType = Expression_n;
     AST* ast = AST::GetInstance();
-    this->expressionType = Binary;
     this->right = ast->GetExpressionContext();
     ast->PopExpressionContext();
     this->left = ast->GetExpressionContext();

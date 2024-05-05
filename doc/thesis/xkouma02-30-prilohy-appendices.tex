@@ -75,43 +75,45 @@
 \end{figure}
 
 
-\chapter{Třídní diagram popisující vztahy tříd provádějící syntaktickou analýzu}\label{kap_priloha_b}
+\chapter{Vztahy tříd provádějící syn\-tak\-tic\-kou analýzu}\label{kap_priloha_b}
 
-Diagram obsahuje pouze třídy, které se starají o~algoritmus syntaktické analýzy, respektive simulaci zásobníkového automatu.
+Třídní diagram na obrázku \ref{fig_parsers_class_diagram} obsahuje pouze třídy, které se starají o~algoritmus syntaktické analýzy, respektive simulaci zásobníkového automatu.
 Další pomocné třídy, jako například LL tabulka nebo precedenční tabulka, nejsou do grafu přidány kvůli přehlednosti vzhledem k~velikosti diagramu.
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.92\textwidth]{obrazky-figures/class_diagram.eps}
+    \includegraphics[width=0.92\textwidth]{obrazky-figures/parsers_class_diagram.eps}
     \caption{Vztahy mezi třídami, které spolupracují na syntaktické analýze.}
+    \label{fig_parsers_class_diagram}
 \end{figure}
 
 \chapter{Třídní hierarchie uzlů AST} \label{kap_priloha_c}
-Pro větší přehlednost je hierarchie rozdělena do dvou obrázků, hierarchie příkazů je otočena o~90° pro lepší čitelnost.
+Pro větší přehlednost je hierarchie rozdělena do tří obrázků. Tyto diagramy jsou úmyslně zjednodušené, zaměřují se pouze na vzájemnou dědičnost mezi třídami; opomíjí kompoziční vztahy a~další detaily, jako například jiné a~ne tak podstatné třídy, použité enumerátory a~podobně. Jejich hlavním účelem je ilustrovat strukturu hierarchie uzlů AST.
 
+První obrázek (Obrázek \ref{fig_hierarchie_astnode}) ukazuje třídu \texttt{ASTNode} a~třídy, které z~ní přímo dědí.
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=\textwidth]{obrazky-figures/hierarchy_expression.pdf}
-	\caption{Třídní hierarchie s~třídami reprezentujícími jednotlivé typy výrazů v~AST.}
+	\includegraphics[width=\textwidth]{obrazky-figures/ast_node_hierarchy.eps}
+	\caption{Diagram tříd zobrazující třídu \texttt{ASTNode} a~její přímé potomky.}
+	\label{fig_hierarchie_astnode}
+\end{figure}
+\newpage
+
+Druhý obrázek (Obrázek \ref{fig_hierarchie_expression}) prezentuje hierarchii tříd, které reprezentují různé typy výrazů v~AST. 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{obrazky-figures/expression_hierarchy.eps}
+	\caption{Třídní hierarchie AST pro všechny typy výrazů.}
 	\label{fig_hierarchie_expression}
 \end{figure}
+\newpage
 
-\begin{figure}[h]
-	\centering
-	\vspace{13em}
-	\begin{sideways}
-		\begin{minipage}{\textwidth}
-    		\includegraphics[width=1.4\textwidth]{obrazky-figures/hierarchy_statement.pdf}
-			\vspace{1em}
-		\end{minipage}
-	\end{sideways}
-    \caption{Třídní hierarchie s~třídami reprezentujícími jednotlivé příkazy v~AST. Pro lepší čitelnost obrázek otočen o~90°.}
-	\label{fig_hierarchie_statement}
+Třetí diagram na Obrázku \ref{fig_hierarchie_statement} zobrazuje různé druhy příkazů ve zdrojovém kódu pomocí tříd. Podobně jako u~předchozích diagramů, tento diagram se soustředí na hierarchii těchto tříd a~vynechává zbytečné detaily.
+\begin{figure}[h!]
+		\centering
+		\includegraphics[height=0.88\textheight]{obrazky-figures/statement_hierarchy.eps}
+		\caption{Třídní diagram s~třídami uzlů AST, které reprezentují příkazy.}
+		\label{fig_hierarchie_statement}
 \end{figure}
-
-
-
-
-
 %\chapter{Plakát}
 
 

@@ -11,38 +11,15 @@
 #include "nonterminal.hpp"
 
 /**
- * @brief An enumeration for the type of the expression.
- */
-typedef enum expressionType
-{
-    Unary,
-    Binary,
-} ExpressionType;
-
-/**
  * @brief A class representing an expression in the AST.
  */
 class Expression : public ASTNode
 {
-protected:
-    /**
-     * @brief The type of the expression.
-     */
-    ExpressionType expressionType;
-
 public:
     /**
      * @brief A destructor.
      */
     ~Expression() override = default;
-
-    /**
-     * @brief Prints the tree to the file.
-     * @param file The file to print to.
-     * @param id The id of the node.
-     * @param parentId The id of the parent node.
-     */
-    void PrintTree(std::ofstream& file, int& id, int parentId) override = 0;
 
     /**
      * @brief Processes a token.

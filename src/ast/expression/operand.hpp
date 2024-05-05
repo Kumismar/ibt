@@ -35,10 +35,4 @@ protected:
      * @brief Data of the operand taken from token.
      */
     TokenData data;
-
-public:
-    /**
-     * @brief A destructor.
-     */
-    ~Operand() override = default;
 };

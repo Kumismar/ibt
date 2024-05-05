@@ -23,16 +23,6 @@ Declaration::~Declaration()
     delete this->right;
 }
 
-Operand* Declaration::GetLeft() const
-{
-    return this->left;
-}
-
-Expression* Declaration::GetRight() const
-{
-    return this->right;
-}
-
 void Declaration::PrintTree(std::ofstream& file, int& id, int parentId)
 {
     int currentId = id++;

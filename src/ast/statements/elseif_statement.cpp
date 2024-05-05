@@ -31,11 +31,6 @@ void ElseifStatement::PrintTree(std::ofstream& file, int& id, int parentId)
     this->condition->PrintTree(file, id, currentId);
     this->body->PrintTree(file, id, currentId);
 }
-
-void ElseifStatement::ProcessToken(Token& token)
-{
-}
-
 void ElseifStatement::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     switch (nt.GetNonterminalType()) {

@@ -107,14 +107,6 @@ public:
     void PrintTree(std::ofstream& file, int& id, int parentId) override;
 
     /**
-     * @brief Processes a token.
-     * @details This method is called on current AST context.
-     * The AST nodes gradually add information to themselves.
-     * @param token The token to process.
-     */
-    void ProcessToken(Token& token) override;
-
-    /**
      * @brief Link a node to the AST.
      * @details This method is called on current AST context.
      * The AST nodes are linked to each other.

@@ -53,10 +53,6 @@ void ForLoop::PrintTree(std::ofstream& file, int& id, int parentId)
     this->body->PrintTree(file, id, currentId);
 }
 
-void ForLoop::ProcessToken(Token& token)
-{
-    }
-
 void ForLoop::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     switch (nt.GetNonterminalType()) {
@@ -91,7 +87,7 @@ void ForLoop::LinkNode(ASTNode* node, Nonterminal& nt)
             break;
         }
         case nDeclOrExpr: {
-            if (!this->nextIsType()) {
+            if (!ForLoop::nextIsType()) {
                 return;
             }
 

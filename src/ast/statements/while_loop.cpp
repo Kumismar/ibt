@@ -36,10 +36,6 @@ void WhileLoop::PrintTree(std::ofstream& file, int& id, int parentId)
     }
 }
 
-void WhileLoop::ProcessToken(Token& token)
-{
-    }
-
 void WhileLoop::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     switch (nt.GetNonterminalType()) {

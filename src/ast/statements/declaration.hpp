@@ -40,18 +40,6 @@ public:
     ~Declaration() override;
 
     /**
-     * @brief Get the left side of the declaration.
-     * @return The left side of the declaration.
-     */
-    Operand* GetLeft() const;
-
-    /**
-     * @brief Get the right side of the declaration.
-     * @return The right side of the declaration.
-     */
-    Expression* GetRight() const;
-
-    /**
      * @brief Print information about the node to the output .dot file.
      * @param file The output file.
      * @param id The id of the node.

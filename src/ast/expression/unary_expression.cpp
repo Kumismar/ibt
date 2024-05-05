@@ -11,7 +11,6 @@
 UnaryExpression::UnaryExpression(TokenType t)
 {
     this->nodeType = Expression_n;
-    this->expressionType = Unary;
     this->operand = AST::GetInstance()->GetExpressionContext();
     AST::GetInstance()->PopExpressionContext();
     this->optr = new Operator(t);

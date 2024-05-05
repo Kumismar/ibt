@@ -32,10 +32,6 @@ void ReturnStatement::PrintTree(std::ofstream& file, int& id, int parentId)
     }
 }
 
-void ReturnStatement::ProcessToken(Token& token)
-{
-}
-
 void ReturnStatement::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     if (nt.GetNonterminalType() == nExpression) {
