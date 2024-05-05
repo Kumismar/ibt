@@ -26,7 +26,7 @@ protected:
     void TearDown() override
     {
         if (!inputTape.empty()) {
-            for (auto token: inputTape) {
+            for (Token* token: inputTape) {
                 delete token;
             }
             inputTape.clear();

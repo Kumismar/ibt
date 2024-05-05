@@ -31,7 +31,7 @@ protected:
     void TearDown() override
     {
         this->parser->ClearStack();
-        for (auto token: inputTape) {
+        for (Token* token: inputTape) {
             delete token;
         }
         inputTape.clear();

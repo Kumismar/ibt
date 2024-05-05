@@ -53,7 +53,7 @@ FunctionDefinition::~FunctionDefinition()
     }
 
     if (!this->params.empty()) {
-        for (auto param: this->params) {
+        for (Parameter* param: this->params) {
             delete param;
         }
         this->params.clear();
@@ -73,7 +73,7 @@ void FunctionDefinition::PrintTree(std::ofstream& file, int& id, int parentId)
     id++;
     file << "node" << functionNameId << " [label=\"Name: " << this->name << "\"];\n";
 
-    for (auto param: this->params) {
+    for (Parameter* param: this->params) {
         param->PrintTree(file, id, functionId);
     }
 

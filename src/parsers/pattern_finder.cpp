@@ -17,7 +17,7 @@ PatternFinder::PatternFinder(AnalysisStack& stack)
 Token* PatternFinder::FindFirstToken()
 {
     Symbol* tmpExp = nullptr;
-    for (auto symb: this->stack) {
+    for (Symbol* symb: this->stack) {
         if (symb->GetSymbolType() == Token_t) {
             tmpExp = symb;
             break;
@@ -35,7 +35,7 @@ Token* PatternFinder::FindFirstToken()
 void PatternFinder::FindFirstRule(Rule& emptyRule)
 {
     // push to list until stack.top is precedence symbol '<' or '$'
-    for (auto symb: this->stack) {
+    for (Symbol* symb: this->stack) {
         switch (symb->GetSymbolType()) {
             case PrecSymbol_t: {
                 auto* tmpSymbol = dynamic_cast<PrecedenceSymbol*>(symb);

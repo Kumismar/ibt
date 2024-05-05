@@ -33,7 +33,7 @@ bool handlesEqual(Rule& r1, Rule& r2)
 
 void cleanRule(Rule& rule)
 {
-    for (auto symb: rule) {
+    for (Symbol* symb: rule) {
         delete symb;
     }
     rule.clear();

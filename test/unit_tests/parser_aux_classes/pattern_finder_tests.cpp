@@ -34,7 +34,7 @@ protected:
     {
         delete finder;
         if (!this->stack.empty()) {
-            for (auto symb: this->stack) {
+            for (Symbol* symb: this->stack) {
                 delete symb;
             }
             this->stack.clear();

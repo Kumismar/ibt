@@ -40,7 +40,7 @@ protected:
         Logger::Cleanup();
 
         if (!this->tokens.empty()) {
-            for (auto t: this->tokens) {
+            for (Token* t: this->tokens) {
                 delete t;
             }
         }

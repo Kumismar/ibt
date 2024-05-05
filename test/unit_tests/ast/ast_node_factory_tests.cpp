@@ -35,7 +35,7 @@ protected:
         delete this->factory;
 
         if (!this->rule.empty()) {
-            for (auto symb: this->rule) {
+            for (Symbol* symb: this->rule) {
                 delete symb;
             }
         }

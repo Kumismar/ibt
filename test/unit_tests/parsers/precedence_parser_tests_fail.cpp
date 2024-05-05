@@ -30,14 +30,14 @@ protected:
 
     void TearDown() override
     {
-        for (auto token: inputTape) {
+        for (Token* token: inputTape) {
             delete token;
         }
         inputTape.clear();
         delete this->parser;
 
         if (!this->stack.empty()) {
-            for (auto symb: this->stack) {
+            for (Symbol* symb: this->stack) {
                 delete symb;
             }
             this->stack.clear();

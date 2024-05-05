@@ -22,7 +22,7 @@ StatementList::~StatementList()
         return;
     }
 
-    for (auto item: this->statements) {
+    for (StatementOrExpression* item: this->statements) {
         if (item->type == Statement_t) {
             delete item->data.statement;
         }
@@ -40,7 +40,7 @@ void StatementList::PrintTree(std::ofstream& file, int& id, int parentId)
     file << "node" << parentId << " -> node" << currentId << ";\n";
     file << "node" << currentId << " [label=\"StatementList\"];\n";
 
-    for (auto item: this->statements) {
+    for (StatementOrExpression* item: this->statements) {
         if (item->type == Statement_t) {
             item->data.statement->PrintTree(file, id, currentId);
         }

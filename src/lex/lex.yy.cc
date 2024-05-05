@@ -1,6 +1,6 @@
-#line 1 "lex.yy.cc"
+#line 2 "lex.yy.cc"
 
-#line 3 "lex.yy.cc"
+#line 4 "lex.yy.cc"
 
 #define  YY_INT_ALIGNED short int
 
@@ -518,12 +518,12 @@ char *yytext;
     */
 #include "token.hpp"
 #include "lexical_error.hpp"
-#line 521 "lex.yy.cc"
+#line 522 "lex.yy.cc"
 #line 14 "lex.l"
     TokenType previousToken = tEps;
-#line 524 "lex.yy.cc"
+#line 525 "lex.yy.cc"
 
-#line 526 "lex.yy.cc"
+#line 527 "lex.yy.cc"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -746,7 +746,7 @@ YY_DECL
 #line 21 "lex.l"
 
 
-#line 749 "lex.yy.cc"
+#line 750 "lex.yy.cc"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1080,7 +1080,7 @@ YY_RULE_SETUP
 #line 110 "lex.l"
 ECHO;
 	YY_BREAK
-#line 1083 "lex.yy.cc"
+#line 1084 "lex.yy.cc"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENT):
 case YY_STATE_EOF(LINE_COMMENT):

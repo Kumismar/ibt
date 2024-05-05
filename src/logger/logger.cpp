@@ -70,7 +70,7 @@ void Logger::AddRightSide(Rule& rightSide)
         return;
     }
 
-    for (auto symbol: rightSide) {
+    for (Symbol* symbol: rightSide) {
         this->rightSideRule.push_front(symbol->Clone());
     }
 }

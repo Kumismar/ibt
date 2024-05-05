@@ -25,7 +25,7 @@ IfStatement::~IfStatement()
 
 
     if (!this->elseifs.empty()) {
-        for (auto elseif: this->elseifs) {
+        for (ElseifStatement* elseif: this->elseifs) {
             delete elseif;
         }
         this->elseifs.clear();
@@ -42,7 +42,7 @@ void IfStatement::PrintTree(std::ofstream& file, int& id, int parentId)
     this->ifBody->PrintTree(file, id, currentId);
 
     if (!this->elseifs.empty()) {
-        for (auto elseif: this->elseifs) {
+        for (ElseifStatement* elseif: this->elseifs) {
             elseif->PrintTree(file, id, currentId);
         }
     }
