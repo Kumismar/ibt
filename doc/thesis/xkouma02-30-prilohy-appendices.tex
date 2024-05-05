@@ -111,6 +111,24 @@ Podobně jako u~předchozích diagramů, tento diagram se soustředí na hierarc
 		\caption{Třídní diagram s~třídami uzlů AST, které reprezentují příkazy.}
 		\label{fig_hierarchie_statement}
 \end{figure}
+
+\newpage
+
+Poslední třída je \texttt{FunctionDefinition}.
+Ta také dědí od třídy \texttt{Statement}, ale do předchozího diagramu nebyla zařazena ze dvou důvodů:
+\begin{enumerate}
+	\item sémanticky se do ostatních příkazů nehodí,
+	\item diagram na Obrázku \ref{fig_hierarchie_statement} by byl takřka nečitelný.
+\end{enumerate}
+Proto tato třída je zobrazena na samostatném diagramu na Obrázku \ref{fig_hierarchie_funcdef}.
+K~této třídě byla přidána i~třída \texttt{Parameter}, která je nedílnou součástí definice funkce, a~agregační vztah mezi nimi.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{obrazky-figures/funcdef_hierarchy.eps}
+	\caption{Diagram tříd zobrazující zařazení třídy \texttt{FunctionDefinition} do hierarchie uzlů AST.}
+	\label{fig_hierarchie_funcdef}	
+\end{figure}
 %\chapter{Plakát}
 
 

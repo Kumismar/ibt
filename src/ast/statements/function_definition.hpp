@@ -52,7 +52,7 @@ private:
     /**
      * @brief A list of parameters of the function.
      */
-    std::list<Parameter*> params;
+    std::vector<Parameter*> params;
 
     /**
      * @brief The list of statements (body) of the function.
