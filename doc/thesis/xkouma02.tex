@@ -19,7 +19,7 @@
 %==============================================================================
 % \documentclass[]{fitthesis} % bez zadání - pro začátek práce, aby nebyl problém s překladem
 %\documentclass[english]{fitthesis} % without assignment - for the work start to avoid compilation problem
-\documentclass[zadani]{fitthesis} % odevzdani do IS VUT a/nebo tisk s barevnými odkazy - odkazy jsou barevné
+\documentclass[zadani, twoside]{fitthesis} % odevzdani do IS VUT a/nebo tisk s barevnými odkazy - odkazy jsou barevné
 
 
 %\documentclass[english,zadani]{fitthesis} % for submission to the IS VUT and/or print with color links - links are color
@@ -297,6 +297,7 @@ Uvedl jsem všechny literární prameny, publikace a další zdroje, ze kterých
   % List of figures and list of tables (if the thesis contains a lot of pictures, it is good)
   \ifczech
     \renewcommand\listfigurename{Seznam obrázků}
+  	\cleardoublepage
   \fi
   \ifslovak
     \renewcommand\listfigurename{Zoznam obrázkov}

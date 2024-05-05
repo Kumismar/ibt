@@ -41,15 +41,13 @@ Vlastní principy implementace systému na abstraktní úrovni jsou popsány v~K
 Zároveň se zmiňuje o~implementačním jazyce, adresářové struktuře, sestavovacím systému a~podobně.
 Poslední kapitola pak pojednává o~testování implementovaného systému.
 
-\cleardoublepage
-
 \chapter{Základy teorie formálních jazyků}\label{kap_teorie}
 Základní přehled matematických znalostí potřebných k~pochopení této kapitoly (a~tím i~celé této práce) je popsán například v~\cite{meduna2023automata, medunaElementsOfCompDesign,handbook1-zaklady}.
 
 \section{Abeceda, řetězec a jazyk}\label{kap_abec_ret_jazyk}
 Definice v~této kapitole založeny na definicích z~\cite{hopcroft2006introduction, handbook1-zaklady, TIN-opora}.
 
-\subsection*{Abecedy, řetězce a operace s~nimi}
+\subsection*{Abecedy, řetězce a operace s nimi}
 
 \begin{definition}
     \emph{Abeceda} je neprázdná množina prvků, které se nazývají \emph{symboly} nebo \emph{písmena}.
@@ -154,7 +152,7 @@ Definice v~této kapitole založeny na definicích z~\cite{hopcroft2006introduct
     Konkatenace řetězců $xy = 0111101$ a~$yx = 1101011$.
 \end{example}
 
-\subsection*{Jazyky a operace s~nimi}
+\subsection*{Jazyky a operace s nimi}
 \begin{definition}
     Nechť $\Sigma$ je abeceda. \\
     Jazyk $L$ nad abecedou $\Sigma$ je konečná či nekonečná množina řetězců nad $\Sigma$, nebo také $L \subseteq \Sigma^*$.
@@ -205,7 +203,7 @@ Definice v~této kapitole založeny na definicích z~\cite{hopcroft2006introduct
     \begin{equation*}
         L^+ = \bigcup_{n \geq 1} L^n.
     \end{equation*}
-    Z~těchto definic dále vyplývá 
+    Z těchto definic dále vyplývá 
     \begin{align*}
         L^* &= L^+ \cup \{\varepsilon\},\\
         L^+ &= L^*L = LL^*,
@@ -241,7 +239,7 @@ Nonterminální symboly slouží k~popisu syntaktických celků jazyka a~termin�
     \end{itemize}
 \end{convention}
 
-Gramatika představuje generativní systém, ve kterém lze z~jistého vyznačeného neterminálu generovat, aplikací \emph{přepisovacích pravidel}, řetězce tvořené neterminálními a~terminálními symboly, které nazýváme \emph{větnými formami}. 
+Gramatika představuje generativní systém, ve kterém lze z jistého vyznačeného neterminálu generovat, aplikací \emph{přepisovacích pravidel}, řetězce tvořené neterminálními a~terminálními symboly, které nazýváme \emph{větnými formami}. 
 Větné formy, které jsou tvořeny pouze terminálními symboly, reprezentují věty gramatikou definovaného jazyka.
 Pokud gramatika negeneruje žádnou větu, pak reprezentuje prázdný jazyk.
 
@@ -264,7 +262,7 @@ V~následujícím příkladě je ukázka gramatiky v~obecném tvaru.
 \begin{example}
     \begin{gather*}
         G = (\{A, S\},\; \{0, 1\},\; P,\; S) \\
-        P = \{S \rightarrow 0A1,\; 0A \rightarrow 00A1, A~\rightarrow \varepsilon\}
+        P = \{S \rightarrow 0A1,\; 0A \rightarrow 00A1, A \rightarrow \varepsilon\}
     \end{gather*}
 \end{example}
 
@@ -335,9 +333,9 @@ nebo $S \rightarrow \varepsilon$, pokud se $S$ nevyskytuje na pravé straně ž�
     Příklad kontextové gramatiky:
     \begin{align*}
         G \; &= \; (\{A, S\}, \{0, 1\}, P, S) \text{ s~pravidly }\\
-        S~\; &\rightarrow \; 0A \; | \; \varepsilon \\ 
+        S \; &\rightarrow \; 0A \; | \; \varepsilon \\ 
         0A \; &\rightarrow \; 00A1 \\
-        A~\; &\rightarrow \; 1
+        A \; &\rightarrow \; 1
     \end{align*}
 \end{example}
 
@@ -373,7 +371,7 @@ Tyto gramatiky smějí obsahovat pravidla ve tvaru $A \rightarrow \varepsilon$.
     Příklad bezkontextové gramatiky:
     \begin{align*}
         G \; &= \; (\{S\}, \{0, 1\}, P, S) \text{ s~pravidlem } \\
-        S~\; &\rightarrow \; 0S1 \; | \; \varepsilon
+        S \; &\rightarrow \; 0S1 \; | \; \varepsilon
     \end{align*}
 \end{example}
 
@@ -389,7 +387,7 @@ Další možný název je \emph{regulární gramatika}.
     Příklad pravé lineární gramatiky:
     \begin{align*}
         G \; &= \; (\{A, B\}, \{a, b, c\}, P, S) \text{ s~pravidly } \\
-        A~\; &\rightarrow \; aaB \; | \; ccB \\
+        A \; &\rightarrow \; aaB \; | \; ccB \\
         B \; &\rightarrow \; bB \; | \; \varepsilon
     \end{align*}
 \end{example}
@@ -484,7 +482,7 @@ Obě dvě reprezentace budou ukázány v~následujícím příkladu z~\cite{medu
         Q &= \{1, 2, 3, 4, 5\}, \\
         \Sigma &= \{a, b\}, \\
         R &= \{  1  \rightarrow 2, 1  \rightarrow 4,  2a \rightarrow 2, 2a \rightarrow 3, 3b \rightarrow 3, 4b \rightarrow 4, 4b \rightarrow 5\} \\
-        s~&= 1, \\
+        s &= 1, \\
         F &= \{3, 5\}.
     \end{align*}
     Stav 1 je počáteční a~stavy 3 a~5 jsou koncové.
@@ -632,7 +630,7 @@ Text a~definice v~této kapitole převzaty z~\cite{meduna2023automata, meduna_ze
         \end{alignat*}
         místo uspořádané pětice $(m, q, A, p, v) \in R$ píšeme $mqA \rightarrow pv \in R$ a~$R$ nazýváme množinou pravidel.
         \begin{itemize}[label=$\circ$]
-            \item Z~definice $R$ lze vidět, že jsou dva typy přechodových pravidel, dají se zapsat ve tvaru
+            \item Z definice $R$ lze vidět, že jsou dva typy přechodových pravidel, dají se zapsat ve tvaru
             \begin{align*}
                 mqA  &\rightarrow pv,\\
                 mq\# &\rightarrow pv\# \; \cite{meduna_rgd_pda}.
@@ -741,7 +739,7 @@ Dále existují jazyky přijímané RZA pouze vyprázdněním zásobníku, při�
     \begin{equation*}
         (p, abbcc, AbA\#)\, \prescript{}{e}{\vdash}\; (q, abbcc, AbAc\#) \quad [2pA \rightarrow qAc]
     \end{equation*}
-    Dále přijímání řetězce probíhá stejným způsobem jako v~předešlých krocích.
+    Dále přijímání řetězce probíhá stejným způsobem jako v předešlých krocích.
     \begin{alignat*}{2}
         (q, abbcc, AbAc\#)\, &\prescript{}{e}{\vdash}\; (q, abbcc, abbAc\#) \quad && [1qA \rightarrow fab] \\
                              &\prescript{}{p}{\vdash}\; (f, bbcc, bbAc\#) \quad && \\
@@ -752,8 +750,6 @@ Dále existují jazyky přijímané RZA pouze vyprázdněním zásobníku, při�
                              &\prescript{}{p}{\vdash}\; (f, \varepsilon, \#) \quad &&
     \end{alignat*}
 \end{example}
-
-\cleardoublepage
 
 \chapter{Gramatické systémy}\label{kap_GS}
 Veškeré definice a znalosti použité v~této kapitole převzaty z~\cite{CDGS, PCGS, Handbook-Of-Formal-Languages-2}, není-li řečeno jinak.
@@ -1181,8 +1177,6 @@ Ve druhém příkladu bude demonstrováno několik derivačních kroků a~bude s
      \end{equation*}
 \end{example}
 
-\cleardoublepage
-
 \chapter{Syntaktická analýza}\label{kap_teorie_sa}
 Tato kapitola se zabývá syntaktickou analýzou, která provádí kontrolu, zda je vstupní řetězec v~jazyce, který je formálně definován.
 Ostatní části překladačů v~této práci nebudou rozebírány, nebude-li to vyžadovat kontext.
@@ -1272,6 +1266,16 @@ Jinými slovy, pokud aktuální řetězec je možné vymazat pomocí $\varepsilo
         \ForAll{$a \in T$}
             \State $Empty(a) \gets \emptyset$
         \EndFor
+        \algstore{Empty}
+    \end{algorithmic}
+\end{algorithm}
+\addtocounter{algorithm}{-1}
+Na začátku výpočtu množin $Empty(\alpha)$ je pro každý terminál nastavena tato množina na prázdnou, protože z~terminálů nikdy prázdný řetězec nedostaneme.
+
+\begin{algorithm}[ht]
+    \begin{algorithmic}[1]
+        \caption{Množina $Empty(\alpha)$ (pokračování)}
+        \algrestore{Empty}
         \ForAll{$A \in N$} 
             \If{$A \rightarrow \varepsilon \in P$}
                 \State $Empty(A) \gets \{\varepsilon\}$
@@ -1287,7 +1291,6 @@ Jinými slovy, pokud aktuální řetězec je možné vymazat pomocí $\varepsilo
     \end{algorithmic}
 \end{algorithm}
 
-Na začátku výpočtu množin $Empty(\alpha)$ je pro každý terminál nastavena tato množina na prázdnou, protože z~terminálů nikdy prázdný řetězec nedostaneme.
 Dále, pokud je možné přímo derivovat prázdný řetězec z~aktuálního neterminálu $A$, pak je zřejmé, že neterminál $A$ bude vymazán, pokud pravidlo pro prázdný řetězec bude použito.
 Nakonec se algoritmus znovu dívá na všechny řetězce $\alpha$ a~jejich množiny $Empty(\alpha)$, které dále mohou být měněny.
 Jsou to takové neterminály $A$, které mají množinu $Empty(A)$ neprázdnou, v~druhém případě se množina $Empty(A)$ již nezmění.
@@ -1304,7 +1307,7 @@ V~následujícím algoritmu si představíme množinu $Empty(X_1X_2\ldots X_n)$.
 Tento algoritmus pomůže při definici dalších prediktivních množin.
 Pracuje především s~neterminály, pro terminály nemá smysl jej představovat.
 Pokud sekvence $X_1X_2\ldots X_n$ může být v~konečném počtu kroků přepsána na $\varepsilon$, pak $Empty(X_1X_2\ldots X_n) = \{\varepsilon\}$.
-\begin{algorithm}[h!]
+\begin{algorithm}[h]
     \caption{Množina $Empty(X_1X_2\ldots X_n)$}
     \label{alg_mnozina_empty_vicn}
     \begin{algorithmic}[1]
@@ -1388,10 +1391,9 @@ V~prvním kroku se nastaví $First(\alpha_1\alpha_2\ldots \alpha_n)$ na $First(\
         \EndWhile
     \end{algorithmic}
 \end{algorithm}
+Při dalších krocích se do původní množiny sekvence $\alpha_1\alpha_2\ldots\alpha_n$ přidávají symboly z~$First(\alpha_k)$, pokud řetězec $\alpha_1\alpha_2\ldots\alpha_{k-1} \Rightarrow^* \varepsilon,\; k \in \{1,\ldots,n\}$.
 
-Při dalších krocích se do původní množiny sekvence $\alpha_1\alpha_2\ldots\alpha_n$ přidávají symboly z~$First(\alpha_k)$, pokud se řetězec $\alpha_1\alpha_2\ldots\alpha_{k-1}$ může v~libovolném počtu kroků přepsat na $\varepsilon$, zapsáno $\alpha_1\alpha_2\ldots\alpha_{k-1} \Rightarrow^* \varepsilon,\; k \in \{1,\ldots,n\}$.
-
-\begin{figure}[h!]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.35\textwidth]{obrazky-figures/first.eps}
     \caption{Ilustrace významu množiny \emph{First($\alpha$)} dle \cite{meduna2017sa-shora-dolu}.}
@@ -1401,14 +1403,14 @@ Při dalších krocích se do původní množiny sekvence $\alpha_1\alpha_2\ldot
 Další velmi důležitou množinou, kterou syntaktický analyzátor potřebuje, je množina $Follow(A)$.
 Ta určuje, jaké symboly se mohou vyskytovat za neterminálem $A$.
 Nutnost této znalosti vyplývá z~možnosti přepsat neterminály, pro které platí $Empty(A) = \{\varepsilon\}$, na prázdný řetězec.
-Kdyby analyzátor tuto množinu neměl k~dispozici, neměl by v~těchto případech jak zjistit, zda je aktuální symbol na vstupu korektní nebo ne.
+Kdyby analyzátor tuto množinu neměl k~dispozici, neměl by v těchto případech jak zjistit, zda je aktuální symbol na vstupu korektní nebo ne.
 K~definici množin $Follow(A)$ se používá pomocný symbol \$, který reprezentuje konec vstupního řetězce.
 \begin{definition}\label{def_mnozina_follow}
     Nechť $G = (N, T, P, S)$ je BKG.\\
     Pro všechny neterminály $A \in N$ definujeme množinu $Follow(A)$ jako
     \begin{align*}
-        Follow(A) = \,&\{a: a \in T,\; S~\Rightarrow^* \alpha Aa\beta,\; \alpha, \beta \in (N \cup T)^*\}\, \cup \\
-                      &\{\$: S~\Rightarrow^* \alpha A,\; \alpha \in (N \cup T)^*\}.
+        Follow(A) = \,&\{a: a \in T,\; S \Rightarrow^* \alpha Aa\beta,\; \alpha, \beta \in (N \cup T)^*\}\, \cup \\
+                      &\{\$: S \Rightarrow^* \alpha A,\; \alpha \in (N \cup T)^*\}.
     \end{align*}
 \end{definition}
 \begin{algorithm}[h!]
@@ -1486,15 +1488,15 @@ Myšlenka faktorizace je vytknutí stejné sekvence terminálů, která je spole
 Z~nového neterminálu dále vznikají nová pravidla.
 Například, mějme tato pravidla:
 \begin{align*}
-    A~&\rightarrow \alpha a_1\\
-    A~&\rightarrow \alpha a_2\\
+    A &\rightarrow \alpha a_1\\
+    A &\rightarrow \alpha a_2\\
       &\vdotswithin{\rightarrow} \\
-    A~&\rightarrow \alpha a_3
+    A &\rightarrow \alpha a_3
 \end{align*}
 Sekvence symbolů se může vytknout a~místo $a_1, a_2, \ldots, a_n$ se vloží nový neterminál $B$, ze kterého se dále generují $a_1, a_2, \ldots, a_n$.
 Graficky je tato úprava ukázána na Obrázku \ref{fig_faktorizace}.
 \begin{align*}
-    A~&\rightarrow \alpha A'\\
+    A &\rightarrow \alpha A'\\
     A' &\rightarrow a_1\\
     A' &\rightarrow a_2\\
        &\vdotswithin{\rightarrow}\\
@@ -1510,12 +1512,12 @@ Graficky je tato úprava ukázána na Obrázku \ref{fig_faktorizace}.
 
 Levá rekurze je případ, kdy stejný neterminál, jako je na levé straně pravidla, je zároveň nejlevějším symbolem řetězce na pravé straně pravidla, například:
 \begin{align*}
-    A~&\rightarrow A\alpha\\
-    A~&\rightarrow a
+    A &\rightarrow A\alpha\\
+    A &\rightarrow a
 \end{align*}
 Tato pravidla se dají přepsat do tvaru:
 \begin{align*}
-    A~&\rightarrow aB\\
+    A &\rightarrow aB\\
     B &\rightarrow \alpha B\\
     B &\rightarrow \varepsilon
 \end{align*}
@@ -1663,7 +1665,7 @@ Než bude ukázán algoritmus pro precedenční analýzu, je třeba zadefinovat 
     \end{itemize}
 \end{definition}
 Funkcionalita precedenčního analyzátoru demonstrována na Algoritmu \ref{alg_precedencni_sa}.
-Informace k~tomuto algoritmu čerpány z~\cite{medunaElementsOfCompDesign,meduna2017sa-zdola-nahoru}, inspirace zápisu čerpána z~\cite{kunda2022}.
+Informace k tomuto algoritmu čerpány z~\cite{medunaElementsOfCompDesign,meduna2017sa-zdola-nahoru}, inspirace zápisu čerpána z~\cite{kunda2022}.
 \begin{algorithm}[h]
     \caption{Precedenční syntaktický analyzátor}
     \label{alg_precedencni_sa}
@@ -1706,7 +1708,7 @@ Poté se vloží na zásobník i~vstupní symbol a~přečte se nový ze vstupní
 Pokud je v~tabulce na políčku $>$, pak proběhne operace $REDUCE$, při které:
 \begin{enumerate}
     \item najde na zásobníku řetězec $\alpha$, který má být zredukován (přepsán) řetězcem novým,
-    \item určí pravidlo, u~kterého se pravá strana rovná řetězci $\alpha$,
+    \item určí pravidlo, u kterého se pravá strana rovná řetězci $\alpha$,
     \item nahradí řetězec $\alpha$ levou stranou určeného pravidla.
 \end{enumerate}
 Když tabulka vrátí symbol $\times$, nastává chyba. 
@@ -1802,8 +1804,6 @@ V~praxi se tedy většinou používá výhradně pro analýzu výrazů, které j
 Pro efektivní analýzu komplexnějších jazyků se často kombinuje precedenční analýza s~analýzou shora dolů.
 Analýza shora dolů se stará o~kontrolu vstupního řetězce mimo výrazy (analyzuje podmíněné příkazy, cykly a~podobně) a~pro výrazy předává řízení analýze precedenční.
 
-\cleardoublepage
-
 \chapter{Implementace syntaktického analyzátoru pro jazyk Koubp}\label{kap_implementace}
 
 \section{Přijímaný jazyk}\label{kap_prijimany_jazyk}
@@ -1821,7 +1821,7 @@ Ve zdrojovém souboru a~uživatelem definovaných funkcích může být větven�
 Veškeré proměnné jsou lokální, i~v~rámci hlavního těla programu.
 Proměnné mají rozsah platnosti v~\emph{bloku kódu}, což je sekvence příkazů ve složených závorkách \texttt{\{\}}.
 Tyto bloky kódu se mohou libovolně zanořovat.
-V~jazyce Koubp nejsou důležité \emph{bílé mezery (whitespaces)}.
+V jazyce Koubp nejsou důležité \emph{bílé mezery (whitespaces)}.
 Klíčová slova jazyka jsou
 \begin{center}
     \texttt{if, while, for, return, elseif, else, function, int, float, string, bool}.
@@ -1910,7 +1910,7 @@ Jazyk Koubp podoruje obvyklé příkazy a~konstrukce jiných programovacích jaz
         }
     \end{lstlisting}
     Je podporováno psát sekvence příkazů i~bez složených závorek \texttt{\{\}}.
-    V~tom případě se ke konstrukci vztahuje pouze první příkaz, který se za konstrukcí vyskytuje, podobně jako v~jazyce C \cite{ISO-C-Standard}.
+    V tom případě se ke konstrukci vztahuje pouze první příkaz, který se za konstrukcí vyskytuje, podobně jako v~jazyce C \cite{ISO-C-Standard}.
     Tohle pravidlo platí i~pro příkazy nebo sekvence příkazů v~cyklech. 
     \begin{lstlisting}[language=Koubp]
         if (vyraz) 
@@ -2083,7 +2083,7 @@ Formálně zapsáno, je to devítice $\Gamma = (N, T, S, P_1, P_2, P_3, P_4, P_6
             &\texttt{string}, \texttt{ bool}, \texttt{ variable}, \texttt{ constant}, \texttt{ functionName}, \texttt{ +}, \texttt{ -}, \texttt{ *}, \texttt{ /},\\
             &\texttt{.}, \texttt{ \&\&}, \texttt{ ||}, \texttt{ ==}, \texttt{ !=}, \texttt{ >}, \texttt{ <}, \texttt{ >=}, \texttt{ <=}, \texttt{ :}, \texttt{ ,}, \texttt{ (}, \texttt{ )}, \texttt{ \{} \texttt{ \}}\}
         \end{aligned}\\
-    S~& = \texttt{PROGRAM}
+    S & = \texttt{PROGRAM}
 \end{align*}
 
 Komponenty systému jsou navrhnuty tak, aby každá z~nich tvořila ucelenou část jazyka Koubp.
@@ -2339,7 +2339,7 @@ Ačkoliv se na abstraktní syntaktický strom (AST) nejčastěji nahlíží jako
 Jsem přesvědčen, že je to mnohem intuitivnější ke čtení výsledného stromu, který může být programem vygenerován.
 Pro snadnější pochopení implementace AST je vhodné si projít třídní hierarchii uzlů AST v~Příloze \ref{kap_priloha_c}.
 
-\subsection*{Tvorba AST v~precedenční analýze}
+\subsection*{Tvorba AST v precedenční analýze}
 Tvorba AST pro precedenční analýzu pracuje se zásobníkem kontextů pro výrazy.
 Do toho při každé redukci vloží posledně vytvořený výraz, který se následovně může použít (a~nemusí) jako operand při dalších redukcích.
 
@@ -2351,7 +2351,7 @@ Operátor se pak přečte z~pravidla použitého pro redukci.
 
 Poslední výraz, který na zásobníku zůstane, je převzán prediktivní analýzou a~vložen do zbytku AST pro reprezentaci vstupního zdrojového kódu.
 
-\subsection*{Tvorba AST v~prediktivní analýze}
+\subsection*{Tvorba AST v prediktivní analýze}
 Prediktivní analýza také pracuje se zásobníkem kontextů, ale takovým, ve kterém se nenacházejí výrazy, pouze příkazy.
 Spoléhá na dvě polymorfní metody, které jsou přepsány v~uzlech, které dědí od třídy \texttt{Statement}.
 Třídy pro reprezentaci výrazů v~AST tuto metodu řešit nemusí, protože si veškeré informace o~tokenech mohou převzít ze zásobníku, na kterém provádí redukci a~případné výrazy ze zásobníku volání výrazů.
@@ -2452,7 +2452,7 @@ Stačí tedy přeložit program příkazem \texttt{make} a~následně spustit te
 
 Stejným příkazem se zároveň spouští testy chování, respektive skript \texttt{test.sh}.
 Skript \texttt{test.sh} spouští program \texttt{Parser} a~na vstup přivádí zdrojové soubory v~jazyce Koubp.
-Poté se kontroluje návratový kód programu a~porovnává se s~očekávaným návratovým kódem, který je definován v~příslušném souboru se stejným názvem, avšak s~příponou \emph{.koubp.rc} (\emph{return code}) místo \emph{.koubp}.
+Poté se kontroluje návratový kód programu a~porovnává se s~očekávaným návratovým kódem, který je definován v příslušném souboru se stejným názvem, avšak s~příponou \emph{.koubp.rc} (\emph{return code}) místo \emph{.koubp}.
 
 \subsection*{Jednotkové testy}
 Jednotkové testy existují pro třídy důležité pro syntaktickou analýzu a~generování abstraktního syntaktického stromu.
@@ -2469,8 +2469,6 @@ Tyto testy zkoumají, jestli program \texttt{Parser} vrací očekávanou návrat
 Zdrojové kódy, na kterých je program testován, se nachází ve složce \texttt{test/koubp\textunderscore files/}.
 Tato složka je rozdělena na další tři podsložky: základní konstrukce jazyka v~\texttt{basic\textunderscore constructs}, jednoduché algoritmy v~podsložce \texttt{simple\textunderscore algorithms/}, kódy se syntaktickými chybami v~\texttt{syntax\textunderscore error\textunderscore files/} a~syntakticky korektní, ale trochu obskurní až ezoterické kódy v~\texttt{extreme\textunderscore cases/}.
 Všechny složky obsahují zdrojové kódy s~různými návratovými hodnotami.
-
-\cleardoublepage
 
 \chapter{Závěr}
 Cílem této práce bylo zkoumat různé gramatické systémy a~navrhnout nový, pro který se následně implementuje syntaktický analyzátor.
