@@ -14,7 +14,7 @@
 
 Declaration::Declaration()
 {
-    this->nodeType = Statement_n;
+    this->nodeType = NodeType::nodeStatement;
 }
 
 Declaration::~Declaration()
@@ -41,7 +41,7 @@ void Declaration::PrintTree(std::ofstream& file, int& id, int parentId)
 
 void Declaration::ProcessToken(Token& token)
 {
-    if (token == tVariable) {
+    if (token == TokenType::t_Variable) {
         this->left = new Variable(token);
     }
 }
@@ -49,10 +49,10 @@ void Declaration::ProcessToken(Token& token)
 void Declaration::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     switch (nt.GetNonterminalType()) {
-        case nExpression: {
+        case NonterminalType::nt_Expression: {
             auto* tmp = dynamic_cast<Expression*>(node);
             if (tmp == nullptr) {
-                throw InternalError("Declaration::LinkNode (case nExpression) invalid type: " + std::string(typeid(*node).name()));
+                throw InternalError("Declaration::LinkNode (case nt_Expression) invalid type: " + std::string(typeid(*node).name()));
             }
 
             this->right = tmp;

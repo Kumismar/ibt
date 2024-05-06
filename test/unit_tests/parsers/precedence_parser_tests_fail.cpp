@@ -23,7 +23,7 @@ protected:
     void SetUp() override
     {
         this->parser = new PrecedenceParser(this->stack);
-        this->stack.push_front(new Nonterminal(nExpression));
+        this->stack.push_front(new Nonterminal(NonterminalType::nt_Expression));
         AST::GetInstance()->TurnOff();
         Logger::GetInstance()->TurnOff();
     }
@@ -50,62 +50,62 @@ protected:
 
 TEST_F(PrecedenceParserTestsFail, EmptyInput)
 {
-    inputTape = { new Token(tEnd) };
+    inputTape = { new Token(t_End) };
     EXPECT_THROW(this->parser->Parse(), SyntaxError);
 }
 
 TEST_F(PrecedenceParserTestsFail, UnexpectedTokenInExpression)
 {
     // a + ; b
-    inputTape = { new Token(tConst), new Token(tPlus), new Token(tSemi), new Token(tConst), new Token(tExpEnd) };
+    inputTape = { new Token(t_Const), new Token(t_Plus), new Token(t_Semi), new Token(t_Const), new Token(t_ExpEnd) };
     EXPECT_THROW(this->parser->Parse(), SyntaxError);
 }
 
 TEST_F(PrecedenceParserTestsFail, InvalidFunctionCallSyntax)
 {
     // f(a + b,)
-    inputTape = { new Token(tFuncName), new Token(tLPar), new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tComma), new Token(tRPar), new Token(tExpEnd) };
+    inputTape = { new Token(t_FuncName), new Token(t_LPar), new Token(t_Variable), new Token(t_Plus), new Token(t_Variable), new Token(t_Comma), new Token(t_RPar), new Token(t_ExpEnd) };
     EXPECT_THROW(this->parser->Parse(), SyntaxError);
 }
 
 TEST_F(PrecedenceParserTestsFail, InvalidExpressionWithinParentheses)
 {
     // (a + b +)
-    inputTape = { new Token(tLPar), new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tPlus), new Token(tRPar), new Token(tExpEnd) };
+    inputTape = { new Token(t_LPar), new Token(t_Variable), new Token(t_Plus), new Token(t_Variable), new Token(t_Plus), new Token(t_RPar), new Token(t_ExpEnd) };
     EXPECT_THROW(this->parser->Parse(), SyntaxError);
 }
 
 TEST_F(PrecedenceParserTestsFail, ConsecutiveOperators)
 {
     // a + + b
-    inputTape = { new Token(tVariable), new Token(tPlus), new Token(tPlus), new Token(tVariable), new Token(tExpEnd) };
+    inputTape = { new Token(t_Variable), new Token(t_Plus), new Token(t_Plus), new Token(t_Variable), new Token(t_ExpEnd) };
     EXPECT_THROW(this->parser->Parse(), SyntaxError);
 }
 
 TEST_F(PrecedenceParserTestsFail, MissingOperand)
 {
     // a +
-    inputTape = { new Token(tVariable), new Token(tPlus), new Token(tExpEnd) };
+    inputTape = { new Token(t_Variable), new Token(t_Plus), new Token(t_ExpEnd) };
     EXPECT_THROW(this->parser->Parse(), SyntaxError);
 }
 
 TEST_F(PrecedenceParserTestsFail, InvalidUnaryOperator)
 {
     // * a
-    inputTape = { new Token(tMul), new Token(tVariable), new Token(tExpEnd) };
+    inputTape = { new Token(t_Mul), new Token(t_Variable), new Token(t_ExpEnd) };
     EXPECT_THROW(this->parser->Parse(), SyntaxError);
 }
 
 TEST_F(PrecedenceParserTestsFail, UnmatchedParentheses)
 {
     // (a + b
-    inputTape = { new Token(tLPar), new Token(tVariable), new Token(tPlus), new Token(tVariable), new Token(tExpEnd) };
+    inputTape = { new Token(t_LPar), new Token(t_Variable), new Token(t_Plus), new Token(t_Variable), new Token(t_ExpEnd) };
     EXPECT_THROW(this->parser->Parse(), SyntaxError);
 }
 
 TEST_F(PrecedenceParserTestsFail, MissingOperatorInParentheses)
 {
     // (a b)
-    inputTape = { new Token(tLPar), new Token(tVariable), new Token(tVariable), new Token(tRPar), new Token(tExpEnd) };
+    inputTape = { new Token(t_LPar), new Token(t_Variable), new Token(t_Variable), new Token(t_RPar), new Token(t_ExpEnd) };
     EXPECT_THROW(this->parser->Parse(), SyntaxError);
 }

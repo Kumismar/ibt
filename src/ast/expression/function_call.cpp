@@ -10,8 +10,7 @@
 
 FunctionCall::FunctionCall()
 {
-    this->nodeType = Expression_n;
-    this->type = FunctionCall_t;
+    this->nodeType = NodeType::nodeExpression;
 }
 
 FunctionCall::~FunctionCall()
@@ -35,19 +34,18 @@ void FunctionCall::PrintTree(std::ofstream& file, int& id, int parentId)
 }
 void FunctionCall::ProcessToken(Token& token)
 {
-    if (token == tFuncName) {
+    if (token == TokenType::t_FuncName) {
         this->name = token.GetDataString();
     }
 }
 
 void FunctionCall::LinkNode(ASTNode* node, Nonterminal& nt)
 {
-    if (nt == nExpression) {
+    if (nt == NonterminalType::nt_Expression) {
         auto* tmp = dynamic_cast<Expression*>(node);
         if (tmp == nullptr) {
-            throw InternalError("FunctionCall::LinkNode case nExpression node isnt expression, real type:" + std::string(typeid(*node).name()));
+            throw InternalError("FunctionCall::LinkNode case nt_Expression node isnt expression, real type:" + std::string(typeid(*node).name()));
         }
         this->arguments.push_back(tmp);
     }
 }
-

@@ -13,7 +13,7 @@
 
 StatementList::StatementList()
 {
-    this->nodeType = StatementList_n;
+    this->nodeType = NodeType::nodeStList;
 }
 
 StatementList::~StatementList()
@@ -23,7 +23,7 @@ StatementList::~StatementList()
     }
 
     for (StatementOrExpression* item: this->statements) {
-        if (item->type == Statement_t) {
+        if (item->type == StOrExpType::soe_Statement) {
             delete item->data.statement;
         }
         else {
@@ -41,10 +41,10 @@ void StatementList::PrintTree(std::ofstream& file, int& id, int parentId)
     file << "node" << currentId << " [label=\"StatementList\"];\n";
 
     for (StatementOrExpression* item: this->statements) {
-        if (item->type == Statement_t) {
+        if (item->type == StOrExpType::soe_Statement) {
             item->data.statement->PrintTree(file, id, currentId);
         }
-        else if (item->type == Expression_t) {
+        else if (item->type == StOrExpType::soe_Expression) {
             item->data.expression->PrintTree(file, id, currentId);
         }
         else {
@@ -55,41 +55,41 @@ void StatementList::PrintTree(std::ofstream& file, int& id, int parentId)
 
 void StatementList::ProcessToken(Token& token)
 {
-    }
+}
 
 void StatementList::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     auto* tmp = new StatementOrExpression();
-    if (nt.GetNonterminalType() == nExpression) {
+    if (nt.GetNonterminalType() == NonterminalType::nt_Expression) {
         auto* tmpNode = dynamic_cast<Expression*>(node);
         if (tmpNode == nullptr) {
-            throw InternalError("StatementList::LinkNode (case nExpression) invalid type: " + std::string(typeid(*node).name()));
+            throw InternalError("StatementList::LinkNode (case nt_Expression) invalid type: " + std::string(typeid(*node).name()));
         }
 
-        tmp->type = Expression_t;
+        tmp->type = StOrExpType::soe_Expression;
         tmp->data.expression = tmpNode;
     }
-    else if (nt.GetNonterminalType() == nStatements) {
+    else if (nt.GetNonterminalType() == NonterminalType::nt_Statements) {
         // This is the case of rule <statements> -> <statement> <statements> where new node is generated for each <statements>
         // Since there has to be <codeblock> between in order to have nested statements, we can just ignore it.
         return;
     }
-    else if (nt.GetNonterminalType() == nCodeBlock) {
+    else if (nt.GetNonterminalType() == NonterminalType::nt_CodeBlock) {
         auto* tmpStmtList = dynamic_cast<StatementList*>(node);
         if (tmpStmtList == nullptr) {
-            throw InternalError("StatementList::LinkNode (case nCodeBlock) invalid type: " + std::string(typeid(*node).name()));
+            throw InternalError("StatementList::LinkNode (case nt_CodeBlock) invalid type: " + std::string(typeid(*node).name()));
         }
 
-        tmp->type = StList_t;
+        tmp->type = StOrExpType::soe_StList;
         tmp->data.statementList = tmpStmtList;
     }
     else {
         auto* tmpStmt = dynamic_cast<Statement*>(node);
         if (tmpStmt == nullptr) {
-            throw InternalError("StatementList::LinkNode (case nStatement) invalid type: " + std::string(typeid(*node).name()));
+            throw InternalError("StatementList::LinkNode (case nt_Statement) invalid type: " + std::string(typeid(*node).name()));
         }
 
-        tmp->type = Statement_t;
+        tmp->type = StOrExpType::soe_Statement;
         tmp->data.statement = tmpStmt;
     }
     this->statements.push_back(tmp);

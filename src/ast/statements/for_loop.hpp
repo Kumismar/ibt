@@ -17,10 +17,10 @@
  */
 typedef enum phase
 {
-    INITIALIZATION,
-    CONDITION,
-    END_EXPRESSION,
-    BODY
+    phase_Init,
+    phase_Condition,
+    phase_EndExpr,
+    phase_Body
 } Phase;
 
 /**
@@ -28,9 +28,9 @@ typedef enum phase
  */
 typedef enum initType
 {
-    Decl,
-    Expr,
-    NoType
+    init_Declaration,
+    init_Expression,
+    init_None
 } InitType;
 
 /**
@@ -59,7 +59,7 @@ private:
     /**
      * @brief The current phase of the for loop.
      */
-    Phase phase = INITIALIZATION;
+    Phase phase = Phase::phase_Init;
 
     /**
      * @brief The initialization part of the for loop.
@@ -89,7 +89,7 @@ private:
 
 public:
     /**
-     * @brief A constructor for the for loop. Sets node type, creates the initialization structure and sets the phase to INITIALIZATION.
+     * @brief A constructor for the for loop. Sets node type, creates the initialization structure and sets the phase to phase_Init.
      */
     ForLoop();
 

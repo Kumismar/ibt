@@ -28,23 +28,23 @@ void EndInsertor::InsertExpressionEnd()
         throw SyntaxError("Missing token(s).\n");
     }
 
-    inputTape.insert(token, new Token(tExpEnd));
+    inputTape.insert(token, new Token(TokenType::t_ExpEnd));
 }
 
 void EndInsertor::InsertFunctionEnd()
 {
-    // go through inputTape and insert tFuncEnd after the first right parenthesis matched with left parenthesis
+    // go through inputTape and insert t_FuncEnd after the first right parenthesis matched with left parenthesis
     int counter = 0;
     for (auto token = inputTape.begin(); token != inputTape.end(); token++) {
-        if (**token == tLPar) {
+        if (**token == TokenType::t_LPar) {
             counter++;
         }
-        else if (**token == tRPar) {
+        else if (**token == TokenType::t_RPar) {
             counter--;
         }
 
-        if (counter == 0 && **token == tRPar) {
-            inputTape.insert(++token, new Token(tFuncEnd));
+        if (counter == 0 && **token == TokenType::t_RPar) {
+            inputTape.insert(++token, new Token(TokenType::t_FuncEnd));
             return;
         }
     }
@@ -53,24 +53,24 @@ void EndInsertor::InsertFunctionEnd()
 void EndInsertor::skipOperand(InputTape::iterator& token)
 {
     // skip unary operators
-    while (**token == tUnMinus || **token == tExcl) {
+    while (**token == TokenType::t_UnMinus || **token == TokenType::t_Excl) {
         token++;
         if (token == inputTape.end()) {
             throw SyntaxError("Missing token(s).\n");
         }
     }
 
-    if (**token == tLPar) {
+    if (**token == TokenType::t_LPar) {
         EndInsertor::skipOperandInParentheses(token);
         return;
     }
 
-    if (**token == tFuncName) {
+    if (**token == TokenType::t_FuncName) {
         EndInsertor::skipFunctionCall(token);
         return;
     }
 
-    if (**token != tConst && **token != tVariable) {
+    if (**token != TokenType::t_Const && **token != TokenType::t_Variable) {
         throw SyntaxError("Invalid token.\n");
     }
 
@@ -84,11 +84,11 @@ void EndInsertor::skipFunctionCall(InputTape::iterator& token)
 {
     int counter = 0;
 
-    for (token++; (token != inputTape.end() && **token != tExpEnd); token++) {
-        if (**token == tLPar) {
+    for (token++; (token != inputTape.end() && **token != t_ExpEnd); token++) {
+        if (**token == t_LPar) {
             counter++;
         }
-        else if (**token == tRPar) {
+        else if (**token == t_RPar) {
             counter--;
         }
 
@@ -98,7 +98,7 @@ void EndInsertor::skipFunctionCall(InputTape::iterator& token)
         }
     }
 
-    if (token == inputTape.end() || **token == tExpEnd) {
+    if (token == inputTape.end() || **token == t_ExpEnd) {
         throw SyntaxError("Invalid token.\n");
     }
 }
@@ -107,10 +107,10 @@ void EndInsertor::skipOperandInParentheses(InputTape::iterator& token)
 {
     int counter = 0;
     while (token != inputTape.end()) {
-        if (**token == tLPar) {
+        if (**token == t_LPar) {
             counter++;
         }
-        else if (**token == tRPar) {
+        else if (**token == t_RPar) {
             counter--;
         }
 
@@ -129,8 +129,8 @@ void EndInsertor::skipOperandInParentheses(InputTape::iterator& token)
 
 bool EndInsertor::isOperator(Token& token)
 {
-    return (token == tPlus || token == tMinus || token == tMul || token == tDiv || token == tConcat ||
-            token == tAnd || token == tOr ||
-            token == tEq || token == tNEq || token == tLess || token == tGreater || token == tLEq || token == tGEq ||
-            token == tAssign);
+    return (token == t_Plus || token == t_Minus || token == t_Mul || token == t_Div || token == t_Concat ||
+            token == t_And || token == t_Or ||
+            token == t_Eq || token == t_NEq || token == t_Less || token == t_Greater || token == t_LEq || token == t_GEq ||
+            token == t_Assign);
 }

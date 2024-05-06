@@ -11,26 +11,11 @@
 #include "token.hpp"
 
 /**
- * @brief An enumeration for the type of the operand.
- */
-typedef enum operandType
-{
-    Constant_t,
-    Variable_t,
-    FunctionCall_t
-} OperandType;
-
-/**
  * @brief A class representing an operand in the AST.
  */
 class Operand : public Expression
 {
 protected:
-    /**
-     * @brief Type of the operand.
-     */
-    OperandType type;
-
     /**
      * @brief Data of the operand taken from token.
      */

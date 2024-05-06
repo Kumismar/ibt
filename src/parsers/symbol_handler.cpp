@@ -30,7 +30,7 @@ void SymbolHandler::Expand(bool parsingFunction, LLTableIndex& tableItem)
     logger->AddLeftSide(stackTop);
 
     // If parsing function call, do not pop Expression from stack, Precedence parser is in charge of it.
-    if (!(parsingFunction && *stackNT == nExpression)) {
+    if (!(parsingFunction && *stackNT == NonterminalType::nt_Expression)) {
         delete stackTop;
         this->stack.pop_front();
     }
@@ -67,12 +67,12 @@ void SymbolHandler::Pop()
 bool SymbolHandler::returnedEpsilon()
 {
     Symbol* front = this->expandedRightSide.front();
-    if (this->expandedRightSide.size() == 1 && front->GetSymbolType() == Token_t) {
+    if (this->expandedRightSide.size() == 1 && front->GetSymbolType() == SymbolType::symb_Token) {
         auto* t = dynamic_cast<Token*>(front);
         if (t == nullptr) {
             throw InternalError("Dynamic cast to Token* failed, real type: " + std::string(typeid(front).name()) + "\n");
         }
-        return *t == tEps;
+        return *t == TokenType::t_Eps;
     }
     return false;
 }

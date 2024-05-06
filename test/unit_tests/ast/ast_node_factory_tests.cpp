@@ -42,8 +42,7 @@ protected:
         AST::Cleanup();
         Logger::Cleanup();
 
-            delete this->expr;
-
+        delete this->expr;
     }
 };
 
@@ -59,7 +58,7 @@ TEST_F(ASTNodeFactoryTests, CreateConstant)
 TEST_F(ASTNodeFactoryTests, CreateVariable)
 {
     this->rule = {
-        sampleToken(tVariable)
+        sampleToken(t_Variable)
     };
     this->expr = this->factory->CreateASTNode(this->rule);
     EXPECT_EQ(typeid(Variable), typeid(*expr));
@@ -67,10 +66,10 @@ TEST_F(ASTNodeFactoryTests, CreateVariable)
 
 TEST_F(ASTNodeFactoryTests, CreateUnaryExpression)
 {
-    Token* constant = sampleToken(tConst);
+    Token* constant = sampleToken(t_Const);
     createOperandAndPush(constant);
 
-    Token* unMinus = sampleToken(tUnMinus);
+    Token* unMinus = sampleToken(t_UnMinus);
     this->rule = {
         unMinus,
         constant
@@ -81,13 +80,13 @@ TEST_F(ASTNodeFactoryTests, CreateUnaryExpression)
 
 TEST_F(ASTNodeFactoryTests, CreateBinaryExpression)
 {
-    Token* constant1 = sampleToken(tConst);
+    Token* constant1 = sampleToken(t_Const);
     createOperandAndPush(constant1);
 
-    Token* constant2 = sampleToken(tConst);
+    Token* constant2 = sampleToken(t_Const);
     createOperandAndPush(constant2);
 
-    Token* plus = sampleToken(tPlus);
+    Token* plus = sampleToken(t_Plus);
     this->rule = {
         constant1,
         plus,

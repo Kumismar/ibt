@@ -77,7 +77,7 @@ private:
 
     /**
      * @brief Handle special cases of the parser.
-     * @details It can be either empty input tape or auxiliary token tFuncEnd that was inserted to the input tape.
+     * @details It can be either empty input tape or auxiliary token t_FuncEnd that was inserted to the input tape.
      */
     void handleSpecialCases();
 

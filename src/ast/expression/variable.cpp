@@ -11,10 +11,9 @@
 
 Variable::Variable(Token& token)
 {
-    this->nodeType = Expression_n;
-    this->type = Variable_t;
+    this->nodeType = NodeType::nodeExpression;
     this->data.type = token.GetDataType();
-    if (this->data.type == String) {
+    if (this->data.type == DataType::data_String) {
         this->name = std::string((*token.GetData().stringVal));
         return;
     }

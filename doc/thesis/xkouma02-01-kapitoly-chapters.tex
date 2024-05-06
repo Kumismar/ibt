@@ -2244,41 +2244,41 @@ Volání funkce analyzují oba analyzátory.
 Samotná struktura volání funkce je zkontrolována prediktivním analyzátorem a~výrazy, které se vyskytují jako argumenty volání funkce, jsou zkontrolovány precedenčním analyzátorem.
 
 Díky možnosti neustálého zanořování je potřeba, aby analyzátory mezi sebou komunikovaly.
-To je realizováno pomocným terminálem \texttt{tFuncEnd}, který je vložen na zásobník pro syntaktickou analýzu hned za volání funkce.
+To je realizováno pomocným terminálem \texttt{t_FuncEnd}, který je vložen na zásobník pro syntaktickou analýzu hned za volání funkce.
 Tento proces nebere v~potaz, že mohou být další vnořené funkce či syntaktická chyba.
-Zkrátka vloží na zásobník \texttt{tFuncEnd} tam, kde je volání funkce ukončeno pravou závorkou \texttt{)}.
-Jakmile prediktivní analyzátor přečte tento terminální symbol, vloží na zásobník další pomocný terminál \texttt{tFuncConst}.
+Zkrátka vloží na zásobník \texttt{t_FuncEnd} tam, kde je volání funkce ukončeno pravou závorkou \texttt{)}.
+Jakmile prediktivní analyzátor přečte tento terminální symbol, vloží na zásobník další pomocný terminál \texttt{t_FuncConst}.
 Ten využívá precedenční analýza pro nahrazení volání funkce, o~které se stará prediktivní analýza.
 Pro implementaci precedenční analýzy bylo do čtvrté komponenty přidáno pravidlo
 \begin{center}
     \texttt{EXPRESSION \textrightarrow{} functionConstant}.
 \end{center}
 
-Aby precedenční analyzátor mohl s~terminálem \texttt{tFuncConst} pracovat, je nutné, aby se prediktivní analýza pro volání funkce volala až z~analýzy precedenční.
+Aby precedenční analyzátor mohl s~terminálem \texttt{t_FuncConst} pracovat, je nutné, aby se prediktivní analýza pro volání funkce volala až z~analýzy precedenční.
 Mějme například příkaz:
 \begin{lstlisting}[language=Koubp]
     float num = 1.0 + foo(var);
 \end{lstlisting}
 V~tomto případě je vše očekávané.
-Precedenční analýza zavolá prediktivní analýzu, ta se postará o~volání funkce a~na zásobník vloží \texttt{tFuncConst}, který precedenční analýza použije v~rámci pravidla.
+Precedenční analýza zavolá prediktivní analýzu, ta se postará o~volání funkce a~na zásobník vloží \texttt{t_FuncConst}, který precedenční analýza použije v~rámci pravidla.
 Pokud bychom ale měli například toto samo o~sobě stojící volání funkce:
 \begin{lstlisting}[language=Koubp]
     foo(var + convert_int(60.8));
 \end{lstlisting}
-pak analýza tohoto příkazu začne prediktivně, nicméně ihned vidí terminál \texttt{tFuncName}, který indikuje volání funkce, a~proto předá řízení precedenční analýze.
+pak analýza tohoto příkazu začne prediktivně, nicméně ihned vidí terminál \texttt{t_FuncName}, který indikuje volání funkce, a~proto předá řízení precedenční analýze.
 Dále už analýza probíhá stejně, jako u~předchozího příkladu. 
-Výraz bude mít jediný operand bez operátoru, a~to \texttt{tFuncConst}.
+Výraz bude mít jediný operand bez operátoru, a~to \texttt{t_FuncConst}.
 
 Zajímavou částí je předávání řízení prediktivní $\rightarrow$ precedenční analýza.
-Nutnou podmínkou je, aby na vrcholu zásobníku byl neterminál \texttt{nExpression}.
+Nutnou podmínkou je, aby na vrcholu zásobníku byl neterminál \texttt{nt_Expression}.
 Mohou nastat tři možnosti:
 \begin{enumerate}[label=\arabic*)]
-    \item Aktuálně není na vstupu terminál \texttt{tFuncName}, což znamená, že výraz určitě bude analyzovaný precedenčním analyzátorem a~může se předat řízení.
-    \item Pokud na vstupu je \texttt{tFuncName}, pak záleží, zda se analyzuje volání funkce, pro které byl prediktivní analyzátor zavolán.
-    To se pozná podle toho, jestli je \texttt{tFuncName} první takový terminál přečten. 
+    \item Aktuálně není na vstupu terminál \texttt{t_FuncName}, což znamená, že výraz určitě bude analyzovaný precedenčním analyzátorem a~může se předat řízení.
+    \item Pokud na vstupu je \texttt{t_FuncName}, pak záleží, zda se analyzuje volání funkce, pro které byl prediktivní analyzátor zavolán.
+    To se pozná podle toho, jestli je \texttt{t_FuncName} první takový terminál přečten.
     \begin{itemize}
-        \item Při prvním výskytu \texttt{tFuncName} víme, že aktuální volání funkce má analyzovat prediktivní analyzátor a~nebude se volat precedenční.
-        \item Jakýkoliv další výskyt \texttt{tFuncName} znamená, že jsme narazili na vnořené volání funkce a~předá se řízení precedenční analýze pro nový výraz.
+        \item Při prvním výskytu \texttt{t_FuncName} víme, že aktuální volání funkce má analyzovat prediktivní analyzátor a~nebude se volat precedenční.
+        \item Jakýkoliv další výskyt \texttt{t_FuncName} znamená, že jsme narazili na vnořené volání funkce a~předá se řízení precedenční analýze pro nový výraz.
     \end{itemize}  
 \end{enumerate}
 
@@ -2295,7 +2295,7 @@ Prediktivní analyzátor pracuje primárně s~metodami \texttt{parseToken} a~\te
 Obě dvě metody korespondují s~Algoritmem \ref{alg_prediktivni_sa}.
 Metoda \texttt{parseToken} se podívá, jestli aktuální terminál na zásobníku je stejný jako terminál na vstupu.
 Pokud ano, pak vyjme symbol ze zásobníku i~ze vstupní pásky a~pokračuje dál v~analýze vstupního řetězce.
-Speciální případ je pomocný symbol \texttt{tEnd}, který má stejný význam jako \texttt{\$} v~Algoritmu \ref{alg_prediktivni_sa}.
+Speciální případ je pomocný symbol \texttt{t_End}, který má stejný význam jako \texttt{\$} v~Algoritmu \ref{alg_prediktivni_sa}.
 Když je i~na vrcholu zásobníku i~na vstupní pásce tento terminál, pak analýza končí úspěchem.
 
 Metoda \texttt{parseNonterminal}, pokud nepředává řízení precedenční analýze, se podívá do LL tabulky, která se indexuje pomocí vstupního terminálu a~neterminálu na vrcholu zásobníku.
@@ -2309,12 +2309,12 @@ Při prázdném políčku tabulky analýza končí chybou, pro neprázdnou uspo�
 
 \subsection*{Implementace precedenční analýzy}
 Precedenční analyzátor pracuje se dvěma zásobníky.
-První zásobník je společný pro oba analyzátory, přičemž precedenční pouze vyjme neterminál \texttt{nExpression}, pokud analýza skončí úspěšně.
+První zásobník je společný pro oba analyzátory, přičemž precedenční pouze vyjme neterminál \texttt{nt_Expression}, pokud analýza skončí úspěšně.
 Druhý je exkluzivně pro precedenční analyzátor a~simuluje nejpravější derivaci, respektive analýzu zdola nahoru dle Algoritmu \ref{alg_precedencni_sa}.
 Označení \emph{zásobník} bude v~této podkapitole označovat pouze precedenční zásobník, nebude-li explicitně řečeno \emph{společný zásobník}.
 
-Analýza výrazů začíná vložením pomocného terminálu \texttt{tExpEnd} na společný zásobník, což je implementováno pomocí procházení společného zásobníku a~přeskakování operátorů a~operandů.
-Terminál \texttt{tExpEnd} se vloží za první operand, který za sebou již nemá operátor.
+Analýza výrazů začíná vložením pomocného terminálu \texttt{t_ExpEnd} na společný zásobník, což je implementováno pomocí procházení společného zásobníku a~přeskakování operátorů a~operandů.
+Terminál \texttt{t_ExpEnd} se vloží za první operand, který za sebou již nemá operátor.
 Dále se nalezne první terminál na zásobníku jednoduchým procházením zásobníku a~vrácením prvního výskytu terminálu.
 Analyzátor se podívá do precedenční tabulky a~najde akci, kterou má udělat, na základě vstupního terminálu a~prvního terminálu na zásobníku.
 V~precedenční tabulce se na políčkách mohou vyskytovat tyto symboly:
@@ -2345,7 +2345,7 @@ Do toho při každé redukci vloží posledně vytvořený výraz, který se ná
 
 Pro precedenční analýzu je tvorba AST jednodušší.
 Výrazy jsou totiž maximálně binární, navíc simulace tvorby derivačního stromu zdola nahoru je velmi přirozená.
-Má-li proběhnout redukce proměnných, konstant nebo \emph{konstant funkcí} (vzpomeňme si na pomocný terminál \texttt{tFuncConst} z~Kapitoly \ref{kap_reseni_sa}), vytvoří se nový \texttt{Operand} a~vloží se na zásobník kontextů výrazů pro AST.
+Má-li proběhnout redukce proměnných, konstant nebo \emph{konstant funkcí} (vzpomeňme si na pomocný terminál \texttt{t_FuncConst} z~Kapitoly \ref{kap_reseni_sa}), vytvoří se nový \texttt{Operand} a~vloží se na zásobník kontextů výrazů pro AST.
 Při redukci unárních či binárních výrazů, kde se již pracuje s~neterminály, se pokaždé vyjme výraz ze~zásobníku kontextů pro výrazy (dva pro binární výrazy) a~vytvoří se nový výraz, do kterého jsou všechny vyjmuté výrazy vloženy jako operandy.
 Operátor se pak přečte z~pravidla použitého pro redukci.
 

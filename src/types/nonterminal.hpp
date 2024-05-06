@@ -14,22 +14,22 @@
  */
 typedef enum nonterminalType
 {
-    nProgram,
-    nStatementList,
-    nStatement,
-    nIf2,
-    nDeclOrExpr,
-    nReturnExp,
-    nFunctionDef,
-    nParams,
-    nParams2,
-    nExpression,
-    nArgs,
-    nArgs2,
-    nCodeBlock,
-    nStatements,
-    nVoluntaryType,
-    nType,
+    nt_Program,
+    nt_StatementList,
+    nt_Statement,
+    nt_If2,
+    nt_DeclOrExpr,
+    nt_ReturnExp,
+    nt_FunctionDef,
+    nt_Params,
+    nt_Params2,
+    nt_Expression,
+    nt_Args,
+    nt_Args2,
+    nt_CodeBlock,
+    nt_Statements,
+    nt_VoluntaryType,
+    nt_Type,
     // auxiliary type for handling AST context stack
     nStop
 } NonterminalType;

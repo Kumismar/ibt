@@ -14,9 +14,9 @@
  */
 typedef enum symbolType
 {
-    Token_t,
-    Nonterminal_t,
-    PrecSymbol_t
+    symb_Token,
+    symb_Nonterminal,
+    symb_PrecSymbol
 } SymbolType;
 
 

@@ -11,10 +11,10 @@
 #include "token.hpp"
 
 const std::vector<Rule> Grammar5::rightSideRules = {
-    { new Token(tLCurl), new Nonterminal(nStatements), new Token(tRCurl), new Nonterminal(nStop) },
-    { new Nonterminal(nStatement), new Nonterminal(nStop) },
-    { new Nonterminal(nStatement), new Nonterminal(nStatements) },
-    { new Token(tEps) }
+    { new Token(t_LCurl), new Nonterminal(NonterminalType::nt_Statements), new Token(t_RCurl), new Nonterminal(nStop) },
+    { new Nonterminal(NonterminalType::nt_Statement), new Nonterminal(nStop) },
+    { new Nonterminal(NonterminalType::nt_Statement), new Nonterminal(NonterminalType::nt_Statements) },
+    { new Token(t_Eps) }
 };
 
 Rule Grammar5::Expand(unsigned ruleNumber)

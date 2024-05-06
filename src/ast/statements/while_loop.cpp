@@ -12,7 +12,7 @@
 
 WhileLoop::WhileLoop()
 {
-    this->nodeType = Statement_n;
+    this->nodeType = NodeType::nodeStatement;
 }
 
 WhileLoop::~WhileLoop()
@@ -39,19 +39,19 @@ void WhileLoop::PrintTree(std::ofstream& file, int& id, int parentId)
 void WhileLoop::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     switch (nt.GetNonterminalType()) {
-        case nExpression: {
+        case NonterminalType::nt_Expression: {
             auto* tmp = dynamic_cast<Expression*>(node);
             if (tmp == nullptr) {
-                throw InternalError("WhileLoop::LinkNode (case nExpression) invalid type: " + std::string(typeid(*node).name()));
+                throw InternalError("WhileLoop::LinkNode (case nt_Expression) invalid type: " + std::string(typeid(*node).name()));
             }
 
             this->condition = tmp;
             break;
         }
-        case nCodeBlock: {
+        case NonterminalType::nt_CodeBlock: {
             auto* tmp = dynamic_cast<StatementList*>(node);
             if (tmp == nullptr) {
-                throw InternalError("WhileLoop::LinkNode (case nCodeBlock) invalid type: " + std::string(typeid(*node).name()));
+                throw InternalError("WhileLoop::LinkNode (case nt_CodeBlock) invalid type: " + std::string(typeid(*node).name()));
             }
 
             this->body = tmp;

@@ -24,12 +24,11 @@ ExpressionProcessor::ExpressionProcessor(AnalysisStack& stack)
 void ExpressionProcessor::Reduce()
 {
     Logger* logger = Logger::GetInstance();
-    Grammar4 grammar;
     Rule tmpRule;
     PatternFinder finder(this->stack);
     finder.FindFirstRule(tmpRule);
 
-    if (grammar.IsRule(tmpRule)) {
+    if (Grammar4::IsRule(tmpRule)) {
         logger->AddRightSide(tmpRule);
 
         ASTNodeFactory factory;
@@ -42,7 +41,7 @@ void ExpressionProcessor::Reduce()
             delete this->stack.front();
             this->stack.pop_front();
         }
-        auto* toPush = new Nonterminal(nExpression);
+        auto* toPush = new Nonterminal(NonterminalType::nt_Expression);
         this->stack.push_front(toPush);
 
 
@@ -85,7 +84,7 @@ void ExpressionProcessor::pushPrecedence()
     Symbol* tmpStackTop = this->stack.front();
 
     // Check if there is nonterminal on top of the stack, push to first or second position
-    if (tmpStackTop->GetSymbolType() != Nonterminal_t) {
+    if (tmpStackTop->GetSymbolType() != SymbolType::symb_Nonterminal) {
         this->stack.push_front(new PrecedenceSymbol(PrecedenceType::Push));
         return;
     }

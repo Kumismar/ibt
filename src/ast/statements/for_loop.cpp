@@ -16,16 +16,16 @@
 ForLoop::ForLoop()
 {
     this->init = new Initialization();
-    this->init->type = NoType;
-    this->nodeType = Statement_n;
+    this->init->type = InitType::init_None;
+    this->nodeType = NodeType::nodeStatement;
 }
 
 ForLoop::~ForLoop()
 {
-    if (this->init->type == Decl) {
+    if (this->init->type == InitType::init_Declaration) {
         delete this->init->data.decl;
     }
-    else if (this->init->type == Expr) {
+    else if (this->init->type == InitType::init_Expression) {
         delete this->init->data.expr;
     }
     delete this->init;
@@ -41,10 +41,10 @@ void ForLoop::PrintTree(std::ofstream& file, int& id, int parentId)
     file << "node" << parentId << " -> node" << currentId << ";\n";
     file << "node" << currentId << " [label=\"ForLoop\"];\n";
 
-    if (this->init->type == Decl) {
+    if (this->init->type == InitType::init_Declaration) {
         this->init->data.decl->PrintTree(file, id, currentId);
     }
-    else if (this->init->type == Expr) {
+    else if (this->init->type == InitType::init_Expression) {
         this->init->data.expr->PrintTree(file, id, currentId);
     }
 
@@ -56,37 +56,37 @@ void ForLoop::PrintTree(std::ofstream& file, int& id, int parentId)
 void ForLoop::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     switch (nt.GetNonterminalType()) {
-        case nCodeBlock: {
+        case NonterminalType::nt_CodeBlock: {
             auto* tmp = dynamic_cast<StatementList*>(node);
             if (tmp == nullptr) {
-                throw InternalError("ForLoop::LinkNode (case nCodeBlock) invalid type: " + std::string(typeid(*node).name()));
+                throw InternalError("ForLoop::LinkNode (case nt_CodeBlock) invalid type: " + std::string(typeid(*node).name()));
             }
 
             this->body = tmp;
             break;
         }
-        case nExpression: {
+        case NonterminalType::nt_Expression: {
             auto* tmp = dynamic_cast<Expression*>(node);
             if (tmp == nullptr) {
-                throw InternalError("ForLoop::LinkNode (case nStatement) invalid type: " + std::string(typeid(*node).name()));
+                throw InternalError("ForLoop::LinkNode (case nt_Statement) invalid type: " + std::string(typeid(*node).name()));
             }
 
-            if (this->phase == INITIALIZATION) {
-                this->init->type = Expr;
+            if (this->phase == Phase::phase_Init) {
+                this->init->type = InitType::init_Expression;
                 this->init->data.expr = tmp;
-                this->phase = CONDITION;
+                this->phase = Phase::phase_Condition;
             }
-            else if (this->phase == CONDITION) {
+            else if (this->phase == Phase::phase_Condition) {
                 this->condition = tmp;
-                this->phase = END_EXPRESSION;
+                this->phase = Phase::phase_EndExpr;
             }
-            else if (this->phase == END_EXPRESSION) {
+            else if (this->phase == Phase::phase_EndExpr) {
                 this->endExpr = tmp;
-                this->phase = BODY;
+                this->phase = Phase::phase_Body;
             }
             break;
         }
-        case nDeclOrExpr: {
+        case NonterminalType::nt_DeclOrExpr: {
             if (!ForLoop::nextIsType()) {
                 return;
             }
@@ -96,9 +96,9 @@ void ForLoop::LinkNode(ASTNode* node, Nonterminal& nt)
                 throw InternalError("ForLoop::LinkNode (case nDeclOrExp) invalid type: " + std::string(typeid(*node).name()));
             }
 
-            this->init->type = Decl;
+            this->init->type = InitType::init_Declaration;
             this->init->data.decl = tmp;
-            this->phase = CONDITION;
+            this->phase = Phase::phase_Condition;
             break;
         }
         default: {
@@ -110,5 +110,5 @@ void ForLoop::LinkNode(ASTNode* node, Nonterminal& nt)
 bool ForLoop::nextIsType()
 {
     Token* next = inputTape.front();
-    return (*next == tInt || *next == tFloat || *next == tBool || *next == tString);
+    return (*next == TokenType::t_Int || *next == TokenType::t_Float || *next == TokenType::t_Bool || *next == TokenType::t_String);
 }

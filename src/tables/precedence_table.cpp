@@ -48,54 +48,54 @@ char PrecRowAccessor::operator[](const Token& t)
 PrecRowAccessor PrecedenceTable::operator[](const Token& t) const
 {
     unsigned rowIndex = PrecedenceTable::MapTokenToIndex(t);
-    return {PrecedenceTable::precTable[rowIndex]};
+    return { PrecedenceTable::precTable[rowIndex] };
 }
 
 unsigned PrecedenceTable::MapTokenToIndex(const Token& t)
 {
     switch (t.GetTokenType()) {
-        case tPlus:
+        case TokenType::t_Plus:
             return 0;
-        case tMinus:
+        case TokenType::t_Minus:
             return 1;
-        case tMul:
+        case TokenType::t_Mul:
             return 2;
-        case tDiv:
+        case TokenType::t_Div:
             return 3;
-        case tConcat:
+        case TokenType::t_Concat:
             return 4;
-        case tAnd:
+        case TokenType::t_And:
             return 5;
-        case tOr:
+        case TokenType::t_Or:
             return 6;
-        case tEq:
+        case TokenType::t_Eq:
             return 7;
-        case tNEq:
+        case TokenType::t_NEq:
             return 8;
-        case tGreater:
+        case TokenType::t_Greater:
             return 9;
-        case tLess:
+        case TokenType::t_Less:
             return 10;
-        case tGEq:
+        case TokenType::t_GEq:
             return 11;
-        case tLEq:
+        case TokenType::t_LEq:
             return 12;
-        case tAssign:
+        case TokenType::t_Assign:
             return 13;
-        case tLPar:
+        case TokenType::t_LPar:
             return 14;
-        case tRPar:
+        case TokenType::t_RPar:
             return 15;
-        case tExcl:
+        case TokenType::t_Excl:
             return 16;
-        case tExpEnd:
+        case TokenType::t_ExpEnd:
             return 17;
-        // funcName will be changed for tConst on stack
-        case tConst:
-        case tFuncConst:
-        case tVariable:
+        // funcName will be changed for TokenType::t_Const on stack
+        case TokenType::t_Const:
+        case TokenType::t_FuncConst:
+        case TokenType::t_Variable:
             return 18;
-        case tUnMinus:
+        case TokenType::t_UnMinus:
             return 19;
         default:
             throw SyntaxError("PrecedenceTable::MapTokenToIndex invalid token type");

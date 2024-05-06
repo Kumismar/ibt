@@ -12,13 +12,13 @@
 Nonterminal::Nonterminal(const NonterminalType t)
     : ntType(t)
 {
-    this->symbType = Nonterminal_t;
+    this->symbType = SymbolType::symb_Nonterminal;
 }
 
 Nonterminal::Nonterminal(const Nonterminal& old)
     : ntType(old.GetNonterminalType())
 {
-    this->symbType = Nonterminal_t;
+    this->symbType = SymbolType::symb_Nonterminal;
 }
 
 bool Nonterminal::operator==(const NonterminalType& other) const
@@ -39,37 +39,37 @@ NonterminalType Nonterminal::GetNonterminalType() const
 std::string Nonterminal::GetTypeString() const
 {
     switch (this->ntType) {
-        case nProgram:
+        case NonterminalType::nt_Program:
             return "<program>";
-        case nStatementList:
+        case NonterminalType::nt_StatementList:
             return "<statementList>";
-        case nStatement:
+        case NonterminalType::nt_Statement:
             return "<statement>";
-        case nIf2:
+        case NonterminalType::nt_If2:
             return "<if2>";
-        case nDeclOrExpr:
+        case NonterminalType::nt_DeclOrExpr:
             return "<declOrExpr>";
-        case nReturnExp:
+        case NonterminalType::nt_ReturnExp:
             return "<returnExp>";
-        case nFunctionDef:
+        case NonterminalType::nt_FunctionDef:
             return "<functionDef>";
-        case nParams:
+        case NonterminalType::nt_Params:
             return "<params>";
-        case nParams2:
+        case NonterminalType::nt_Params2:
             return "<params2>";
-        case nExpression:
+        case NonterminalType::nt_Expression:
             return "<expression>";
-        case nArgs:
+        case NonterminalType::nt_Args:
             return "<args>";
-        case nArgs2:
+        case NonterminalType::nt_Args2:
             return "<args2>";
-        case nCodeBlock:
+        case NonterminalType::nt_CodeBlock:
             return "<codeBlock>";
-        case nStatements:
+        case NonterminalType::nt_Statements:
             return "<statements>";
-        case nVoluntaryType:
+        case NonterminalType::nt_VoluntaryType:
             return "<voluntaryType>";
-        case nType:
+        case NonterminalType::nt_Type:
             return "<type>";
         case nStop:
             return "";

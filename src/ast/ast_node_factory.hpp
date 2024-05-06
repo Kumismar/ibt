@@ -61,5 +61,5 @@ public:
      * @param rule The rule to create the node from.
      * @return The created expression node.
      */
-    Expression* CreateASTNode(Rule& rule);
+    static Expression* CreateASTNode(Rule& rule);
 };

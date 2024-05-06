@@ -12,13 +12,13 @@
 PrecedenceSymbol::PrecedenceSymbol(const PrecedenceType type)
     : precType(type)
 {
-    this->symbType = PrecSymbol_t;
+    this->symbType = SymbolType::symb_PrecSymbol;
 }
 
 PrecedenceSymbol::PrecedenceSymbol(const PrecedenceSymbol& old)
     : precType(old.GetPrecedenceType())
 {
-    this->symbType = PrecSymbol_t;
+    this->symbType = SymbolType::symb_PrecSymbol;
 }
 
 PrecedenceType PrecedenceSymbol::GetPrecedenceType() const
@@ -29,14 +29,18 @@ PrecedenceType PrecedenceSymbol::GetPrecedenceType() const
 std::string PrecedenceSymbol::GetTypeString() const
 {
     switch (this->precType) {
-        case Push:
+        case PrecedenceType::Push: {
             return "<";
-        case Reduce:
+        }
+        case PrecedenceType::Reduce: {
             return ">";
-        case Equal:
+        }
+        case PrecedenceType::Equal: {
             return "=";
-        default:
+        }
+        default: {
             throw InternalError("Invalid PrecedenceSymbol type in PrecedenceSymbol::GetTypeString()\n");
+        }
     }
 }
 

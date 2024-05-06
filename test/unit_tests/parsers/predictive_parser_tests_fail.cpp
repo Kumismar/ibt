@@ -42,20 +42,20 @@ protected:
 
 TEST_F(PredictiveParserTestsFail, EmptyInput)
 {
-    inputTape = { new Token(tEnd) };
+    inputTape = { new Token(t_End) };
     EXPECT_THROW(this->parser->Parse(false), SyntaxError);
 }
 
 TEST_F(PredictiveParserTestsFail, MissingEndToken)
 {
-    inputTape = { new Token(tConst), new Token(tSemi) };
+    inputTape = { new Token(t_Const), new Token(t_Semi) };
     EXPECT_THROW(this->parser->Parse(false), SyntaxError);
 }
 
 TEST_F(PredictiveParserTestsFail, FunctionCallMissingClosingParenthesis)
 {
     inputTape = {
-        new Token(tFuncName), new Token(tLPar), new Token(tConst), new Token(tSemi), new Token(tEnd)
+        new Token(t_FuncName), new Token(t_LPar), new Token(t_Const), new Token(t_Semi), new Token(t_End)
     };
     EXPECT_THROW(this->parser->Parse(false), SyntaxError);
 }
@@ -63,7 +63,7 @@ TEST_F(PredictiveParserTestsFail, FunctionCallMissingClosingParenthesis)
 TEST_F(PredictiveParserTestsFail, FunctionCallMissingOpeningParenthesis)
 {
     inputTape = {
-        new Token(tFuncName), new Token(tRPar), new Token(tSemi), new Token(tEnd)
+        new Token(t_FuncName), new Token(t_RPar), new Token(t_Semi), new Token(t_End)
     };
     EXPECT_THROW(this->parser->Parse(false), SyntaxError);
 }
@@ -71,7 +71,7 @@ TEST_F(PredictiveParserTestsFail, FunctionCallMissingOpeningParenthesis)
 TEST_F(PredictiveParserTestsFail, FunctionCallMissingComma)
 {
     inputTape = {
-        new Token(tFuncName), new Token(tLPar), new Token(tConst), new Token(tConst), new Token(tRPar), new Token(tSemi), new Token(tEnd)
+        new Token(t_FuncName), new Token(t_LPar), new Token(t_Const), new Token(t_Const), new Token(t_RPar), new Token(t_Semi), new Token(t_End)
     };
     EXPECT_THROW(this->parser->Parse(false), SyntaxError);
 }
@@ -79,7 +79,7 @@ TEST_F(PredictiveParserTestsFail, FunctionCallMissingComma)
 TEST_F(PredictiveParserTestsFail, MissingSemicolon)
 {
     inputTape = {
-        new Token(tFuncName), new Token(tLPar), new Token(tConst), new Token(tComma), new Token(tConst), new Token(tRPar), new Token(tEnd)
+        new Token(t_FuncName), new Token(t_LPar), new Token(t_Const), new Token(t_Comma), new Token(t_Const), new Token(t_RPar), new Token(t_End)
     };
     EXPECT_THROW(this->parser->Parse(false), SyntaxError);
 }
@@ -87,8 +87,8 @@ TEST_F(PredictiveParserTestsFail, MissingSemicolon)
 TEST_F(PredictiveParserTestsFail, MissingSemicolonTwoStatements)
 {
     inputTape = {
-        new Token(tFuncName), new Token(tLPar), new Token(tConst), new Token(tComma), new Token(tConst), new Token(tRPar), new Token(tSemi),
-        new Token(tFuncName), new Token(tLPar), new Token(tConst), new Token(tComma), new Token(tConst), new Token(tRPar), new Token(tEnd)
+        new Token(t_FuncName), new Token(t_LPar), new Token(t_Const), new Token(t_Comma), new Token(t_Const), new Token(t_RPar), new Token(t_Semi),
+        new Token(t_FuncName), new Token(t_LPar), new Token(t_Const), new Token(t_Comma), new Token(t_Const), new Token(t_RPar), new Token(t_End)
     };
     EXPECT_THROW(this->parser->Parse(false), SyntaxError);
 }
@@ -96,8 +96,8 @@ TEST_F(PredictiveParserTestsFail, MissingSemicolonTwoStatements)
 TEST_F(PredictiveParserTestsFail, ForLoopMissingInitialization)
 {
     inputTape = {
-        new Token(tFor), new Token(tLPar), new Token(tSemi), new Token(tConst), new Token(tSemi), new Token(tConst), new Token(tRPar),
-        new Token(tLCurl), new Token(tRCurl), new Token(tEnd)
+        new Token(t_For), new Token(t_LPar), new Token(t_Semi), new Token(t_Const), new Token(t_Semi), new Token(t_Const), new Token(t_RPar),
+        new Token(t_LCurl), new Token(t_RCurl), new Token(t_End)
     };
     EXPECT_THROW(this->parser->Parse(false), SyntaxError);
 }
@@ -105,8 +105,8 @@ TEST_F(PredictiveParserTestsFail, ForLoopMissingInitialization)
 TEST_F(PredictiveParserTestsFail, ForLoopMissingCondition)
 {
     inputTape = {
-        new Token(tFor), new Token(tLPar), new Token(tConst), new Token(tSemi), new Token(tSemi), new Token(tConst), new Token(tRPar),
-        new Token(tLCurl), new Token(tRCurl), new Token(tEnd)
+        new Token(t_For), new Token(t_LPar), new Token(t_Const), new Token(t_Semi), new Token(t_Semi), new Token(t_Const), new Token(t_RPar),
+        new Token(t_LCurl), new Token(t_RCurl), new Token(t_End)
     };
     EXPECT_THROW(this->parser->Parse(false), SyntaxError);
 }
@@ -114,8 +114,8 @@ TEST_F(PredictiveParserTestsFail, ForLoopMissingCondition)
 TEST_F(PredictiveParserTestsFail, ForLoopMissingIncrement)
 {
     inputTape = {
-        new Token(tFor), new Token(tLPar), new Token(tConst), new Token(tSemi), new Token(tConst), new Token(tSemi), new Token(tRPar),
-        new Token(tLCurl), new Token(tRCurl), new Token(tEnd)
+        new Token(t_For), new Token(t_LPar), new Token(t_Const), new Token(t_Semi), new Token(t_Const), new Token(t_Semi), new Token(t_RPar),
+        new Token(t_LCurl), new Token(t_RCurl), new Token(t_End)
     };
     EXPECT_THROW(this->parser->Parse(false), SyntaxError);
 }
@@ -123,7 +123,7 @@ TEST_F(PredictiveParserTestsFail, ForLoopMissingIncrement)
 TEST_F(PredictiveParserTestsFail, WhileLoopMissingCondition)
 {
     inputTape = {
-        new Token(tWhile), new Token(tLPar), new Token(tRPar), new Token(tLCurl), new Token(tRCurl), new Token(tEnd)
+        new Token(t_While), new Token(t_LPar), new Token(t_RPar), new Token(t_LCurl), new Token(t_RCurl), new Token(t_End)
     };
     EXPECT_THROW(this->parser->Parse(false), SyntaxError);
 }
@@ -131,7 +131,7 @@ TEST_F(PredictiveParserTestsFail, WhileLoopMissingCondition)
 TEST_F(PredictiveParserTestsFail, IfStatementMissingCondition)
 {
     inputTape = {
-        new Token(tIf), new Token(tLPar), new Token(tRPar), new Token(tLCurl), new Token(tRCurl), new Token(tEnd)
+        new Token(t_If), new Token(t_LPar), new Token(t_RPar), new Token(t_LCurl), new Token(t_RCurl), new Token(t_End)
     };
     EXPECT_THROW(this->parser->Parse(false), SyntaxError);
 }
@@ -139,8 +139,8 @@ TEST_F(PredictiveParserTestsFail, IfStatementMissingCondition)
 TEST_F(PredictiveParserTestsFail, IfStatementNonsenseCondition)
 {
     inputTape = {
-        new Token(tIf), new Token(tLPar), new Token(tReturn), new Token(tConst), new Token(tRPar),
-        new Token(tLCurl), new Token(tRCurl), new Token(tEnd)
+        new Token(t_If), new Token(t_LPar), new Token(t_Return), new Token(t_Const), new Token(t_RPar),
+        new Token(t_LCurl), new Token(t_RCurl), new Token(t_End)
     };
     EXPECT_THROW(this->parser->Parse(false), SyntaxError);
 }
@@ -148,9 +148,9 @@ TEST_F(PredictiveParserTestsFail, IfStatementNonsenseCondition)
 TEST_F(PredictiveParserTestsFail, FunctionDefinitionMissingComma)
 {
     inputTape = {
-        new Token(tFunction), new Token(tFuncName), new Token(tLPar), new Token(tInt), new Token(tVariable), new Token(tInt), new Token(tVariable), new Token(tRPar),
-        new Token(tColon),
-        new Token(tLCurl), new Token(tRCurl), new Token(tEnd)
+        new Token(t_Function), new Token(t_FuncName), new Token(t_LPar), new Token(t_Int), new Token(t_Variable), new Token(t_Int), new Token(t_Variable), new Token(t_RPar),
+        new Token(t_Colon),
+        new Token(t_LCurl), new Token(t_RCurl), new Token(t_End)
     };
     EXPECT_THROW(this->parser->Parse(false), SyntaxError);
 }
@@ -158,8 +158,8 @@ TEST_F(PredictiveParserTestsFail, FunctionDefinitionMissingComma)
 TEST_F(PredictiveParserTestsFail, FunctionDefinitionMissingColon)
 {
     inputTape = {
-        new Token(tFunction), new Token(tFuncName), new Token(tLPar), new Token(tInt), new Token(tVariable), new Token(tRPar),
-        new Token(tLCurl), new Token(tRCurl), new Token(tEnd)
+        new Token(t_Function), new Token(t_FuncName), new Token(t_LPar), new Token(t_Int), new Token(t_Variable), new Token(t_RPar),
+        new Token(t_LCurl), new Token(t_RCurl), new Token(t_End)
     };
     EXPECT_THROW(this->parser->Parse(false), SyntaxError);
 }
@@ -167,9 +167,9 @@ TEST_F(PredictiveParserTestsFail, FunctionDefinitionMissingColon)
 TEST_F(PredictiveParserTestsFail, FunctionDefinitionNoFunctionKeyword)
 {
     inputTape = {
-        new Token(tFuncName), new Token(tLPar), new Token(tInt), new Token(tVariable), new Token(tRPar),
-        new Token(tColon),
-        new Token(tLCurl), new Token(tRCurl), new Token(tEnd)
+        new Token(t_FuncName), new Token(t_LPar), new Token(t_Int), new Token(t_Variable), new Token(t_RPar),
+        new Token(t_Colon),
+        new Token(t_LCurl), new Token(t_RCurl), new Token(t_End)
     };
     EXPECT_THROW(this->parser->Parse(false), SyntaxError);
 }

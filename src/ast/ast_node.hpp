@@ -16,10 +16,10 @@
  */
 typedef enum nodeType
 {
-    Expression_n,
-    Statement_n,
-    StatementList_n,
-    FuncDef_n
+    nodeExpression,
+    nodeStatement,
+    nodeStList,
+    nodeFuncDef
 } NodeType;
 
 

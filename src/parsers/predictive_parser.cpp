@@ -44,11 +44,11 @@ void PredictiveParser::Parse(bool parseFunction)
         this->handleSpecialCases();
 
         switch (this->stackTop->GetSymbolType()) {
-            case Nonterminal_t: {
+            case SymbolType::symb_Nonterminal: {
                 this->parseNonterminal();
                 break;
             }
-            case Token_t: {
+            case SymbolType::symb_Token: {
                 this->parseToken();
                 break;
             }
@@ -61,8 +61,8 @@ void PredictiveParser::Parse(bool parseFunction)
 
 void PredictiveParser::InitSyntaxAnalysis()
 {
-    this->pushdown.push_front(new Token(tEnd));
-    this->pushdown.push_front(new Nonterminal(nProgram));
+    this->pushdown.push_front(new Token(TokenType::t_End));
+    this->pushdown.push_front(new Nonterminal(NonterminalType::nt_Program));
 }
 
 void PredictiveParser::ClearStack()
@@ -92,10 +92,10 @@ void PredictiveParser::parseNonterminal()
         return;
     }
     // Expression => give control to precedence parser
-    else if (stackNT->GetNonterminalType() == nExpression) {
-        bool notParsingFunctionCall = !(*this->inputToken == tFuncName && this->parsingFunction);
+    else if (stackNT->GetNonterminalType() == NonterminalType::nt_Expression) {
+        bool notParsingFunctionCall = !(*this->inputToken == TokenType::t_FuncName && this->parsingFunction);
         // Function call nested within another function call.
-        bool newFuncNameFound = *this->inputToken == tFuncName && !this->firstFuncName;
+        bool newFuncNameFound = *this->inputToken == TokenType::t_FuncName && !this->firstFuncName;
 
         if (notParsingFunctionCall || newFuncNameFound) {
             this->parseExpression(stackNT);
@@ -125,13 +125,13 @@ void PredictiveParser::parseToken()
     }
 
     // Case $:
-    if (stackToken->GetTokenType() == tEnd) {
+    if (stackToken->GetTokenType() == t_End) {
         this->parseEnd();
     }
 
     // Case T:
     if (*stackToken == *this->inputToken) {
-        if (*this->inputToken == tFuncName) {
+        if (*this->inputToken == t_FuncName) {
             this->firstFuncName = false;
         }
         SymbolHandler handler(this->pushdown);
@@ -144,7 +144,7 @@ void PredictiveParser::parseToken()
 
 void PredictiveParser::parseEnd()
 {
-    if (this->inputToken->GetTokenType() == tEnd) {
+    if (this->inputToken->GetTokenType() == t_End) {
         delete this->stackTop;
         delete this->inputToken;
         inputTape.pop_front();
@@ -155,7 +155,7 @@ void PredictiveParser::parseEnd()
         }
         else {
             // Not empty inputTape should never happen in this case, syntax error would be thrown earlier, which is why InternalError.
-            throw InternalError("Popped tEnd from input tape but there is still something left\n");
+            throw InternalError("Popped t_End from input tape but there is still something left\n");
         }
     }
     else {
@@ -180,7 +180,7 @@ void PredictiveParser::parseExpression(Nonterminal* stackNT)
         delete stackNT;
         throw;
     }
-    }
+}
 
 void PredictiveParser::handleSpecialCases()
 {
@@ -189,10 +189,10 @@ void PredictiveParser::handleSpecialCases()
     }
     this->inputToken = inputTape.front();
 
-    if (*this->inputToken == tFuncEnd) {
+    if (*this->inputToken == t_FuncEnd) {
         delete this->inputToken;
         inputTape.pop_front();
-        inputTape.push_front(new Token(tFuncConst));
+        inputTape.push_front(new Token(t_FuncConst));
         throw FunctionParsed();
     }
 }

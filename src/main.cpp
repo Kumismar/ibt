@@ -69,7 +69,7 @@ void Lex(std::string& filename)
     }
     yylex();
     yylex_destroy();
-    inputTape.push_back(new Token(tEnd));
+    inputTape.push_back(new Token(t_End));
     Logger::GetInstance()->PrintInputTape();
 }
 

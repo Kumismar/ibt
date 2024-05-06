@@ -31,18 +31,18 @@ ASTNode* ASTNodeFactory::CreateASTNode(Nonterminal& nt, Token& t)
     }
 
     switch (nt.GetNonterminalType()) {
-        case nStatement: {
+        case NonterminalType::nt_Statement: {
             switch (t.GetTokenType()) {
-                case tIf: {
+                case TokenType::t_If: {
                     return new IfStatement();
                 }
-                case tWhile: {
+                case TokenType::t_While: {
                     return new WhileLoop();
                 }
-                case tFor: {
+                case TokenType::t_For: {
                     return new ForLoop();
                 }
-                case tReturn: {
+                case TokenType::t_Return: {
                     return new ReturnStatement();
                 }
                 default: {
@@ -50,12 +50,12 @@ ASTNode* ASTNodeFactory::CreateASTNode(Nonterminal& nt, Token& t)
                 }
             }
         }
-        case nDeclOrExpr: {
+        case NonterminalType::nt_DeclOrExpr: {
             switch (t.GetTokenType()) {
-                case tInt:
-                case tFloat:
-                case tString:
-                case tBool: {
+                case TokenType::t_Int:
+                case TokenType::t_Float:
+                case TokenType::t_String:
+                case TokenType::t_Bool: {
                     return new Declaration();
                 }
                 default: {
@@ -63,20 +63,20 @@ ASTNode* ASTNodeFactory::CreateASTNode(Nonterminal& nt, Token& t)
                 }
             }
         }
-        case nIf2: {
-            if (t.GetTokenType() == tElseif) {
+        case NonterminalType::nt_If2: {
+            if (t.GetTokenType() == TokenType::t_Elseif) {
                 return new ElseifStatement();
             }
             return nullptr;
         }
-        case nFunctionDef: {
+        case NonterminalType::nt_FunctionDef: {
             return new FunctionDefinition();
         }
-        case nCodeBlock: {
+        case NonterminalType::nt_CodeBlock: {
             return new StatementList();
         }
-        case nStatements: {
-            if (AST::GetInstance()->GetCurrentContext()->GetNodeType() == FuncDef_n) {
+        case NonterminalType::nt_Statements: {
+            if (AST::GetInstance()->GetCurrentContext()->GetNodeType() == NodeType::nodeFuncDef) {
                 return new StatementList();
             }
             return nullptr;
@@ -94,13 +94,13 @@ Expression* ASTNodeFactory::CreateASTNode(Rule& rule)
     }
 
     if (rule.size() == 1) {
-        return this->createOperand(rule);
+        return ASTNodeFactory::createOperand(rule);
     }
-    else if (this->isUnaryExpression(rule)) {
-        return this->createUnaryExpression(rule);
+    else if (ASTNodeFactory::isUnaryExpression(rule)) {
+        return ASTNodeFactory::createUnaryExpression(rule);
     }
     else if (rule.size() == 3) {
-        return this->createBinaryExpression(rule);
+        return ASTNodeFactory::createBinaryExpression(rule);
     }
     else {
         throw InternalError("ASTNodeFactory:: rule size != {1, 2, 3}\n");
@@ -115,7 +115,7 @@ bool ASTNodeFactory::isUnaryExpression(Rule& rule)
 
     auto* tmp = dynamic_cast<Token*>(rule.front());
     if (tmp != nullptr) {
-        return (*tmp == tLPar);
+        return (*tmp == TokenType::t_LPar);
     }
     return false;
 }
@@ -128,15 +128,15 @@ Expression* ASTNodeFactory::createOperand(Rule& rule)
         throw InternalError("ASTNodeFactory::createOperand operand is not Token*, real type:" + std::string(typeid(*tmpSymb).name()) + "\n");
     }
 
-    if (*operandToken == tVariable) {
+    if (*operandToken == TokenType::t_Variable) {
         auto* tmpVar = new Variable(*operandToken);
         return tmpVar;
     }
-    else if (*operandToken == tConst) {
+    else if (*operandToken == TokenType::t_Const) {
         auto* tmpConst = new Constant(*operandToken);
         return tmpConst;
     }
-    else if (*operandToken == tFuncConst) {
+    else if (*operandToken == TokenType::t_FuncConst) {
         // Function call node was already created, just return
         return nullptr;
     }
@@ -160,8 +160,8 @@ Expression* ASTNodeFactory::createUnaryExpression(Rule& rule)
 Expression* ASTNodeFactory::createBinaryExpression(Rule& rule)
 {
     Token* possibleLPar = dynamic_cast<Token*>(*rule.begin());
-    if (possibleLPar != nullptr && *possibleLPar == tLPar) {
-        auto* tmpExp = new UnaryExpression(tLPar);
+    if (possibleLPar != nullptr && *possibleLPar == TokenType::t_LPar) {
+        auto* tmpExp = new UnaryExpression(TokenType::t_LPar);
         return tmpExp;
     }
 

@@ -41,8 +41,8 @@ void Parameter::PrintTree(std::ofstream& file, int& id, int parentId)
 
 FunctionDefinition::FunctionDefinition()
 {
-    this->nodeType = FuncDef_n;
-    this->returnType = DataType::None;
+    this->nodeType = NodeType::nodeFuncDef;
+    this->returnType = DataType::data_None;
 }
 
 FunctionDefinition::~FunctionDefinition()
@@ -88,7 +88,7 @@ void FunctionDefinition::PrintTree(std::ofstream& file, int& id, int parentId)
 void FunctionDefinition::ProcessToken(Token& token)
 {
     if (FunctionDefinition::isType(token)) {
-        if (**std::next(inputTape.begin()) == tLCurl) { // next token is '{'
+        if (**std::next(inputTape.begin()) == TokenType::t_LCurl) { // next token is '{'
             this->setReturnType(token);
         }
         else {
@@ -96,7 +96,7 @@ void FunctionDefinition::ProcessToken(Token& token)
             this->currentParam->SetType(token.GetTokenType());
         }
     }
-    else if (token == tVariable) {
+    else if (token == TokenType::t_Variable) {
         if (this->currentParam == nullptr) {
             throw InternalError("FunctionDefinition::ProcessToken currentParam is nullptr");
         }
@@ -104,17 +104,17 @@ void FunctionDefinition::ProcessToken(Token& token)
         this->currentParam->SetName(token.GetDataString());
         this->params.push_back(this->currentParam);
     }
-    else if (token == tFuncName) {
+    else if (token == TokenType::t_FuncName) {
         this->name = token.GetDataString();
     }
 }
 
 void FunctionDefinition::LinkNode(ASTNode* node, Nonterminal& nt)
 {
-    if (nt.GetNonterminalType() == nStatements) {
+    if (nt.GetNonterminalType() == NonterminalType::nt_Statements) {
         auto* tmp = dynamic_cast<StatementList*>(node);
         if (tmp == nullptr) {
-            throw InternalError("FunctionDefiniton::LinkNode (case nCodeBlock) invalid type: " + std::string(typeid(*node).name()));
+            throw InternalError("FunctionDefiniton::LinkNode (case nt_CodeBlock) invalid type: " + std::string(typeid(*node).name()));
         }
 
         this->body = tmp;
@@ -123,26 +123,26 @@ void FunctionDefinition::LinkNode(ASTNode* node, Nonterminal& nt)
 
 bool FunctionDefinition::isType(const Token& token)
 {
-    return (token == tInt || token == tFloat || token == tString || token == tBool);
+    return (token == TokenType::t_Int || token == TokenType::t_Float || token == TokenType::t_String || token == t_Bool);
 }
 
 void FunctionDefinition::setReturnType(const Token& token)
 {
     switch (token.GetTokenType()) {
-        case tInt: {
-            this->returnType = Int;
+        case TokenType::t_Int: {
+            this->returnType = DataType::data_Int;
             break;
         }
-        case tFloat: {
-            this->returnType = Float;
+        case TokenType::t_Float: {
+            this->returnType = DataType::data_Float;
             break;
         }
-        case tBool: {
-            this->returnType = Bool;
+        case TokenType::t_Bool: {
+            this->returnType = DataType::data_Bool;
             break;
         }
-        case tString: {
-            this->returnType = String;
+        case TokenType::t_String: {
+            this->returnType = DataType::data_String;
             break;
         }
         default: {
@@ -154,16 +154,16 @@ void FunctionDefinition::setReturnType(const Token& token)
 std::string Parameter::typeToString(TokenType t)
 {
     switch (t) {
-        case tInt: {
+        case TokenType::t_Int: {
             return "Int";
         }
-        case tFloat: {
+        case TokenType::t_Float: {
             return "Float";
         }
-        case tBool: {
+        case TokenType::t_Bool: {
             return "Bool";
         }
-        case tString: {
+        case TokenType::t_String: {
             return "String";
         }
         default: {
@@ -175,16 +175,16 @@ std::string Parameter::typeToString(TokenType t)
 std::string FunctionDefinition::typeToString(DataType t)
 {
     switch (t) {
-        case Int: {
+        case DataType::data_Int: {
             return "Int";
         }
-        case Float: {
+        case DataType::data_Float: {
             return "Float";
         }
-        case Bool: {
+        case DataType::data_Bool: {
             return "Bool";
         }
-        case String: {
+        case DataType::data_String: {
             return "String";
         }
         default: {

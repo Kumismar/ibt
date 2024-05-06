@@ -12,7 +12,7 @@
 
 BinaryExpression::BinaryExpression(TokenType t)
 {
-    this->nodeType = Expression_n;
+    this->nodeType = NodeType::nodeExpression;
     AST* ast = AST::GetInstance();
     this->right = ast->GetExpressionContext();
     ast->PopExpressionContext();

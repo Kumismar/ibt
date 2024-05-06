@@ -64,7 +64,7 @@ private:
     void initPrecedenceParsing();
 
     /**
-     * @brief Parse the function call if token tFuncName is on the input tape.
+     * @brief Parse the function call if token t_FuncName is on the input tape.
      */
     void parseFunction();
 

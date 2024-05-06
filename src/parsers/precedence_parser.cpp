@@ -92,7 +92,7 @@ bool PrecedenceParser::parseIsSuccessful()
     Symbol* second = this->analysisPushdown.front();
     this->analysisPushdown.push_front(top);
 
-    return (*this->inputToken == tExpEnd && *second == Token(tExpEnd) && *top == Nonterminal(nExpression));
+    return (*this->inputToken == TokenType::t_ExpEnd && *second == Token(TokenType::t_ExpEnd) && *top == Nonterminal(NonterminalType::nt_Expression));
 }
 
 void PrecedenceParser::clearStack()
@@ -116,7 +116,7 @@ void PrecedenceParser::initPrecedenceParsing()
 {
     EndInsertor endInsertor;
 
-    this->analysisPushdown.push_front(new Token(tExpEnd));
+    this->analysisPushdown.push_front(new Token(t_ExpEnd));
     endInsertor.InsertExpressionEnd();
 }
 
@@ -154,7 +154,7 @@ void PrecedenceParser::handleSpecialCases()
         throw SyntaxError("Missing token(s).\n");
     }
 
-    if (*this->inputToken == tFuncName) {
+    if (*this->inputToken == t_FuncName) {
         this->parseFunction();
     }
 }

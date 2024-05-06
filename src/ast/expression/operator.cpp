@@ -13,72 +13,72 @@
 Operator::Operator(TokenType t)
 {
     switch (t) {
-        case tPlus: {
-            this->type = Plus;
+        case TokenType::t_Plus: {
+            this->type = OperatorType::optr_Plus;
             break;
         }
-        case tMinus: {
-            this->type = Minus;
+        case TokenType::t_Minus: {
+            this->type = OperatorType::optr_Minus;
             break;
         }
-        case tMul: {
-            this->type = Multiply;
+        case TokenType::t_Mul: {
+            this->type = OperatorType::optr_Multiply;
             break;
         }
-        case tDiv: {
-            this->type = Divide;
+        case TokenType::t_Div: {
+            this->type = OperatorType::optr_Divide;
             break;
         }
-        case tConcat: {
-            this->type = Concat;
+        case TokenType::t_Concat: {
+            this->type = OperatorType::optr_Concat;
             break;
         }
-        case tAssign: {
-            this->type = Assign;
+        case TokenType::t_Assign: {
+            this->type = OperatorType::optr_Assign;
             break;
         }
-        case tEq: {
-            this->type = Equal_ot;
+        case TokenType::t_Eq: {
+            this->type = OperatorType::optr_Equal;
             break;
         }
-        case tNEq: {
-            this->type = NotEqual;
+        case TokenType::t_NEq: {
+            this->type = OperatorType::optr_NotEqual;
             break;
         }
-        case tLess: {
-            this->type = Less;
+        case TokenType::t_Less: {
+            this->type = OperatorType::optr_Less;
             break;
         }
-        case tLEq: {
-            this->type = LessEqual;
+        case TokenType::t_LEq: {
+            this->type = OperatorType::optr_LessEqual;
             break;
         }
-        case tGreater: {
-            this->type = Greater;
+        case TokenType::t_Greater: {
+            this->type = OperatorType::optr_Greater;
             break;
         }
-        case tGEq: {
-            this->type = GreaterEqual;
+        case TokenType::t_GEq: {
+            this->type = OperatorType::optr_GreaterEqual;
             break;
         }
-        case tAnd: {
-            this->type = And;
+        case TokenType::t_And: {
+            this->type = OperatorType::optr_And;
             break;
         }
-        case tOr: {
-            this->type = Or;
+        case TokenType::t_Or: {
+            this->type = OperatorType::optr_Or;
             break;
         }
-        case tExcl: {
-            this->type = Not;
+        case TokenType::t_Excl: {
+            this->type = OperatorType::optr_Not;
             break;
         }
-        case tUnMinus: {
-            this->type = UnaryMinus;
+        case TokenType::t_UnMinus: {
+            this->type = OperatorType::optr_UnaryMinus;
             break;
         }
-        case tLPar: {
-            this->type = ExpInParentheses;
+        case TokenType::t_LPar: {
+            this->type = OperatorType::optr_ExpInParentheses;
             break;
         }
         default: {
@@ -98,64 +98,64 @@ void Operator::PrintTree(std::ofstream& file, int& id, int parentId)
     file << "node" << parentId << " -> node" << currentId << ";\n";
     file << "node" << currentId << " [label=\"";
     switch (this->type) {
-        case Plus: {
+        case OperatorType::optr_Plus: {
             file << "+";
             break;
         }
-        case UnaryMinus:
-        case Minus: {
+        case OperatorType::optr_UnaryMinus:
+        case OperatorType::optr_Minus: {
             file << "-";
             break;
         }
-        case Multiply: {
+        case OperatorType::optr_Multiply: {
             file << "*";
             break;
         }
-        case Divide: {
+        case OperatorType::optr_Divide: {
             file << "/";
             break;
         }
-        case Concat: {
+        case OperatorType::optr_Concat: {
             file << ".";
             break;
         }
-        case Assign: {
+        case OperatorType::optr_Assign: {
             file << "=";
             break;
         }
-        case Equal_ot: {
+        case OperatorType::optr_Equal: {
             file << "==";
             break;
         }
-        case NotEqual: {
+        case OperatorType::optr_NotEqual: {
             file << "!=";
             break;
         }
-        case Less: {
+        case OperatorType::optr_Less: {
             file << "<";
             break;
         }
-        case LessEqual: {
+        case OperatorType::optr_LessEqual: {
             file << "<=";
             break;
         }
-        case Greater: {
+        case OperatorType::optr_Greater: {
             file << ">";
             break;
         }
-        case GreaterEqual: {
+        case OperatorType::optr_GreaterEqual: {
             file << ">=";
             break;
         }
-        case And: {
+        case OperatorType::optr_And: {
             file << "&&";
             break;
         }
-        case Or: {
+        case OperatorType::optr_Or: {
             file << "||";
             break;
         }
-        case Not: {
+        case OperatorType::optr_Not: {
             file << "!";
             break;
         }

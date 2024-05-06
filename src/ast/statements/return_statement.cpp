@@ -13,7 +13,7 @@
 
 ReturnStatement::ReturnStatement()
 {
-    this->nodeType = Statement_n;
+    this->nodeType = NodeType::nodeStatement;
 }
 
 ReturnStatement::~ReturnStatement()
@@ -34,10 +34,10 @@ void ReturnStatement::PrintTree(std::ofstream& file, int& id, int parentId)
 
 void ReturnStatement::LinkNode(ASTNode* node, Nonterminal& nt)
 {
-    if (nt.GetNonterminalType() == nExpression) {
+    if (nt.GetNonterminalType() == NonterminalType::nt_Expression) {
         auto* tmp = dynamic_cast<Expression*>(node);
         if (tmp == nullptr) {
-            throw InternalError("ReturnStatement::LinkNode (case nExpression) invalid type: " + std::string(typeid(*node).name()));
+            throw InternalError("ReturnStatement::LinkNode (case nt_Expression) invalid type: " + std::string(typeid(*node).name()));
         }
 
         this->expr = tmp;

@@ -14,23 +14,23 @@
  */
 typedef enum operatorType
 {
-    Plus,
-    Minus,
-    Multiply,
-    Divide,
-    Concat,
-    Assign,
-    Equal_ot,
-    NotEqual,
-    Less,
-    LessEqual,
-    Greater,
-    GreaterEqual,
-    And,
-    Or,
-    Not,
-    UnaryMinus,
-    ExpInParentheses
+    optr_Plus,
+    optr_Minus,
+    optr_Multiply,
+    optr_Divide,
+    optr_Concat,
+    optr_Assign,
+    optr_Equal,
+    optr_NotEqual,
+    optr_Less,
+    optr_LessEqual,
+    optr_Greater,
+    optr_GreaterEqual,
+    optr_And,
+    optr_Or,
+    optr_Not,
+    optr_UnaryMinus,
+    optr_ExpInParentheses
 } OperatorType;
 
 /**

@@ -14,7 +14,7 @@
 /**
  * @brief An enum representing all symbols from precedence table.
  */
-typedef enum
+typedef enum precedenceType
 {
     Push, // <
     Reduce, // >

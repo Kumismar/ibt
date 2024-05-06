@@ -168,7 +168,7 @@ ENTRY
 INTEGERS { output.state before.all mid.sentence after.sentence after.block
            ord ptr i x numnames namesleft nameptr }
 
-% String variables. Each variable has a list of functions, that modify its value.
+% data_String variables. Each variable has a list of functions, that modify its value.
 %
 % s -- output.nonnull, format.names, format.names.ed, format.journal.issue,
 %      format.thesis.info, format.thesis.range, chop.word, sort.format.names
@@ -719,7 +719,7 @@ FUNCTION {capitalize}
 }
 
 % Connects two strings from the top of the stack. These two strings are separated
-% by a whitespace or non-breaking space. String at the top of the stack is connected
+% by a whitespace or non-breaking space. data_String at the top of the stack is connected
 % to the other one, specifically behind it.
 %
 % If either of the strings is empty, the other string is returned without any changes.
@@ -763,7 +763,7 @@ FUNCTION {tie.or.connect}
 }
 
 % Connects two strings from the top of the stack. These two strings are separated
-% by a comma. String at the top of the stack is connected to the other one, 
+% by a comma. data_String at the top of the stack is connected to the other one,
 % specifically behind it.
 %
 % If either of the strings is empty, the other string is returned without any changes.

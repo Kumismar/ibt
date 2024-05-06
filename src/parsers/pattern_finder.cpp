@@ -18,7 +18,7 @@ Token* PatternFinder::FindFirstToken()
 {
     Symbol* tmpExp = nullptr;
     for (Symbol* symb: this->stack) {
-        if (symb->GetSymbolType() == Token_t) {
+        if (symb->GetSymbolType() == SymbolType::symb_Token) {
             tmpExp = symb;
             break;
         }
@@ -37,35 +37,35 @@ void PatternFinder::FindFirstRule(Rule& emptyRule)
     // push to list until stack.top is precedence symbol '<' or '$'
     for (Symbol* symb: this->stack) {
         switch (symb->GetSymbolType()) {
-            case PrecSymbol_t: {
+            case SymbolType::symb_PrecSymbol: {
                 auto* tmpSymbol = dynamic_cast<PrecedenceSymbol*>(symb);
                 if (tmpSymbol == nullptr) {
                     throw InternalError("PatternFinder::FindFirstRule: Dynamic cast to PrecedenceSymbol* failed - real type:" + std::string(typeid(*symb).name()));
                 }
 
                 // if its precendence symbol '<' then just return
-                if (*tmpSymbol == Push) {
+                if (*tmpSymbol == PrecedenceType::Push) {
                     return;
                 }
                 else {
                     throw InternalError("Different precedence symbol than '<' on the stack.\n");
                 }
             }
-            case Token_t: {
+            case SymbolType::symb_Token: {
                 auto* tmpToken = dynamic_cast<Token*>(symb);
                 if (tmpToken == nullptr) {
                     throw InternalError("PatternFinder::FindFirstRule: Dynamic cast to Token* failed - real type:" + std::string(typeid(*symb).name()));
                 }
 
                 // if its token '$' then end of stack has been reached and just return
-                if (*tmpToken == tExpEnd) {
+                if (*tmpToken == TokenType::t_ExpEnd) {
                     break;
                 }
                 // else its part of rule, push it
                 emptyRule.push_front(new Token(*tmpToken));
                 break;
             }
-            case Nonterminal_t: {
+            case SymbolType::symb_Nonterminal: {
                 // implies for nonterminals as well
                 auto* tmpNT = dynamic_cast<Nonterminal*>(symb);
                 if (tmpNT == nullptr) {

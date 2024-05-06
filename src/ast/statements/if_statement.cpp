@@ -14,7 +14,7 @@
 
 IfStatement::IfStatement()
 {
-    this->nodeType = Statement_n;
+    this->nodeType = NodeType::nodeStatement;
 }
 
 IfStatement::~IfStatement()
@@ -54,7 +54,7 @@ void IfStatement::PrintTree(std::ofstream& file, int& id, int parentId)
 
 void IfStatement::ProcessToken(Token& token)
 {
-    if (token == tElse) {
+    if (token == TokenType::t_Else) {
         this->processingElse = true;
     }
 }
@@ -62,10 +62,10 @@ void IfStatement::ProcessToken(Token& token)
 void IfStatement::LinkNode(ASTNode* node, Nonterminal& nt)
 {
     switch (nt.GetNonterminalType()) {
-        case nCodeBlock: {
+        case NonterminalType::nt_CodeBlock: {
             auto* tmp = dynamic_cast<StatementList*>(node);
             if (tmp == nullptr) {
-                throw InternalError("IfStatement::LinkNode (case nCodeBlock) invalid type: " + std::string(typeid(*node).name()));
+                throw InternalError("IfStatement::LinkNode (case nt_CodeBlock) invalid type: " + std::string(typeid(*node).name()));
             }
 
             if (this->processingElse) {
@@ -76,19 +76,19 @@ void IfStatement::LinkNode(ASTNode* node, Nonterminal& nt)
             }
             break;
         }
-        case nIf2: {
+        case NonterminalType::nt_If2: {
             auto* tmp = dynamic_cast<ElseifStatement*>(node);
             if (tmp == nullptr) {
-                throw InternalError("IfStatement::LinkNode (case nIf2) invalid type: " + std::string(typeid(*node).name()));
+                throw InternalError("IfStatement::LinkNode (case nt_If2) invalid type: " + std::string(typeid(*node).name()));
             }
 
             this->elseifs.push_back(tmp);
             break;
         }
-        case nExpression: {
+        case NonterminalType::nt_Expression: {
             auto* tmp = dynamic_cast<Expression*>(node);
             if (tmp == nullptr) {
-                throw InternalError("IfStatement::LinkNode (case nExpression) invalid type: " + std::string(typeid(*node).name()));
+                throw InternalError("IfStatement::LinkNode (case nt_Expression) invalid type: " + std::string(typeid(*node).name()));
             }
 
             this->condition = tmp;

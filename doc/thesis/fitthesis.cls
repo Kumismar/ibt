@@ -1349,7 +1349,7 @@
     captionpos=b,
     numbers=left,
     frame=single,
-    morekeywords={UINT8, UINT16, UINT32, INT8, INT16, INT32, Post, Properties, Protocol, AsciiString, String, StringTerm, BLOB, FormatString, this},
+    morekeywords={UINT8, UINT16, UINT32, INT8, INT16, INT32, Post, Properties, Protocol, AsciiString, data_String, StringTerm, BLOB, FormatString, this},
 }
 
 
@@ -1367,7 +1367,7 @@
     captionpos=b,
     numbers=left,
     frame=single,
-    morekeywords={UINT8, UINT16, UINT32, INT8, INT16, INT32, Post, Properties, Protocol, AsciiString, String, StringTerm, BLOB, FormatString, this},
+    morekeywords={UINT8, UINT16, UINT32, INT8, INT16, INT32, Post, Properties, Protocol, AsciiString, data_String, StringTerm, BLOB, FormatString, this},
 }
 
 %END Jan Pluskal (ipluskal) listings

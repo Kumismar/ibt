@@ -11,11 +11,11 @@
 #include "token.hpp"
 
 const std::vector<Rule> Grammar3::rightSideRules = {
-    { new Token(tFunction), new Token(tFuncName), new Token(tLPar), new Nonterminal(nParams), new Token(tRPar), new Token(tColon), new Nonterminal(nVoluntaryType), new Token(tLCurl), new Nonterminal(nStatements), new Nonterminal(nStop), new Token(tRCurl), new Nonterminal(nStop) },
-    { new Nonterminal(nType), new Token(tVariable), new Nonterminal(nParams2) },
-    { new Token(tEps) },
-    { new Token(tComma), new Nonterminal(nType), new Token(tVariable), new Nonterminal(nParams2) },
-    { new Token(tEps) },
+    { new Token(t_Function), new Token(t_FuncName), new Token(t_LPar), new Nonterminal(NonterminalType::nt_Params), new Token(t_RPar), new Token(t_Colon), new Nonterminal(NonterminalType::nt_VoluntaryType), new Token(t_LCurl), new Nonterminal(NonterminalType::nt_Statements), new Nonterminal(nStop), new Token(t_RCurl), new Nonterminal(nStop) },
+    { new Nonterminal(NonterminalType::nt_Type), new Token(t_Variable), new Nonterminal(NonterminalType::nt_Params2) },
+    { new Token(t_Eps) },
+    { new Token(t_Comma), new Nonterminal(NonterminalType::nt_Type), new Token(t_Variable), new Nonterminal(NonterminalType::nt_Params2) },
+    { new Token(t_Eps) },
 };
 
 

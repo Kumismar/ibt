@@ -10,7 +10,7 @@
 
 UnaryExpression::UnaryExpression(TokenType t)
 {
-    this->nodeType = Expression_n;
+    this->nodeType = NodeType::nodeExpression;
     this->operand = AST::GetInstance()->GetExpressionContext();
     AST::GetInstance()->PopExpressionContext();
     this->optr = new Operator(t);
@@ -34,7 +34,7 @@ void UnaryExpression::PrintTree(std::ofstream& file, int& id, int parentId)
     file << "node" << parentId << " -> node" << currentId << ";\n";
     file << "node" << currentId << " [label=\"UnaryExpression\"];\n";
 
-    if (this->optr->GetType() == ExpInParentheses) {
+    if (this->optr->GetType() == OperatorType::optr_ExpInParentheses) {
         int uExpId = currentId;
         int lParId = currentId + 1;
         id++;

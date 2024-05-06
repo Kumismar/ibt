@@ -12,7 +12,7 @@
 /**
  * @brief Exception thrown when function is parsed.
  * @details Is used for communication between predictive and precedence parser.
- * It's thrown by predictive parser when tFuncEnd token is found.
+ * It's thrown by predictive parser when t_FuncEnd token is found.
  */
 class FunctionParsed : public ExceptionBase
 {

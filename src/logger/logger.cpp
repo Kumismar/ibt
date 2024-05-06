@@ -114,7 +114,7 @@ void Logger::AddTokenToRecents(Token& token)
         return;
     }
 
-    if (token == tFuncConst) {
+    if (token == TokenType::t_FuncConst) {
         return;
     }
 
@@ -146,7 +146,7 @@ void Logger::PrintSyntaxError(const char* message)
     }
 
     // Print recent tokens
-    for (const Token* recentToken : std::ranges::reverse_view(this->recentTokens)) {
+    for (const Token* recentToken: std::ranges::reverse_view(this->recentTokens)) {
         std::cerr << recentToken->GetDataString() << " ";
     }
 

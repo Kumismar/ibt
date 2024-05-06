@@ -11,12 +11,12 @@
 #include "token.hpp"
 
 const std::vector<Rule> Grammar6::rightSideRules = {
-    { new Nonterminal(nType) },
-    { new Token(tEps) },
-    { new Token(tInt) },
-    { new Token(tFloat) },
-    { new Token(tString) },
-    { new Token(tBool) }
+    { new Nonterminal(NonterminalType::nt_Type) },
+    { new Token(t_Eps) },
+    { new Token(t_Int) },
+    { new Token(t_Float) },
+    { new Token(t_String) },
+    { new Token(t_Bool) }
 };
 
 Rule Grammar6::Expand(unsigned ruleNumber)

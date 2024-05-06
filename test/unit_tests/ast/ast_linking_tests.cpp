@@ -55,7 +55,7 @@ TEST_F(ASTLinkingTests, LinkUnaryExpression)
     createOperandAndPush(this->tokens[0]);
     Expression* operand = this->ast->GetExpressionContext();
 
-    Expression* context = createUnaryExpression(tPlus);
+    Expression* context = createUnaryExpression(t_Plus);
     auto* uExpr = dynamic_cast<UnaryExpression*>(context);
 
     ASSERT_NE(uExpr, nullptr);
@@ -74,7 +74,7 @@ TEST_F(ASTLinkingTests, LinkBinaryExpression)
     createOperandAndPush(this->tokens[1]);
     Expression* operand2 = this->ast->GetExpressionContext();
 
-    Expression* context = createBinaryExpression(tPlus);
+    Expression* context = createBinaryExpression(t_Plus);
     auto* bExpr = dynamic_cast<BinaryExpression*>(context);
 
     ASSERT_NE(bExpr, nullptr);

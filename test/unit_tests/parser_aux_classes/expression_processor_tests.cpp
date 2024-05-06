@@ -26,7 +26,7 @@ protected:
     {
         this->processor = new ExpressionProcessor(this->stack);
         this->stack = {
-            new Token(tExpEnd)
+            new Token(t_ExpEnd)
         };
         Logger::GetInstance()->TurnOff();
         AST::GetInstance()->TurnOff();
@@ -53,13 +53,13 @@ protected:
 TEST_F(ExpressionProcessorTests, ShiftTest1)
 {
     inputTape = {
-        new Token(tConst),
+        new Token(t_Const),
     };
     this->processor->Shift();
     this->expected = {
-        new Token(tConst),
-        new PrecedenceSymbol(Push),
-        new Token(tExpEnd)
+        new Token(t_Const),
+        new PrecedenceSymbol(PrecedenceType::Push),
+        new Token(t_ExpEnd)
     };
     EXPECT_TRUE(handlesEqual(this->expected, this->stack));
 }
@@ -67,15 +67,15 @@ TEST_F(ExpressionProcessorTests, ShiftTest1)
 TEST_F(ExpressionProcessorTests, ShiftTest2)
 {
     inputTape = {
-        new Token(tConst),
-        new Token(tPlus),
-        new Token(tConst),
+        new Token(t_Const),
+        new Token(t_Plus),
+        new Token(t_Const),
     };
     this->processor->Shift();
     this->expected = {
-        new Token(tConst),
-        new PrecedenceSymbol(Push),
-        new Token(tExpEnd)
+        new Token(t_Const),
+        new PrecedenceSymbol(PrecedenceType::Push),
+        new Token(t_ExpEnd)
     };
     EXPECT_TRUE(handlesEqual(this->expected, this->stack));
 }
@@ -83,17 +83,17 @@ TEST_F(ExpressionProcessorTests, ShiftTest2)
 TEST_F(ExpressionProcessorTests, ShiftTest3)
 {
     inputTape = {
-        new Token(tConst),
-        new Token(tPlus),
-        new Token(tConst),
-        new Token(tPlus),
-        new Token(tConst),
+        new Token(t_Const),
+        new Token(t_Plus),
+        new Token(t_Const),
+        new Token(t_Plus),
+        new Token(t_Const),
     };
     this->processor->Shift();
     this->expected = {
-        new Token(tConst),
-        new PrecedenceSymbol(Push),
-        new Token(tExpEnd)
+        new Token(t_Const),
+        new PrecedenceSymbol(PrecedenceType::Push),
+        new Token(t_ExpEnd)
     };
     EXPECT_TRUE(handlesEqual(this->expected, this->stack));
 }
@@ -101,13 +101,13 @@ TEST_F(ExpressionProcessorTests, ShiftTest3)
 TEST_F(ExpressionProcessorTests, PushTest1)
 {
     inputTape = {
-        new Token(tPlus),
-        new Token(tConst),
+        new Token(t_Plus),
+        new Token(t_Const),
     };
     this->processor->Push();
     this->expected = {
-        new Token(tPlus),
-        new Token(tExpEnd)
+        new Token(t_Plus),
+        new Token(t_ExpEnd)
     };
     EXPECT_TRUE(handlesEqual(this->expected, this->stack));
 }
@@ -115,15 +115,15 @@ TEST_F(ExpressionProcessorTests, PushTest1)
 TEST_F(ExpressionProcessorTests, PushTest2)
 {
     inputTape = {
-        new Token(tVariable),
-        new Token(tConst),
-        new Token(tPlus),
-        new Token(tConst),
+        new Token(t_Variable),
+        new Token(t_Const),
+        new Token(t_Plus),
+        new Token(t_Const),
     };
     this->processor->Push();
     this->expected = {
-        new Token(tVariable),
-        new Token(tExpEnd)
+        new Token(t_Variable),
+        new Token(t_ExpEnd)
     };
     EXPECT_TRUE(handlesEqual(this->expected, this->stack));
 }
@@ -131,17 +131,17 @@ TEST_F(ExpressionProcessorTests, PushTest2)
 TEST_F(ExpressionProcessorTests, PushTest3)
 {
     inputTape = {
-        new Token(tConst),
-        new Token(tConst),
-        new Token(tPlus),
-        new Token(tConst),
-        new Token(tPlus),
-        new Token(tConst),
+        new Token(t_Const),
+        new Token(t_Const),
+        new Token(t_Plus),
+        new Token(t_Const),
+        new Token(t_Plus),
+        new Token(t_Const),
     };
     this->processor->Push();
     this->expected = {
-        new Token(tConst),
-        new Token(tExpEnd)
+        new Token(t_Const),
+        new Token(t_ExpEnd)
     };
     EXPECT_TRUE(handlesEqual(this->expected, this->stack));
 }
@@ -151,14 +151,14 @@ TEST_F(ExpressionProcessorTests, ReduceTest1)
     Symbol* tmp = this->stack.front();
     this->stack.pop_front();
     this->stack = {
-        new Token(tConst),
-        new PrecedenceSymbol(Push),
+        new Token(t_Const),
+        new PrecedenceSymbol(PrecedenceType::Push),
     };
     this->stack.push_back(tmp);
     this->processor->Reduce();
     this->expected = {
-        new Nonterminal(nExpression),
-        new Token(tExpEnd)
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Token(t_ExpEnd)
     };
     EXPECT_TRUE(handlesEqual(this->expected, this->stack));
 }
@@ -168,16 +168,16 @@ TEST_F(ExpressionProcessorTests, ReduceTest2)
     Symbol* tmp = this->stack.front();
     this->stack.pop_front();
     this->stack = {
-        new Nonterminal(nExpression),
-        new Token(tPlus),
-        new Nonterminal(nExpression),
-        new PrecedenceSymbol(Push),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Token(t_Plus),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new PrecedenceSymbol(PrecedenceType::Push),
     };
     this->stack.push_back(tmp);
     this->processor->Reduce();
     this->expected = {
-        new Nonterminal(nExpression),
-        new Token(tExpEnd)
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Token(t_ExpEnd)
     };
     EXPECT_TRUE(handlesEqual(this->expected, this->stack));
 }
@@ -187,16 +187,16 @@ TEST_F(ExpressionProcessorTests, ReduceTest3)
     Symbol* tmp = this->stack.front();
     this->stack.pop_front();
     this->stack = {
-        new Nonterminal(nExpression),
-        new Token(tUnMinus),
-        new PrecedenceSymbol(Push),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Token(t_UnMinus),
+        new PrecedenceSymbol(PrecedenceType::Push),
     };
     this->stack.push_back(tmp);
 
     this->processor->Reduce();
     this->expected = {
-        new Nonterminal(nExpression),
-        new Token(tExpEnd)
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Token(t_ExpEnd)
     };
     EXPECT_TRUE(handlesEqual(this->expected, this->stack));
 }
@@ -206,14 +206,14 @@ TEST_F(ExpressionProcessorTests, ReduceTest4)
     Symbol* tmp = this->stack.front();
     this->stack.pop_front();
     this->stack = {
-        new Token(tFuncConst),
-        new PrecedenceSymbol(Push),
+        new Token(t_FuncConst),
+        new PrecedenceSymbol(PrecedenceType::Push),
     };
     this->stack.push_back(tmp);
     this->processor->Reduce();
     this->expected = {
-        new Nonterminal(nExpression),
-        new Token(tExpEnd)
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Token(t_ExpEnd)
     };
     EXPECT_TRUE(handlesEqual(this->expected, this->stack));
 }

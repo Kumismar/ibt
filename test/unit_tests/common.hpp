@@ -19,7 +19,7 @@
 bool handlesEqual(Rule& r1, Rule& r2);
 void cleanRule(Rule& rule);
 
-Token* sampleToken(TokenType type = tConst, DataType dType = Int, Value value = Value{ .intVal = 0 });
+Token* sampleToken(TokenType type = t_Const, DataType dType = DataType::data_Int, Value value = Value{ .intVal = 0 });
 void createOperandAndPush(Token* t);
 Expression* createUnaryExpression(TokenType type);
 Expression* createBinaryExpression(TokenType type);

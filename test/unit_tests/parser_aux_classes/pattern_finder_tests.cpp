@@ -50,29 +50,29 @@ protected:
 TEST_F(PatternFinderTests, FindFirstTokenInStackOneToken)
 {
     this->stack = {
-        new Token(tConst),
+        new Token(t_Const),
     };
     Token* token = finder->FindFirstToken();
-    EXPECT_EQ(token->GetTokenType(), tConst);
+    EXPECT_EQ(token->GetTokenType(), t_Const);
 }
 
 TEST_F(PatternFinderTests, FindFirstTokenInStackMultipleTokens)
 {
     this->stack = {
-        new Token(tConst),
-        new Token(tVariable),
-        new Token(tExpEnd),
+        new Token(t_Const),
+        new Token(t_Variable),
+        new Token(t_ExpEnd),
     };
     Token* token = finder->FindFirstToken();
-    EXPECT_EQ(token->GetTokenType(), tConst);
+    EXPECT_EQ(token->GetTokenType(), t_Const);
 }
 
 TEST_F(PatternFinderTests, FindFirstTokenInStackNoToken)
 {
     this->stack = {
-        new Nonterminal(nExpression),
-        new Nonterminal(nExpression),
-        new Nonterminal(nExpression)
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Nonterminal(NonterminalType::nt_Expression)
     };
     EXPECT_THROW(finder->FindFirstToken(), InternalError);
 }
@@ -80,25 +80,25 @@ TEST_F(PatternFinderTests, FindFirstTokenInStackNoToken)
 TEST_F(PatternFinderTests, FindFirstTokenInStackTokenBetweenNonterminals)
 {
     this->stack = {
-        new Nonterminal(nExpression),
-        new Token(tConst),
-        new Nonterminal(nExpression)
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Token(t_Const),
+        new Nonterminal(NonterminalType::nt_Expression)
     };
     Token* token = finder->FindFirstToken();
-    EXPECT_EQ(token->GetTokenType(), tConst);
+    EXPECT_EQ(token->GetTokenType(), t_Const);
 }
 
 TEST_F(PatternFinderTests, FindFirstRuleOneConstant)
 {
     this->stack = {
-        new Token(tConst),
-        new PrecedenceSymbol(Push),
-        new Token(tExpEnd),
+        new Token(t_Const),
+        new PrecedenceSymbol(PrecedenceType::Push),
+        new Token(t_ExpEnd),
     };
 
     finder->FindFirstRule(this->rule);
     this->expected = {
-        new Token(tConst),
+        new Token(t_Const),
     };
     this->expected.reverse();
     EXPECT_TRUE(handlesEqual(rule, expected));
@@ -107,18 +107,18 @@ TEST_F(PatternFinderTests, FindFirstRuleOneConstant)
 TEST_F(PatternFinderTests, FindFirstRuleMultipleConstants)
 {
     this->stack = {
-        new Token(tConst),
-        new Token(tVariable),
-        new Token(tConst),
-        new PrecedenceSymbol(Push),
-        new Token(tExpEnd),
+        new Token(t_Const),
+        new Token(t_Variable),
+        new Token(t_Const),
+        new PrecedenceSymbol(PrecedenceType::Push),
+        new Token(t_ExpEnd),
     };
 
     finder->FindFirstRule(this->rule);
     this->expected = {
-        new Token(tConst),
-        new Token(tVariable),
-        new Token(tConst),
+        new Token(t_Const),
+        new Token(t_Variable),
+        new Token(t_Const),
     };
     this->expected.reverse();
     EXPECT_TRUE(handlesEqual(rule, expected));
@@ -127,14 +127,14 @@ TEST_F(PatternFinderTests, FindFirstRuleMultipleConstants)
 TEST_F(PatternFinderTests, FindFirstRuleNonterminal)
 {
     this->stack = {
-        new Nonterminal(nExpression),
-        new PrecedenceSymbol(Push),
-        new Token(tExpEnd),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new PrecedenceSymbol(PrecedenceType::Push),
+        new Token(t_ExpEnd),
     };
 
     finder->FindFirstRule(this->rule);
     this->expected = {
-        new Nonterminal(nExpression),
+        new Nonterminal(NonterminalType::nt_Expression),
     };
     this->expected.reverse();
     EXPECT_TRUE(handlesEqual(rule, expected));
@@ -143,18 +143,18 @@ TEST_F(PatternFinderTests, FindFirstRuleNonterminal)
 TEST_F(PatternFinderTests, FindFirstRuleMultipleNonterminals)
 {
     this->stack = {
-        new Nonterminal(nExpression),
-        new Nonterminal(nExpression),
-        new Nonterminal(nExpression),
-        new PrecedenceSymbol(Push),
-        new Token(tExpEnd),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new PrecedenceSymbol(PrecedenceType::Push),
+        new Token(t_ExpEnd),
     };
 
     finder->FindFirstRule(this->rule);
     this->expected = {
-        new Nonterminal(nExpression),
-        new Nonterminal(nExpression),
-        new Nonterminal(nExpression),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Nonterminal(NonterminalType::nt_Expression),
     };
     this->expected.reverse();
     EXPECT_TRUE(handlesEqual(rule, expected));
@@ -163,22 +163,22 @@ TEST_F(PatternFinderTests, FindFirstRuleMultipleNonterminals)
 TEST_F(PatternFinderTests, FindFirstRuleMixed)
 {
     this->stack = {
-        new Nonterminal(nExpression),
-        new Token(tConst),
-        new Nonterminal(nExpression),
-        new Token(tVariable),
-        new Nonterminal(nExpression),
-        new PrecedenceSymbol(Push),
-        new Token(tExpEnd),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Token(t_Const),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Token(t_Variable),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new PrecedenceSymbol(PrecedenceType::Push),
+        new Token(t_ExpEnd),
     };
 
     finder->FindFirstRule(this->rule);
     this->expected = {
-        new Nonterminal(nExpression),
-        new Token(tConst),
-        new Nonterminal(nExpression),
-        new Token(tVariable),
-        new Nonterminal(nExpression),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Token(t_Const),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Token(t_Variable),
+        new Nonterminal(NonterminalType::nt_Expression),
     };
     this->expected.reverse();
     EXPECT_TRUE(handlesEqual(rule, expected));
@@ -187,22 +187,22 @@ TEST_F(PatternFinderTests, FindFirstRuleMixed)
 TEST_F(PatternFinderTests, FindFirstRuleMixed2)
 {
     this->stack = {
-        new Token(tConst),
-        new Nonterminal(nExpression),
-        new Token(tVariable),
-        new Nonterminal(nExpression),
-        new Token(tConst),
-        new PrecedenceSymbol(Push),
-        new Token(tExpEnd),
+        new Token(t_Const),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Token(t_Variable),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Token(t_Const),
+        new PrecedenceSymbol(PrecedenceType::Push),
+        new Token(t_ExpEnd),
     };
 
     finder->FindFirstRule(this->rule);
     this->expected = {
-        new Token(tConst),
-        new Nonterminal(nExpression),
-        new Token(tVariable),
-        new Nonterminal(nExpression),
-        new Token(tConst),
+        new Token(t_Const),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Token(t_Variable),
+        new Nonterminal(NonterminalType::nt_Expression),
+        new Token(t_Const),
     };
     this->expected.reverse();
     EXPECT_TRUE(handlesEqual(rule, expected));

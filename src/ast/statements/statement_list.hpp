@@ -16,11 +16,11 @@
 /**
  * @brief An enumeration for the type of the statement or expression.
  */
-typedef enum type
+typedef enum stOrExpType
 {
-    Statement_t,
-    Expression_t,
-    StList_t
+    soe_Statement,
+    soe_Expression,
+    soe_StList
 } StOrExpType;
 
 // Forward declaration for circular dependency

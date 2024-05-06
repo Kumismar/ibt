@@ -20,7 +20,7 @@ class Parameter
 private:
     std::string name;
     TokenType type;
-    static std::string typeToString(TokenType t) ;
+    static std::string typeToString(TokenType t);
 
 public:
     void SetType(TokenType type);
@@ -64,7 +64,7 @@ private:
      * @param token The token to check.
      * @return True if the token is a type, false otherwise.
      */
-    static bool isType(const Token& token) ;
+    static bool isType(const Token& token);
 
     /**
      * @brief Set the return type of the function.
@@ -75,9 +75,9 @@ private:
     /**
      * @brief Convert the data type to string.
      * @param t The data type to convert.
-     * @return String representation of the data type.
+     * @return data_String representation of the data type.
      */
-    static std::string typeToString(DataType t) ;
+    static std::string typeToString(DataType t);
 
 public:
     /**
