@@ -2424,7 +2424,7 @@ Přeložení programu a~spuštění testů proběhlo na těchto operačních sys
 		\item Debian 12 a~\texttt{gcc} 12.2.0, \texttt{clang} 14.0.6,
 	\end{itemize}
 	\item školní server Merlin -- CentOS 7 za použití překladače \texttt{gcc} verze 10.5; překladač \texttt{clang} generuje chybu, protože nedokáže najít standardní knihovny \texttt{<cstddef>} a~\texttt{<string>},
-	\item školní server Eva -- FreeBSD 13.2 s~překladačem \texttt{gcc} 13.2.0 (FreeBSD ports collection).
+	\item školní server Eva -- FreeBSD 13.2 s~překladači \texttt{gcc} 13.0.2 a~\texttt{clang} 18.1.4.
 \end{itemize}
 Pro přeložení a~plnou funkcionalitu programu se všemi výstupy je nutné mít na systému nainstalován překladač C++ a~nástroje \texttt{Make}, \texttt{CMake} a~\texttt{dot}.
 Dále byl při implementaci použit nástroj \texttt{valgrind} pro analýzu správy paměti a~nástroj \texttt{Flex} pro generování lexikálního analyzátoru.
@@ -2436,7 +2436,6 @@ Tam lze nalézt několik cílů, které se dají spustit:
 \begin{itemize}
     \item \texttt{all} -- přeloží program a~vytvoří spustitelný soubor \texttt{Parser} pomocí invokace systému CMake.
     Dále přeloží zdrojové soubory pro jednotkové testy a~vytvoří z~nich spustitelný soubor \texttt{ParserTest}.
-    \item \texttt{eva} -- nastaví absolutní cestu k~překladači C++ a~spustí kompilaci. Nutné pro překlad na serveru Eva.
     \item \texttt{gcc} -- přeloží program pomocí překladače z~rodiny \texttt{gcc}.
     \item \texttt{clang} -- přeloží program pomocí překladače z~rodiny \texttt{clang}.
     \item \texttt{run} -- podívá se, zda je k~dispozici spustitelný soubor \texttt{Parser}. Pokud ano, spustí jej s~parametry, které se přímo v~\texttt{Makefile} dají upravit.

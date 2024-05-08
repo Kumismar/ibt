@@ -2,9 +2,6 @@ all:
 	# cd src/lex && flex -o lex.yy.cc lex.l && sed -i '/#undef YY_DO_BEFORE_ACTION/d' lex.yy.h && sed -i '/#undef YY_NEW_FILE/d' lex.yy.h
 	@[ -d build/ ] || mkdir build/ && cd build/ && cmake .. -G "Unix Makefiles" && cmake --build . -j10
 
-eva:
-	@[ -d build/ ] || mkdir build/ && cd build/ && CXX=/usr/bin/c++ cmake .. -G "Unix Makefiles" && cmake --build . -j10
-
 gcc:
 	@[ -d build/ ] || mkdir build/ && cd build/ && CC=gcc CXX=g++ cmake .. -G "Unix Makefiles" && cmake --build . -j10
 
