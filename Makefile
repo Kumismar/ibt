@@ -35,4 +35,4 @@ thesis:
 	@cd doc/thesis && make
 
 clean:
-	@rm -rf build/ && cd doc/thesis && make clean
+	@rm -rf build/ output.log tree.* valgrind* && cd doc/thesis && make clean
