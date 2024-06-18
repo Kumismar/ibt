@@ -1,3 +1,7 @@
+**Bachelor's thesis**
+This repository contains source files for implementation output and thesis itself.
+For final evaluation of thesis along with supervisor's and reviewer's report visit [https://www.vut.cz/en/students/final-thesis/detail/153846](this site).
+
 The project can be compiled by invoking ```make``` in the project root directory.
 You can choose explicitly between gcc and clang compilers using ```make gcc``` and ```make clang``` respectively.
 You will need to have Make, CMake, and at least one of the compilers installed.
