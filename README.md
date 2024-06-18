@@ -1,4 +1,5 @@
-**Bachelor's thesis**
+# Bachelor's thesis
+
 This repository contains source files for implementation output and thesis itself.
 For final evaluation of thesis along with supervisor's and reviewer's report visit [this site](https://www.vut.cz/en/students/final-thesis/detail/153846).
 
