@@ -16,5 +16,5 @@ It will convert *tree.dot* to *tree.pdf* in project root with program *dot*.
 Tests are run with ```make runtest```, it has to be invoked after ```make```, which builds the testing executable as well.
 If you want to check for memory leaks in either of the executables, run ```make valgrind``` or ```make valgrind_test``` for program and testing executable respectively.
 
-Thesis can be build with ```make thesis```.
+Thesis can be built with ```make thesis```.
 ```make clean``` cleans the root directory from unnecessary files and directories left after building either program executable or thesis.
